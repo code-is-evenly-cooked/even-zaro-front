@@ -9,8 +9,41 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+const config = [
+  ...compat.config({
+    root: true,
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: "module",
+      ecmaFeatures: {
+        jsx: true,
+      },
+    },
+    env: {
+      browser: true,
+      node: true,
+      es6: true,
+    },
+    plugins: ["react", "react-hooks", "@typescript-eslint"],
+    extends: [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended",
+      "prettier",
+    ],
+    rules: {
+      "prettier/prettier": "error",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  }),
 ];
 
-export default eslintConfig;
+export default config;
