@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,css,md}\""
+    "lint": "eslint .",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,css,md}\"",
+    "check": "npm run lint && npm run format"
   },
   "dependencies": {
     "next": "15.3.1",

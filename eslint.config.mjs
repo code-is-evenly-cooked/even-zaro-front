@@ -1,3 +1,4 @@
+// eslint.config.mjs
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -7,9 +8,22 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
+  recommendedConfig: {
+    rules: {},
+  },
 });
 
 const config = [
+  {
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/out/**",
+      "**/public/**",
+    ],
+  },
   ...compat.config({
     root: true,
     parser: "@typescript-eslint/parser",
@@ -31,12 +45,11 @@ const config = [
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
       "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended",
       "prettier",
     ],
     rules: {
-      "prettier/prettier": "error",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "react/react-in-jsx-scope": "off",
     },
     settings: {
       react: {
