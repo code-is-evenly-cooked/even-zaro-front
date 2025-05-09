@@ -3,8 +3,8 @@ import "./globals.css";
 import Layout from "@/layout/Layout";
 
 export const metadata: Metadata = {
-  title: "피날레",
-  description: "이브니들의 구름에서 마지막 프로젝트",
+  title: "ZARO",
+  description: "자취러들 사이의 은밀한 커넥션",
 };
 
 export default function RootLayout({
