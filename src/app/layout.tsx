@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "@/layout/Layout";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 export const metadata: Metadata = {
   title: "ZARO",
