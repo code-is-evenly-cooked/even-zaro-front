@@ -8,7 +8,8 @@ const config = {
       },
       colors: {
         violet300: "#EADFFF",
-        violet600: "#68499F",
+        violet600: "#A78BFA",
+        violet800: "#68499F",
 
         gray900: "#22242B",
         gray600: "#73767E",
@@ -20,6 +21,8 @@ const config = {
 
         red200: "#FFA49D",
         green200: "#C9EDE9",
+
+        kakao: "#FEE500",
       },
     },
   },
