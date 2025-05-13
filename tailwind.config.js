@@ -24,6 +24,10 @@ const config = {
 
         kakao: "#FEE500",
       },
+      boxShadow: {
+        violetGlow: "0 0 4px #744CEB, 0 0 10px #744CEB",
+        violetIconGlow: "0 0 2px #744CEB, 0 0 4px #744CEB",
+      },
     },
   },
   plugins: [],
