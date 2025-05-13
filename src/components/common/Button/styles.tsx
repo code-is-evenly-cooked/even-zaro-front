@@ -29,7 +29,7 @@ export const BUTTON_VARIANT_STYLES: Record<
     violet300:
       "bg-violet300 text-white hover:bg-violet300/80 active:bg-violet300/60",
     violet800:
-      "bg-violet600 text-white hover:bg-violet600/80 active:bg-violet600/60",
+      "bg-violet800 text-white hover:bg-violet800/80 active:bg-violet800/60",
     skyblue100:
       "bg-skyblue100 text-white hover:bg-skyblue100/80 active:bg-skyblue100/60",
     skyblue200:
@@ -41,7 +41,7 @@ export const BUTTON_VARIANT_STYLES: Record<
     violet300:
       "text-violet300 border border-violet300 hover:bg-violet300/5 active:bg-violet300/10",
     violet800:
-      "text-violet600 border border-violet600 hover:bg-violet600/5 active:bg-violet600/10",
+      "text-violet800 border border-violet600 hover:bg-violet800/5 active:bg-violet800/10",
     skyblue100:
       "text-skyblue100 border border-skyblue100 hover:bg-skyblue100/5 active:bg-skyblue100/10",
     skyblue200:
@@ -51,7 +51,7 @@ export const BUTTON_VARIANT_STYLES: Record<
   },
   text: {
     violet300: "text-violet300 hover:bg-violet300/10 active:bg-violet300/20",
-    violet800: "text-violet600 hover:bg-violet600/10 active:bg-violet600/20",
+    violet800: "text-violet800 hover:bg-violet800/10 active:bg-violet800/20",
     skyblue100:
       "text-skyblue100 hover:bg-skyblue100/10 active:bg-skyblue100/20",
     skyblue200:

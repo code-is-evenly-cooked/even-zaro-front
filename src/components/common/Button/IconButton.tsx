@@ -52,7 +52,7 @@ const getIconButtonClass = ({
     ? "bg-transparent"
     : {
         violet300: "bg-violet300 hover:bg-violet300/50",
-        violet800: "bg-violet600 hover:bg-violet600/50",
+        violet800: "bg-violet800 hover:bg-violet600/50",
         skyblue100: "bg-skyblue100 hover:bg-skyblue100/50",
         skyblue200: "bg-skyblue200 hover:bg-skyblue200/50",
         skyblue300: "bg-skyblue300 hover:bg-skyblue300/50",
