@@ -24,7 +24,7 @@ const BaseInput = memo(
           w-full
           bg-transparent
           text-white
-          placeholder:text-gray200
+          placeholder:text-gray600
           text-body
           rounded-lg
           transition-all
