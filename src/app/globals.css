@@ -24,7 +24,7 @@ body {
 .scrollbar-thumb::-webkit-scrollbar-thumb,
 .overflow-auto::-webkit-scrollbar-thumb,
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: #3f3f46;
+  background-color: #ebecef;
   border-radius: 6px;
 }
 .scrollbar-thumb::-webkit-scrollbar-track,

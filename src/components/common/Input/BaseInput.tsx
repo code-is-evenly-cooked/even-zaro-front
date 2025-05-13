@@ -23,7 +23,7 @@ const BaseInput = memo(
         const baseStyles = `
           w-full
           bg-transparent
-          text-white
+          text-gray900
           placeholder:text-gray600
           text-body
           rounded-lg
@@ -95,7 +95,7 @@ const BaseInput = memo(
           {(error || helper) && (
             <p
               className={`mt-2 mx-2 text-sm ${
-                error ? "text-red500" : "text-white"
+                error ? "text-red-500" : "text-gray900"
               }`}
             >
               {error || helper}
