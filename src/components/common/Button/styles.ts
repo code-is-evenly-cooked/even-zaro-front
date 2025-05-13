@@ -17,6 +17,7 @@ export const BUTTON_SIZE_STYLES: Record<ButtonSize, string> = {
   sm: "h-[1.5rem] px-[8px] py-[5px]",
   md: "h-[2rem] px-[12px] py-[5px]",
   lg: "h-[2.5rem] px-[16px] py-[9px]",
+  xl: "h-[3.25rem] px-[24px] py-[14px]",
   full: "h-[2.5rem] w-full px-[16px] py-[9px]",
   icon: "h-[3.2rem] w-[3.2rem]",
 };

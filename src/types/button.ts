@@ -1,4 +1,4 @@
-export type ButtonSize = "sm" | "md" | "lg" | "full" | "icon";
+export type ButtonSize = "sm" | "md" | "lg" | "xl" | "full" | "icon";
 export type ButtonVariant = "filled" | "outlined" | "text";
 export type IconButtonVariant = "icon" | "icon-round";
 export type ButtonColor =
