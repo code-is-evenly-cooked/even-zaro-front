@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "@/layout/Layout";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import Providers from "@/providers/Providers";
 
 export const metadata: Metadata = {
   title: "ZARO",
@@ -22,7 +23,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Layout>{children}</Layout>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );
