@@ -36,10 +36,11 @@ const getIconButtonClass = ({
     "inline-flex items-center justify-center transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const sizeClass = {
-    sm: "h-[2.5rem] w-[2.5rem]",
-    md: "h-[3rem] w-[3rem]",
-    lg: "h-[3.5rem] w-[3.5rem]",
-    full: "w-full h-[3rem]",
+    sm: "h-[1.5rem] w-[1.5rem]",
+    md: "h-[2rem] w-[2rem]",
+    lg: "h-[2.5rem] w-[2.5rem]",
+    xl: "h-[3.25rem] w-[3.25rem]",
+    full: "w-full h-[2.5rem]",
     icon: "h-[2rem] w-[2rem]",
   }[size];
 
