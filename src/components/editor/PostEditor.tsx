@@ -1,7 +1,6 @@
 "use client";
 
 import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
 import { useRef, useEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
