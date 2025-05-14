@@ -7,10 +7,21 @@ import { usePostStore } from "@/stores/usePostStore";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
-  const { title, setTitle } = usePostStore();
+  const { title, setTitle, category, setCategory } = usePostStore();
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
+      {/* 카테고리 선택 (임시) */}
+      <div className="my-4">
+        <select
+          value={category ?? ""}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">게시판 선택</option>
+          <option value="자취일상">자취일상</option>
+          <option value="같이쓰자">같이쓰자</option>
+        </select>
+      </div>
       {/* 제목 입력창 */}
       <input
         type="text"
