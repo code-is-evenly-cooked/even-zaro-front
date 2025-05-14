@@ -32,3 +32,17 @@ body {
 .overflow-y-auto::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Toast 에디터 */
+.toastui-editor-main .toastui-editor-md-vertical-style .toastui-editor {
+  width: 100% !important;
+}
+
+.toastui-editor-md-splitter {
+  display: none !important;
+}
+
+.toastui-editor-md-preview {
+  display: none;
+  width: 0 !important;
+}

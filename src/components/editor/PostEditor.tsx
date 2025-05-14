@@ -12,7 +12,7 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         initialValue="테스트"
-        previewStyle="tab"
+        previewStyle="vertical"
         height="400px"
         initialEditType="markdown"
         useCommandShortcut={true}
