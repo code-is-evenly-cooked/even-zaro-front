@@ -116,6 +116,8 @@ const useLoginForm = () => {
   const getAccessTokenFromSession = async (session: Session | null) => {
     // TODO: 서버 통신하는 로직 추가 & 로그인 성공시 세션 정보 삭제?
     console.log(session?.user.accessToken);
+    console.log(session?.user.image);
+    console.log(session?.user.name);
   };
 
   useEffect(() => {
