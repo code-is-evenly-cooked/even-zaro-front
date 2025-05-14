@@ -16,6 +16,7 @@ export default function PostEditor() {
         <select
           value={category ?? ""}
           onChange={(e) => setCategory(e.target.value)}
+          className="h-10 p-1 bg-violet300 rounded-lg"
         >
           <option value="">게시판 선택</option>
           <option value="자취일상">자취일상</option>
@@ -37,7 +38,7 @@ export default function PostEditor() {
         initialValue="테스트"
         previewStyle="vertical"
         height="400px"
-        initialEditType="markdown"
+        initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={[
           ["heading", "bold", "italic", "strike"],
