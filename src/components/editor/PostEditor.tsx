@@ -2,27 +2,70 @@
 
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
+import { saveDraft, loadDraft } from "@/utils/editorStorage";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const { title, setTitle, category, setCategory } = usePostStore();
 
+  // 자동 임시 저장
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const content = editorRef.current?.getInstance().getMarkdown() ?? "";
+      console.log("💾 저장 시도 내용:", { title, category, content });
+      saveDraft({ title, category, content });
+      console.log("자동 임시저장됨");
+    }, 5000); // 5초마다 자동 저장
+
+    return () => clearInterval(interval);
+  }, [title, category]);
+
+  // 임시 저장 자동 불러오기
+  useEffect(() => {
+    loadDraft().then((draft) => {
+      if (draft) {
+        console.log("🟢 불러온 초안", draft);
+        setTitle(draft.title);
+        setCategory(draft.category);
+        editorRef.current?.getInstance().setMarkdown(draft.content);
+      }
+    });
+  }, []);
+
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
-      {/* 카테고리 선택 (임시) */}
-      <div className="my-4">
-        <select
-          value={category ?? ""}
-          onChange={(e) => setCategory(e.target.value)}
-          className="h-10 p-1 bg-violet300 rounded-lg"
-        >
-          <option value="">게시판 선택</option>
-          <option value="자취일상">자취일상</option>
-          <option value="같이쓰자">같이쓰자</option>
-        </select>
+      <div className="flex justify-between items-center">
+        {/* 카테고리 선택 (임시) */}
+        <div className="my-4">
+          <select
+            value={category ?? ""}
+            onChange={(e) => setCategory(e.target.value)}
+            className="h-10 p-1 bg-violet300 rounded-lg"
+          >
+            <option value="">게시판 선택</option>
+            <option value="자취일상">자취일상</option>
+            <option value="같이쓰자">같이쓰자</option>
+          </select>
+        </div>
+
+        {/* 임시 저장 버튼 */}
+        <div>
+          <button
+            onClick={() => {
+              const content =
+                editorRef.current?.getInstance().getMarkdown() ?? "";
+              saveDraft({ title, category, content });
+              alert("임시 저장 완료!");
+            }}
+            className="h-10 p-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+          >
+            💾 임시 저장
+          </button>
+        </div>
       </div>
+
       {/* 제목 입력창 */}
       <input
         type="text"
@@ -35,7 +78,7 @@ export default function PostEditor() {
       {/* 본문 에디터 */}
       <Editor
         ref={editorRef}
-        initialValue="테스트"
+        initialValue=""
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
