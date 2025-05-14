@@ -17,7 +17,7 @@ export default function PostEditor() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="제목을 입력하세요"
-        className="w-full text-2xl font-semibold border-none outline-none placeholder-gray-400 mb-6"
+        className="w-full h-[60px] text-2xl font-semibold outline-none placeholder-gray-400 mb-6 px-3 py-2 rounded-md bg-white shadow-[0_1px_4px_rgba(0,0,0,0.1)] focus:shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition"
       />
 
       {/* 본문 에디터 */}
