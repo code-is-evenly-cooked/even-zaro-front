@@ -2,11 +2,12 @@
 
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { usePostStore } from "@/stores/usePostStore";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
-  const [title, setTitle] = useState("");
+  const { title, setTitle } = usePostStore();
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
