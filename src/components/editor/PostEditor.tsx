@@ -17,13 +17,21 @@ export default function PostEditor() {
         initialEditType="markdown"
         useCommandShortcut={true}
         toolbarItems={[
-          ['heading', 'bold', 'italic', 'strike'],
-          ['hr', 'quote'],
-          ['ul', 'ol', 'task'],
-          ['link', 'image'],
-          ['code', 'codeblock']
+          ["heading", "bold", "italic", "strike"],
+          ["hr", "quote"],
+          ["ul", "ol", "task"],
+          ["link", "image"],
+          ["code", "codeblock"],
         ]}
       />
+      <div className="flex gap-2 justify-end">
+        <button className="w-[80px] mt-4 px-4 py-2 bg-violet600 text-white rounded">
+          등록
+        </button>
+        <button className="w-[80px] mt-4 px-4 py-2 bg-gray200 text-white rounded">
+          취소
+        </button>
+      </div>
     </div>
   );
 }
