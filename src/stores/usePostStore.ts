@@ -9,7 +9,7 @@ type PostState = {
   
     setTitle: (title: string) => void;
     setContent: (content: string) => void;
-    setCategory: (category: string) => void;
+    setCategory: (category: string | null) => void;
     setImageUrlList: (list: string[]) => void;
     setThumbnailUrl: (url: string | null) => void;
     resetPost: () => void;

@@ -15,7 +15,11 @@ export default function PostEditor() {
     const interval = setInterval(() => {
       const content = editorRef.current?.getInstance().getMarkdown() ?? "";
       console.log("💾 저장 시도 내용:", { title, category, content });
-      saveDraft({ title, category, content });
+      saveDraft({ 
+        title, 
+        category: category ?? "", 
+        content 
+      });
       console.log("자동 임시저장됨");
     }, 5000); // 5초마다 자동 저장
 
@@ -32,7 +36,7 @@ export default function PostEditor() {
         editorRef.current?.getInstance().setMarkdown(draft.content);
       }
     });
-  }, []);
+  }, [setTitle, setCategory]);
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
@@ -54,9 +58,20 @@ export default function PostEditor() {
         <div>
           <button
             onClick={() => {
-              const content =
-                editorRef.current?.getInstance().getMarkdown() ?? "";
-              saveDraft({ title, category, content });
+              const instance = editorRef.current?.getInstance();
+              if (!instance) {
+                console.warn("에디터 인스턴스를 찾을 수 없음");
+                return;
+              }
+
+              const content = instance.getMarkdown();
+              console.log("수동 저장 내용:", { title, category, content });
+
+              saveDraft({ 
+                title, 
+                category: category ?? "",
+                content 
+              });
               alert("임시 저장 완료!");
             }}
             className="h-10 p-1 bg-gray-200 rounded-lg hover:bg-gray-300"
