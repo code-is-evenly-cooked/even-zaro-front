@@ -76,7 +76,7 @@ const LoginForm = () => {
         {/* 비밀번호 재설정 */}
         <div className="flex justify-center text-sm text-gray600 font-light">
           <Link
-            href="/forgot-password"
+            href="/password-forget"
             className="underline hover:opacity-80 transition"
           >
             비밀번호 재설정
