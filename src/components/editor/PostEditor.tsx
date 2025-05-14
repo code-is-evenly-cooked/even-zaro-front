@@ -4,6 +4,8 @@ import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
+import BaseButton from "@/components/common/Button/BaseButton";
+import { SaveIcon } from "lucide-react";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -14,10 +16,10 @@ export default function PostEditor() {
     const interval = setInterval(() => {
       const content = editorRef.current?.getInstance().getMarkdown() ?? "";
       console.log("💾 저장 시도 내용:", { title, category, content });
-      saveDraft({ 
-        title, 
-        category: category ?? "", 
-        content 
+      saveDraft({
+        title,
+        category: category ?? "",
+        content,
       });
       console.log("자동 임시저장됨");
     }, 5000); // 5초마다 자동 저장
@@ -55,7 +57,11 @@ export default function PostEditor() {
 
         {/* 임시 저장 버튼 */}
         <div>
-          <button
+          <BaseButton
+            type="button"
+            leftIcon={<SaveIcon />}
+            size="md"
+            color="skyblue300"
             onClick={() => {
               const instance = editorRef.current?.getInstance();
               if (!instance) {
@@ -66,17 +72,17 @@ export default function PostEditor() {
               const content = instance.getMarkdown();
               console.log("수동 저장 내용:", { title, category, content });
 
-              saveDraft({ 
-                title, 
+              saveDraft({
+                title,
                 category: category ?? "",
-                content 
+                content,
               });
               alert("임시 저장 완료!");
             }}
-            className="h-10 p-1 bg-gray-200 rounded-lg hover:bg-gray-300"
+            className="p-1"
           >
-            💾 임시 저장
-          </button>
+            임시 저장
+          </BaseButton>
         </div>
       </div>
 
@@ -106,12 +112,18 @@ export default function PostEditor() {
         ]}
       />
       <div className="flex gap-2 justify-end">
-        <button className="w-[80px] mt-4 px-4 py-2 bg-violet600 text-white rounded">
+        <BaseButton
+          type="button"
+          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
+        >
           등록
-        </button>
-        <button className="w-[80px] mt-4 px-4 py-2 bg-gray200 text-white rounded">
+        </BaseButton>
+        <BaseButton
+          type="button"
+          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-gray200 text-white rounded"
+        >
           취소
-        </button>
+        </BaseButton>
       </div>
     </div>
   );
