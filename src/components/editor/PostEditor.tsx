@@ -1,7 +1,7 @@
 "use client";
 
 import { Editor } from "@toast-ui/react-editor";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
@@ -10,6 +10,36 @@ import { SaveIcon } from "lucide-react";
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const { title, setTitle, category, setCategory } = usePostStore();
+
+  // 에디터 툴바 아이템 (반응형 구분)
+  const FULL_TOOLBAR = [
+    ["heading", "bold", "italic", "strike"],
+    ["hr", "quote"],
+    ["ul", "ol", "task"],
+    ["link", "image"],
+    ["code", "codeblock"],
+  ];
+
+  const MOBILE_TOOLBAR = [
+    ["heading", "bold", "italic", "strike"],
+    ["hr", "quote"],
+    ["link", "image"],
+  ];
+
+  const [toolbarItems, setToolbarItems] = useState(FULL_TOOLBAR);
+
+  // 모바일에서 툴바 아이템 종류 전환
+  useEffect(() => {
+    const updateToolbar = () => {
+      const isMobile = window.innerWidth < 640;
+      setToolbarItems(isMobile ? MOBILE_TOOLBAR : FULL_TOOLBAR);
+    };
+
+    updateToolbar();
+    window.addEventListener("resize", updateToolbar);
+    return () => window.removeEventListener("resize", updateToolbar);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // 자동 임시 저장
   useEffect(() => {
@@ -97,19 +127,14 @@ export default function PostEditor() {
 
       {/* 본문 에디터 */}
       <Editor
+        key={toolbarItems.flat().join("-")}
         ref={editorRef}
         initialValue=""
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
         useCommandShortcut={true}
-        toolbarItems={[
-          ["heading", "bold", "italic", "strike"],
-          ["hr", "quote"],
-          ["ul", "ol", "task"],
-          ["link", "image"],
-          ["code", "codeblock"],
-        ]}
+        toolbarItems={toolbarItems}
       />
       <div className="flex gap-2 justify-end">
         <BaseButton
