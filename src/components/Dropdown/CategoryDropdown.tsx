@@ -24,7 +24,7 @@ const CategoryDropdown = ({
       <button
         ref={buttonRef}
         type="button"
-        className="flex items-center bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
+        className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
         {selectedCategory}
