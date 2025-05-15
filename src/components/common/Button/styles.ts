@@ -4,7 +4,6 @@ export const BASE_BUTTON_STYLES = `
   inline-flex
   items-center
   justify-center
-  rounded-xl
   font-medium
   transition-all
   duration-200
@@ -14,11 +13,11 @@ export const BASE_BUTTON_STYLES = `
 `;
 
 export const BUTTON_SIZE_STYLES: Record<ButtonSize, string> = {
-  sm: "h-[1.5rem] px-[8px] py-[5px]",
-  md: "h-[2rem] px-[12px] py-[5px]",
-  lg: "h-[2.5rem] px-[16px] py-[9px]",
-  xl: "h-[3.25rem] px-[24px] py-[14px]",
-  full: "h-[2.5rem] w-full px-[16px] py-[9px]",
+  sm: "h-[1.5rem] px-[8px] py-[5px] rounded-md",
+  md: "h-[2rem] px-[12px] py-[5px] rounded-md",
+  lg: "h-[2.5rem] px-[16px] py-[9px] rounded-lg",
+  xl: "h-[3.25rem] px-[24px] py-[14px] rounded-xl",
+  full: "h-[2.5rem] w-full px-[16px] py-[9px] rounded-xl",
   icon: "h-[3.2rem] w-[3.2rem]",
 };
 
@@ -32,11 +31,11 @@ export const BUTTON_VARIANT_STYLES: Record<
     violet800:
       "bg-violet800 text-white hover:bg-violet800/80 active:bg-violet800/60",
     skyblue100:
-      "bg-skyblue100 text-white hover:bg-skyblue100/80 active:bg-skyblue100/60",
+      "bg-skyblue100 text-gray900 hover:bg-skyblue100/80 active:bg-skyblue100/60",
     skyblue200:
-      "bg-skyblue200 text-white hover:bg-skyblue200/80 active:bg-skyblue200/60",
+      "bg-skyblue200 text-gray900 hover:bg-skyblue200/80 active:bg-skyblue200/60",
     skyblue300:
-      "bg-skyblue300 text-white hover:bg-skyblue300/80 active:bg-skyblue300/60",
+      "bg-skyblue300 text-gray900 hover:bg-skyblue300/80 active:bg-skyblue300/60",
   },
   outlined: {
     violet300:
