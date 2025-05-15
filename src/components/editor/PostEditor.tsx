@@ -11,6 +11,21 @@ export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const { title, setTitle, category, setCategory } = usePostStore();
 
+  // 에디터 내부 UI 변경 
+  useEffect(() => {
+    const root = editorRef.current?.getRootElement();
+    if (!root) return;
+  
+    const switchContainer = root.querySelector(".toastui-editor-mode-switch");
+    if (switchContainer) {
+      const tabItems = switchContainer.querySelectorAll(".tab-item");
+      if (tabItems.length === 2) {
+        tabItems[0].textContent = "마크다운";
+        tabItems[1].textContent = "편집모드";
+      }
+    }
+  }, []);
+
   // 에디터 툴바 아이템 (반응형 구분)
   const FULL_TOOLBAR = [
     ["heading", "bold", "italic", "strike"],
