@@ -6,6 +6,7 @@ import {
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { ArrowLeftIcon, LogIn, MenuIcon } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface HeaderProps {
@@ -41,10 +42,10 @@ const Header = ({ onMenuClick, onLoginClick }: HeaderProps) => {
             label="메뉴"
             onClick={onMenuClick}
           />
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <HomeIcon />
             ZARO
-          </div>
+          </Link>
         </div>
       )}
 
