@@ -35,8 +35,8 @@ export const SearchIcon = ({ className }: IconProps) => {
     <Image
       src="/icons/searchIcon.svg"
       alt="검색"
-      width={25}
-      height={26}
+      width={20}
+      height={20}
       className={className}
       priority
     />

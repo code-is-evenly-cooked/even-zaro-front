@@ -39,6 +39,7 @@ const useSearchbar = () => {
   };
 
   const handleSearch = () => {
+    // TODO: 검색화면으로 이동 필요
     console.log("keyword", keyword, "selectedCategroy", selectedCategory);
   };
 
