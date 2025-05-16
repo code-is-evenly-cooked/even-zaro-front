@@ -1,12 +1,13 @@
 "use client";
 
+import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useMemo } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
-import { showCustomTooltip, hideCustomTooltip } from "@/utils/tooltip";
+import "@toast-ui/editor/dist/i18n/ko-kr";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -29,14 +30,13 @@ export default function PostEditor() {
         ]
       : [
           ["heading", "bold", "italic", "strike"],
+          ["link", "image"],
           ["hr", "quote"],
           ["ul", "ol", "task"],
-          ["link", "image"],
-          ["code", "codeblock"],
         ];
   }, [isMobile]);
 
-  // 에디터 내부 UI 변경
+  // 에디터 내부 UI 변경 (한글화)
   useEffect(() => {
     const timer = setTimeout(() => {
       const root = editorRef.current?.getRootElement();
@@ -55,39 +55,20 @@ export default function PostEditor() {
     return () => clearTimeout(timer);
   }, [toolbarItems]);
 
-  useEffect(() => {
-    const root = editorRef.current?.getRootElement();
-    if (!root || !wrapperRef.current) return;
-
-    const buttons = root.querySelectorAll<HTMLButtonElement>(
-      "button.toastui-editor-toolbar-icons",
-    );
-
-    const mouseEnterHandlers: ((e: MouseEvent) => void)[] = [];
-
-    buttons.forEach((btn) => {
-      const label = btn.getAttribute("aria-label") ?? btn.getAttribute("title");
-
-      const handler = (e: MouseEvent) => {
-        showCustomTooltip(
-          e.currentTarget as HTMLElement,
-          label,
-          wrapperRef.current!,
-        );
-      };
-
-      btn.addEventListener("mouseenter", handler);
-      btn.addEventListener("mouseleave", hideCustomTooltip);
-      mouseEnterHandlers.push(handler);
-    });
-
-    return () => {
-      buttons.forEach((btn, idx) => {
-        btn.removeEventListener("mouseenter", mouseEnterHandlers[idx]);
-        btn.removeEventListener("mouseleave", hideCustomTooltip);
-      });
-    };
-  }, []);
+  // 툴바 아이템 툴팁 한글화
+  ToastEditorCore.setLanguage("ko-KR", {
+    Headings: "크기",
+    Bold: "굵게",
+    Italic: "기울임",
+    Strike: "취소선",
+    Link: "링크 삽입",
+    Image: "이미지 삽입",
+    Line: "가로선",
+    Quote: "인용구",
+    Task: "체크박스",
+    "Ordered list": "번호 목록",
+    "Unordered list": "글머리 기호",
+  });
 
   // 자동 임시 저장
   useEffect(() => {
@@ -179,6 +160,7 @@ export default function PostEditor() {
       {/* 본문 에디터 */}
       <Editor
         ref={editorRef}
+        language="ko-KR"
         initialValue=""
         previewStyle="vertical"
         height="400px"
