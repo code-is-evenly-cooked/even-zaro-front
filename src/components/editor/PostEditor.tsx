@@ -2,17 +2,26 @@
 
 import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
+import CategoryDropdown from "@/components/Dropdown/CategoryDropdown";
+import type { MainCategory } from "@/constants/categories";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { title, setTitle, category, setCategory } = usePostStore();
+  const {
+    title,
+    setTitle,
+    mainCategory,
+    setMainCategory,
+    subCategory,
+    setSubCategory,
+  } = usePostStore();
 
   // 에디터 툴바 아이템 (모바일 구분)
   const [isMobile] = useState(() => {
@@ -57,7 +66,7 @@ export default function PostEditor() {
 
   // 툴바 아이템 툴팁 한글화
   ToastEditorCore.setLanguage("ko-KR", {
-    Headings: "크기",
+    Headings: "글씨 크기",
     Bold: "굵게",
     Italic: "기울임",
     Strike: "취소선",
@@ -70,33 +79,49 @@ export default function PostEditor() {
     "Unordered list": "글머리 기호",
   });
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [buttonWidth, setButtonWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    if (buttonRef.current) {
+      setButtonWidth(buttonRef.current.offsetWidth);
+    }
+  }, [mainCategory]);
+
   // 자동 임시 저장
   useEffect(() => {
     const interval = setInterval(() => {
       const content = editorRef.current?.getInstance().getMarkdown() ?? "";
-      console.log("💾 저장 시도 내용:", { title, category, content });
+      console.log("💾 저장 시도 내용:", {
+        title,
+        mainCategory,
+        subCategory,
+        content,
+      });
       saveDraft({
         title,
-        category: category ?? "",
+        mainCategory,
+        subCategory,
         content,
       });
       console.log("자동 임시저장됨");
     }, 5000); // 5초마다 자동 저장
 
     return () => clearInterval(interval);
-  }, [title, category]);
+  }, [title, mainCategory, subCategory]);
 
   // 임시 저장 자동 불러오기
   useEffect(() => {
     loadDraft().then((draft) => {
       if (draft) {
-        console.log("🟢 불러온 초안", draft);
         setTitle(draft.title);
-        setCategory(draft.category);
+        setMainCategory(draft.mainCategory);
+        setSubCategory(draft.subCategory);
         editorRef.current?.getInstance().setMarkdown(draft.content);
       }
     });
-  }, [setTitle, setCategory]);
+  }, [setTitle, setMainCategory, setSubCategory]);
 
   return (
     <div
@@ -106,15 +131,18 @@ export default function PostEditor() {
       <div className="flex justify-between items-center">
         {/* 카테고리 선택 (임시) */}
         <div className="my-4">
-          <select
-            value={category ?? ""}
-            onChange={(e) => setCategory(e.target.value)}
-            className="h-10 p-1 bg-violet300 rounded-lg"
-          >
-            <option value="">게시판 선택</option>
-            <option value="자취일상">자취일상</option>
-            <option value="같이쓰자">같이쓰자</option>
-          </select>
+          <CategoryDropdown
+            selectedCategory={mainCategory ?? "전체"}
+            isDropdownOpen={isDropdownOpen}
+            toggleDropdown={() => setIsDropdownOpen((prev) => !prev)}
+            selectCategory={(c) => {
+              setMainCategory(c as MainCategory); // 수정
+              setSubCategory(null); // 메인 변경 시 서브 초기화
+              setIsDropdownOpen(false);
+            }}
+            buttonRef={buttonRef}
+            buttonWidth={buttonWidth}
+          />
         </div>
 
         {/* 임시 저장 버튼 */}
@@ -132,11 +160,10 @@ export default function PostEditor() {
               }
 
               const content = instance.getMarkdown();
-              console.log("수동 저장 내용:", { title, category, content });
-
               saveDraft({
                 title,
-                category: category ?? "",
+                mainCategory,
+                subCategory,
                 content,
               });
               alert("임시 저장 완료!");

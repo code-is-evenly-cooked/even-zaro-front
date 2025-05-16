@@ -1,21 +1,22 @@
+import type { MainCategory, SubCategoryValue } from "@/constants/categories";
+
 const DB_NAME = "community-post-db";
 const STORE_KEY = "post-draft";
 
-export async function saveDraft(draft: {
+type PostDraft = {
   title: string;
-  category: string | null;
+  mainCategory: MainCategory | null;
+  subCategory: SubCategoryValue | null;
   content: string;
-}) {
+};
+
+export async function saveDraft(draft: PostDraft): Promise<void> {
   const db = await openDB();
   const tx = db.transaction("drafts", "readwrite");
   tx.objectStore("drafts").put({ id: STORE_KEY, ...draft });
 }
 
-export async function loadDraft(): Promise<{
-  title: string;
-  category: string | null;
-  content: string;
-} | null> {
+export async function loadDraft(): Promise<PostDraft | null> {
   const db = await openDB();
   const tx = db.transaction("drafts", "readonly");
   return new Promise((resolve) => {
