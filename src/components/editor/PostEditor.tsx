@@ -6,9 +6,11 @@ import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
+import { showCustomTooltip, hideCustomTooltip } from "@/utils/tooltip";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const { title, setTitle, category, setCategory } = usePostStore();
 
   // 에디터 툴바 아이템 (모바일 구분)
@@ -53,6 +55,40 @@ export default function PostEditor() {
     return () => clearTimeout(timer);
   }, [toolbarItems]);
 
+  useEffect(() => {
+    const root = editorRef.current?.getRootElement();
+    if (!root || !wrapperRef.current) return;
+
+    const buttons = root.querySelectorAll<HTMLButtonElement>(
+      "button.toastui-editor-toolbar-icons",
+    );
+
+    const mouseEnterHandlers: ((e: MouseEvent) => void)[] = [];
+
+    buttons.forEach((btn) => {
+      const label = btn.getAttribute("aria-label") ?? btn.getAttribute("title");
+
+      const handler = (e: MouseEvent) => {
+        showCustomTooltip(
+          e.currentTarget as HTMLElement,
+          label,
+          wrapperRef.current!,
+        );
+      };
+
+      btn.addEventListener("mouseenter", handler);
+      btn.addEventListener("mouseleave", hideCustomTooltip);
+      mouseEnterHandlers.push(handler);
+    });
+
+    return () => {
+      buttons.forEach((btn, idx) => {
+        btn.removeEventListener("mouseenter", mouseEnterHandlers[idx]);
+        btn.removeEventListener("mouseleave", hideCustomTooltip);
+      });
+    };
+  }, []);
+
   // 자동 임시 저장
   useEffect(() => {
     const interval = setInterval(() => {
@@ -82,7 +118,10 @@ export default function PostEditor() {
   }, [setTitle, setCategory]);
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
+    <div
+      ref={wrapperRef}
+      className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow"
+    >
       <div className="flex justify-between items-center">
         {/* 카테고리 선택 (임시) */}
         <div className="my-4">
