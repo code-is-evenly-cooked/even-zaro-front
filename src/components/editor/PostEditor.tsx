@@ -1,7 +1,7 @@
 "use client";
 
 import { Editor } from "@toast-ui/react-editor";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft, loadDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
@@ -11,50 +11,47 @@ export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const { title, setTitle, category, setCategory } = usePostStore();
 
-  // 에디터 내부 UI 변경 
-  useEffect(() => {
-    const root = editorRef.current?.getRootElement();
-    if (!root) return;
-  
-    const switchContainer = root.querySelector(".toastui-editor-mode-switch");
-    if (switchContainer) {
-      const tabItems = switchContainer.querySelectorAll(".tab-item");
-      if (tabItems.length === 2) {
-        tabItems[0].textContent = "마크다운";
-        tabItems[1].textContent = "편집모드";
-      }
+  // 에디터 툴바 아이템 (모바일 구분)
+  const [isMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 640;
     }
-  }, []);
+    return false;
+  });
 
-  // 에디터 툴바 아이템 (반응형 구분)
-  const FULL_TOOLBAR = [
-    ["heading", "bold", "italic", "strike"],
-    ["hr", "quote"],
-    ["ul", "ol", "task"],
-    ["link", "image"],
-    ["code", "codeblock"],
-  ];
+  const toolbarItems = useMemo(() => {
+    return isMobile
+      ? [
+          ["heading", "bold", "strike"],
+          ["link", "image"],
+        ]
+      : [
+          ["heading", "bold", "italic", "strike"],
+          ["hr", "quote"],
+          ["ul", "ol", "task"],
+          ["link", "image"],
+          ["code", "codeblock"],
+        ];
+  }, [isMobile]);
 
-  const MOBILE_TOOLBAR = [
-    ["heading", "bold", "italic", "strike"],
-    ["hr", "quote"],
-    ["link", "image"],
-  ];
-
-  const [toolbarItems, setToolbarItems] = useState(FULL_TOOLBAR);
-
-  // 모바일에서 툴바 아이템 종류 전환
+  // 에디터 내부 UI 변경
   useEffect(() => {
-    const updateToolbar = () => {
-      const isMobile = window.innerWidth < 640;
-      setToolbarItems(isMobile ? MOBILE_TOOLBAR : FULL_TOOLBAR);
-    };
+    const timer = setTimeout(() => {
+      const root = editorRef.current?.getRootElement();
+      if (!root) return;
 
-    updateToolbar();
-    window.addEventListener("resize", updateToolbar);
-    return () => window.removeEventListener("resize", updateToolbar);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      const switchContainer = root.querySelector(".toastui-editor-mode-switch");
+      if (switchContainer) {
+        const tabItems = switchContainer.querySelectorAll(".tab-item");
+        if (tabItems.length === 2) {
+          tabItems[0].textContent = "마크다운";
+          tabItems[1].textContent = "편집모드";
+        }
+      }
+    }, 0); // 렌더가 완료된 다음으로 미룸 (완전 중요!!)
+
+    return () => clearTimeout(timer);
+  }, [toolbarItems]);
 
   // 자동 임시 저장
   useEffect(() => {
@@ -85,7 +82,7 @@ export default function PostEditor() {
   }, [setTitle, setCategory]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
+    <div className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow">
       <div className="flex justify-between items-center">
         {/* 카테고리 선택 (임시) */}
         <div className="my-4">
@@ -142,7 +139,6 @@ export default function PostEditor() {
 
       {/* 본문 에디터 */}
       <Editor
-        key={toolbarItems.flat().join("-")}
         ref={editorRef}
         initialValue=""
         previewStyle="vertical"
