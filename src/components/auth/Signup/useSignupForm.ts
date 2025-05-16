@@ -103,7 +103,7 @@ const useSignupForm = () => {
       // });
 
       // TODO: 회원가입 완료 후 ux 수정 필요
-      router.replace("/login");
+      router.replace("/email-validation?email=" + formState.email);
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message);

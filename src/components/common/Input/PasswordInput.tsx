@@ -23,6 +23,7 @@ const PasswordInput = memo(
         label={isVisible ? "비밀번호 숨기기" : "비밀번호 표시"}
         isTransparent
         onClick={toggleVisibility}
+        tabIndex={-1}
       />
     );
 
