@@ -10,6 +10,7 @@ import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import CategoryDropdown from "@/components/Dropdown/CategoryDropdown";
 import type { MainCategory } from "@/constants/categories";
+import { CATEGORY_MAP } from "@/constants/categories";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -79,6 +80,7 @@ export default function PostEditor() {
     "Unordered list": "글머리 기호",
   });
 
+  // 카테고리 드롭 다운
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [buttonWidth, setButtonWidth] = useState(0);
@@ -88,6 +90,17 @@ export default function PostEditor() {
       setButtonWidth(buttonRef.current.offsetWidth);
     }
   }, [mainCategory]);
+
+  // 태그 드롭 다운
+  const [isSubDropdownOpen, setIsSubDropdownOpen] = useState(false);
+  const subButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [subButtonWidth, setSubButtonWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    if (subButtonRef.current) {
+      setSubButtonWidth(subButtonRef.current.offsetWidth);
+    }
+  }, [subCategory, mainCategory]);
 
   // 자동 임시 저장
   useEffect(() => {
@@ -130,7 +143,7 @@ export default function PostEditor() {
     >
       <div className="flex justify-between items-center">
         {/* 카테고리 선택 (임시) */}
-        <div className="my-4">
+        <div className="my-4 flex gap-4 items-center">
           <CategoryDropdown
             selectedCategory={mainCategory ?? "전체"}
             isDropdownOpen={isDropdownOpen}
@@ -143,6 +156,50 @@ export default function PostEditor() {
             buttonRef={buttonRef}
             buttonWidth={buttonWidth}
           />
+
+          {/* 2차 카테고리 드롭다운 */}
+          {mainCategory && (
+            <div className="relative">
+              <button
+                ref={subButtonRef}
+                type="button"
+                onClick={() => setIsSubDropdownOpen((prev) => !prev)}
+                className="flex items-center whitespace-nowrap bg-skyblue100 text-gray700 py-2 pl-3 pr-2 rounded-lg"
+              >
+                {subCategory
+                  ? CATEGORY_MAP[mainCategory].find(
+                      (c) => c.tag === subCategory,
+                    )?.emoji +
+                    " " +
+                    CATEGORY_MAP[mainCategory].find(
+                      (c) => c.tag === subCategory,
+                    )?.label
+                  : "태그 선택"}
+              </button>
+
+              {isSubDropdownOpen && (
+                <ul
+                  className="absolute w-[150px] z-10 top-full mt-2 bg-white rounded-lg p-2 shadow-md text-sm text-gray800"
+                  style={{ minWidth: subButtonWidth }}
+                >
+                  {CATEGORY_MAP[mainCategory].map(({ emoji, label, tag }) => (
+                    <li
+                      key={tag}
+                      onClick={() => {
+                        setSubCategory(tag);
+                        setIsSubDropdownOpen(false);
+                      }}
+                      className={`px-2 py-1 hover:bg-gray100 cursor-pointer rounded ${
+                        subCategory === tag ? "bg-skyblue200 text-white" : ""
+                      }`}
+                    >
+                      {emoji} {label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 임시 저장 버튼 */}
