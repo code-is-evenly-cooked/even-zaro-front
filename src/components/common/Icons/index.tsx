@@ -17,6 +17,58 @@ export const LogoIcon = ({ className }: IconProps) => {
   );
 };
 
+export const HomeIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/homeIcon.svg"
+      alt="홈"
+      width={32}
+      height={32}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const SearchIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/searchIcon.svg"
+      alt="검색"
+      width={20}
+      height={20}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const NotificationIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/notificationIcon.svg"
+      alt="알림"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const RightArrowIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/rightArrow.svg"
+      alt="검색"
+      width={16}
+      height={16}
+      className={className}
+      priority
+    />
+  );
+};
+
 export const EyeIcon = ({ className }: IconProps) => {
   return (
     <Image
