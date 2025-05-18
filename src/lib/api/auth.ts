@@ -1,4 +1,4 @@
-import { SignupCredentials } from "@/types/auth";
+import { AuthCredentials, SignupCredentials } from "@/types/auth";
 
 export const userSignup = async (
   credentials: SignupCredentials,
@@ -18,4 +18,21 @@ export const userSignup = async (
   }
 
   return body.data.email;
+};
+
+// 로그인 성공 시 별도 반환 없음 (쿠키는 서버에서 저장됨)
+export const userLogin = async (
+  credentials: AuthCredentials,
+): Promise<void> => {
+  const res = await fetch("/api/auth/signin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(credentials),
+  });
+
+  const body = await res.json();
+
+  if (!res.ok) {
+    throw new Error(body.message ?? "로그인 실패");
+  }
 };
