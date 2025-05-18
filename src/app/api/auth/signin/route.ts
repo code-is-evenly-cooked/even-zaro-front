@@ -21,6 +21,10 @@ export async function POST(req: NextRequest) {
       return createErrorResponse(data.message ?? "로그인 실패", res.status);
     }
 
+    const { accessToken, refreshToken } = data.data;
+
+    await saveAuthCookies({ accessToken, refreshToken });
+
     return createSuccessResponse(null, "로그인 성공");
   } catch (err) {
     return createErrorResponse(`서버 오류: ${err}`, 500);
