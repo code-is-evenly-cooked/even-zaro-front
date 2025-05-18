@@ -18,6 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
     "/signup",
     "/password-forget",
     "/password-reset",
+    "/email-validation",
   ];
 
   const shouldHideHeader = hideHeaderRoutes.includes(pathname);
