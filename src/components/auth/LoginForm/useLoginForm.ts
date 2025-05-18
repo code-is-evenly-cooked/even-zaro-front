@@ -1,5 +1,6 @@
 "use client";
 
+import { userLogin } from "@/lib/api/auth";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -69,19 +70,12 @@ const useLoginForm = () => {
 
     handleLoadingChange("email", true);
     try {
-      // const response = await userLogin({
-      //   email: formState.email,
-      //   password: formState.password,
-      // });
-      // saveAuthCookie(
-      //   response.accessToken,
-      //   response.refreshToken,
-      //   response.userId,
-      // );
-      // useAuthStore.getState().setAuth(response.accessToken, "local", {
-      //   nickname: response.nickname,
-      //   userId: response.userId,
-      // });
+      await userLogin({
+        email: formState.email,
+        password: formState.password,
+      });
+
+      router.replace("/");
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message);

@@ -3,3 +3,8 @@ interface SignupCredentials {
   password: string;
   nickname: string;
 }
+
+interface AuthCredentials {
+  email: string;
+  password: string;
+}
