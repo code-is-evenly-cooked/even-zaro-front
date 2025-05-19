@@ -1,15 +1,18 @@
 import { create } from "zustand";
+import { MainCategory, SubCategoryValue } from "@/constants/categories";
 
 type PostState = {
   title: string;
   content: string;
-  category: string | null;
+  mainCategory: MainCategory | null;
+  subCategory: SubCategoryValue | null;
   imageUrlList: string[];
   thumbnailUrl: string | null;
 
   setTitle: (title: string) => void;
   setContent: (content: string) => void;
-  setCategory: (category: string | null) => void;
+  setMainCategory: (category: MainCategory | null) => void;
+  setSubCategory: (tag: SubCategoryValue | null) => void;
   setImageUrlList: (list: string[]) => void;
   setThumbnailUrl: (url: string | null) => void;
   resetPost: () => void;
@@ -18,13 +21,15 @@ type PostState = {
 export const usePostStore = create<PostState>((set) => ({
   title: "",
   content: "",
-  category: null,
+  mainCategory: null,
+  subCategory: null,
   imageUrlList: [],
   thumbnailUrl: null,
 
   setTitle: (title) => set({ title }),
   setContent: (content) => set({ content }),
-  setCategory: (category) => set({ category }),
+  setMainCategory: (mainCategory) => set({ mainCategory }),
+  setSubCategory: (subCategory) => set({ subCategory }),
   setImageUrlList: (list) => set({ imageUrlList: list }),
   setThumbnailUrl: (url) => set({ thumbnailUrl: url }),
 
@@ -32,7 +37,8 @@ export const usePostStore = create<PostState>((set) => ({
     set({
       title: "",
       content: "",
-      category: null,
+      mainCategory: null,
+      subCategory: null,
       imageUrlList: [],
       thumbnailUrl: null,
     }),
