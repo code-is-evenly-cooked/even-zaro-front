@@ -1,6 +1,7 @@
 "use client";
 
 import { userLogin } from "@/lib/api/auth";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
@@ -33,6 +34,7 @@ const useLoginForm = () => {
     email: false,
     kakao: false,
   });
+  const { showToastMessage } = useToastMessageContext();
 
   const validateForm = useCallback(() => {
     const newErrors: LoginFormErrors = {};
@@ -77,11 +79,8 @@ const useLoginForm = () => {
 
       router.replace("/");
     } catch (err) {
-      if (err instanceof Error) {
-        alert(err.message);
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+      const errorMessage = err instanceof Error ? err.message : "로그인 실패";
+      showToastMessage({ type: "error", message: errorMessage });
     } finally {
       handleLoadingChange("email", false);
     }

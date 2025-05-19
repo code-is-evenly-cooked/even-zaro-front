@@ -19,6 +19,7 @@ const PasswordInput = memo(
 
     const VisibilityToggle = (
       <IconButton
+        type="button"
         icon={isVisible ? <EyeCloseIcon /> : <EyeIcon />}
         label={isVisible ? "비밀번호 숨기기" : "비밀번호 표시"}
         isTransparent
