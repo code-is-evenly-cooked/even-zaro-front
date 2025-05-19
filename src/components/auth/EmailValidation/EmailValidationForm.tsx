@@ -1,13 +1,20 @@
 import { LogoIcon } from "@/components/common/Icons";
+import { sendEmailValidation } from "@/lib/api/auth";
 
 interface EmailValidationFormProps {
   email: string;
 }
 
 const EmailValidationForm = ({ email }: EmailValidationFormProps) => {
-  const handleResendEmail = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleResendEmail = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    console.log("인증메일 재전송");
+    try {
+      const message = await sendEmailValidation(email);
+      alert(message);
+    } catch (err) {
+      console.error(err);
+    } finally {
+    }
   };
 
   return (
