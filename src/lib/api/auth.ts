@@ -56,7 +56,7 @@ export const sendEmailValidation = async (email: string): Promise<string> => {
 
 // 비밀번호 재설정 메일 전송
 export const sendResetPassword = async (email: string): Promise<string> => {
-  const res = await fetch("/api/auth/signup/password-forget", {
+  const res = await fetch("/api/auth/signin/password-forget", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -65,7 +65,7 @@ export const sendResetPassword = async (email: string): Promise<string> => {
   const body = await res.json();
 
   if (!res.ok) {
-    throw new Error(body.message ?? "비밀번호 재설정 메일 전송 실패");
+    throw new Error(body.message ?? "비밀번호 재설정 메일 발송 실패");
   }
 
   return body.data.message;
