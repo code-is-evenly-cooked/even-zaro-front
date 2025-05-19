@@ -1,3 +1,4 @@
+import { userSignup } from "@/lib/api/auth";
 import { AgreementsState, AgreementsType } from "@/types/agreement";
 import {
   validateEmail,
@@ -96,14 +97,13 @@ const useSignupForm = () => {
 
     setIsLoading(true);
     try {
-      // await userSignup({
-      // 	email: formState.email,
-      // 	password: formState.password,
-      // 	nickname: formState.nickname,
-      // });
+      const email = await userSignup({
+        email: formState.email,
+        password: formState.password,
+        nickname: formState.nickname,
+      });
 
-      // TODO: 회원가입 완료 후 ux 수정 필요
-      router.replace("/email-validation?email=" + formState.email);
+      router.replace("/email-validation?email=" + email);
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message);
