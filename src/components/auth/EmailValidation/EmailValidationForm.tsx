@@ -56,7 +56,6 @@ const EmailValidationForm = ({ email }: EmailValidationFormProps) => {
             <a
               className="text-violet800 underline font-semibold cursor-pointer"
               onClick={handleResendEmail}
-              href="#"
             >
               인증메일 다시 보내기
             </a>
