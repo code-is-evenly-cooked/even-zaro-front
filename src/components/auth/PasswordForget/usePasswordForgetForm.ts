@@ -1,3 +1,5 @@
+import { sendResetPassword } from "@/lib/api/auth";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validateEmail } from "@/utils/validate";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
@@ -5,6 +7,7 @@ const useForgotPasswordForm = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
 
   const validateForm = useCallback(() => {
     const error = validateEmail(email);
@@ -29,18 +32,16 @@ const useForgotPasswordForm = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // try {
-    // 	await forgotPassword(email);
-    // 	alert("비밀번호 재설정 메일이 발송되었습니다.");
-    // } catch (err) {
-    // 	if (err instanceof Error) {
-    // 		alert(err.message);
-    // 	} else {
-    // 		alert("알 수 없는 오류가 발생했습니다.");
-    // 	}
-    // } finally {
-    // 	setIsLoading(false);
-    // }
+    try {
+      const message = await sendResetPassword(email);
+      showToastMessage({ type: "success", message: message });
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "메일 발송 실패";
+      showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
