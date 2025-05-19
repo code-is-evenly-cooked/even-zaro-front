@@ -1,3 +1,5 @@
+import { resetPassword } from "@/lib/api/auth";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validatePassword } from "@/utils/validate";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
@@ -17,6 +19,7 @@ const usePasswordResetForm = (token: string) => {
   });
   const [errors, setErrors] = useState<PasswordResetErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
 
   const validateForm = useCallback(() => {
     const newErrors: PasswordResetErrors = {};
@@ -46,20 +49,18 @@ const usePasswordResetForm = (token: string) => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    console.log(token);
-    // try {
-    //   await resetPassword(token, formState.password);
-    //   alert("비밀번호가 성공적으로 변경되었습니다.");
-    router.replace("/login");
-    // } catch (err) {
-    //   if (err instanceof Error) {
-    //     alert(err.message);
-    //   } else {
-    //     alert("알 수 없는 오류가 발생했습니다.");
-    //   }
-    // } finally {
-    //   setIsLoading(false);
-    // }
+
+    try {
+      const message = await resetPassword(token, formState.password);
+      showToastMessage({ type: "success", message: message });
+      router.replace("/login");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "비밀번호 변경 실패";
+      showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
