@@ -1,3 +1,5 @@
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export async function createPost(
     token: string,
     payload: {
@@ -9,7 +11,7 @@ export async function createPost(
       thumbnailUrl?: string | null;
     }
   ): Promise<number> {
-    const res = await fetch("/api/posts", {
+    const res = await fetch(`${API_BASE_URL}/api/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
