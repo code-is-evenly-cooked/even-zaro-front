@@ -12,6 +12,7 @@ import CategoryDropdown from "@/components/Dropdown/CategoryDropdown";
 import type { MainCategory } from "@/constants/categories";
 import { CATEGORY_MAP } from "@/constants/categories";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
+import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -106,27 +107,8 @@ export default function PostEditor() {
   // 이미지 업로드 관련 Hook
   useEditorImageUpload(editorRef);
 
-  // 자동 임시 저장
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const content = editorRef.current?.getInstance().getMarkdown() ?? "";
-      console.log("💾 저장 시도 내용:", {
-        title,
-        mainCategory,
-        subCategory,
-        content,
-      });
-      saveDraft({
-        title,
-        mainCategory,
-        subCategory,
-        content,
-      });
-      console.log("자동 임시저장됨");
-    }, 5000); // 5초마다 자동 저장
-
-    return () => clearInterval(interval);
-  }, [title, mainCategory, subCategory]);
+  // 자동 임시 저장 Hook
+  useAutoSaveDraft(editorRef);
 
   // 임시 저장 자동 불러오기
   useEffect(() => {
