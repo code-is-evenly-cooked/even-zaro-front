@@ -1,4 +1,5 @@
 import { userSignup } from "@/lib/api/auth";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { AgreementsState, AgreementsType } from "@/types/agreement";
 import {
   validateEmail,
@@ -32,6 +33,8 @@ const useSignupForm = () => {
   });
   const [errors, setErrors] = useState<SignupFormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const { showToastMessage } = useToastMessageContext();
 
   const validateForm = useCallback(() => {
     const newErrors: SignupFormErrors = {};
@@ -91,7 +94,7 @@ const useSignupForm = () => {
     if (!validateForm()) return;
 
     if (!agreements.terms || !agreements.privacy) {
-      alert("필수 약관에 동의해주세요");
+      showToastMessage({ type: "error", message: "필수 약관에 동의해주세요" });
       return;
     }
 
@@ -105,11 +108,8 @@ const useSignupForm = () => {
 
       router.replace("/email-validation?email=" + email);
     } catch (err) {
-      if (err instanceof Error) {
-        alert(err.message);
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+      const errorMessage = err instanceof Error ? err.message : "회원가입 실패";
+      showToastMessage({ type: "error", message: errorMessage });
     } finally {
       setIsLoading(false);
     }
