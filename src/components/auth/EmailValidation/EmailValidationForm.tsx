@@ -1,19 +1,30 @@
 import { LogoIcon } from "@/components/common/Icons";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { sendEmailValidation } from "@/lib/api/auth";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useState } from "react";
 
 interface EmailValidationFormProps {
   email: string;
 }
 
 const EmailValidationForm = ({ email }: EmailValidationFormProps) => {
+  const [isResending, setIsResending] = useState(false);
+
+  const { showToastMessage } = useToastMessageContext();
+
   const handleResendEmail = async (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    setIsResending(true);
     try {
       const message = await sendEmailValidation(email);
-      alert(message);
+      showToastMessage({ type: "success", message });
     } catch (err) {
-      console.error(err);
+      const errorMessage =
+        err instanceof Error ? err.message : "인증 메일 전송 실패";
+      showToastMessage({ type: "error", message: errorMessage });
     } finally {
+      setIsResending(false);
     }
   };
 
@@ -32,19 +43,25 @@ const EmailValidationForm = ({ email }: EmailValidationFormProps) => {
           <br />
           이메일을 열고 버튼을 누르면 가입이 완료됩니다.
         </h3>
-
-        <p className="text-sm text-gray900 text-center">
-          이메일을 확인할 수 없나요?
-          <br />
-          {"스팸편지함 확인 또는 "}
-          <a
-            className="text-violet800 underline font-semibold cursor-pointer"
-            onClick={handleResendEmail}
-            href="#"
-          >
-            인증메일 다시 보내기
-          </a>
-        </p>
+        {isResending ? (
+          <div className="flex justify-center items-center gap-2 text-gray900 text-sm">
+            <LoadingSpinner size={16} className="text-violet800" />
+            이메일 재전송 중...
+          </div>
+        ) : (
+          <p className="text-sm text-gray900 text-center">
+            이메일을 확인할 수 없나요?
+            <br />
+            {"스팸편지함 확인 또는 "}
+            <a
+              className="text-violet800 underline font-semibold cursor-pointer"
+              onClick={handleResendEmail}
+              href="#"
+            >
+              인증메일 다시 보내기
+            </a>
+          </p>
+        )}
       </div>
     </div>
   );
