@@ -14,6 +14,7 @@ import { CATEGORY_MAP } from "@/constants/categories";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { createPost } from "@/lib/api/posts";
+import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -140,16 +141,21 @@ export default function PostEditor() {
 
       const backendCategory = "DAILY_LIFE";
       const backendCategoryTag = "TIPS";
-  
+      const imageUrls = extractImageUrls(content);
+      const thumbnail = extractThumbnailUrl(content);
+
+      setImageUrlList(imageUrls);
+      setThumbnailUrl(thumbnail);
+
       const postId = await createPost({
         title,
         content,
         category: backendCategory,
         tag: backendCategoryTag,
-        imageUrlList,
-        thumbnailUrl,
+        imageUrlList: imageUrls,
+        thumbnailUrl: thumbnail,
       });
-  
+
       alert("게시글 작성이 완료되었습니다!");
       resetPost(); // 상태 초기화
       router.push(`/post/${postId}`); // 또는 목록으로 이동
@@ -274,7 +280,9 @@ export default function PostEditor() {
         initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
-        onChange={() => setContent(editorRef.current?.getInstance().getMarkdown() ?? "")}
+        onChange={() =>
+          setContent(editorRef.current?.getInstance().getMarkdown() ?? "")
+        }
       />
       <div className="flex gap-2 justify-end">
         <BaseButton
