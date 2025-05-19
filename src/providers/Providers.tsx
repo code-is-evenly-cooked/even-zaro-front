@@ -2,11 +2,14 @@
 
 import { SessionProvider } from "next-auth/react";
 import { ToastMessageProvider } from "./ToastMessageProvider";
+import AuthInitializer from "@/components/AuthInitializer";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      <ToastMessageProvider>{children}</ToastMessageProvider>
+      <ToastMessageProvider>
+        <AuthInitializer>{children}</AuthInitializer>
+      </ToastMessageProvider>
     </SessionProvider>
   );
 }
