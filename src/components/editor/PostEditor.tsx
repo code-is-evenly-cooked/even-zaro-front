@@ -13,17 +13,25 @@ import type { MainCategory } from "@/constants/categories";
 import { CATEGORY_MAP } from "@/constants/categories";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
+import { createPost } from "@/lib/api/posts";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     title,
-    setTitle,
+    content,
     mainCategory,
-    setMainCategory,
     subCategory,
+    imageUrlList,
+    thumbnailUrl,
+    setTitle,
+    setContent,
+    setMainCategory,
     setSubCategory,
+    setImageUrlList,
+    setThumbnailUrl,
+    resetPost,
   } = usePostStore();
 
   // 에디터 툴바 아이템 (모바일 구분)
@@ -121,6 +129,35 @@ export default function PostEditor() {
       }
     });
   }, [setTitle, setMainCategory, setSubCategory]);
+
+  // 글 작성
+  const handleSubmit = async () => {
+    try {
+      if (!title || !content) {
+        alert("제목, 내용, 카테고리를 입력해주세요.");
+        return;
+      }
+
+      const backendCategory = "DAILY_LIFE";
+      const backendCategoryTag = "TIPS";
+  
+      const postId = await createPost({
+        title,
+        content,
+        category: backendCategory,
+        tag: backendCategoryTag,
+        imageUrlList,
+        thumbnailUrl,
+      });
+  
+      alert("게시글 작성이 완료되었습니다!");
+      resetPost(); // 상태 초기화
+      router.push(`/post/${postId}`); // 또는 목록으로 이동
+    } catch (error: any) {
+      console.error("게시글 작성 오류:", error);
+      alert(error.message ?? "게시글 작성 중 오류 발생");
+    }
+  };
 
   return (
     <div
@@ -231,16 +268,18 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue=""
+        initialValue={content}
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
+        onChange={() => setContent(editorRef.current?.getInstance().getMarkdown() ?? "")}
       />
       <div className="flex gap-2 justify-end">
         <BaseButton
           type="button"
+          onClick={handleSubmit}
           className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
         >
           등록
