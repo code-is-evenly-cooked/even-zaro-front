@@ -1,5 +1,5 @@
+import { MainCategory, SubCategoryValue } from "@/types/category";
 import { create } from "zustand";
-import { MainCategory, SubCategoryValue } from "@/constants/category";
 
 type PostState = {
   title: string;
