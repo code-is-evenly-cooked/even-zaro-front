@@ -137,12 +137,15 @@ export default function PostEditor() {
   const handleSubmit = async () => {
     try {
       if (!title || !content) {
-        alert("제목, 내용, 카테고리를 입력해주세요.");
+        alert("제목, 내용을 입력해주세요.");
         return;
       }
 
-      const backendCategory = "DAILY_LIFE";
-      const backendCategoryTag = "TIPS";
+      if (!mainCategory || !subCategory) {
+        alert("카테고리와 태그를 선택해주세요.");
+        return;
+      }
+
       const imageUrls = extractImageUrls(content);
       const thumbnail = extractThumbnailUrl(content);
 
@@ -152,8 +155,8 @@ export default function PostEditor() {
       await createPost({
         title,
         content,
-        category: backendCategory,
-        tag: backendCategoryTag,
+        category: mainCategory,
+        tag: subCategory,
         imageUrlList: imageUrls,
         thumbnailUrl: thumbnail,
       });
