@@ -25,13 +25,14 @@ const Searchbar = () => {
       }}
       className="w-full max-w-full"
     >
-      <div className="relative flex gap-4" ref={dropdownRef}>
+      <div className="relative flex gap-4">
         <MainCategoryDropdown
           selectedCategory={selectedCategory}
           isDropdownOpen={isDropdownOpen}
           toggleDropdown={toggleDropdown}
           selectCategory={selectCategory}
           buttonRef={buttonRef}
+          dropdownRef={dropdownRef}
           buttonWidth={buttonWidth}
           showAllOption={true}
         />

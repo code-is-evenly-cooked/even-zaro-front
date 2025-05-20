@@ -8,7 +8,7 @@ const useSearchbar = () => {
   >("전체");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const [buttonWidth, setButtonWidth] = useState(0);
 
   useEffect(() => {

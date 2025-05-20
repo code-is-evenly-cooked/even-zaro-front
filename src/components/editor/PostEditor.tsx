@@ -82,10 +82,13 @@ export default function PostEditor() {
     "Unordered list": "글머리 기호",
   });
 
-  // 카테고리 드롭 다운
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<"main" | "sub" | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const subButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mainDropdownRef = useRef<HTMLUListElement | null>(null);
+  const subDropdownRef = useRef<HTMLUListElement | null>(null);
   const [buttonWidth, setButtonWidth] = useState(0);
+  const [subButtonWidth, setSubButtonWidth] = useState(0);
 
   useLayoutEffect(() => {
     if (buttonRef.current) {
@@ -93,24 +96,35 @@ export default function PostEditor() {
     }
   }, [mainCategory]);
 
-  // 태그 드롭 다운
-  const [isSubDropdownOpen, setIsSubDropdownOpen] = useState(false);
-  const subButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [subButtonWidth, setSubButtonWidth] = useState(0);
-
   useLayoutEffect(() => {
     if (subButtonRef.current) {
       setSubButtonWidth(subButtonRef.current.offsetWidth);
     }
   }, [subCategory, mainCategory]);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        buttonRef.current?.contains(target) ||
+        subButtonRef.current?.contains(target) ||
+        mainDropdownRef.current?.contains(target) ||
+        subDropdownRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setOpenDropdown(null);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   // 이미지 업로드 관련 Hook
   useEditorImageUpload(editorRef);
-
   // 자동 임시 저장 Hook
   useAutoSaveDraft(editorRef);
 
-  // 임시 저장 자동 불러오기
+  // 임사 저장 자동 불러오기
   useEffect(() => {
     loadDraft().then((draft) => {
       if (draft) {
@@ -128,34 +142,38 @@ export default function PostEditor() {
       className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow"
     >
       <div className="flex justify-between items-center">
-        {/* 카테고리 선택 (임시) */}
         <div className="my-4 flex gap-2 items-center">
           <MainCategoryDropdown
             selectedCategory={mainCategory ?? "전체"}
-            isDropdownOpen={isDropdownOpen}
-            toggleDropdown={() => setIsDropdownOpen((prev) => !prev)}
-            selectCategory={(c) => {
-              setMainCategory(c as MainCategory); // 수정
-              setSubCategory(null); // 메인 변경 시 서브 초기화
-              setIsDropdownOpen(false);
+            isDropdownOpen={openDropdown === "main"}
+            toggleDropdown={() =>
+              setOpenDropdown((prev) => (prev === "main" ? null : "main"))
+            }
+            selectCategory={(c: MainCategory) => {
+              setMainCategory(c);
+              setSubCategory(null);
+              setOpenDropdown(null);
             }}
             buttonRef={buttonRef}
+            dropdownRef={mainDropdownRef}
             buttonWidth={buttonWidth}
             showAllOption={false}
           />
 
-          {/* 2차 카테고리 드롭다운 */}
           {mainCategory && (
             <SubCategoryDropdown
               selectedMainCategory={mainCategory}
               selectedSubCategory={subCategory ?? "전체"}
-              isDropdownOpen={isSubDropdownOpen}
-              toggleDropdown={() => setIsSubDropdownOpen((prev) => !prev)}
+              isDropdownOpen={openDropdown === "sub"}
+              toggleDropdown={() =>
+                setOpenDropdown((prev) => (prev === "sub" ? null : "sub"))
+              }
               selectSubCategory={(tag) => {
                 setSubCategory(tag === "전체" ? null : tag);
-                setIsSubDropdownOpen(false);
+                setOpenDropdown(null);
               }}
               buttonRef={subButtonRef}
+              dropdownRef={subDropdownRef}
               buttonWidth={subButtonWidth}
             />
           )}
@@ -174,14 +192,8 @@ export default function PostEditor() {
                 console.warn("에디터 인스턴스를 찾을 수 없음");
                 return;
               }
-
               const content = instance.getMarkdown();
-              saveDraft({
-                title,
-                mainCategory,
-                subCategory,
-                content,
-              });
+              saveDraft({ title, mainCategory, subCategory, content });
               alert("임시 저장 완료!");
             }}
             className="p-1"
@@ -211,15 +223,22 @@ export default function PostEditor() {
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
       />
+
       <div className="flex gap-2 justify-end">
         <BaseButton
           type="button"
+          onClick={() => {
+            // TODO: 게시글 등록 처리
+          }}
           className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
         >
           등록
         </BaseButton>
         <BaseButton
           type="button"
+          onClick={() => {
+            // TODO: 취소 처리
+          }}
           className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-gray200 text-white rounded"
         >
           취소

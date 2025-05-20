@@ -8,8 +8,9 @@ interface MainCategoryDropdownProps {
   selectedCategory: MainCategory | "전체";
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
-  selectCategory: (category: MainCategory | "전체") => void;
+  selectCategory: (category: MainCategory) => void;
   buttonRef: React.RefObject<HTMLButtonElement | null>;
+  dropdownRef: React.RefObject<HTMLUListElement | null>;
   buttonWidth: number;
   showAllOption?: boolean;
 }
@@ -20,8 +21,9 @@ const MainCategoryDropdown = ({
   toggleDropdown,
   selectCategory,
   buttonRef,
+  dropdownRef,
   buttonWidth,
-  showAllOption,
+  showAllOption = true,
 }: MainCategoryDropdownProps) => {
   return (
     <div className="relative">
@@ -39,6 +41,7 @@ const MainCategoryDropdown = ({
 
       {isDropdownOpen && (
         <ul
+          ref={dropdownRef}
           className="absolute z-10 top-full mt-2 w-max bg-skyblue300 rounded-lg p-2 shadow-md text-gray900"
           style={{ minWidth: buttonWidth }}
         >
@@ -50,7 +53,7 @@ const MainCategoryDropdown = ({
                 selectedCategory === "전체" &&
                   "font-bold text-gray900 hover:text-gray900",
               )}
-              onClick={() => selectCategory("전체")}
+              onClick={() => selectCategory("TOGETHER")}
             >
               전체
             </li>

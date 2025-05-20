@@ -11,6 +11,7 @@ interface SubCategoryDropdownProps {
   toggleDropdown: () => void;
   selectSubCategory: (subCategory: SubCategoryValue | "전체") => void;
   buttonRef: React.RefObject<HTMLButtonElement | null>;
+  dropdownRef: React.RefObject<HTMLUListElement | null>;
   buttonWidth: number;
 }
 
@@ -21,6 +22,7 @@ const SubCategoryDropdown = ({
   toggleDropdown,
   selectSubCategory,
   buttonRef,
+  dropdownRef,
   buttonWidth,
 }: SubCategoryDropdownProps) => {
   const category =
@@ -54,6 +56,7 @@ const SubCategoryDropdown = ({
 
       {isDropdownOpen && (
         <ul
+          ref={dropdownRef}
           className="absolute z-10 top-full mt-2 w-max bg-skyblue300 rounded-lg p-2 shadow-md text-gray900"
           style={{ minWidth: buttonWidth }}
         >
