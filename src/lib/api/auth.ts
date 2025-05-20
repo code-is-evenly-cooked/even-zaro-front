@@ -73,12 +73,12 @@ export const sendResetPassword = async (email: string): Promise<string> => {
 
 export const resetPassword = async (
   token: string,
-  newPasswrod: string,
+  newPassword: string,
 ): Promise<string> => {
-  const res = await fetch("/api/auth/signin/password-forget", {
+  const res = await fetch("/api/auth/signin/password-reset", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, newPasswrod }),
+    body: JSON.stringify({ token, newPassword }),
   });
 
   const body = await res.json();
