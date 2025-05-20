@@ -3,7 +3,6 @@ import "./globals.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import Providers from "@/providers/Providers";
 import Layout from "@/components/layout/Layout";
-import { ToastMessageContainer } from "@/components/common/ToastMessage";
 
 export const metadata: Metadata = {
   title: "ZARO",
@@ -26,7 +25,6 @@ export default function RootLayout({
       <body>
         <Providers>
           <Layout>{children}</Layout>
-          <ToastMessageContainer />
         </Providers>
       </body>
     </html>

@@ -1,4 +1,4 @@
-import type { MainCategory, SubCategoryValue } from "@/constants/category";
+import { MainCategory, SubCategoryValue } from "@/types/category";
 
 const DB_NAME = "community-post-db";
 const STORE_KEY = "post-draft";
