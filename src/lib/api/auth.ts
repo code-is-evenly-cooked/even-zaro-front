@@ -1,5 +1,3 @@
-import { AuthCredentials, SignupCredentials } from "@/types/auth";
-
 export const userSignup = async (
   credentials: SignupCredentials,
 ): Promise<string> => {

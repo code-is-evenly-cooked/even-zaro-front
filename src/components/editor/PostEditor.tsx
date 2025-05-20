@@ -24,8 +24,6 @@ export default function PostEditor() {
     content,
     mainCategory,
     subCategory,
-    imageUrlList,
-    thumbnailUrl,
     setTitle,
     setContent,
     setMainCategory,
@@ -147,7 +145,7 @@ export default function PostEditor() {
       setImageUrlList(imageUrls);
       setThumbnailUrl(thumbnail);
 
-      const postId = await createPost({
+      await createPost({
         title,
         content,
         category: backendCategory,
@@ -158,10 +156,12 @@ export default function PostEditor() {
 
       alert("게시글 작성이 완료되었습니다!");
       resetPost(); // 상태 초기화
-      router.push(`/post/${postId}`); // 또는 목록으로 이동
-    } catch (error: any) {
-      console.error("게시글 작성 오류:", error);
-      alert(error.message ?? "게시글 작성 중 오류 발생");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message ?? "게시글 작성 중 오류 발생");
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
+      }
     }
   };
 
