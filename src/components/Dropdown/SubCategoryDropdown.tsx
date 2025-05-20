@@ -1,5 +1,5 @@
 import { CATEGORY_MAP } from "@/constants/category";
-import { getSubCategoryLabel } from "@/utils/category";
+import { getSubCategoryEmoji, getSubCategoryLabel } from "@/utils/category";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 import type { MainCategory, SubCategoryValue } from "@/types/category";
@@ -39,9 +39,16 @@ const SubCategoryDropdown = ({
         className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
-        {selectedSubCategory === "전체"
-          ? "태그 선택"
-          : getSubCategoryLabel(selectedSubCategory)}
+        {selectedSubCategory !== "전체" &&
+        getSubCategoryEmoji(selectedSubCategory) &&
+        getSubCategoryLabel(selectedSubCategory) ? (
+          <>
+            {getSubCategoryEmoji(selectedSubCategory)}{" "}
+            {getSubCategoryLabel(selectedSubCategory)}
+          </>
+        ) : (
+          "태그 선택"
+        )}
         <ChevronDown className="w-4 h-4 ml-2" />
       </button>
 
