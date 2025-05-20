@@ -3,16 +3,9 @@
 import { userLogin } from "@/lib/api/auth";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validateEmail, validatePassword } from "@/utils/validate";
-import { Session } from "next-auth";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
 type FormType = "email" | "password";
 
@@ -23,7 +16,6 @@ interface LoginFormErrors {
 
 const useLoginForm = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
 
   const [formState, setFormState] = useState({
     email: "",
@@ -95,7 +87,7 @@ const useLoginForm = () => {
     try {
       const res = await signIn("kakao", {
         redirect: true,
-        callbackUrl: "/login",
+        callbackUrl: "/",
       });
       if (res?.error) {
         console.error("카카오 로그인 실패", res.error);
@@ -105,23 +97,6 @@ const useLoginForm = () => {
       console.error("카카오 로그인 중 에러", error);
     }
   };
-
-  const getAccessTokenFromSession = async (session: Session | null) => {
-    // TODO: 서버 통신하는 로직 추가 & 로그인 성공시 세션 정보 삭제?
-    console.log(session?.user.accessToken);
-    console.log(session?.user.image);
-    console.log(session?.user.name);
-  };
-
-  useEffect(() => {
-    if (status === "loading") {
-      handleLoadingChange("kakao", true);
-      return;
-    }
-    if (status === "authenticated") {
-      getAccessTokenFromSession(session);
-    }
-  }, [status, session]);
 
   return {
     formState,
