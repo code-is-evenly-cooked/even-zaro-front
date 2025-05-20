@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 import type { MainCategory } from "@/types/category";
 
-interface CategoryDropdownProps {
+interface MainCategoryDropdownProps {
   selectedCategory: MainCategory | "전체";
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
@@ -14,7 +14,7 @@ interface CategoryDropdownProps {
   showAllOption?: boolean;
 }
 
-const CategoryDropdown = ({
+const MainCategoryDropdown = ({
   selectedCategory,
   isDropdownOpen,
   toggleDropdown,
@@ -22,7 +22,7 @@ const CategoryDropdown = ({
   buttonRef,
   buttonWidth,
   showAllOption,
-}: CategoryDropdownProps) => {
+}: MainCategoryDropdownProps) => {
   return (
     <div className="relative">
       <button
@@ -75,4 +75,4 @@ const CategoryDropdown = ({
   );
 };
 
-export default CategoryDropdown;
+export default MainCategoryDropdown;
