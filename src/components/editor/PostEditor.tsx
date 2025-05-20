@@ -146,46 +146,18 @@ export default function PostEditor() {
 
           {/* 2차 카테고리 드롭다운 */}
           {mainCategory && (
-            <div className="relative">
-              <button
-                ref={subButtonRef}
-                type="button"
-                onClick={() => setIsSubDropdownOpen((prev) => !prev)}
-                className="flex items-center whitespace-nowrap bg-skyblue100 text-gray700 py-2 pl-3 pr-2 rounded-lg"
-              >
-                {subCategory
-                  ? CATEGORY_MAP[mainCategory].find(
-                      (c) => c.tag === subCategory,
-                    )?.emoji +
-                    " " +
-                    CATEGORY_MAP[mainCategory].find(
-                      (c) => c.tag === subCategory,
-                    )?.label
-                  : "태그 선택"}
-              </button>
-
-              {isSubDropdownOpen && (
-                <ul
-                  className="absolute w-[150px] z-10 top-full mt-2 bg-white rounded-lg p-2 shadow-md text-sm text-gray800"
-                  style={{ minWidth: subButtonWidth }}
-                >
-                  {CATEGORY_MAP[mainCategory].map(({ emoji, label, tag }) => (
-                    <li
-                      key={tag}
-                      onClick={() => {
-                        setSubCategory(tag);
-                        setIsSubDropdownOpen(false);
-                      }}
-                      className={`px-2 py-1 hover:bg-gray100 cursor-pointer rounded ${
-                        subCategory === tag ? "bg-skyblue200 text-white" : ""
-                      }`}
-                    >
-                      {emoji} {label}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            <SubCategoryDropdown
+              selectedMainCategory={mainCategory}
+              selectedSubCategory={subCategory ?? "전체"}
+              isDropdownOpen={isSubDropdownOpen}
+              toggleDropdown={() => setIsSubDropdownOpen((prev) => !prev)}
+              selectSubCategory={(tag) => {
+                setSubCategory(tag === "전체" ? null : tag);
+                setIsSubDropdownOpen(false);
+              }}
+              buttonRef={subButtonRef}
+              buttonWidth={subButtonWidth}
+            />
           )}
         </div>
 
