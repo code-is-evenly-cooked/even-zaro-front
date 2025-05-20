@@ -4,7 +4,7 @@ import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
-import { saveDraft} from "@/utils/editorStorage";
+import { saveDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -16,7 +16,7 @@ import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
 import { useRestoreDraft } from "@/hooks/useRestoreDraft";
-
+import RestoreDraftModal from "./RestoreDraftModal";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -128,10 +128,10 @@ export default function PostEditor() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  
-  useEditorImageUpload(editorRef);  // 이미지 업로드 관련 Hook
-  useAutoSaveDraft(editorRef);  // 자동 임시 저장 Hook
-  useRestoreDraft(editorRef);  // 임시 저장 불러오기
+  useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
+  useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
+
+  const restore = useRestoreDraft(editorRef); // 임시 저장 불러오기
 
   // 글 작성
   const handleSubmit = async () => {
@@ -278,6 +278,12 @@ export default function PostEditor() {
           취소
         </BaseButton>
       </div>
+      {/* 임시 저장 불러오기 모달 */}
+      <RestoreDraftModal
+        isOpen={restore.isOpen}
+        onClose={restore.onClose}
+        onConfirm={restore.onConfirm}
+      />
     </div>
   );
 }
