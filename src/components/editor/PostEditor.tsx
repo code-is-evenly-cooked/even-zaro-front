@@ -9,10 +9,10 @@ import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import CategoryDropdown from "@/components/Dropdown/CategoryDropdown";
-import type { MainCategory } from "@/constants/categories";
-import { CATEGORY_MAP } from "@/constants/categories";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
+import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
+import { MainCategory } from "@/types/category";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
@@ -129,7 +129,7 @@ export default function PostEditor() {
     >
       <div className="flex justify-between items-center">
         {/* 카테고리 선택 (임시) */}
-        <div className="my-4 flex gap-4 items-center">
+        <div className="my-4 flex gap-2 items-center">
           <CategoryDropdown
             selectedCategory={mainCategory ?? "전체"}
             isDropdownOpen={isDropdownOpen}
@@ -141,6 +141,7 @@ export default function PostEditor() {
             }}
             buttonRef={buttonRef}
             buttonWidth={buttonWidth}
+            showAllOption={false}
           />
 
           {/* 2차 카테고리 드롭다운 */}

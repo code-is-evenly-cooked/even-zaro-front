@@ -1,8 +1,11 @@
+import { MainCategory } from "@/types/category";
 import { useEffect, useRef, useState } from "react";
 
 const useSearchbar = () => {
   const [keyword, setKeyword] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [selectedCategory, setSelectedCategory] = useState<
+    MainCategory | "전체"
+  >("전체");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,7 +36,7 @@ const useSearchbar = () => {
     setIsDropdownOpen((prev) => !prev);
   };
 
-  const selectCategory = (category: string) => {
+  const selectCategory = (category: MainCategory | "전체") => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
   };

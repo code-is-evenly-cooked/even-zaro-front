@@ -1,14 +1,17 @@
-import { MAIN_CATEGORIES } from "@/constants/categories";
+import { MAIN_CATEGORIES } from "@/constants/category";
+import { getMainCategoryLabel } from "@/utils/category";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
+import type { MainCategory } from "@/types/category";
 
 interface CategoryDropdownProps {
-  selectedCategory: string;
+  selectedCategory: MainCategory | "전체";
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
-  selectCategory: (category: string) => void;
+  selectCategory: (category: MainCategory | "전체") => void;
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   buttonWidth: number;
+  showAllOption?: boolean;
 }
 
 const CategoryDropdown = ({
@@ -18,6 +21,7 @@ const CategoryDropdown = ({
   selectCategory,
   buttonRef,
   buttonWidth,
+  showAllOption,
 }: CategoryDropdownProps) => {
   return (
     <div className="relative">
@@ -27,40 +31,42 @@ const CategoryDropdown = ({
         className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
-        {selectedCategory}
+        {selectedCategory === "전체"
+          ? "전체"
+          : getMainCategoryLabel(selectedCategory)}
         <ChevronDown className="w-4 h-4 ml-2" />
       </button>
+
       {isDropdownOpen && (
         <ul
           className="absolute z-10 top-full mt-2 w-max bg-skyblue300 rounded-lg p-2 shadow-md text-gray900"
           style={{ minWidth: buttonWidth }}
         >
-          <li
-            key="전체"
-            className={clsx(
-              "px-2 text-gray600 hover:text-gray600/80 cursor-pointer",
-              selectedCategory === "전체" &&
-                "font-bold text-gray900 hover:text-gray900",
-            )}
-            onClick={() => {
-              selectCategory("전체");
-            }}
-          >
-            전체
-          </li>
+          {showAllOption && (
+            <li
+              key="전체"
+              className={clsx(
+                "px-2 text-gray600 hover:text-gray600/80 cursor-pointer",
+                selectedCategory === "전체" &&
+                  "font-bold text-gray900 hover:text-gray900",
+              )}
+              onClick={() => selectCategory("전체")}
+            >
+              전체
+            </li>
+          )}
+
           {MAIN_CATEGORIES.map((category) => (
             <li
               key={category}
               className={clsx(
-                "px-2 text-gray600 hover:text-gray600/80 cursor-pointer",
+                "px-2 py-1 text-gray600 hover:text-gray600/80 cursor-pointer",
                 selectedCategory === category &&
                   "font-bold text-gray900 hover:text-gray900",
               )}
-              onClick={() => {
-                selectCategory(category);
-              }}
+              onClick={() => selectCategory(category)}
             >
-              {category}
+              {getMainCategoryLabel(category)}
             </li>
           ))}
         </ul>

@@ -33,6 +33,7 @@ const Searchbar = () => {
           selectCategory={selectCategory}
           buttonRef={buttonRef}
           buttonWidth={buttonWidth}
+          showAllOption={true}
         />
         <div className="flex items-center bg-white border border-skyblue100 text-gray900 rounded-lg w-full">
           <input
