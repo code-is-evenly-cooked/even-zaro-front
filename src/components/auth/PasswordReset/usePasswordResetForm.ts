@@ -53,7 +53,9 @@ const usePasswordResetForm = (token: string) => {
     try {
       const message = await resetPassword(token, formState.password);
       showToastMessage({ type: "success", message: message });
-      router.replace("/login");
+      setTimeout(() => {
+        router.replace("/login");
+      }, 2000);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "비밀번호 변경 실패";
