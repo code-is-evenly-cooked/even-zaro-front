@@ -11,19 +11,27 @@ import "@toast-ui/editor/dist/i18n/ko-kr";
 import MainCategoryDropdown from "@/components/Dropdown/MainCategoryDropdown";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
+import { createPost } from "@/lib/api/posts";
+import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
+
 
 export default function PostEditor() {
   const editorRef = useRef<Editor>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const {
     title,
-    setTitle,
+    content,
     mainCategory,
-    setMainCategory,
     subCategory,
+    setTitle,
+    setContent,
+    setMainCategory,
     setSubCategory,
+    setImageUrlList,
+    setThumbnailUrl,
+    resetPost,
   } = usePostStore();
 
   // 에디터 툴바 아이템 (모바일 구분)
@@ -136,6 +144,42 @@ export default function PostEditor() {
     });
   }, [setTitle, setMainCategory, setSubCategory]);
 
+  // 글 작성
+  const handleSubmit = async () => {
+    try {
+      if (!title || !content) {
+        alert("제목, 내용, 카테고리를 입력해주세요.");
+        return;
+      }
+
+      const backendCategory = "DAILY_LIFE";
+      const backendCategoryTag = "TIPS";
+      const imageUrls = extractImageUrls(content);
+      const thumbnail = extractThumbnailUrl(content);
+
+      setImageUrlList(imageUrls);
+      setThumbnailUrl(thumbnail);
+
+      await createPost({
+        title,
+        content,
+        category: backendCategory,
+        tag: backendCategoryTag,
+        imageUrlList: imageUrls,
+        thumbnailUrl: thumbnail,
+      });
+
+      alert("게시글 작성이 완료되었습니다!");
+      resetPost(); // 상태 초기화
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message ?? "게시글 작성 중 오류 발생");
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
+      }
+    }
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -216,20 +260,21 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue=""
+        initialValue={content}
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
+        onChange={() =>
+          setContent(editorRef.current?.getInstance().getMarkdown() ?? "")
+        }
       />
 
       <div className="flex gap-2 justify-end">
         <BaseButton
           type="button"
-          onClick={() => {
-            // TODO: 게시글 등록 처리
-          }}
+          onClick={handleSubmit}
           className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
         >
           등록
