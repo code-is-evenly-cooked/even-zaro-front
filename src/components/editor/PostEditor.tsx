@@ -4,7 +4,7 @@ import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
-import { saveDraft, loadDraft } from "@/utils/editorStorage";
+import { saveDraft} from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -15,6 +15,7 @@ import { createPost } from "@/lib/api/posts";
 import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
+import { useRestoreDraft } from "@/hooks/useRestoreDraft";
 
 
 export default function PostEditor() {
@@ -127,22 +128,10 @@ export default function PostEditor() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 이미지 업로드 관련 Hook
-  useEditorImageUpload(editorRef);
-  // 자동 임시 저장 Hook
-  useAutoSaveDraft(editorRef);
-
-  // 임사 저장 자동 불러오기
-  useEffect(() => {
-    loadDraft().then((draft) => {
-      if (draft) {
-        setTitle(draft.title);
-        setMainCategory(draft.mainCategory);
-        setSubCategory(draft.subCategory);
-        editorRef.current?.getInstance().setMarkdown(draft.content);
-      }
-    });
-  }, [setTitle, setMainCategory, setSubCategory]);
+  
+  useEditorImageUpload(editorRef);  // 이미지 업로드 관련 Hook
+  useAutoSaveDraft(editorRef);  // 자동 임시 저장 Hook
+  useRestoreDraft(editorRef);  // 임시 저장 불러오기
 
   // 글 작성
   const handleSubmit = async () => {
