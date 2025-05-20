@@ -1,6 +1,6 @@
 import IconButton from "../common/Button/IconButton";
 import { RightArrowIcon } from "../common/Icons";
-import CategoryDropdown from "../Dropdown/CategoryDropdown";
+import MainCategoryDropdown from "../Dropdown/MainCategoryDropdown";
 import useSearchbar from "./useSearchbar";
 
 const Searchbar = () => {
@@ -25,14 +25,16 @@ const Searchbar = () => {
       }}
       className="w-full max-w-full"
     >
-      <div className="relative flex gap-4" ref={dropdownRef}>
-        <CategoryDropdown
+      <div className="relative flex gap-4">
+        <MainCategoryDropdown
           selectedCategory={selectedCategory}
           isDropdownOpen={isDropdownOpen}
           toggleDropdown={toggleDropdown}
           selectCategory={selectCategory}
           buttonRef={buttonRef}
+          dropdownRef={dropdownRef}
           buttonWidth={buttonWidth}
+          showAllOption={true}
         />
         <div className="flex items-center bg-white border border-skyblue100 text-gray900 rounded-lg w-full">
           <input
