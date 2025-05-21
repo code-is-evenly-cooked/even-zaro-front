@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { loadDraft } from "@/utils/editorStorage";
 import { usePostStore } from "@/stores/usePostStore";
+import type { Editor } from "@toast-ui/react-editor";
+import type { PostDraft } from "@/types/editor";
 
-export const useRestoreDraft = (editorRef: React.RefObject<any>) => {
+export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
   const { setTitle, setMainCategory, setSubCategory } = usePostStore();
   const [isOpen, setIsOpen] = useState(false);
-  const [draft, setDraft] = useState<any>(null); // 타입 정의 가능
+  const [draft, setDraft] = useState<PostDraft | null>(null);
 
   useEffect(() => {
     loadDraft().then((saved) => {
