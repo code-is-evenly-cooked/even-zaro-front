@@ -11,6 +11,8 @@
     "check": "npm run lint && npm run format"
   },
   "dependencies": {
+    "@tanstack/react-query": "5.76.1",
+    "@tanstack/react-query-devtools": "5.76.1",
     "@toast-ui/editor": "3.2.2",
     "@toast-ui/react-editor": "3.2.3",
     "clsx": "^2.1.1",
