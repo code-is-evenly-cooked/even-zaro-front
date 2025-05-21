@@ -1,7 +1,7 @@
 import IconButton from "@/components/common/Button/IconButton";
 import { CloseIcon } from "@/components/common/Icons";
 import clsx from "clsx";
-import { HomeIcon } from "@/components/common/Icons";
+import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import BaseButton from "@/components/common/Button/BaseButton";
 
@@ -42,7 +42,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       >
         <div className="h-[3rem] px-4 pt-2 flex justify-between items-center">
           <div className="flex justify-center items-center gap-2 text-violet800 font-bold text-lg">
-            <HomeIcon />
+            <LogoLineIcon />
             ZARO
           </div>
           <IconButton
@@ -58,7 +58,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             size="full"
             variant="filled"
             color="violet300"
-            leftIcon={<HomeIcon />}
+            leftIcon={<LogoLineIcon />}
             className="justify-start"
           >
             홈
