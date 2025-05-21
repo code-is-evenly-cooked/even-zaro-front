@@ -5,7 +5,6 @@ import { CloseIcon } from "@/components/common/Icons";
 import clsx from "clsx";
 import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
-import BaseButton from "@/components/common/Button/BaseButton";
 import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
 
 interface SidebarProps {
@@ -57,7 +56,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           />
         </div>
         <nav className="p-4 space-y-2">
-          <SidebarButtonList />
+          <SidebarButtonList onItemClick={onClose} />
         </nav>
       </aside>
     </>

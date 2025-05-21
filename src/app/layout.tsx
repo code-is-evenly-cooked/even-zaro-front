@@ -25,6 +25,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Layout>{children}</Layout>
+          <div id="root-modal"></div>
         </Providers>
       </body>
     </html>
