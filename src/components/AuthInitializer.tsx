@@ -1,26 +1,42 @@
-import { fetchWithAuthClient } from "@/lib/fetch/fetchWithAuth.client";
+import { useEffect } from "react";
+import { getSession } from "next-auth/react";
 import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
-import { useCallback, useEffect } from "react";
+import { client } from "@/lib/fetch/client";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, clearUser, setInitialized } = useAuthStore();
+  const { setUser, clearUser, setInitialized, isInitialized } = useAuthStore();
 
-  const initializeAuth = useCallback(async () => {
+  const initializeAuth = async () => {
     try {
-      const user = await fetchWithAuthClient<UserInfo>("/api/users/my");
+      const session = await getSession();
+      const kakaoAccessToken = session?.user?.accessToken;
+      let user: UserInfo | null = null;
+
+      if (kakaoAccessToken) {
+        user = await client<UserInfo>("/api/auth/signin/social", {
+          method: "POST",
+          body: JSON.stringify({
+            accessToken: kakaoAccessToken,
+          }),
+        });
+      } else {
+        user = await client<UserInfo>("/api/users/my");
+      }
+
       setUser(user);
-      console.log(user); // 추후 제거 예정
     } catch (err) {
-      console.log(err);
+      console.error("AuthInitializer Error:", err);
       clearUser();
     } finally {
       setInitialized();
     }
-  }, [setUser, clearUser, setInitialized]);
+  };
 
   useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
+    if (!isInitialized) {
+      initializeAuth();
+    }
+  }, [isInitialized]);
 
   return <>{children}</>;
 };
