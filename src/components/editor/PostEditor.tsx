@@ -4,7 +4,7 @@ import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
-import { saveDraft, loadDraft } from "@/utils/editorStorage";
+import { saveDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -15,11 +15,14 @@ import { createPost } from "@/lib/api/posts";
 import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
-
+import { useRestoreDraft } from "@/hooks/useRestoreDraft";
+import RestoreDraftModal from "./RestoreDraftModal";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function PostEditor() {
-  const editorRef = useRef<Editor>(null);
+  const editorRef = useRef<Editor | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const { showToastMessage } = useToastMessageContext();
   const {
     title,
     content,
@@ -127,33 +130,39 @@ export default function PostEditor() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 이미지 업로드 관련 Hook
-  useEditorImageUpload(editorRef);
-  // 자동 임시 저장 Hook
-  useAutoSaveDraft(editorRef);
+  useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
+  useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
 
-  // 임사 저장 자동 불러오기
+  const restore = useRestoreDraft(editorRef); // 임시 저장 불러오기
+
+  // 에디터 내부 초기화
   useEffect(() => {
-    loadDraft().then((draft) => {
-      if (draft) {
-        setTitle(draft.title);
-        setMainCategory(draft.mainCategory);
-        setSubCategory(draft.subCategory);
-        editorRef.current?.getInstance().setMarkdown(draft.content);
-      }
-    });
-  }, [setTitle, setMainCategory, setSubCategory]);
+    const editor = editorRef.current?.getInstance();
+    if (editor && !content) {
+      editor.setMarkdown(""); // 진짜 초기화
+    }
+    // eslint-disable-next-line
+  }, []);
 
   // 글 작성
   const handleSubmit = async () => {
     try {
       if (!title || !content) {
-        alert("제목, 내용, 카테고리를 입력해주세요.");
+        showToastMessage({
+          message: "제목, 내용을 입력해주세요.",
+          type: "error",
+        });
         return;
       }
 
-      const backendCategory = "DAILY_LIFE";
-      const backendCategoryTag = "TIPS";
+      if (!mainCategory || !subCategory) {
+        showToastMessage({
+          message: "카테고리와 태그를 선택해주세요.",
+          type: "error",
+        });
+        return;
+      }
+
       const imageUrls = extractImageUrls(content);
       const thumbnail = extractThumbnailUrl(content);
 
@@ -163,20 +172,27 @@ export default function PostEditor() {
       await createPost({
         title,
         content,
-        category: backendCategory,
-        tag: backendCategoryTag,
+        category: mainCategory,
+        tag: subCategory,
         imageUrlList: imageUrls,
         thumbnailUrl: thumbnail,
       });
 
-      alert("게시글 작성이 완료되었습니다!");
+      showToastMessage({
+        message: "게시글 작성이 완료되었습니다!",
+        type: "success",
+      });
       resetPost(); // 상태 초기화
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        alert(error.message ?? "게시글 작성 중 오류 발생");
-      } else {
-        alert("알 수 없는 오류가 발생했습니다.");
-      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다";
+
+      showToastMessage({
+        message: errorMessage,
+        type: "error",
+      });
     }
   };
 
@@ -233,12 +249,15 @@ export default function PostEditor() {
             onClick={() => {
               const instance = editorRef.current?.getInstance();
               if (!instance) {
-                console.warn("에디터 인스턴스를 찾을 수 없음");
+                showToastMessage({
+                  message: "에디터 사용 중 문제가 발생했습니다.",
+                  type: "error",
+                });
                 return;
               }
               const content = instance.getMarkdown();
               saveDraft({ title, mainCategory, subCategory, content });
-              alert("임시 저장 완료!");
+              showToastMessage({ message: "임시 저장 완료", type: "info" });
             }}
             className="p-1"
           >
@@ -260,7 +279,7 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue={content}
+        initialValue={content || ""}
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
@@ -289,6 +308,12 @@ export default function PostEditor() {
           취소
         </BaseButton>
       </div>
+      {/* 임시 저장 불러오기 모달 */}
+      <RestoreDraftModal
+        isOpen={restore.isOpen}
+        onClose={restore.onClose}
+        onConfirm={restore.onConfirm}
+      />
     </div>
   );
 }

@@ -1,14 +1,7 @@
-import { MainCategory, SubCategoryValue } from "@/types/category";
+import type { PostDraft } from "@/types/editor";
 
 const DB_NAME = "community-post-db";
 const STORE_KEY = "post-draft";
-
-type PostDraft = {
-  title: string;
-  mainCategory: MainCategory | null;
-  subCategory: SubCategoryValue | null;
-  content: string;
-};
 
 export async function saveDraft(draft: PostDraft): Promise<void> {
   const db = await openDB();
