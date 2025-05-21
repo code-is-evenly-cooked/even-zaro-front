@@ -8,7 +8,11 @@ export async function POST() {
   const refreshToken = cookieStore.get("refresh_token")?.value;
 
   if (!refreshToken) {
-    return createErrorResponse("refreshToken이 없습니다.", 401);
+    console.warn("[refreshToken] 쿠키에 refresh_token 없음");
+    return createSuccessResponse(
+      { accessToken: null },
+      "refresh_token 없음 - 로그인 유지 불가",
+    );
   }
 
   try {

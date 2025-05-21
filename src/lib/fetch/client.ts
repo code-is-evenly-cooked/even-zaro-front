@@ -72,20 +72,23 @@ const refreshToken = async (): Promise<boolean> => {
   isRefreshing = true;
 
   try {
-    const res = await fetch("/api/auth/refresh", { method: "POST" });
+    const res = await fetch("/api/auth/refresh", {
+      method: "POST",
+      credentials: "include",
+    });
+
     const body = await res.json();
 
-    if (!res.ok) {
+    // accessToken이 null이면 로그인 유지 실패
+    if (!res.ok || !body?.data?.accessToken) {
       throw new APIErrorResponse({
         code: "AUTH_EXPIRED",
-        message: body?.message ?? "세션이 만료되었습니다.",
-        statusCode: res.status,
+        message: "토큰 갱신 실패 또는 refresh_token 없음",
+        statusCode: 401,
       });
     }
 
-    const { accessToken } = (
-      body as APISuccessResponse<{ accessToken: string }>
-    ).data;
+    const accessToken = body.data.accessToken;
 
     setCookie("access_token", accessToken, {
       path: "/",
