@@ -8,7 +8,11 @@ export async function GET() {
   const accessToken = cookieStore.get("access_token")?.value;
 
   if (!accessToken) {
-    return createErrorResponse("accessToken이 없습니다.", 401);
+    console.warn("[accessToken] 쿠키에 access_token 없음");
+    return createSuccessResponse(
+      { accessToken: null },
+      "access_token 없음 - 로그인 유지 불가",
+    );
   }
 
   try {
