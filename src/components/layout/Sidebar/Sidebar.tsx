@@ -1,9 +1,12 @@
+"use client";
+
 import IconButton from "@/components/common/Button/IconButton";
 import { CloseIcon } from "@/components/common/Icons";
 import clsx from "clsx";
 import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import BaseButton from "@/components/common/Button/BaseButton";
+import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -54,20 +57,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           />
         </div>
         <nav className="p-4 space-y-2">
-          <BaseButton
-            size="full"
-            variant="filled"
-            color="violet300"
-            leftIcon={<LogoLineIcon />}
-            className="justify-start"
-          >
-            홈
-          </BaseButton>
-          <div>홈</div>
-          <div>같이 쓰자</div>
-          <div>자취 일상</div>
-          <div>아무거나 샀어요</div>
-          <div>동네 탐방</div>
+          <SidebarButtonList />
         </nav>
       </aside>
     </>
