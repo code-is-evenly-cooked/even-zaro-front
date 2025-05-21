@@ -20,7 +20,7 @@ import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function PostEditor() {
-  const editorRef = useRef<Editor>(null);
+  const editorRef = useRef<Editor | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { showToastMessage } = useToastMessageContext();
   const {
@@ -135,16 +135,31 @@ export default function PostEditor() {
 
   const restore = useRestoreDraft(editorRef); // 임시 저장 불러오기
 
+  // 에디터 내부 초기화
+  useEffect(() => {
+    const editor = editorRef.current?.getInstance();
+    if (editor && !content) {
+      editor.setMarkdown(""); // 진짜 초기화
+    }
+    // eslint-disable-next-line
+  }, []);
+
   // 글 작성
   const handleSubmit = async () => {
     try {
       if (!title || !content) {
-        showToastMessage({ message: "제목, 내용을 입력해주세요.", type: "error" });
+        showToastMessage({
+          message: "제목, 내용을 입력해주세요.",
+          type: "error",
+        });
         return;
       }
 
       if (!mainCategory || !subCategory) {
-        showToastMessage({ message: "카테고리와 태그를 선택해주세요.", type: "error" });
+        showToastMessage({
+          message: "카테고리와 태그를 선택해주세요.",
+          type: "error",
+        });
         return;
       }
 
@@ -163,13 +178,22 @@ export default function PostEditor() {
         thumbnailUrl: thumbnail,
       });
 
-      showToastMessage({ message: "게시글 작성이 완료되었습니다!", type: "success" });
+      showToastMessage({
+        message: "게시글 작성이 완료되었습니다!",
+        type: "success",
+      });
       resetPost(); // 상태 초기화
     } catch (error: unknown) {
       if (error instanceof Error) {
-        showToastMessage({ message: "알 수 없는 오류가 발생했습니다.", type: "error" });
+        showToastMessage({
+          message: "알 수 없는 오류가 발생했습니다.",
+          type: "error",
+        });
       } else {
-        showToastMessage({ message: "알 수 없는 오류가 발생했습니다.", type: "error" });
+        showToastMessage({
+          message: "알 수 없는 오류가 발생했습니다.",
+          type: "error",
+        });
       }
     }
   };
@@ -227,7 +251,10 @@ export default function PostEditor() {
             onClick={() => {
               const instance = editorRef.current?.getInstance();
               if (!instance) {
-                showToastMessage({ message: "에디터 사용 중 문제가 발생했습니다.", type: "error" });
+                showToastMessage({
+                  message: "에디터 사용 중 문제가 발생했습니다.",
+                  type: "error",
+                });
                 return;
               }
               const content = instance.getMarkdown();
@@ -254,7 +281,7 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue={content}
+        initialValue={content || ""}
         previewStyle="vertical"
         height="400px"
         initialEditType="wysiwyg"
