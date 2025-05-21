@@ -1,6 +1,6 @@
 import IconButton from "@/components/common/Button/IconButton";
 import {
-  HomeIcon,
+  LogoLineIcon,
   SearchIcon,
   NotificationIcon,
 } from "@/components/common/Icons";
@@ -43,7 +43,7 @@ const Header = ({ onMenuClick, onLoginClick }: HeaderProps) => {
             onClick={onMenuClick}
           />
           <Link href="/" className="flex items-center gap-2">
-            <HomeIcon />
+            <LogoLineIcon />
             ZARO
           </Link>
         </div>
