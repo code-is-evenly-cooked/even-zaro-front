@@ -183,18 +183,16 @@ export default function PostEditor() {
         type: "success",
       });
       resetPost(); // 상태 초기화
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showToastMessage({
-          message: "알 수 없는 오류가 발생했습니다.",
-          type: "error",
-        });
-      } else {
-        showToastMessage({
-          message: "알 수 없는 오류가 발생했습니다.",
-          type: "error",
-        });
-      }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다";
+
+      showToastMessage({
+        message: errorMessage,
+        type: "error",
+      });
     }
   };
 
