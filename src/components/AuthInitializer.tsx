@@ -1,46 +1,27 @@
 import { useEffect } from "react";
-import { getSession } from "next-auth/react";
-import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
-import { client } from "@/lib/fetch/client";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useQuery } from "@tanstack/react-query";
-
-const fetchUserKakaoAccessToken = async (): Promise<UserInfo> => {
-  const session = await getSession();
-  const kakaoAccessToken = session?.user?.accessToken;
-
-  if (kakaoAccessToken) {
-    return await client<UserInfo>("/api/auth/signin/social", {
-      method: "POST",
-      body: JSON.stringify({
-        accessToken: kakaoAccessToken,
-      }),
-    });
-  } else {
-    return await client<UserInfo>("/api/users/my");
-  }
-};
+import { fetchUser } from "@/lib/api/auth";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, clearUser, setInitialized, isInitialized } = useAuthStore();
+  const { user, setUser, clearUser } = useAuthStore();
 
-  const { data, error, isSuccess } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ["user"],
-    queryFn: fetchUserKakaoAccessToken,
-    enabled: !isInitialized,
+    queryFn: fetchUser,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (data && !user) {
       setUser(data);
-      setInitialized();
     }
     if (error) {
       clearUser();
-      setInitialized();
     }
-  }, [isSuccess, error, data]);
+  }, [data, error]);
 
   return <>{children}</>;
 };
