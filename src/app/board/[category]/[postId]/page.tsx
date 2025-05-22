@@ -1,5 +1,6 @@
 import { fetchPostDetail } from "@/lib/api/post";
 import PostHeader from "@/components/post/PostHeader";
+import PostContent from "@/components/post/PostContent";
 
 export default async function PostDetailPage({
   params,
@@ -16,6 +17,8 @@ export default async function PostDetailPage({
         title={post.data.title}
         createdAt={post.data.createdAt}
       />
+      <PostContent content={post.data.content} />
     </main>
+    
   );
 }
