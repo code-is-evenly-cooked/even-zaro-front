@@ -3,14 +3,8 @@ import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 
-interface PostDetailPageProps {
-  params: {
-    category: string;
-    postId: string;
-  };
-}
-
-export default async function PostDetailPage({ params }: PostDetailPageProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default async function Page({ params }: any) {
   const post = await fetchPostDetail(params.postId);
 
   return (
