@@ -32,7 +32,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   });
 
   useEffect(() => {
-    if (!isSuccess && data) {
+    if (isSuccess && data) {
       setUser(data);
       setInitialized();
     }
