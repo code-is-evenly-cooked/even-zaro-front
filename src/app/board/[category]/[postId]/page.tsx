@@ -3,11 +3,14 @@ import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { postId: string };
-}) {
+interface PostDetailPageProps {
+  params: {
+    category: string;
+    postId: string;
+  };
+}
+
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const post = await fetchPostDetail(params.postId);
 
   return (
