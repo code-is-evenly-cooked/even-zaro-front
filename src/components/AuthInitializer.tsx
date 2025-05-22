@@ -1,26 +1,27 @@
-import { fetchWithAuthClient } from "@/lib/fetch/fetchWithAuth.client";
-import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUser } from "@/lib/api/auth";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, clearUser, setInitialized } = useAuthStore();
+  const { user, setUser, clearUser } = useAuthStore();
 
-  const initializeAuth = useCallback(async () => {
-    try {
-      const user = await fetchWithAuthClient<UserInfo>("/api/users/my");
-      setUser(user);
-      console.log(user); // 추후 제거 예정
-    } catch (err) {
-      console.log(err);
-      clearUser();
-    } finally {
-      setInitialized();
-    }
-  }, [setUser, clearUser, setInitialized]);
+  const { data, error } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchUser,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
+    if (data && !user) {
+      setUser(data);
+    }
+    if (error) {
+      clearUser();
+    }
+  }, [data, error]);
 
   return <>{children}</>;
 };

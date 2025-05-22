@@ -17,10 +17,10 @@ export const LogoIcon = ({ className }: IconProps) => {
   );
 };
 
-export const HomeIcon = ({ className }: IconProps) => {
+export const LogoLineIcon = ({ className }: IconProps) => {
   return (
     <Image
-      src="/icons/homeIcon.svg"
+      src="/icons/logoWhite.svg"
       alt="홈"
       width={32}
       height={32}
@@ -115,6 +115,71 @@ export const CloseIcon = ({ className }: IconProps) => {
       alt="닫기"
       width={24}
       height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const HomeIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/home.svg"
+      alt="홈"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const TogetherIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/together.svg"
+      alt="같이 쓰자"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const TipIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/tip.svg"
+      alt="자취 꿀팁"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const ShoppingBagIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/shoppingBag.svg"
+      alt="아무거나 샀어요"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const DefaultProfileIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/defaultProfile.svg"
+      alt="프로필이미지"
+      width={28}
+      height={28}
       className={className}
       priority
     />

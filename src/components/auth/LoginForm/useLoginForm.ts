@@ -1,18 +1,12 @@
 "use client";
 
-import { userLogin } from "@/lib/api/auth";
+import { fetchUser, userLogin, userSocialLogin } from "@/lib/api/auth";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { validateEmail, validatePassword } from "@/utils/validate";
-import { Session } from "next-auth";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
 type FormType = "email" | "password";
 
@@ -23,7 +17,6 @@ interface LoginFormErrors {
 
 const useLoginForm = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
 
   const [formState, setFormState] = useState({
     email: "",
@@ -35,6 +28,7 @@ const useLoginForm = () => {
     kakao: false,
   });
   const { showToastMessage } = useToastMessageContext();
+  const { setUser } = useAuthStore();
 
   const validateForm = useCallback(() => {
     const newErrors: LoginFormErrors = {};
@@ -77,6 +71,9 @@ const useLoginForm = () => {
         password: formState.password,
       });
 
+      const user = await fetchUser();
+      setUser(user);
+
       router.replace("/");
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "로그인 실패";
@@ -94,34 +91,35 @@ const useLoginForm = () => {
     console.log("kakao Login");
     try {
       const res = await signIn("kakao", {
-        redirect: true,
-        callbackUrl: "/login",
+        redirect: false,
+        callbackUrl: "/",
       });
       if (res?.error) {
         console.error("카카오 로그인 실패", res.error);
         return;
       }
+
+      const session = await getSession();
+      const kakaoAccessToken = session?.user?.accessToken;
+
+      if (!kakaoAccessToken) {
+        showToastMessage({ type: "error", message: "카카오 accessToken 누락" });
+        return;
+      }
+
+      await userSocialLogin(kakaoAccessToken);
+      const user = await fetchUser();
+
+      setUser(user);
+      router.replace("/");
     } catch (error) {
       console.error("카카오 로그인 중 에러", error);
+      showToastMessage({
+        type: "error",
+        message: "카카오 로그인 중 오류가 발생했습니다.",
+      });
     }
   };
-
-  const getAccessTokenFromSession = async (session: Session | null) => {
-    // TODO: 서버 통신하는 로직 추가 & 로그인 성공시 세션 정보 삭제?
-    console.log(session?.user.accessToken);
-    console.log(session?.user.image);
-    console.log(session?.user.name);
-  };
-
-  useEffect(() => {
-    if (status === "loading") {
-      handleLoadingChange("kakao", true);
-      return;
-    }
-    if (status === "authenticated") {
-      getAccessTokenFromSession(session);
-    }
-  }, [status, session]);
 
   return {
     formState,

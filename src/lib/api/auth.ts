@@ -1,4 +1,6 @@
 import { AuthCredentials, SignupCredentials } from "@/types/auth";
+import { client } from "../fetch/client";
+import { UserInfo } from "@/stores/useAuthStore";
 
 export const userSignup = async (
   credentials: SignupCredentials,
@@ -28,6 +30,20 @@ export const userLogin = async (
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials),
+  });
+
+  const body = await res.json();
+
+  if (!res.ok) {
+    throw new Error(body.message ?? "로그인 실패");
+  }
+};
+
+export const userSocialLogin = async (accessToken: string): Promise<void> => {
+  const res = await fetch("/api/auth/signin/social", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ accessToken }),
   });
 
   const body = await res.json();
@@ -73,12 +89,12 @@ export const sendResetPassword = async (email: string): Promise<string> => {
 
 export const resetPassword = async (
   token: string,
-  newPasswrod: string,
+  newPassword: string,
 ): Promise<string> => {
-  const res = await fetch("/api/auth/signin/password-forget", {
+  const res = await fetch("/api/auth/signin/password-reset", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token, newPasswrod }),
+    body: JSON.stringify({ token, newPassword }),
   });
 
   const body = await res.json();
@@ -88,4 +104,8 @@ export const resetPassword = async (
   }
 
   return body.data.message;
+};
+
+export const fetchUser = async (): Promise<UserInfo> => {
+  return await client<UserInfo>("/api/users/my");
 };
