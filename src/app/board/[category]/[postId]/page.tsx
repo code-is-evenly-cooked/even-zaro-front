@@ -10,7 +10,7 @@ export default async function PostDetailPage({
   const post = await fetchPostDetail(params.postId);
 
   return (
-    <main className="px-6 py-10">
+    <main className="w-full max-w-3xl mx-auto px-4 py-10">
       <PostHeader
         category={post.data.category}
         tag={post.data.tag}
@@ -19,6 +19,5 @@ export default async function PostDetailPage({
       />
       <PostContent content={post.data.content} />
     </main>
-    
   );
 }
