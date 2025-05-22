@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
 
@@ -19,11 +20,19 @@ interface AuthState {
   setInitialized: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isInitialized: false,
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      isInitialized: false,
 
-  setUser: (user) => set({ user }),
-  clearUser: () => set({ user: null }),
-  setInitialized: () => set({ isInitialized: true }),
-}));
+      setUser: (user) => set({ user }),
+      clearUser: () => set({ user: null }),
+      setInitialized: () => set({ isInitialized: true }),
+    }),
+    {
+      name: "auth-storage",
+      partialize: (state) => ({ user: state.user }), // 저장할 필드만 지정
+    },
+  ),
+);
