@@ -1,21 +1,35 @@
+"use client";
+
 import IconButton from "@/components/common/Button/IconButton";
 import {
   LogoLineIcon,
   SearchIcon,
   NotificationIcon,
+  DefaultProfileIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { ArrowLeftIcon, LogIn, MenuIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface HeaderProps {
   onMenuClick: () => void;
-  onLoginClick: () => void;
 }
 
-const Header = ({ onMenuClick, onLoginClick }: HeaderProps) => {
+const Header = ({ onMenuClick }: HeaderProps) => {
+  const pathname = usePathname();
+  const hideHeaderRoutes = [
+    "/login",
+    "/signup",
+    "/password-forget",
+    "/password-reset",
+    "/email-validation",
+  ];
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const handleResize = () => {
@@ -24,13 +38,14 @@ const Header = ({ onMenuClick, onLoginClick }: HeaderProps) => {
         setIsMobileSearchOpen(false);
       }
     };
-
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
     <header className="h-[3rem] px-4 sm:px-10 flex items-center justify-between">
@@ -77,12 +92,25 @@ const Header = ({ onMenuClick, onLoginClick }: HeaderProps) => {
             />
           </div>
           <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
-          <IconButton
-            icon={<LogIn />}
-            isTransparent
-            label="로그인"
-            onClick={onLoginClick}
-          />
+          {user?.userId ? (
+            <Link href={`/profile/${user.userId}`}>
+              {user.profileImageUrl ? (
+                <Image
+                  src={user.profileImageUrl}
+                  alt="프로필 이미지"
+                  width={28}
+                  height={28}
+                  className="rounded-full object-cover"
+                />
+              ) : (
+                <DefaultProfileIcon className="rounded-full object-cover" />
+              )}
+            </Link>
+          ) : (
+            <Link href="/login">
+              <IconButton icon={<LogIn />} isTransparent label="로그인" />
+            </Link>
+          )}
         </div>
       )}
     </header>

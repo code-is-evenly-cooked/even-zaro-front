@@ -1,42 +1,27 @@
 import { useEffect } from "react";
-import { getSession } from "next-auth/react";
-import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
-import { client } from "@/lib/fetch/client";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUser } from "@/lib/api/auth";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
-  const { setUser, clearUser, setInitialized, isInitialized } = useAuthStore();
+  const { user, setUser, clearUser } = useAuthStore();
 
-  const initializeAuth = async () => {
-    try {
-      const session = await getSession();
-      const kakaoAccessToken = session?.user?.accessToken;
-      let user: UserInfo | null = null;
-
-      if (kakaoAccessToken) {
-        user = await client<UserInfo>("/api/auth/signin/social", {
-          method: "POST",
-          body: JSON.stringify({
-            accessToken: kakaoAccessToken,
-          }),
-        });
-      } else {
-        user = await client<UserInfo>("/api/users/my");
-      }
-
-      setUser(user);
-    } catch (err) {
-      console.error("AuthInitializer Error:", err);
-      clearUser();
-    } finally {
-      setInitialized();
-    }
-  };
+  const { data, error } = useQuery({
+    queryKey: ["user"],
+    queryFn: fetchUser,
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
-    if (!isInitialized) {
-      initializeAuth();
+    if (data && !user) {
+      setUser(data);
     }
-  }, [isInitialized]);
+    if (error) {
+      clearUser();
+    }
+  }, [data, error]);
 
   return <>{children}</>;
 };
