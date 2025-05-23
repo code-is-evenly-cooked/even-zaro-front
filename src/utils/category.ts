@@ -1,5 +1,9 @@
 import { CATEGORY_MAP } from "@/constants/category";
-import { MainCategory, SubCategoryValue } from "@/types/category";
+import {
+  MAIN_CATEGORIES,
+  MainCategory,
+  SubCategoryValue,
+} from "@/types/category";
 
 // 메인 카테고리 → 한글 라벨
 export const getMainCategoryLabel = (key: MainCategory): string => {
@@ -38,4 +42,8 @@ export const getSubCategoryTagFromLabel = (label: string): SubCategoryValue => {
     if (found) return found.tag;
   }
   return "UNKNOWN_TAG" as SubCategoryValue;
+};
+
+export const isMainCategory = (value: string): value is MainCategory => {
+  return MAIN_CATEGORIES.includes(value as MainCategory);
 };
