@@ -12,7 +12,7 @@ const PostListHeader = ({ category }: PostListHeaderProps) => {
   return (
     <div className="flex items-center justify-between pt-10">
       <h1 className="text-3xl font-bold">{getMainCategoryTitle(category)}</h1>
-      <Link href={"/"}>
+      <Link href={"/editor"}>
         <BaseButton size="md" color="skyblue100">
           글쓰기
         </BaseButton>
