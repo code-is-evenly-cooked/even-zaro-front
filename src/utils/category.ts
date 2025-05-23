@@ -47,3 +47,9 @@ export const getSubCategoryTagFromLabel = (label: string): SubCategoryValue => {
 export const isMainCategory = (value: string): value is MainCategory => {
   return MAIN_CATEGORIES.includes(value as MainCategory);
 };
+
+export const isSubCategoryValue = (tag: string): tag is SubCategoryValue => {
+  return Object.values(CATEGORY_MAP)
+    .flatMap((category) => category.options.map((opt) => opt.tag))
+    .includes(tag as SubCategoryValue);
+};
