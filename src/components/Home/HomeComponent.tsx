@@ -6,7 +6,11 @@ import { CommonPostItem, ImagePostItem } from "@/types/post";
 const HomeComponent = () => {
   // TODO: 지우기
   const dummyItems: CommonPostItem[] = [
-    { postId: 1, title: "이사비 절약 공동구매 모집 중", createAt: "1시간 전" },
+    {
+      postId: 1,
+      title: "이사비 절약 공동구매 모집 중입니다 함께하실분",
+      createAt: "1시간 전",
+    },
     { postId: 2, title: "화장지 나눠써요 🙌", createAt: "2시간 전" },
     { postId: 3, title: "택배 수령 부탁해요", createAt: "3시간 전" },
     { postId: 4, title: "주방 세제 나눔합니다", createAt: "5시간 전" },
