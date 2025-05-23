@@ -10,7 +10,7 @@ interface PostListHeaderProps {
 }
 const PostListHeader = ({ category }: PostListHeaderProps) => {
   return (
-    <div className="flex items-center justify-between pt-10 w-full pr-4 pl-12">
+    <div className="flex items-center justify-between pt-10">
       <h1 className="text-3xl font-bold">{getMainCategoryTitle(category)}</h1>
       <Link href={"/"}>
         <BaseButton size="md" color="skyblue100">
