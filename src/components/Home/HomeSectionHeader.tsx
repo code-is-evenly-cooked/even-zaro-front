@@ -1,11 +1,12 @@
-import { SECTION_META, SectionType } from "./SectionType";
+import { CATEGORY_MAP } from "@/constants/category";
+import { MainCategory } from "@/types/category";
 import Link from "next/link";
 
 interface HomeSectionHeaderProps {
-  type: SectionType;
+  category: MainCategory;
 }
-const HomeSectionHeader = ({ type }: HomeSectionHeaderProps) => {
-  const meta = SECTION_META[type];
+const HomeSectionHeader = ({ category }: HomeSectionHeaderProps) => {
+  const meta = CATEGORY_MAP[category];
 
   return (
     <div className="flex items-center justify-between h-10">
