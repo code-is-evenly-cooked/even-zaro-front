@@ -37,6 +37,8 @@ const PostListCard = ({ post }: PostListCardProps) => {
             width={300}
             height={200}
             className="w-full h-[100px] rounded-lg object-cover"
+            placeholder="blur"
+            blurDataURL="/placeholderImage.svg"
           />
         </div>
       )}
