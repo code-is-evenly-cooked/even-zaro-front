@@ -1,15 +1,16 @@
 import React from "react";
-import HomeSectionCard, { ListItem } from "./HomeSectionCard";
+import HomeSectionCard from "./HomeSectionCard";
 import { SectionType } from "./SectionType";
+import { CommonPostItem } from "@/types/post";
 
 const HomeComponent = () => {
   // TODO: 지우기
-  const dummyItems: ListItem[] = [
-    { title: "이사비 절약 공동구매 모집 중", timeAgo: "1시간 전" },
-    { title: "화장지 나눠써요 🙌", timeAgo: "2시간 전" },
-    { title: "택배 수령 부탁해요", timeAgo: "3시간 전" },
-    { title: "주방 세제 나눔합니다", timeAgo: "5시간 전" },
-    { title: "쓰레기봉투 공동 구매자 구해요", timeAgo: "6시간 전" },
+  const dummyItems: CommonPostItem[] = [
+    { postId: 1, title: "이사비 절약 공동구매 모집 중", createAt: "1시간 전" },
+    { postId: 2, title: "화장지 나눠써요 🙌", createAt: "2시간 전" },
+    { postId: 3, title: "택배 수령 부탁해요", createAt: "3시간 전" },
+    { postId: 4, title: "주방 세제 나눔합니다", createAt: "5시간 전" },
+    { postId: 5, title: "쓰레기봉투 공동 구매자 구해요", createAt: "6시간 전" },
   ];
 
   // TODO: 배경색 빼기
