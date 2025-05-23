@@ -17,7 +17,7 @@ const HomeSectionHeader = ({ type }: HomeSectionHeaderProps) => {
         href={meta.route}
         className="flex items-center justify-center text-gray600"
       >
-        <span className="text-sm">{"보러가기 >"}</span>
+        <span className="text-xs">{"보러가기 >"}</span>
       </Link>
     </div>
   );
