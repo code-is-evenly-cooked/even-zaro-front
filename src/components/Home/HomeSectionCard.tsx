@@ -1,10 +1,11 @@
 import React from "react";
 import HomeSectionHeader from "./HomeSectionHeader";
-import { SectionType } from "./SectionType";
+import { SECTION_META, SectionType } from "./SectionType";
 import HomeSectionListItem from "./HomeSectionListItem";
 import { CommonPostItem, ImagePostItem } from "@/types/post";
 import PostImageCard from "../common/SectionCards/PostImageCard";
 import clsx from "clsx";
+import Link from "next/link";
 
 interface HomeSectionProps {
   type: SectionType;
@@ -25,13 +26,23 @@ const HomeSectionCard = ({ type, items, className }: HomeSectionProps) => {
       {isImage ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-4">
           {items.map((item) => (
-            <PostImageCard key={item.postId} {...item} />
+            <Link
+              href={`/board/${SECTION_META[type].category}/${item.postId}`}
+              key={item.postId}
+            >
+              <PostImageCard key={item.postId} {...item} />
+            </Link>
           ))}
         </ul>
       ) : (
         <ul className="flex flex-col pt-3 gap-3 pl-4 pr-2">
           {items.map((item) => (
-            <HomeSectionListItem key={item.postId} {...item} />
+            <Link
+              href={`/board/${SECTION_META[type].category}/${item.postId}`}
+              key={item.postId}
+            >
+              <HomeSectionListItem key={item.postId} {...item} />
+            </Link>
           ))}
         </ul>
       )}
