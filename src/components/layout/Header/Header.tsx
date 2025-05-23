@@ -28,6 +28,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/password-reset",
     "/email-validation",
   ];
+  const hideSearchbar = pathname.startsWith("/board");
+
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
 
@@ -80,17 +82,21 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2">
-          <div className="hidden sm:block">
-            <Searchbar />
-          </div>
-          <div className="sm:hidden">
-            <IconButton
-              icon={<SearchIcon />}
-              isTransparent
-              label="검색"
-              onClick={() => setIsMobileSearchOpen(true)}
-            />
-          </div>
+          {!hideSearchbar && (
+            <>
+              <div className="hidden sm:block">
+                <Searchbar />
+              </div>
+              <div className="sm:hidden">
+                <IconButton
+                  icon={<SearchIcon />}
+                  isTransparent
+                  label="검색"
+                  onClick={() => setIsMobileSearchOpen(true)}
+                />
+              </div>
+            </>
+          )}
           <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
