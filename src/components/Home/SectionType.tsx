@@ -11,22 +11,26 @@ export const SECTION_META: Record<
   {
     title: string;
     icon: React.ReactNode;
+    category: string;
     route: string;
   }
 > = {
   [SectionType.TOGETHER]: {
     title: "같이 쓰자",
     icon: <TogetherIcon />,
+    category: "together",
     route: "/together",
   },
   [SectionType.DAILY_LIFE]: {
     title: "자취 일상",
     icon: <TipIcon />,
+    category: "dailyLife",
     route: "/daily-life",
   },
   [SectionType.RANDOM_BUY]: {
     title: "아무거나 샀어요",
     icon: <ShoppingBagIcon />,
+    category: "randomBuy",
     route: "/random-buy",
   },
 };
