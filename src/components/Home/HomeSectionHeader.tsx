@@ -15,7 +15,7 @@ const HomeSectionHeader = ({ category }: HomeSectionHeaderProps) => {
         <h2 className="text-xl font-bold">{meta.title}</h2>
       </div>
       <Link
-        href={meta.route}
+        href={`/board/${category}`}
         className="flex items-center justify-center text-gray600"
       >
         <span className="text-xs">{"보러가기 >"}</span>
