@@ -1,5 +1,8 @@
-import { TipIcon, TogetherIcon } from "@/components/common/Icons";
-import { ShoppingBagIcon } from "lucide-react";
+import {
+  TipIcon,
+  TogetherIcon,
+  ShoppingBagIcon,
+} from "@/components/common/Icons";
 
 export const CATEGORY_MAP = {
   TOGETHER: {

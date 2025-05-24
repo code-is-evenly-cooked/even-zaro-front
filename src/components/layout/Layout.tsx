@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import HeaderShell from "./HeaderShell";
+import HeaderShell from "./Header/HeaderShell";
 
 interface LayoutProps {
   children: ReactNode;

@@ -1,8 +1,7 @@
-import { MAIN_CATEGORIES } from "@/constants/category";
+import { MAIN_CATEGORIES, MainCategory } from "@/types/category";
 import { getMainCategoryLabel } from "@/utils/category";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
-import type { MainCategory } from "@/types/category";
 
 interface MainCategoryDropdownProps {
   selectedCategory: MainCategory | "전체";

@@ -1,3 +1,4 @@
+"use client";
 import IconButton from "../common/Button/IconButton";
 import { RightArrowIcon } from "../common/Icons";
 import MainCategoryDropdown from "../Dropdown/MainCategoryDropdown";
