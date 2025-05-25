@@ -1,5 +1,7 @@
+import { CATEGORY_MAP } from "@/constants/category";
+
 interface PostHeaderProps {
-  category: string;
+  category: keyof typeof CATEGORY_MAP;
   tag: string;
   title: string;
   createdAt: string;
@@ -33,9 +35,13 @@ export default function PostHeader({
   return (
     <header className="space-y-2">
       <div className="text-sm text-gray-500 font-medium">
-        <span className="text-primary">{category}</span>
+        <span className="text-primary">{CATEGORY_MAP[category].label}</span>
         {" > "}
-        <span className="text-secondary">{tag}</span>
+        <span className="text-secondary">
+          {" "}
+          {CATEGORY_MAP[category].options.find((opt) => opt.tag === tag)
+            ?.label ?? "알 수 없음"}
+        </span>
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
