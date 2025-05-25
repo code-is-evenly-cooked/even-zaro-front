@@ -13,6 +13,10 @@ export default function PostHeader({
   title,
   createdAt,
 }: PostHeaderProps) {
+  // 카테고리(mainCategory)와 태그(subCategory)
+  const mainCategory = CATEGORY_MAP[category];
+  const subCategory = mainCategory.options.find((opt) => opt.tag === tag);
+
   // 시간 형식 변환
   function formatDate(dateStr: string): string {
     const date = new Date(dateStr);
@@ -35,12 +39,12 @@ export default function PostHeader({
   return (
     <header className="space-y-2">
       <div className="text-sm text-gray-500 font-medium">
-        <span className="text-primary">{CATEGORY_MAP[category].label}</span>
+        <span className="text-primary">{mainCategory.label}</span>
         {" > "}
         <span className="text-secondary">
-          {" "}
-          {CATEGORY_MAP[category].options.find((opt) => opt.tag === tag)
-            ?.label ?? "알 수 없음"}
+          {subCategory
+            ? `${subCategory.emoji} ${subCategory.label}`
+            : "알 수 없음"}
         </span>
       </div>
 
