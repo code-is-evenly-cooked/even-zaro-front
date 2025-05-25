@@ -24,6 +24,7 @@ export default async function Page({ params }: any) {
       />
       <PostContent content={post.data.content} />
       <PostFooter
+        postId={post.data.postId}
         likeCount={post.data.likeCount}
         commentCount={post.data.commentCount}
       />
