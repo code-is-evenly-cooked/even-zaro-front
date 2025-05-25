@@ -2,10 +2,12 @@ import { fetchPostDetail } from "@/lib/api/post";
 import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
+import PostFooter from "@/components/post/PostFooter";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page({ params }: any) {
   const post = await fetchPostDetail(params.postId);
+  console.log("✅ 게시글 응답 데이터:", post);
 
   return (
     <main className="w-full max-w-3xl mx-auto px-4 py-10">
@@ -21,6 +23,10 @@ export default async function Page({ params }: any) {
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
       />
       <PostContent content={post.data.content} />
+      <PostFooter
+        likeCount={post.data.likeCount}
+        commentCount={post.data.commentCount}
+      />
     </main>
   );
 }
