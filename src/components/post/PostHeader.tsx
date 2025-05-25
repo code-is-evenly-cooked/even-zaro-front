@@ -38,7 +38,7 @@ export default function PostHeader({
 
   return (
     <header className="space-y-2">
-      <div className="text-sm text-gray-500 font-medium">
+      <div className="text-sm text-gray-300 font-medium">
         <span className="text-primary">{mainCategory.label}</span>
         {" > "}
         <span className="text-secondary">
