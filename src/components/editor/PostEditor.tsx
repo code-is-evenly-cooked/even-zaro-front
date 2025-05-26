@@ -204,12 +204,12 @@ export default function PostEditor() {
       <div className="flex justify-between items-center">
         <div className="my-4 flex gap-2 items-center">
           <MainCategoryDropdown
-            selectedCategory={mainCategory ?? "전체"}
+            selectedCategory={mainCategory}
             isDropdownOpen={openDropdown === "main"}
             toggleDropdown={() =>
               setOpenDropdown((prev) => (prev === "main" ? null : "main"))
             }
-            selectCategory={(c: MainCategory) => {
+            selectCategory={(c: MainCategory | null) => {
               setMainCategory(c);
               setSubCategory(null);
               setOpenDropdown(null);
@@ -223,13 +223,13 @@ export default function PostEditor() {
           {mainCategory && (
             <SubCategoryDropdown
               selectedMainCategory={mainCategory}
-              selectedSubCategory={subCategory ?? "전체"}
+              selectedSubCategory={subCategory}
               isDropdownOpen={openDropdown === "sub"}
               toggleDropdown={() =>
                 setOpenDropdown((prev) => (prev === "sub" ? null : "sub"))
               }
               selectSubCategory={(tag) => {
-                setSubCategory(tag === "전체" ? null : tag);
+                setSubCategory(tag);
                 setOpenDropdown(null);
               }}
               buttonRef={subButtonRef}

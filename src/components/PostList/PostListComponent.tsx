@@ -11,10 +11,8 @@ interface PostListComponentProps {
 }
 
 const PostListComponent = ({ category }: PostListComponentProps) => {
-  const [selectSubCategory, setSelectedSubCategory] = useState<
-    SubCategoryValue | "전체"
-  >("전체");
-
+  const [selectSubCategory, setSelectedSubCategory] =
+    useState<SubCategoryValue | null>(null);
   return (
     <div className="min-h-full flex flex-col pt-10 items-center">
       <Searchbar />

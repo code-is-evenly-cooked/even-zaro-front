@@ -6,10 +6,10 @@ import type { MainCategory, SubCategoryValue } from "@/types/category";
 
 interface SubCategoryDropdownProps {
   selectedMainCategory: MainCategory;
-  selectedSubCategory: SubCategoryValue | "전체";
+  selectedSubCategory: SubCategoryValue | null;
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
-  selectSubCategory: (subCategory: SubCategoryValue | "전체") => void;
+  selectSubCategory: (subCategory: SubCategoryValue | null) => void;
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   dropdownRef: React.RefObject<HTMLUListElement | null>;
   buttonWidth: number;
@@ -25,6 +25,7 @@ const SubCategoryDropdown = ({
   buttonRef,
   dropdownRef,
   buttonWidth,
+  showAllOption = true,
 }: SubCategoryDropdownProps) => {
   const category =
     CATEGORY_MAP[selectedMainCategory as keyof typeof CATEGORY_MAP];
@@ -42,7 +43,7 @@ const SubCategoryDropdown = ({
         className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
-        {selectedSubCategory !== "전체" &&
+        {selectedSubCategory !== null &&
         getSubCategoryEmoji(selectedSubCategory) &&
         getSubCategoryLabel(selectedSubCategory) ? (
           <>
