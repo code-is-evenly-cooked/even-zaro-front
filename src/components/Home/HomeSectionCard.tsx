@@ -15,7 +15,7 @@ interface HomeSectionProps {
 
 const isImagePostItemArray = (
   arr: (CommonPostItem | ImagePostItem)[],
-): arr is ImagePostItem[] => arr.length > 0 && "thumbnailUrl" in arr[0];
+): arr is ImagePostItem[] => arr.length > 0 && "thumbnailImage" in arr[0];
 
 const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
   const isImage = isImagePostItemArray(items);

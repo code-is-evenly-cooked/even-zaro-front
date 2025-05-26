@@ -7,7 +7,7 @@ export interface UserInfo {
   userId: number;
   email: string;
   nickname: string;
-  profileImageUrl: string;
+  profileImage: string;
   provider: AuthProvider;
   // TODO: 선택입력 정보는 추후 추가하기
 }

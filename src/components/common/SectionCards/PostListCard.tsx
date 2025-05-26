@@ -29,10 +29,10 @@ const PostListCard = ({ post }: PostListCardProps) => {
           </div>
         </div>
       </div>
-      {post.thumbnailUrl && (
+      {post.thumbnailImage && (
         <div className="mt-3">
           <Image
-            src={post.thumbnailUrl}
+            src={post.thumbnailImage}
             alt={post.title}
             width={300}
             height={200}
