@@ -22,5 +22,5 @@ ZARO 팀(이하 "팀")은 이용자의 개인정보를 중요시하며, 「개�
 회원은 언제든지 본인의 개인정보를 조회하거나 삭제를 요청할 수 있습니다.
 
 #### 제7조 (개인정보 보호 책임자)  
-- 담당자: code is evenly cooked - ZARO 팀  
+- 담당자: ZARO - code is evenly cooked팀  
 - 이메일: zaro.even.team@gmail.com
