@@ -23,7 +23,7 @@ export default async function PostListPage({ params }: PageProps) {
   const categoryKey = category as MainCategory;
   const posts = await server<PostDetailResponse>(`/posts`, {
     needAuth: true,
-    params: { category: category },
+    params: { category, page: 0 },
   });
 
   const isEmpty = posts.content.length === 0;
