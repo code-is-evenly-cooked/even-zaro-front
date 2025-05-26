@@ -1,3 +1,4 @@
+import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import PostImageCard from "@/components/common/SectionCards/PostImageCard";
 import PostListCard from "@/components/common/SectionCards/PostListCard";
 import PostListComponent from "@/components/PostList/PostListComponent";
@@ -25,17 +26,22 @@ export default async function PostListPage({ params }: PageProps) {
     params: { category: category },
   });
 
+  const isEmpty = posts.content.length === 0;
+
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto">
       <PostListComponent category={categoryKey} />
-      {categoryKey === "RANDOM_BUY" ? (
+
+      {isEmpty ? (
+        <FallbackMessage
+          message="아직 작성된 게시글이 없습니다."
+          className="mt-10"
+        />
+      ) : categoryKey === "RANDOM_BUY" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
           {posts.content.map((post) => (
             <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-              <PostImageCard
-                key={post.postId}
-                {...convertDetailToImagePostItem(post)}
-              />
+              <PostImageCard {...convertDetailToImagePostItem(post)} />
             </Link>
           ))}
         </div>
@@ -43,7 +49,7 @@ export default async function PostListPage({ params }: PageProps) {
         <div className="flex flex-col pt-4">
           {posts.content.map((post) => (
             <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-              <PostListCard key={post.postId} post={post} />
+              <PostListCard post={post} />
             </Link>
           ))}
         </div>
