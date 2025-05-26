@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -11,6 +12,8 @@ export const Footer = () => {
     "/password-forget",
     "/password-reset",
     "/email-validation",
+    "/policy/terms",
+    "/policy/privacy",
   ];
 
   if (hideFooterRoutes.includes(pathname)) return null;
@@ -20,12 +23,24 @@ export const Footer = () => {
         <div className="flex flex-col justify-start gap-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
           <span className="font-medium">Code is Evenly Cooked</span>
           <div className="flex flex-col sm:flex-row justify-center gap-2 text-xs text-gray-500 sm:gap-6">
-            <span className="hover:underline cursor-pointer">이용약관</span>
-            <span className="hover:underline cursor-pointer">
+            <Link
+              href="/policy/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline cursor-pointer"
+            >
+              이용약관
+            </Link>
+            <Link
+              href="/policy/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline cursor-pointer"
+            >
               개인정보처리방침
-            </span>
-            <span className="hover:underline cursor-pointer">
-              위치기반서비스 이용약관
+            </Link>
+            <span className="hover:underline">
+              위치기반서비스 이용약관 (없음 수정필요)
             </span>
           </div>
         </div>
