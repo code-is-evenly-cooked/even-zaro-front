@@ -1,14 +1,14 @@
 interface PostAuthorProps {
   nickname: string;
-  profileImageUrl: string | null;
+  profileImage: string | null;
 }
 
 export default function PostAuthor({
   nickname,
-  profileImageUrl,
+  profileImage: profileImage,
 }: PostAuthorProps) {
   const defaultImage = "/icons/defaultProfile.svg";
-  const imageUrl = profileImageUrl || defaultImage;
+  const imageUrl = profileImage || defaultImage;
   return (
     <div className="flex items-center justify-between my-3 py-3 border-b border-gray-600">
       <div className="flex items-center gap-3">

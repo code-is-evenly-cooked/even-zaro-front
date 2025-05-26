@@ -16,18 +16,18 @@ const mockPost: PostDetailItem[] = [
     title: "결국 샀습니다",
     content:
       "언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂",
-    thumbnailUrl:
+    thumbnailImage:
       "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
     category: "TOGETHER",
     tag: "SHARING",
     likeCount: 12,
     commentCount: 4,
-    imageUrlList: [],
+    postImageList: [],
     createdAt: "2025-05-23T10:15:30",
     user: {
       userId: 1,
       nickname: "자취생123",
-      profileImageUrl: "https://via.placeholder.com/40x40.png?text=유저",
+      profileImage: "https://via.placeholder.com/40x40.png?text=유저",
     },
   },
 ];

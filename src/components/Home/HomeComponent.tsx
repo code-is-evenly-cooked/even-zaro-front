@@ -21,7 +21,7 @@ const HomeComponent = () => {
       postId: 1,
       title: "이사비 절약 공동구매 모집 중",
       content: "이사비 절약 공동구매 모집 중인데 함께하실 분",
-      thumbnailUrl:
+      thumbnailImage:
         "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
       likeCount: 1,
       commentCount: 1,
@@ -34,7 +34,7 @@ const HomeComponent = () => {
       postId: 2,
       title: "화장지 나눠써요 🙌",
       content: "화장지 나눠 살 사람 모집 중 컴온컴온",
-      thumbnailUrl:
+      thumbnailImage:
         "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
       likeCount: 1,
       commentCount: 1,
@@ -47,7 +47,7 @@ const HomeComponent = () => {
       postId: 3,
       title: "택배 수령 부탁해요",
       content: "GS25에서 제 택배 수령해달라고 하면 좀 염치없나요",
-      thumbnailUrl:
+      thumbnailImage:
         "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
       likeCount: 1,
       commentCount: 1,
@@ -60,7 +60,7 @@ const HomeComponent = () => {
       postId: 4,
       title: "주방 세제 나눔합니다",
       content: "프로쉬 실수로 너무 많이 사버림",
-      thumbnailUrl:
+      thumbnailImage:
         "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
       likeCount: 100,
       commentCount: 3,
