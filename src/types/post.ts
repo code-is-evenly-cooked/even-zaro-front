@@ -1,4 +1,4 @@
-export interface HomePosts {
+export interface PostHomeResponse {
   together: CommonPostItem[];
   dailyLife: CommonPostItem[];
   randomBuy: CommonPostItem[];
@@ -20,6 +20,9 @@ export interface ImagePostItem extends CommonPostItem {
 }
 
 // detail
+export interface PostDetailResponse {
+  content: PostDetailItem[];
+}
 export interface PostDetailItem {
   postId: number;
   title: string;
