@@ -50,7 +50,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="h-[3rem] px-4 sm:px-10 flex items-center justify-between">
+    <header className="h-12 min-h-12 flex items-center justify-between">
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
           <IconButton

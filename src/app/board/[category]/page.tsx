@@ -1,5 +1,7 @@
+import PostImageCard from "@/components/common/SectionCards/PostImageCard";
 import PostListCard from "@/components/common/SectionCards/PostListCard";
 import PostListComponent from "@/components/PostList/PostListComponent";
+import { convertDetailToImagePostItem } from "@/lib/adapters/normalizePost";
 import { MainCategory } from "@/types/category";
 import { PostDetailItem } from "@/types/post";
 import { isMainCategory } from "@/utils/category";
@@ -117,7 +119,7 @@ export default async function PostListPage({ params }: PageProps) {
 
   const categoryKey = category as MainCategory;
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="flex flex-col w-full max-w-4xl mx-auto">
       <PostListComponent category={categoryKey} />
       {categoryKey === "RANDOM_BUY" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">

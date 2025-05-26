@@ -74,7 +74,7 @@ const HomeComponent = () => {
   // TODO: 배경색 빼기
   return (
     <div className="min-h-full flex pt-20 items-start justify-center px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 sm:gap-y-12 w-full max-w-3xl px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 sm:gap-y-12 w-full max-w-5xl px-4">
         <HomeSectionCard category="TOGETHER" items={dummyItems} />
         <HomeSectionCard category="DAILY_LIFE" items={dummyItems} />
         <HomeSectionCard

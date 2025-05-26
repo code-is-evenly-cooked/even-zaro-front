@@ -24,7 +24,7 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
     <div className={clsx("w-full", className)}>
       <HomeSectionHeader category={category} />
       {isImage ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
           {items.map((item) => (
             <Link href={`/board/${category}/${item.postId}`} key={item.postId}>
               <PostImageCard key={item.postId} {...item} />
