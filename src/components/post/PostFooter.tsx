@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, Heart } from "lucide-react";
-import { likePost, unlikePost } from "@/lib/api/post.client";
+import { likePost, unlikePost, getPostLikeStatus } from "@/lib/api/post.client";
 
 interface PostFooterProps {
   postId: number;
@@ -17,6 +17,20 @@ export default function PostFooter({
 }: PostFooterProps) {
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [liked, setLiked] = useState(false);
+
+  // 좋아요 여부 조회
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        const liked = await getPostLikeStatus(postId);
+        setLiked(liked);
+      } catch (error) {
+        console.error("좋아요 여부 조회 실패:", error);
+      }
+    };
+
+    fetchLikeStatus();
+  }, [postId]);
 
   // 좋아요 토글
   const handleToggleLike = async () => {
