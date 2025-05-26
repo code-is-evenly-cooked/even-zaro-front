@@ -16,16 +16,16 @@ export default function PostFooter({
   commentCount,
 }: PostFooterProps) {
   const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [liked, setLiked] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [liked, setLiked] = useState<boolean | null>(null);
+  const isReady = liked !== null;
 
   // 좋아요 여부 조회
   useEffect(() => {
     const fetchLikeStatus = async () => {
       try {
         const liked = await getPostLikeStatus(postId);
+        console.log("서버 응답 liked 여부:", liked);
         setLiked(liked);
-        setIsReady(true); // 버튼 사용 가능 여부
       } catch (error) {
         console.error("좋아요 여부 조회 실패:", error);
       }
