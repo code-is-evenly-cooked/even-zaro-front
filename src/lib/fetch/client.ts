@@ -3,23 +3,29 @@ import { APIErrorResponse, APISuccessResponse } from "@/types/api";
 import { buildHeaders, resolveUrl } from "./buildHeaders";
 import { parseErrorResponse } from "./parseError";
 import { refreshToken } from "./refresh/client";
+import { objectToQueryString, QueryParams } from "./util/objectToQueryString";
 
 interface ClientFetchOptions extends RequestInit {
   retry?: boolean;
   needAuth?: boolean;
+  params?: QueryParams;
 }
 
 export const client = async <T>(
   input: RequestInfo | URL,
   options: ClientFetchOptions = {},
 ): Promise<T> => {
-  const { retry = true, needAuth = true, ...init } = options;
+  const { retry = true, needAuth = true, params, ...init } = options;
+
+  const query = params ? `?${objectToQueryString(params)}` : "";
+  const resolvedUrl =
+    typeof input === "string" ? `${resolveUrl(input)}${query}` : input;
 
   try {
     const accessToken = getCookie("access_token");
     const headers = buildHeaders(init.headers, accessToken, needAuth);
 
-    const res = await fetch(resolveUrl(input), {
+    const res = await fetch(resolvedUrl, {
       ...init,
       headers,
       credentials: "include",
@@ -28,9 +34,14 @@ export const client = async <T>(
     const raw = await res.json();
 
     if ((res.status === 401 || res.status === 403) && retry) {
-      const refreshed = await refreshToken(); // 기존 함수 사용
+      const refreshed = await refreshToken();
       if (refreshed) {
-        return await client<T>(input, { ...init, retry: false, needAuth });
+        return await client<T>(input, {
+          ...init,
+          retry: false,
+          needAuth,
+          params,
+        });
       } else {
         window.location.href = "/login";
         throw new APIErrorResponse({

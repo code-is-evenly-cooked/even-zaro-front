@@ -3,22 +3,27 @@ import { APIErrorResponse, APISuccessResponse } from "@/types/api";
 import { buildHeaders, resolveUrl } from "./buildHeaders";
 import { parseErrorResponse } from "./parseError";
 import { refreshTokenSSR } from "./refresh/server";
+import { objectToQueryString, QueryParams } from "./util/objectToQueryString";
 
 interface ServerFetchOptions extends RequestInit {
   retry?: boolean;
   needAuth?: boolean;
+  params?: QueryParams;
 }
 
 export const server = async <T>(
   input: RequestInfo | URL,
   options: ServerFetchOptions = {},
 ): Promise<T> => {
-  const { retry = true, needAuth = true, ...init } = options;
+  const { retry = true, needAuth = true, params, ...init } = options;
+
+  const query = params ? `?${objectToQueryString(params)}` : "";
+  const resolvedUrl =
+    typeof input === "string" ? `${resolveUrl(input)}${query}` : input;
 
   const accessToken = (await cookies()).get("access_token")?.value;
   const headers = buildHeaders(init.headers, accessToken, needAuth);
-
-  const res = await fetch(resolveUrl(input), {
+  const res = await fetch(resolvedUrl, {
     ...init,
     headers,
     cache: "no-store",
@@ -38,7 +43,7 @@ export const server = async <T>(
 
     const retryHeaders = buildHeaders(init.headers, newToken, true);
 
-    const retryRes = await fetch(resolveUrl(input), {
+    const retryRes = await fetch(resolvedUrl, {
       ...init,
       headers: retryHeaders,
       cache: "no-store",
