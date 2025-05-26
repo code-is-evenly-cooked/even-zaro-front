@@ -28,7 +28,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/password-reset",
     "/email-validation",
   ];
-  const hideSearchbar = pathname.startsWith("/board");
+  const hideSearchbarRoutes = ["/board", "/editor"];
 
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
@@ -82,7 +82,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2">
-          {!hideSearchbar && (
+          {!hideSearchbarRoutes.includes(pathname) && (
             <>
               <div className="hidden sm:block">
                 <Searchbar />
