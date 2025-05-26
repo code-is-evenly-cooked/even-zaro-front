@@ -1,4 +1,5 @@
 import { ImagePostItem } from "@/types/post";
+import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
 
 const PostImageCard = ({
@@ -20,7 +21,7 @@ const PostImageCard = ({
         {/* 작성자 */}
         <div className="flex items-center gap-1">
           <Image
-            src={writerProfileImage}
+            src={getProfileImageUrl(writerProfileImage)}
             alt={writerNickname}
             width={20}
             height={20}

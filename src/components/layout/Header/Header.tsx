@@ -5,10 +5,10 @@ import {
   LogoLineIcon,
   SearchIcon,
   NotificationIcon,
-  DefaultProfileIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { getProfileImageUrl } from "@/utils/image";
 import { ArrowLeftIcon, LogIn, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -102,18 +102,13 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
-              {user.profileImage ? (
-                // TODO: kakao면 profileImage, local이면 이미지 환경변수 주소 + Key
-                <Image
-                  src={user.profileImage}
-                  alt="프로필 이미지"
-                  width={28}
-                  height={28}
-                  className="rounded-full object-cover"
-                />
-              ) : (
-                <DefaultProfileIcon className="rounded-full object-cover" />
-              )}
+              <Image
+                src={getProfileImageUrl(user.profileImage)}
+                alt="프로필 이미지"
+                width={28}
+                height={28}
+                className="rounded-full object-cover"
+              />
             </Link>
           ) : (
             <Link href="/login">
