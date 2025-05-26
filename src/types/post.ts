@@ -1,7 +1,7 @@
 export interface CommonPostItem {
   postId: number;
   title: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export interface ImagePostItem extends CommonPostItem {
