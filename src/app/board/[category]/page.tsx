@@ -16,7 +16,7 @@ const mockPost: PostDetailItem[] = [
     title: "결국 샀습니다",
     content:
       "언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂 언젠가는 쓰겠죠..? 지금은 좀 후회 중이에요 😂",
-    thumbnailUrl:
+    thumbnailImage:
       "http://k.kakaocdn.net/dn/dPnHPP/btsKoj9P3g3/xRGh0kiZNlqmQ9eCEAnyfk/img_640x640.jpg",
     category: "TOGETHER",
     tag: "SHARING",

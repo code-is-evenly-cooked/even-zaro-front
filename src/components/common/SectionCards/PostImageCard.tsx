@@ -4,7 +4,7 @@ import Image from "next/image";
 const PostImageCard = ({
   title,
   content,
-  thumbnailUrl,
+  thumbnailImage,
   likeCount,
   commentCount,
   writerProfileImage,
@@ -13,7 +13,7 @@ const PostImageCard = ({
   return (
     <div>
       <div className="relative w-full aspect-square">
-        <Image src={thumbnailUrl} alt={title} fill className="object-cover" />
+        <Image src={thumbnailImage} alt={title} fill className="object-cover" />
       </div>
       {/* 본문 */}
       <div className="pt-2 px-1 flex flex-col gap-2">

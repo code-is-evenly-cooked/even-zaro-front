@@ -33,7 +33,7 @@ export default function PostEditor() {
     setMainCategory,
     setSubCategory,
     setImageUrlList,
-    setThumbnailUrl,
+    setThumbnailImage,
     resetPost,
   } = usePostStore();
 
@@ -167,7 +167,7 @@ export default function PostEditor() {
       const thumbnail = extractThumbnailUrl(content);
 
       setImageUrlList(imageUrls);
-      setThumbnailUrl(thumbnail);
+      setThumbnailImage(thumbnail);
 
       await createPost({
         title,
@@ -175,7 +175,7 @@ export default function PostEditor() {
         category: mainCategory,
         tag: subCategory,
         imageUrlList: imageUrls,
-        thumbnailUrl: thumbnail,
+        thumbnailImage: thumbnail,
       });
 
       showToastMessage({

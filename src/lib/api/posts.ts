@@ -12,7 +12,7 @@ export async function createPost(payload: {
   category: string;
   tag?: string;
   imageUrlList?: string[];
-  thumbnailUrl?: string | null;
+  thumbnailImage?: string | null;
 }): Promise<number> {
   const token = getAccessToken();
   if (!token) {
