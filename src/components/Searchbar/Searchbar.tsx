@@ -1,22 +1,38 @@
 "use client";
+import { MainCategory } from "@/types/category";
 import IconButton from "../common/Button/IconButton";
-import { RightArrowIcon } from "../common/Icons";
+import { SearchIcon } from "../common/Icons";
 import MainCategoryDropdown from "../Dropdown/MainCategoryDropdown";
 import useSearchbar from "./useSearchbar";
+import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
+import { useEffect } from "react";
 
-const Searchbar = () => {
+interface SearchbarProps {
+  mainCategory?: MainCategory | null;
+}
+
+const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
   const {
     keyword,
     setKeyword,
-    selectedCategory,
-    isDropdownOpen,
-    buttonRef,
-    dropdownRef,
-    buttonWidth,
-    toggleDropdown,
-    selectCategory,
+    selectedMainCategory,
+    selectedSubCategory,
+    openDropdown,
+    setOpenDropdown,
+    selectMainCategory,
+    selectSubCategory,
     handleSearch,
+    buttonRef,
+    subButtonRef,
+    mainDropdownRef,
+    subDropdownRef,
+    buttonWidth,
+    subButtonWidth,
   } = useSearchbar();
+
+  useEffect(() => {
+    if (mainCategory) selectMainCategory(mainCategory);
+  }, []);
 
   return (
     <form
@@ -26,32 +42,51 @@ const Searchbar = () => {
       }}
       className="w-full max-w-full"
     >
-      <div className="relative flex gap-4">
-        <MainCategoryDropdown
-          selectedCategory={selectedCategory}
-          isDropdownOpen={isDropdownOpen}
-          toggleDropdown={toggleDropdown}
-          selectCategory={selectCategory}
-          buttonRef={buttonRef}
-          dropdownRef={dropdownRef}
-          buttonWidth={buttonWidth}
-          showAllOption={true}
-        />
+      <div className="relative flex gap-2">
+        {mainCategory ? (
+          <SubCategoryDropdown
+            selectedMainCategory={selectedMainCategory ?? mainCategory}
+            selectedSubCategory={selectedSubCategory}
+            isDropdownOpen={openDropdown === "sub"}
+            toggleDropdown={() =>
+              setOpenDropdown((prev) => (prev === "sub" ? null : "sub"))
+            }
+            selectSubCategory={selectSubCategory}
+            buttonRef={buttonRef}
+            dropdownRef={mainDropdownRef}
+            buttonWidth={buttonWidth}
+          />
+        ) : (
+          <MainCategoryDropdown
+            selectedCategory={selectedMainCategory ?? mainCategory}
+            isDropdownOpen={openDropdown === "main"}
+            toggleDropdown={() =>
+              setOpenDropdown((prev) => (prev === "main" ? null : "main"))
+            }
+            selectCategory={selectMainCategory}
+            buttonRef={subButtonRef}
+            dropdownRef={subDropdownRef}
+            buttonWidth={subButtonWidth}
+            showAllOption={true}
+          />
+        )}
+
         <div className="flex items-center bg-white border border-skyblue100 text-gray900 rounded-lg w-full">
           <input
             type="text"
-            className="flex-1 p-2 focus:outline-none focus:ring-0"
+            className="flex-1 px-4 py-2 focus:outline-none focus:ring-0"
             placeholder="검색어를 입력해주세요."
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
           <IconButton
             type="submit"
-            icon={<RightArrowIcon />}
+            icon={<SearchIcon />}
             size="md"
-            color="skyblue300"
+            variant="icon"
             label="검색"
-            className="mr-2"
+            isTransparent
+            className="mx-2"
           />
         </div>
       </div>

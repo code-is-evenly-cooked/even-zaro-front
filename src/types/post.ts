@@ -1,7 +1,13 @@
+export interface PostHomeResponse {
+  together: CommonPostItem[];
+  dailyLife: CommonPostItem[];
+  randomBuy: CommonPostItem[];
+}
+
 export interface CommonPostItem {
   postId: number;
   title: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export interface ImagePostItem extends CommonPostItem {
@@ -9,11 +15,14 @@ export interface ImagePostItem extends CommonPostItem {
   thumbnailImage: string;
   likeCount: number;
   commentCount: number;
-  writerProfileImage: string;
+  writerProfileImage: string | null;
   writerNickname: string;
 }
 
 // detail
+export interface PostDetailResponse {
+  content: PostDetailItem[];
+}
 export interface PostDetailItem {
   postId: number;
   title: string;
@@ -30,5 +39,5 @@ export interface PostDetailItem {
 export interface WriterInfo {
   userId: number;
   nickname: string;
-  profileImage: string;
+  profileImage: string | null;
 }

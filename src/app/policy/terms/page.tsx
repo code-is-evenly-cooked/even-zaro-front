@@ -28,7 +28,7 @@ const TermsPage = () => {
     <div className="max-w-3xl px-4 mx-auto py-10">
       <div className="space-y-2">
         <h1 className="text-2xl font-bold text-violet800 mb-5">이용약관</h1>
-        <p className="text-sm leading-relaxed text-gray-700">
+        <p className="text-sm leading-relaxed text-gray900">
           안녕하세요?
           <br />
           ZARO 서비스를 이용해 주셔서 감사합니다.
@@ -44,7 +44,7 @@ const TermsPage = () => {
         {termsText && <ToastViewer initialValue={termsText} />}
       </div>
 			<div className="space-y-2 mt-10">
-        <p className="text-sm leading-relaxed text-gray-700">
+        <p className="text-sm leading-relaxed text-gray900">
           이 약관은 여러분의 편리하고 안전한 이용을 위한 최소한의 약속입니다.  
           <br />
           더 나은 서비스를 위해 항상 노력하겠습니다. 감사합니다!

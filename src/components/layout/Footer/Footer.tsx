@@ -18,7 +18,7 @@ export const Footer = () => {
 
   if (hideFooterRoutes.includes(pathname)) return null;
   return (
-    <footer className="w-full bg-white text-gray-600 text-sm py-6 border-t mb-5">
+    <footer className="w-full bg-white text-gray600 text-sm py-6 border-t mb-5">
       <div className="max-w-3xl px-4 mx-auto space-y-4">
         <div className="flex flex-col justify-start gap-6 text-xs text-gray-500 sm:flex-row sm:justify-between">
           <span className="font-medium">Code is Evenly Cooked</span>
@@ -45,7 +45,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-5 text-left text-sm text-gray-900">
+        <div className="pt-5 text-left text-sm text-gray900">
           <div>© ZARO 2025</div>
           <div>김나현, 김성민, 김유림, 이지은, 심동훈, 진상휘</div>
           <div className="text-gray-600">

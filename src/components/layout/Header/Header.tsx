@@ -5,10 +5,10 @@ import {
   LogoLineIcon,
   SearchIcon,
   NotificationIcon,
-  DefaultProfileIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { getProfileImageUrl } from "@/utils/image";
 import { ArrowLeftIcon, LogIn, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,7 +30,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/policy/terms",
     "/policy/privacy",
   ];
-  const hideSearchbar = pathname.startsWith("/board");
+  const hideSearchbarRoutes = ["/board", "/editor"];
 
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
@@ -52,7 +52,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="h-[3rem] px-4 sm:px-10 flex items-center justify-between">
+    <header className="h-12 min-h-12 flex items-center justify-between">
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
           <IconButton
@@ -84,7 +84,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2">
-          {!hideSearchbar && (
+          {!hideSearchbarRoutes.includes(pathname) && (
             <>
               <div className="hidden sm:block">
                 <Searchbar />
@@ -99,21 +99,20 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               </div>
             </>
           )}
-          <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
+          <IconButton
+            icon={<NotificationIcon className="w-6 h-6" />}
+            isTransparent
+            label="알림"
+          />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
-              {user.profileImage ? (
-                // TODO: kakao면 profileImage, local이면 이미지 환경변수 주소 + Key
-                <Image
-                  src={user.profileImage}
-                  alt="프로필 이미지"
-                  width={28}
-                  height={28}
-                  className="rounded-full object-cover"
-                />
-              ) : (
-                <DefaultProfileIcon className="rounded-full object-cover" />
-              )}
+              <Image
+                src={getProfileImageUrl(user.profileImage)}
+                alt="프로필 이미지"
+                width={28}
+                height={28}
+                className="rounded-full object-cover"
+              />
             </Link>
           ) : (
             <Link href="/login">

@@ -6,6 +6,7 @@ import PostImageCard from "../common/SectionCards/PostImageCard";
 import clsx from "clsx";
 import Link from "next/link";
 import { MainCategory } from "@/types/category";
+import FallbackMessage from "../common/Fallback/FallbackMessage";
 
 interface HomeSectionProps {
   category: MainCategory;
@@ -20,11 +21,20 @@ const isImagePostItemArray = (
 const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
   const isImage = isImagePostItemArray(items);
 
+  if (items.length === 0) {
+    return (
+      <div className={clsx("w-full", className)}>
+        <HomeSectionHeader category={category} />
+        <FallbackMessage message="아직 게시글이 없습니다." />
+      </div>
+    );
+  }
+
   return (
     <div className={clsx("w-full", className)}>
       <HomeSectionHeader category={category} />
       {isImage ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
           {items.map((item) => (
             <Link href={`/board/${category}/${item.postId}`} key={item.postId}>
               <PostImageCard key={item.postId} {...item} />
