@@ -6,7 +6,7 @@ export interface CommonPostItem {
 
 export interface ImagePostItem extends CommonPostItem {
   content: string;
-  thumbnailUrl: string;
+  thumbnailImage: string;
   likeCount: number;
   commentCount: number;
   writerProfileImage: string;
@@ -18,17 +18,17 @@ export interface PostDetailItem {
   postId: number;
   title: string;
   content: string;
-  thumbnailUrl?: string;
+  thumbnailImage?: string;
   category: "TOGETHER" | "DAILY_LIFE" | "RANDOM_BUY";
   tag: string;
   likeCount: number;
   commentCount: number;
-  imageUrlList: string[];
+  postImageList: string[];
   createdAt: string;
   user: WriterInfo;
 }
 export interface WriterInfo {
   userId: number;
   nickname: string;
-  profileImageUrl: string;
+  profileImage: string;
 }

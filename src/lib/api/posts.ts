@@ -11,8 +11,8 @@ export async function createPost(payload: {
   content: string;
   category: string;
   tag?: string;
-  imageUrlList?: string[];
-  thumbnailUrl?: string | null;
+  postImageList?: string[];
+  thumbnailImage?: string | null;
 }): Promise<number> {
   const token = getAccessToken();
   if (!token) {

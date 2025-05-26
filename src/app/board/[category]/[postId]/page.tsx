@@ -19,7 +19,7 @@ export default async function Page({ params }: any) {
       />
       <PostAuthor
         nickname={post.data.user.nickname}
-        profileImageUrl={post.data.user.profileImageUrl}
+        profileImage={post.data.user.profileImage}
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
       />
       <PostContent content={post.data.content} />
