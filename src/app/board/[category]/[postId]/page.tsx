@@ -17,7 +17,7 @@ export default async function Page({ params }: any) {
       />
       <PostAuthor
         nickname={post.data.user.nickname}
-        profileImageUrl={post.data.user.profileImageUrl}
+        profileImage={post.data.user.profileImage}
       />
       <PostContent content={post.data.content} />
     </main>

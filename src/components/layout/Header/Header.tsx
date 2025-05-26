@@ -100,9 +100,10 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
-              {user.profileImageUrl ? (
+              {user.profileImage ? (
+                // TODO: kakao면 profileImage, local이면 이미지 환경변수 주소 + Key
                 <Image
-                  src={user.profileImageUrl}
+                  src={user.profileImage}
                   alt="프로필 이미지"
                   width={28}
                   height={28}

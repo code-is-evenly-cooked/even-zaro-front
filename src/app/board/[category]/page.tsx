@@ -27,7 +27,7 @@ const mockPost: PostDetailItem[] = [
     user: {
       userId: 1,
       nickname: "자취생123",
-      profileImageUrl: "https://via.placeholder.com/40x40.png?text=유저",
+      profileImage: "https://via.placeholder.com/40x40.png?text=유저",
     },
   },
 ];

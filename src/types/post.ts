@@ -30,5 +30,5 @@ export interface PostDetailItem {
 export interface WriterInfo {
   userId: number;
   nickname: string;
-  profileImageUrl: string;
+  profileImage: string;
 }
