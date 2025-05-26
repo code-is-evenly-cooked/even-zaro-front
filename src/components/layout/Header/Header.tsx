@@ -27,6 +27,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/password-forget",
     "/password-reset",
     "/email-validation",
+    "/policy/terms",
+    "/policy/privacy",
   ];
   const hideSearchbar = pathname.startsWith("/board");
 
