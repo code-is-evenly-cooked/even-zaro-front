@@ -1,6 +1,19 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import React from "react";
 
 export const Footer = () => {
+  const pathname = usePathname();
+  const hideFooterRoutes = [
+    "/login",
+    "/signup",
+    "/password-forget",
+    "/password-reset",
+    "/email-validation",
+  ];
+
+  if (hideFooterRoutes.includes(pathname)) return null;
   return (
     <footer className="w-full bg-white text-gray-600 text-sm py-6 border-t mb-5">
       <div className="max-w-3xl px-4 mx-auto space-y-4">
