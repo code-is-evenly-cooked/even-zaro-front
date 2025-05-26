@@ -16,7 +16,7 @@ const PostListCard = ({ post }: PostListCardProps) => {
       <div className="flex flex-col gap-2 flex-1">
         <h3 className="font-semibold">{post.title}</h3>
         <p className="text-sm text-gray600 line-clamp-2">{post.content}</p>
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col justify-center pt-1 gap-0.5">
           <div className="flex items-center gap-2 text-sm">
             <div className="flex items-center gap-1">
               <HeartIcon className="w-4 h-4" />
