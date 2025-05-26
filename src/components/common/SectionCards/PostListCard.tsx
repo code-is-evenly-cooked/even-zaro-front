@@ -1,6 +1,7 @@
 import { PostDetailItem } from "@/types/post";
 import { getSubCategoryEmoji, isSubCategoryValue } from "@/utils/category";
 import { getFormattedTimeAgo } from "@/utils/date";
+import { getImageUrl } from "@/utils/image";
 import { HeartIcon, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
@@ -34,7 +35,7 @@ const PostListCard = ({ post }: PostListCardProps) => {
       {post.thumbnailImage && (
         <div className="mt-3">
           <Image
-            src={post.thumbnailImage}
+            src={getImageUrl(post.thumbnailImage)}
             alt={post.title}
             width={300}
             height={200}
