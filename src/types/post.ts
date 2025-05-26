@@ -1,3 +1,9 @@
+export interface HomePosts {
+  together: CommonPostItem[];
+  dailyLife: CommonPostItem[];
+  randomBuy: CommonPostItem[];
+}
+
 export interface CommonPostItem {
   postId: number;
   title: string;
