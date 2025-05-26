@@ -99,7 +99,11 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               </div>
             </>
           )}
-          <IconButton icon={<NotificationIcon />} isTransparent label="알림" />
+          <IconButton
+            icon={<NotificationIcon className="w-6 h-6" />}
+            isTransparent
+            label="알림"
+          />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
               <Image
