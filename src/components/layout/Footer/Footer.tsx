@@ -39,8 +39,8 @@ export const Footer = () => {
             >
               개인정보처리방침
             </Link>
-            <span className="hover:underline">
-              위치기반서비스 이용약관 (없음 수정필요)
+            <span className="hover:underline cursor-pointer">
+              위치기반서비스 이용약관
             </span>
           </div>
         </div>
