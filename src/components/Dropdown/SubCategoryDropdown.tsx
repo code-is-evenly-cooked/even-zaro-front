@@ -13,6 +13,7 @@ interface SubCategoryDropdownProps {
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   dropdownRef: React.RefObject<HTMLUListElement | null>;
   buttonWidth: number;
+  showAllOption?: boolean;
 }
 
 const SubCategoryDropdown = ({
@@ -60,6 +61,19 @@ const SubCategoryDropdown = ({
           className="absolute z-10 top-full mt-2 w-max bg-skyblue300 rounded-lg p-2 shadow-md text-gray900"
           style={{ minWidth: buttonWidth }}
         >
+          {showAllOption && (
+            <li
+              key="전체"
+              className={clsx(
+                "px-2 text-gray600 hover:text-gray600/80 cursor-pointer",
+                selectedSubCategory === null &&
+                  "font-bold text-gray900 hover:text-gray900",
+              )}
+              onClick={() => selectSubCategory(null)}
+            >
+              태그 선택
+            </li>
+          )}
           {subCategories.map((option) => (
             <li
               key={option.tag}

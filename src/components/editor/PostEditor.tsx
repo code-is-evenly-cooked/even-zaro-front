@@ -235,6 +235,7 @@ export default function PostEditor() {
               buttonRef={subButtonRef}
               dropdownRef={subDropdownRef}
               buttonWidth={subButtonWidth}
+              showAllOption={false}
             />
           )}
         </div>
