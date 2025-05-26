@@ -4,9 +4,9 @@ import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function Page({ params }: any) {
-  const post = await fetchPostDetail(params.postId);
+export default async function Page({ params }: { params: Promise<{ postId: string; category: string }> }) {
+  const { postId } = await params;
+  const post = await fetchPostDetail(postId);
   console.log("✅ 게시글 응답 데이터:", post);
 
   return (
