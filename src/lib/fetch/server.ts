@@ -25,7 +25,7 @@ export const server = async <T>(
   });
 
   const body = await res.json();
-  console.log(body);
+
   if ((res.status === 401 || res.status === 403) && retry) {
     const newToken = await refreshTokenSSR();
     if (!newToken) {
