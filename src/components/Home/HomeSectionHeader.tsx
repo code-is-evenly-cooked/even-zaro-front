@@ -18,7 +18,7 @@ const HomeSectionHeader = ({ category }: HomeSectionHeaderProps) => {
         href={`/board/${category}`}
         className="flex items-center justify-center text-gray600"
       >
-        <span className="text-xs">{"보러가기 >"}</span>
+        <span className="text-sm">{"보러가기 >"}</span>
       </Link>
     </div>
   );
