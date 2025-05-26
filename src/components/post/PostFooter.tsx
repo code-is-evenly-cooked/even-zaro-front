@@ -1,69 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { MessageCircle, Heart } from "lucide-react";
-import { likePost, unlikePost, getPostLikeStatus } from "@/lib/api/post.client";
 
 interface PostFooterProps {
   postId: number;
   likeCount: number;
   commentCount: number;
+  liked: boolean | null;
+  isReady: boolean;
+  onToggleLike: () => void;
 }
 
 export default function PostFooter({
-  postId,
-  likeCount: initialLikeCount,
+  likeCount,
   commentCount,
+  liked,
+  isReady,
+  onToggleLike,
 }: PostFooterProps) {
-  const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [liked, setLiked] = useState<boolean | null>(null);
-  const isReady = liked !== null;
-
-  // 좋아요 여부 조회
-  useEffect(() => {
-    const fetchLikeStatus = async () => {
-      try {
-        const liked = await getPostLikeStatus(postId);
-        console.log("서버 응답 liked 여부:", liked);
-        setLiked(liked);
-      } catch (error) {
-        console.error("좋아요 여부 조회 실패:", error);
-      }
-    };
-
-    fetchLikeStatus();
-  }, [postId]);
-
-  // 좋아요 토글 (낙관적 업데이트 방식 + 롤백 추가)
-  const handleToggleLike = async () => {
-    if (!isReady) return; // 상태 준비 전에는 버튼 사용 불가
-
-    const prevLiked = liked;
-    const prevCount = likeCount;
-
-    try {
-      // UI 우선 반영
-      setLiked(!prevLiked);
-      setLikeCount(prevCount + (prevLiked ? -1 : 1));
-
-      // 실제 API 호출
-      if (prevLiked) {
-        await unlikePost(postId);
-      } else {
-        await likePost(postId);
-      }
-    } catch (error) {
-      // 실패 시 UI 롤백
-      setLiked(prevLiked);
-      setLikeCount(prevCount);
-      console.error("좋아요 토글 실패:", error);
-    }
-  };
-
   return (
-    <div className="flex items-center gap-6 mt-8 text-gray-600">
+    <div className="flex items-center gap-6 text-gray-600">
       <button
-        onClick={handleToggleLike}
+        onClick={onToggleLike}
         disabled={!isReady}
         className="flex items-center gap-2"
       >
