@@ -34,15 +34,24 @@ export default function PostFooter({
 
   // 좋아요 토글
   const handleToggleLike = async () => {
+    const prevLiked = liked;
+    const prevCount = likeCount;
+
     try {
-      if (liked) {
+      // UI 우선 반영
+      setLiked(!prevLiked);
+      setLikeCount(prevCount + (prevLiked ? -1 : 1));
+
+      // 실제 API 호출
+      if (prevLiked) {
         await unlikePost(postId);
-        setLikeCount((prev) => prev - 1);
       } else {
         await likePost(postId);
-        setLikeCount((prev) => prev + 1);
       }
     } catch (error) {
+      // 실패 시 UI 롤백
+      setLiked(prevLiked);
+      setLikeCount(prevCount);
       console.error("좋아요 토글 실패:", error);
     }
   };
