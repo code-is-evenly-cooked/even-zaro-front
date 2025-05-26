@@ -2,7 +2,6 @@ import { fetchPostDetail } from "@/lib/api/post";
 import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
-import PostFooter from "@/components/post/PostFooter";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,11 +23,6 @@ export default async function Page({ params }: any) {
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
       />
       <PostContent content={post.data.content} />
-      <PostFooter
-        postId={post.data.postId}
-        likeCount={post.data.likeCount}
-        commentCount={post.data.commentCount}
-      />
       <PostFooterWithFloating
         postId={post.data.postId}
         likeCount={post.data.likeCount}
