@@ -22,7 +22,7 @@ const mockPost: PostDetailItem[] = [
     tag: "SHARING",
     likeCount: 12,
     commentCount: 4,
-    imageUrlList: [],
+    postImageList: [],
     createdAt: "2025-05-23T10:15:30",
     user: {
       userId: 1,

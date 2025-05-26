@@ -6,14 +6,14 @@ type PostState = {
   content: string;
   mainCategory: MainCategory | null;
   subCategory: SubCategoryValue | null;
-  imageUrlList: string[];
+  imageList: string[];
   thumbnailImage: string | null;
 
   setTitle: (title: string) => void;
   setContent: (content: string) => void;
   setMainCategory: (category: MainCategory | null) => void;
   setSubCategory: (tag: SubCategoryValue | null) => void;
-  setImageUrlList: (list: string[]) => void;
+  setImageList: (list: string[]) => void;
   setThumbnailImage: (url: string | null) => void;
   resetPost: () => void;
 };
@@ -23,14 +23,14 @@ export const usePostStore = create<PostState>((set) => ({
   content: "",
   mainCategory: null,
   subCategory: null,
-  imageUrlList: [],
+  imageList: [],
   thumbnailImage: null,
 
   setTitle: (title) => set({ title }),
   setContent: (content) => set({ content }),
   setMainCategory: (mainCategory) => set({ mainCategory }),
   setSubCategory: (subCategory) => set({ subCategory }),
-  setImageUrlList: (list) => set({ imageUrlList: list }),
+  setImageList: (list) => set({ imageList: list }),
   setThumbnailImage: (url) => set({ thumbnailImage: url }),
 
   resetPost: () =>
@@ -39,7 +39,7 @@ export const usePostStore = create<PostState>((set) => ({
       content: "",
       mainCategory: null,
       subCategory: null,
-      imageUrlList: [],
+      imageList: [],
       thumbnailImage: null,
     }),
 }));

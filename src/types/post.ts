@@ -23,7 +23,7 @@ export interface PostDetailItem {
   tag: string;
   likeCount: number;
   commentCount: number;
-  imageUrlList: string[];
+  postImageList: string[];
   createdAt: string;
   user: WriterInfo;
 }
