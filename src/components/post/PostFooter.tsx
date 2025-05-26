@@ -17,6 +17,7 @@ export default function PostFooter({
 }: PostFooterProps) {
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [liked, setLiked] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   // 좋아요 여부 조회
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function PostFooter({
       try {
         const liked = await getPostLikeStatus(postId);
         setLiked(liked);
+        setIsReady(true); // 버튼 사용 가능 여부
       } catch (error) {
         console.error("좋아요 여부 조회 실패:", error);
       }
@@ -32,8 +34,10 @@ export default function PostFooter({
     fetchLikeStatus();
   }, [postId]);
 
-  // 좋아요 토글
+  // 좋아요 토글 (낙관적 업데이트 방식 + 롤백 추가)
   const handleToggleLike = async () => {
+    if (!isReady) return; // 상태 준비 전에는 버튼 사용 불가
+
     const prevLiked = liked;
     const prevCount = likeCount;
 
@@ -58,7 +62,11 @@ export default function PostFooter({
 
   return (
     <div className="flex items-center gap-6 mt-8 text-gray-600">
-      <button onClick={handleToggleLike} className="flex items-center gap-2">
+      <button
+        onClick={handleToggleLike}
+        disabled={!isReady}
+        className="flex items-center gap-2"
+      >
         <Heart fill={liked ? "red" : "none"} size={20} />
         <span>{likeCount}</span>
       </button>
