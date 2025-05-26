@@ -119,13 +119,26 @@ export default async function PostListPage({ params }: PageProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
       <PostListComponent category={categoryKey} />
-      <div className="flex flex-col pr-10 pl-3">
-        {mockPost.map((post) => (
-          <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-            <PostListCard key={post.postId} post={post} />
-          </Link>
-        ))}
-      </div>
+      {categoryKey === "RANDOM_BUY" ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
+          {mockPost.map((post) => (
+            <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+              <PostImageCard
+                key={post.postId}
+                {...convertDetailToImagePostItem(post)}
+              />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col pt-4">
+          {mockPost.map((post) => (
+            <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+              <PostListCard key={post.postId} post={post} />
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
