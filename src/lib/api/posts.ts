@@ -1,15 +1,6 @@
-import { PostDetailItem } from "@/types/post";
-import { client } from "../fetch/client";
-import { QueryParams } from "../fetch/util/objectToQueryString";
+import { client } from "@/lib/fetch/client";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-// access_token 가져오기
-function getAccessToken(): string | null {
-  const match = document.cookie.match(/access_token=([^;]+)/);
-  return match ? match[1] : null;
-}
-
+// 게시글 작성
 export async function createPost(payload: {
   title: string;
   content: string;
@@ -18,39 +9,11 @@ export async function createPost(payload: {
   postImageList?: string[];
   thumbnailImage?: string | null;
 }): Promise<number> {
-  const token = getAccessToken();
-  if (!token) {
-    throw new Error("로그인 상태를 확인할 수 없습니다.");
-  }
-
-  const res = await fetch(`${API_BASE_URL}/posts`, {
+  return await client<number>("/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
   });
-
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message ?? "게시글 작성 실패");
-  }
-
-  const json = await res.json();
-  return json.data.postId;
 }
-
-export interface FetchPostsParams extends QueryParams {
-  category: string;
-  tag?: string;
-  page?: number;
-  size?: number;
-}
-
-export const fetchPosts = async (params: FetchPostsParams) => {
-  return await client<{ content: PostDetailItem[] }>("/posts", {
-    needAuth: true,
-    params,
-  });
-};
