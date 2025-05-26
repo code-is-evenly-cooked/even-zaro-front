@@ -12,6 +12,6 @@ export const convertDetailToImagePostItem = (
     commentCount: detail.commentCount,
     writerProfileImage: detail.user.profileImage,
     writerNickname: detail.user.nickname,
-    createAt: detail.createdAt,
+    createdAt: detail.createdAt,
   };
 };

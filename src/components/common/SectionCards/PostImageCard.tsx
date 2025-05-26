@@ -1,5 +1,5 @@
 import { ImagePostItem } from "@/types/post";
-import { getProfileImageUrl } from "@/utils/image";
+import { getImageUrl, getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
 
 const PostImageCard = ({
@@ -15,7 +15,7 @@ const PostImageCard = ({
     <div>
       <div className="relative w-full aspect-square">
         <Image
-          src={thumbnailImage}
+          src={getImageUrl(thumbnailImage)}
           alt={title}
           fill
           sizes="100%"

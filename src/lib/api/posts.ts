@@ -1,3 +1,7 @@
+import { PostDetailItem } from "@/types/post";
+import { client } from "../fetch/client";
+import { QueryParams } from "../fetch/util/objectToQueryString";
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // access_token 가져오기
@@ -36,3 +40,17 @@ export async function createPost(payload: {
   const json = await res.json();
   return json.data.postId;
 }
+
+export interface FetchPostsParams extends QueryParams {
+  category: string;
+  tag?: string;
+  page?: number;
+  size?: number;
+}
+
+export const fetchPosts = async (params: FetchPostsParams) => {
+  return await client<{ content: PostDetailItem[] }>("/posts", {
+    needAuth: true,
+    params,
+  });
+};

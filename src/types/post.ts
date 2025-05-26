@@ -1,7 +1,13 @@
+export interface PostHomeResponse {
+  together: CommonPostItem[];
+  dailyLife: CommonPostItem[];
+  randomBuy: CommonPostItem[];
+}
+
 export interface CommonPostItem {
   postId: number;
   title: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export interface ImagePostItem extends CommonPostItem {
@@ -14,6 +20,9 @@ export interface ImagePostItem extends CommonPostItem {
 }
 
 // detail
+export interface PostDetailResponse {
+  content: PostDetailItem[];
+}
 export interface PostDetailItem {
   postId: number;
   title: string;
