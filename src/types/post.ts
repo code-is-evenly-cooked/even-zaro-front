@@ -9,7 +9,7 @@ export interface ImagePostItem extends CommonPostItem {
   thumbnailImage: string;
   likeCount: number;
   commentCount: number;
-  writerProfileImage: string;
+  writerProfileImage: string | null;
   writerNickname: string;
 }
 
@@ -30,5 +30,5 @@ export interface PostDetailItem {
 export interface WriterInfo {
   userId: number;
   nickname: string;
-  profileImage: string;
+  profileImage: string | null;
 }

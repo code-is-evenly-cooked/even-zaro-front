@@ -172,16 +172,3 @@ export const ShoppingBagIcon = ({ className }: IconProps) => {
     />
   );
 };
-
-export const DefaultProfileIcon = ({ className }: IconProps) => {
-  return (
-    <Image
-      src="/icons/defaultProfile.svg"
-      alt="프로필이미지"
-      width={28}
-      height={28}
-      className={className}
-      priority
-    />
-  );
-};

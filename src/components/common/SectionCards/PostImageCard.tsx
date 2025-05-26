@@ -1,4 +1,5 @@
 import { ImagePostItem } from "@/types/post";
+import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
 
 const PostImageCard = ({
@@ -10,18 +11,23 @@ const PostImageCard = ({
   writerProfileImage,
   writerNickname,
 }: ImagePostItem) => {
-  const profileImage = writerProfileImage || "/icons/defaultProfile.svg";
   return (
     <div>
       <div className="relative w-full aspect-square">
-        <Image src={thumbnailImage} alt={title} fill className="object-cover" />
+        <Image
+          src={thumbnailImage}
+          alt={title}
+          fill
+          sizes="100%"
+          className="object-cover"
+        />
       </div>
       {/* 본문 */}
       <div className="pt-2 px-1 flex flex-col gap-2">
         {/* 작성자 */}
         <div className="flex items-center gap-1">
           <Image
-            src={profileImage}
+            src={getProfileImageUrl(writerProfileImage)}
             alt={writerNickname}
             width={20}
             height={20}
