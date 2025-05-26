@@ -30,7 +30,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/policy/terms",
     "/policy/privacy",
   ];
-  const hideSearchbar = pathname.startsWith("/board");
+  const hideSearchbarRoutes = ["/board", "/editor"];
 
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
@@ -52,7 +52,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="h-[3rem] px-4 sm:px-10 flex items-center justify-between">
+    <header className="h-12 min-h-12 flex items-center justify-between">
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
           <IconButton
@@ -84,7 +84,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2">
-          {!hideSearchbar && (
+          {!hideSearchbarRoutes.includes(pathname) && (
             <>
               <div className="hidden sm:block">
                 <Searchbar />

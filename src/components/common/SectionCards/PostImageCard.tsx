@@ -45,7 +45,7 @@ const PostImageCard = ({
           <h4 className=" text-sm text-gray600 line-clamp-1">{content}</h4>
         </div>
         {/* 좋아요, 댓글 */}
-        <div className="flex items-center justify-end pt-2 pr-1 text-xs font-light gap-2">
+        <div className="flex items-center justify-end pt-0.5 pr-1 text-xs font-light gap-2">
           <span>
             좋아요 <span className="font-bold">{likeCount}</span>개
           </span>

@@ -6,8 +6,8 @@ import clsx from "clsx";
 
 interface SubCategoryFilterProps {
   mainCategory: MainCategory;
-  selected: SubCategoryValue | "전체";
-  onSelect: (value: SubCategoryValue | "전체") => void;
+  selected: SubCategoryValue | null;
+  onSelect: (value: SubCategoryValue | null) => void;
 }
 
 const SubCategoryFilter = ({
@@ -20,10 +20,10 @@ const SubCategoryFilter = ({
   return (
     <div className="flex gap-2 items-start justify-start flex-wrap">
       <button
-        onClick={() => onSelect("전체")}
+        onClick={() => onSelect(null)}
         className={clsx(
           "px-3 py-1.5 rounded-lg text-sm gray900",
-          selected === "전체"
+          selected === null
             ? "bg-skyblue300 font-bold"
             : "bg-skyblue100 font-normal",
         )}

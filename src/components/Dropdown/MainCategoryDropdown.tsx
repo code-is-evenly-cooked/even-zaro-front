@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 
 interface MainCategoryDropdownProps {
-  selectedCategory: MainCategory | "전체";
+  selectedCategory: MainCategory | null;
   isDropdownOpen: boolean;
   toggleDropdown: () => void;
-  selectCategory: (category: MainCategory) => void;
+  selectCategory: (category: MainCategory | null) => void;
   buttonRef: React.RefObject<HTMLButtonElement | null>;
   dropdownRef: React.RefObject<HTMLUListElement | null>;
   buttonWidth: number;
@@ -32,7 +32,7 @@ const MainCategoryDropdown = ({
         className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
-        {selectedCategory === "전체"
+        {selectedCategory === null
           ? "전체"
           : getMainCategoryLabel(selectedCategory)}
         <ChevronDown className="w-4 h-4 ml-2" />
@@ -49,10 +49,10 @@ const MainCategoryDropdown = ({
               key="전체"
               className={clsx(
                 "px-2 text-gray600 hover:text-gray600/80 cursor-pointer",
-                selectedCategory === "전체" &&
+                selectedCategory === null &&
                   "font-bold text-gray900 hover:text-gray900",
               )}
-              onClick={() => selectCategory("TOGETHER")}
+              onClick={() => selectCategory(null)}
             >
               전체
             </li>
