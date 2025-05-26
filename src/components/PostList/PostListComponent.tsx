@@ -15,7 +15,7 @@ const PostListComponent = ({ category }: PostListComponentProps) => {
     useState<SubCategoryValue | null>(null);
   return (
     <div className="min-h-full flex flex-col pt-10 items-center">
-      <Searchbar />
+      <Searchbar mainCategory={category} />
       <div className="flex flex-col w-full pr-2 px-2 gap-7">
         <PostListHeader category={category} />
         <SubCategoryFilter
