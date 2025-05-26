@@ -92,8 +92,8 @@ export default function PostFooterWithFloating({
 
       {/* 플로팅 푸터 */}
       {showFloatingFooter && (
-        <div className="fixed bottom-0 left-0 w-full z-50 border-t bg-white shadow-md">
-          <div className="max-w-3xl mx-auto px-4 py-4">
+        <div className="fixed bottom-0 left-0 w-full px-4 z-50 border-t bg-white shadow-md">
+          <div className="max-w-3xl mx-auto px-2 py-3">
             <PostFooter {...sharedProps} />
           </div>
         </div>

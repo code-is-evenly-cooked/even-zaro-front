@@ -10,7 +10,7 @@ export default async function Page({ params }: any) {
   console.log("✅ 게시글 응답 데이터:", post);
 
   return (
-    <main className="w-full max-w-3xl mx-auto px-4 py-10">
+    <main className="w-full max-w-3xl mx-auto px-2 py-10">
       <PostHeader
         category={post.data.category}
         tag={post.data.tag}
