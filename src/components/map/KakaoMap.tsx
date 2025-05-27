@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import SideMenu from "./SideMenu";
 
 // Kakao 객체를 전역 선언합니다.
 declare global {
@@ -181,128 +182,11 @@ export default function KakaoMap() {
     document.head.appendChild(script);
   }, [searchInput]);
 
-  // 위도와 경도 기반으로 거리 계산
-  function getDistance(lat1: number, lng1: number, lat2: number, lng2: number) {
-    const R = 6371e3;
-    const toRad = Math.PI / 180;
-    const dLat = (lat2 - lat1) * toRad;
-    const dLng = (lng2 - lng1) * toRad;
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) * Math.sin(dLng / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  }
-
-  // 필터와 정렬을 적용한 장소 리스트 표시
-  const filteredPlaces = placeList
-    .filter((place) => place.category_group_code === activeTab)
-    .sort((a, b) => {
-      if (sortType === "name") return a.place_name.localeCompare(b.place_name);
-      if (sortType === "distance" && userCoords) {
-        const distA = getDistance(
-          userCoords.lat,
-          userCoords.lng,
-          parseFloat(a.y),
-          parseFloat(a.x),
-        );
-        const distB = getDistance(
-          userCoords.lat,
-          userCoords.lng,
-          parseFloat(b.y),
-          parseFloat(b.x),
-        );
-        return distA - distB;
-      }
-      return 0;
-    });
-
   return (
     <>
-      {/* 주소 검색창 */}
-      <div className="flex items-center gap-2 mb-2">
-        <input
-          type="text"
-          placeholder="주소 또는 장소 검색"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          className="border px-3 py-1 rounded w-80"
-        />
-        <button
-          onClick={() => (window as any).handleSearch()}
-          className="px-4 py-1 bg-blue-500 text-white rounded"
-        >
-          검색
-        </button>
-      </div>
-
-      {/* 현재 주소 표시 */}
-      {/* {currentAddress && (
-        <div className="mb-2 text-sm text-gray-600">
-          현재 위치: {currentAddress}
-        </div>
-      )} */}
-
       {/* <div ref={mapRef} className="w-[500px] h-[400px] bg-gray-100" /> */}
       <div ref={mapRef} className="w-screen h-screen bg-gray-100" />
-
-      {/* <div className="flex space-x-4 mt-4">
-        <button
-          className={`px-4 py-2 rounded ${activeTab === "FD6" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-          onClick={() => setActiveTab("FD6")}
-        >
-          음식점
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${activeTab === "CE7" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
-          onClick={() => setActiveTab("CE7")}
-        >
-          카페
-        </button>
-      </div> */}
-
-      {/* <div className="flex space-x-2 mt-2">
-        <button
-          className={`text-sm px-3 py-1 rounded border ${sortType === "distance" ? "bg-blue-100 text-blue-800" : "bg-white"}`}
-          onClick={() => setSortType("distance")}
-        >
-          거리순
-        </button>
-        <button
-          className={`text-sm px-3 py-1 rounded border ${sortType === "name" ? "bg-blue-100 text-blue-800" : "bg-white"}`}
-          onClick={() => setSortType("name")}
-        >
-          이름순
-        </button>
-      </div> */}
-
-      {/* <div className="mt-4 border border-gray-300 rounded overflow-hidden">
-        <div className="grid grid-cols-3 bg-gray-100 text-sm font-semibold text-gray-700">
-          <div className="p-2">이름</div>
-          <div className="p-2">주소</div>
-          <div className="p-2">카테고리</div>
-        </div>
-        {filteredPlaces.map((place, idx) => (
-          <div
-            key={place.id || idx}
-            className="grid grid-cols-3 text-sm border-t border-gray-200"
-          >
-            <a
-              className="p-2 text-blue-600 hover:underline cursor-pointer"
-              href={place.place_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {place.place_name}
-            </a>
-            <div className="p-2 text-gray-700">
-              {place.road_address_name || place.address_name}
-            </div>
-            <div className="p-2 text-gray-500 text-xs">
-              {place.category_group_name}
-            </div>
-          </div>
-        ))}
-      </div> */}
+      <SideMenu />
     </>
   );
 }
