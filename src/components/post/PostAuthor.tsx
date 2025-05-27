@@ -1,15 +1,27 @@
+"use client";
+
+import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
 
 interface PostAuthorProps {
   nickname: string;
   profileImage: string | null;
+  liveAloneDate: string | null;
 }
 
 export default function PostAuthor({
   nickname,
-  profileImage: profileImage,
+  profileImage,
+  liveAloneDate,
 }: PostAuthorProps) {
+  
+  // 자취 기간 디데이 표시
+  const days =
+    liveAloneDate != null
+      ? differenceInDays(new Date(), new Date(liveAloneDate))
+      : null;
+
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
       <div className="flex items-center gap-4">
@@ -21,6 +33,9 @@ export default function PostAuthor({
           className="rounded-full object-cover"
         />
         <span className="font-medium text-gray900">{nickname}</span>
+        {days !== null && (
+          <div className="text-sm text-gray-500">( D +{days} )</div>
+        )}
       </div>
 
       <button className="text-sm px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600">
