@@ -2,25 +2,32 @@
 
 import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
+import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
 
 interface PostAuthorProps {
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;
+  authorUserId: number;
 }
 
 export default function PostAuthor({
   nickname,
   profileImage,
   liveAloneDate,
+  authorUserId,
 }: PostAuthorProps) {
-  
+  const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
+
   // 자취 기간 디데이 표시
   const days =
     liveAloneDate != null
       ? differenceInDays(new Date(), new Date(liveAloneDate))
       : null;
+
+  // 글 작성자와 로그인 유저가 같은 지 확인
+  const isMine = currentUserId === authorUserId;
 
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
@@ -38,9 +45,12 @@ export default function PostAuthor({
         )}
       </div>
 
-      <button className="text-sm px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600">
-        팔로우
-      </button>
+      {/* 팔로우 버튼 */}
+      {!isMine && (
+        <button className="text-sm px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600">
+          팔로우
+        </button>
+      )}
     </div>
   );
 }
