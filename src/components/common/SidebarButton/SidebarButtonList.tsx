@@ -6,11 +6,7 @@ const buttons = [
   { title: "홈", icon: <HomeIcon />, href: "/" },
   { title: "같이 쓰자", icon: <TogetherIcon />, href: "/board/TOGETHER" },
   { title: "자취 일상", icon: <TipIcon />, href: "/board/DAILY_LIFE" },
-  {
-    title: "아무거나 샀어요",
-    icon: <ShoppingBagIcon />,
-    href: "/board/RANDOM_BUY",
-  },
+  { title: "텅장 일기", icon: <ShoppingBagIcon />, href: "/board/RANDOM_BUY" },
 ];
 
 interface SidebarButtonListProps {

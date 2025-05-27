@@ -138,7 +138,7 @@ export const ShoppingBagIcon = ({ className }: IconProps) => {
   return (
     <Image
       src="/icons/shoppingBag.svg"
-      alt="아무거나 샀어요"
+      alt="텅장 일기"
       width={24}
       height={24}
       className={className}
