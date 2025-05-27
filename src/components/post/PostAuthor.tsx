@@ -49,7 +49,7 @@ export default function PostAuthor({
       setIsCheckingFollow(false);
     };
     fetch();
-  }, [currentUserId, authorUserId]);
+  }, [currentUserId, authorUserId, isMine]);
 
   // 팔로우 버튼 토글
   const handleToggleFollow = async () => {
