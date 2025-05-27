@@ -46,7 +46,7 @@ const PostListPagination = ({
   const showPrevNext = totalPage > visiblePages;
 
   return (
-    <div className="flex justify-center items-center gap-1">
+    <div className="flex justify-center items-center gap-1 pt-8">
       {/* 이전 버튼 */}
       {showPrevNext && (
         <IconButton
