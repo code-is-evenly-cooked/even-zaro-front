@@ -4,6 +4,8 @@ import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { fetchFollowings } from "@/lib/api/follow"
 
 interface PostAuthorProps {
   nickname: string;
@@ -19,6 +21,7 @@ export default function PostAuthor({
   authorUserId,
 }: PostAuthorProps) {
   const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
+  const [isFollowing, setIsFollowing] = useState(false);
 
   // 자취 기간 디데이 표시
   const days =
@@ -28,6 +31,20 @@ export default function PostAuthor({
 
   // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
+
+  // 팔로잉 여부 확인
+  useEffect(() => {
+    const fetch = async () => {
+      if (!currentUserId || isMine) return;
+
+      const followings = await fetchFollowings(currentUserId); // 리스트 전체
+      console.log("✅ followings 리스트:", followings);
+      const isFollowing = followings.some((user) => user.userId === authorUserId);
+      console.log("✅ 현재 팔로우 여부:", isFollowing);
+      setIsFollowing(isFollowing);
+    };
+    fetch();
+  }, [currentUserId, authorUserId]);
 
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
