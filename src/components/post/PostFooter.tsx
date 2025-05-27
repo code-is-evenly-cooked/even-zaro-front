@@ -6,7 +6,7 @@ interface PostFooterProps {
   postId: number;
   likeCount: number;
   commentCount: number;
-  liked: boolean | null;
+  liked: boolean;
   isReady: boolean;
   onToggleLike: () => void;
 }

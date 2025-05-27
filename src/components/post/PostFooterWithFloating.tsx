@@ -19,7 +19,7 @@ export default function PostFooterWithFloating({
   const [showFloatingFooter, setShowFloatingFooter] = useState(true);
 
   const [likeCount, setLikeCount] = useState(initialLikeCount);
-  const [liked, setLiked] = useState<boolean | null>(null);
+  const [liked, setLiked] = useState(false);
   const isReady = liked !== null;
 
   // 좋아요 여부 조회
