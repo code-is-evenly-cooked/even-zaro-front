@@ -10,6 +10,8 @@ declare global {
 }
 
 export default function KakaoMap() {
+  const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY; // 카카오지도 api
+
   const mapRef = useRef<HTMLDivElement>(null);
   const [placeList, setPlaceList] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<"FD6" | "CE7">("FD6");
@@ -24,7 +26,7 @@ export default function KakaoMap() {
   useEffect(() => {
     const script = document.createElement("script");
     // 여기에 카카오 sdk appkey 본인 꺼 집어넣으시면 됩니다
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false&libraries=services`;
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
     script.async = true;
 
     script.onload = () => {
