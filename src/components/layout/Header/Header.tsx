@@ -2,10 +2,10 @@
 
 import IconButton from "@/components/common/Button/IconButton";
 import {
-  LogoLineIcon,
-  SearchIcon,
-  NotificationIcon,
   DefaultProfileIcon,
+  LogoLineIcon,
+  NotificationIcon,
+  SearchIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -27,6 +27,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/password-forget",
     "/password-reset",
     "/email-validation",
+    "/map",
   ];
   const hideSearchbar = pathname.startsWith("/board");
 
