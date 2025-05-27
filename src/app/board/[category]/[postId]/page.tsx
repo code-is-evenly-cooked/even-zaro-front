@@ -21,6 +21,7 @@ export default async function Page({ params }: { params: Promise<{ postId: strin
         nickname={post.data.user.nickname}
         profileImage={post.data.user.profileImage}
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
+        authorUserId={post.data.user.userId}
       />
       <PostContent content={post.data.content} />
       <PostFooterWithFloating
