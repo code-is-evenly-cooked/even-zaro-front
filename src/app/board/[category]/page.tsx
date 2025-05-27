@@ -9,7 +9,7 @@ import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ tag?: string; page?: string }>;
 }
 
 export default async function PostListPage({
@@ -17,7 +17,7 @@ export default async function PostListPage({
   searchParams,
 }: PageProps) {
   const { category } = await params;
-  const { tag } = await searchParams;
+  const { tag, page } = await searchParams;
 
   if (!isMainCategory(category)) {
     notFound();
@@ -25,7 +25,7 @@ export default async function PostListPage({
   const categoryKey = category as MainCategory;
   const posts = await server<PostDetailResponse>(`/posts`, {
     needAuth: true,
-    params: { category, ...(tag ? { tag } : {}) },
+    params: { category, ...(tag ? { tag } : {}), page: Number(page) || 0 },
   });
 
   return (
