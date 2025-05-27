@@ -14,7 +14,11 @@ export default function SideMenu() {
   const [openModal, setOpenModal] = useState(true);
 
   return (
-    <div className="flex flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-0 z-10 bg-white shadow-md">
+    <div
+      className={`flex flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-0 z-10 shadow-md transition-colors duration-300 ${
+        openModal ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <ul className="flex flex-col items-center justify-center space-y-6 w-full h-full">
         {/*  메뉴 토글 버튼 (LogoIcon) */}
         <li onClick={() => setOpenModal(!openModal)} className="cursor-pointer">
