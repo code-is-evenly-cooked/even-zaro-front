@@ -1,7 +1,7 @@
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import PostImageCard from "@/components/common/SectionCards/PostImageCard";
 import PostListCard from "@/components/common/SectionCards/PostListCard";
-import PostListComponent from "@/components/PostList/PostListComponent";
+import PostListHeaderSection from "@/components/PostList/PostListHeaderSection";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
 import { ImagePostDetailItem, PostDetailResponse } from "@/types/post";
@@ -34,7 +34,7 @@ export default async function PostListPage({
 
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto">
-      <PostListComponent category={categoryKey} />
+      <PostListHeaderSection category={categoryKey} />
 
       {isEmpty ? (
         <FallbackMessage

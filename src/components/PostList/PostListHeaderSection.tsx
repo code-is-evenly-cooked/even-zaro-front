@@ -8,11 +8,11 @@ import PostListHeader from "./PostListHeader";
 import SubCategoryFilter from "./SubCategoryFilter";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-interface PostListComponentProps {
+interface PostListHeaderSectionProps {
   category: MainCategory;
 }
 
-const PostListComponent = ({ category }: PostListComponentProps) => {
+const PostListHeaderSection = ({ category }: PostListHeaderSectionProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -54,4 +54,4 @@ const PostListComponent = ({ category }: PostListComponentProps) => {
   );
 };
 
-export default PostListComponent;
+export default PostListHeaderSection;
