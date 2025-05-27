@@ -37,7 +37,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const { user } = useAuthStore();
 
   // SSE 연결 시도
-  useSse(user?.userId);
+  useSse();
 
   useEffect(() => {
     const handleResize = () => {

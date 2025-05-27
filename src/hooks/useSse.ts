@@ -1,8 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
-const useSse = (userId: number | undefined) => {
+const useSse = () => {
+  const { user } = useAuthStore();
+  const eventSourceRef = useRef<EventSource | null>(null);
+
   useEffect(() => {
-    if (userId === undefined) return;
+    if (!user?.userId) return;
+
+    // 이전 연결 종료 (로그인 완료 감지 시 재연결)
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
 
     const eventSource = new EventSource(
       `http://localhost:8080/api/notifications/subscribe`,
@@ -27,7 +36,7 @@ const useSse = (userId: number | undefined) => {
       console.log("🛑 SSE 연결 종료");
       eventSource.close();
     };
-  }, [userId]);
+  }, [user?.userId]);
 };
 
 export default useSse;
