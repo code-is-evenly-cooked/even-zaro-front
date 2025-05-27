@@ -5,7 +5,7 @@ import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { fetchFollowings } from "@/lib/api/follow"
+import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 
 interface PostAuthorProps {
   nickname: string;
@@ -22,6 +22,7 @@ export default function PostAuthor({
 }: PostAuthorProps) {
   const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 자취 기간 디데이 표시
   const days =
@@ -39,12 +40,32 @@ export default function PostAuthor({
 
       const followings = await fetchFollowings(currentUserId); // 리스트 전체
       console.log("✅ followings 리스트:", followings);
-      const isFollowing = followings.some((user) => user.userId === authorUserId);
+      const isFollowing = followings.some(
+        (user) => user.userId === authorUserId,
+      );
       console.log("✅ 현재 팔로우 여부:", isFollowing);
       setIsFollowing(isFollowing);
     };
     fetch();
   }, [currentUserId, authorUserId]);
+
+  // 팔로우 버튼 토글
+  const handleToggleFollow = async () => {
+    try {
+      setIsLoading(true);
+      if (isFollowing) {
+        await unfollowUser(authorUserId);
+        setIsFollowing(false);
+      } else {
+        await followUser(authorUserId);
+        setIsFollowing(true);
+      }
+    } catch (e) {
+      console.error("팔로우 토글 실패", e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
@@ -64,8 +85,16 @@ export default function PostAuthor({
 
       {/* 팔로우 버튼 */}
       {!isMine && (
-        <button className="text-sm px-8 py-2 rounded-3xl bg-violet300 text-gray900 hover:bg-opacity-70">
-          팔로우
+        <button
+          onClick={handleToggleFollow}
+          disabled={isLoading}
+          className={`text-sm px-8 py-2 rounded-3xl ${
+            isFollowing
+              ? "bg-gray200 text-gray800"
+              : "bg-violet300 text-gray900 hover:bg-opacity-70"
+          }`}
+        >
+          {isLoading ? "처리 중..." : isFollowing ? "팔로잉" : "팔로우"}
         </button>
       )}
     </div>
