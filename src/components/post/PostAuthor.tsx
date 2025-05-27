@@ -22,6 +22,7 @@ export default function PostAuthor({
 }: PostAuthorProps) {
   const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isCheckingFollow, setIsCheckingFollow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   // 자취 기간 디데이 표시
@@ -43,25 +44,30 @@ export default function PostAuthor({
       const isFollowing = followings.some(
         (user) => user.userId === authorUserId,
       );
-      console.log("✅ 현재 팔로우 여부:", isFollowing);
       setIsFollowing(isFollowing);
+      console.log("✅ 현재 팔로우 여부:", isFollowing);
+      setIsCheckingFollow(false);
     };
     fetch();
   }, [currentUserId, authorUserId]);
 
   // 팔로우 버튼 토글
   const handleToggleFollow = async () => {
+    if (isLoading) return;
+
+    const prev = isFollowing;
+    setIsFollowing(!prev);
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      if (isFollowing) {
+      if (prev) {
         await unfollowUser(authorUserId);
-        setIsFollowing(false);
       } else {
         await followUser(authorUserId);
-        setIsFollowing(true);
       }
     } catch (e) {
-      console.error("팔로우 토글 실패", e);
+      console.error("❌ 팔로우 토글 실패", e);
+      setIsFollowing(prev); // 실패 시 롤백
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +90,7 @@ export default function PostAuthor({
       </div>
 
       {/* 팔로우 버튼 */}
-      {!isMine && (
+      {!isMine && !isCheckingFollow && (
         <button
           onClick={handleToggleFollow}
           disabled={isLoading}
