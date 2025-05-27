@@ -7,7 +7,6 @@ import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
 import "@toast-ui/editor/dist/i18n/ko-kr";
-import MainCategoryDropdown from "@/components/Dropdown/MainCategoryDropdown";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { createPost } from "@/lib/api/posts";
@@ -17,6 +16,7 @@ import { MainCategory } from "@/types/category";
 import { useRestoreDraft } from "@/hooks/useRestoreDraft";
 import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useSearchParams } from "next/navigation";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
@@ -35,6 +35,15 @@ export default function PostEditor() {
     setThumbnailImage,
     resetPost,
   } = usePostStore();
+
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") as MainCategory | null;
+
+  useEffect(() => {
+    if (category) {
+      setMainCategory(category);
+    }
+  }, [mainCategory, category, setMainCategory]);
 
   // 에디터 툴바 아이템 (모바일 구분)
   const [isMobile] = useState(() => {
@@ -92,19 +101,10 @@ export default function PostEditor() {
     "Unordered list": "글머리 기호",
   });
 
-  const [openDropdown, setOpenDropdown] = useState<"main" | "sub" | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<"sub" | null>(null);
   const subButtonRef = useRef<HTMLButtonElement | null>(null);
-  const mainDropdownRef = useRef<HTMLUListElement | null>(null);
   const subDropdownRef = useRef<HTMLUListElement | null>(null);
-  const [buttonWidth, setButtonWidth] = useState(0);
   const [subButtonWidth, setSubButtonWidth] = useState(0);
-
-  useLayoutEffect(() => {
-    if (buttonRef.current) {
-      setButtonWidth(buttonRef.current.offsetWidth);
-    }
-  }, [mainCategory]);
 
   useLayoutEffect(() => {
     if (subButtonRef.current) {
@@ -116,9 +116,7 @@ export default function PostEditor() {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
       if (
-        buttonRef.current?.contains(target) ||
         subButtonRef.current?.contains(target) ||
-        mainDropdownRef.current?.contains(target) ||
         subDropdownRef.current?.contains(target)
       ) {
         return;
@@ -202,23 +200,6 @@ export default function PostEditor() {
     >
       <div className="flex justify-between items-center">
         <div className="my-4 flex gap-2 items-center">
-          <MainCategoryDropdown
-            selectedCategory={mainCategory}
-            isDropdownOpen={openDropdown === "main"}
-            toggleDropdown={() =>
-              setOpenDropdown((prev) => (prev === "main" ? null : "main"))
-            }
-            selectCategory={(c: MainCategory | null) => {
-              setMainCategory(c);
-              setSubCategory(null);
-              setOpenDropdown(null);
-            }}
-            buttonRef={buttonRef}
-            dropdownRef={mainDropdownRef}
-            buttonWidth={buttonWidth}
-            showAllOption={false}
-          />
-
           {mainCategory && (
             <SubCategoryDropdown
               selectedMainCategory={mainCategory}

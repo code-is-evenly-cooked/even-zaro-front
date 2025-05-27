@@ -25,6 +25,7 @@ export interface PostDetailResponse {
   totalPages: number;
   number: number;
 }
+
 export interface CommonPostDetailItem {
   postId: number;
   title: string;
