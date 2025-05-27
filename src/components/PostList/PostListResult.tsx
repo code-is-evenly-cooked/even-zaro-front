@@ -2,11 +2,7 @@
 
 import { fetchPosts } from "@/lib/api/posts";
 import { MainCategory, SubCategoryValue } from "@/types/category";
-import {
-  CommonPostDetailItem,
-  ImagePostDetailItem,
-  PostDetailResponse,
-} from "@/types/post";
+import { ImagePostDetailItem, PostDetailResponse } from "@/types/post";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
@@ -16,10 +12,10 @@ import PostListCard from "../common/SectionCards/PostListCard";
 
 interface PostListResultProps {
   category: MainCategory;
-  initialPosts: (CommonPostDetailItem | ImagePostDetailItem)[];
+  initialData: PostDetailResponse;
 }
 
-const PostListResult = ({ category, initialPosts }: PostListResultProps) => {
+const PostListResult = ({ category, initialData }: PostListResultProps) => {
   const searchParams = useSearchParams();
 
   const tag = searchParams.get("tag") as SubCategoryValue | null;
@@ -28,7 +24,7 @@ const PostListResult = ({ category, initialPosts }: PostListResultProps) => {
   const { data } = useQuery<PostDetailResponse>({
     queryKey: ["posts", category, tag, page],
     queryFn: () => fetchPosts({ category, tag: tag ?? undefined, page }),
-    initialData: { content: initialPosts },
+    initialData: initialData,
   });
 
   const posts = data.content ?? [];

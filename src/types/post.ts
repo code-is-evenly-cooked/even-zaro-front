@@ -22,6 +22,8 @@ export interface ImagePostItem extends CommonPostItem {
 // detail
 export interface PostDetailResponse {
   content: CommonPostDetailItem[];
+  totalPages: number;
+  number: number;
 }
 export interface CommonPostDetailItem {
   postId: number;

@@ -1,4 +1,5 @@
 import PostListHeaderSection from "@/components/PostList/PostListHeaderSection";
+import PostListPagination from "@/components/PostList/PostListPagination";
 import PostListResult from "@/components/PostList/PostListResult";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
@@ -32,7 +33,15 @@ export default async function PostListPage({
       <PostListHeaderSection category={categoryKey} />
       <PostListResult
         category={categoryKey}
-        initialPosts={posts.content ?? []}
+        initialData={{
+          content: posts.content,
+          totalPages: posts.totalPages,
+          number: posts.number,
+        }}
+      />
+      <PostListPagination
+        currentPage={posts.number}
+        totalPage={posts.totalPages}
       />
     </div>
   );
