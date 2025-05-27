@@ -1,5 +1,9 @@
 import { ImagePostDetailItem } from "@/types/post";
-import { getImageUrl, getProfileImageUrl } from "@/utils/image";
+import {
+  getImageUrl,
+  getProfileImageUrl,
+  removeMarkdownImages,
+} from "@/utils/image";
 import Image from "next/image";
 
 const PostImageCard = ({
@@ -45,7 +49,9 @@ const PostImageCard = ({
           <h3 className="text-base font-semibold text-gray900 line-clamp-2">
             {title}
           </h3>
-          <h4 className=" text-sm text-gray600 line-clamp-1">{content}</h4>
+          <h4 className=" text-sm text-gray600 line-clamp-1">
+            {removeMarkdownImages(content)}
+          </h4>
         </div>
         {/* 좋아요, 댓글 */}
         <div className="flex items-center justify-end pt-0.5 pr-1 text-xs font-light gap-2">

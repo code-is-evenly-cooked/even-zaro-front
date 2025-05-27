@@ -4,10 +4,13 @@ import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 
-export default async function Page({ params }: { params: Promise<{ postId: string; category: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ postId: string; category: string }>;
+}) {
   const { postId } = await params;
   const post = await fetchPostDetail(postId);
-  console.log("✅ 게시글 응답 데이터:", post);
 
   return (
     <main className="w-full max-w-3xl mx-auto px-2 py-10">
