@@ -15,11 +15,11 @@ interface SidebarButtonListProps {
 
 const SidebarButtonList = ({ onItemClick }: SidebarButtonListProps) => {
   return (
-    <div>
+    <ul>
       {buttons.map((button) => (
         <SidebarButton key={button.title} {...button} onClick={onItemClick} />
       ))}
-    </div>
+    </ul>
   );
 };
 
