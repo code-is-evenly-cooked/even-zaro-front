@@ -1,4 +1,6 @@
 import { client } from "@/lib/fetch/client";
+import { QueryParams } from "../fetch/util/objectToQueryString";
+import { PostDetailItem } from "@/types/post";
 
 // 게시글 작성
 export async function createPost(payload: {
@@ -17,3 +19,17 @@ export async function createPost(payload: {
     body: JSON.stringify(payload),
   });
 }
+
+export interface FetchPostsParams extends QueryParams {
+  category: string;
+  tag?: string;
+  page?: number;
+  size?: number;
+}
+
+export const fetchPosts = async (params: FetchPostsParams) => {
+  return await client<{ content: PostDetailItem[] }>("/posts", {
+    needAuth: true,
+    params,
+  });
+};
