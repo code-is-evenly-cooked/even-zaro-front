@@ -2,10 +2,9 @@ import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import PostImageCard from "@/components/common/SectionCards/PostImageCard";
 import PostListCard from "@/components/common/SectionCards/PostListCard";
 import PostListComponent from "@/components/PostList/PostListComponent";
-import { convertDetailToImagePostItem } from "@/lib/adapters/normalizePost";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
-import { PostDetailResponse } from "@/types/post";
+import { ImagePostDetailItem, PostDetailResponse } from "@/types/post";
 import { isMainCategory } from "@/utils/category";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -39,9 +38,9 @@ export default async function PostListPage({ params }: PageProps) {
         />
       ) : categoryKey === "RANDOM_BUY" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
-          {posts.content.map((post) => (
+          {(posts.content as ImagePostDetailItem[]).map((post) => (
             <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-              <PostImageCard {...convertDetailToImagePostItem(post)} />
+              <PostImageCard {...post} />
             </Link>
           ))}
         </div>
