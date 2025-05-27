@@ -19,7 +19,7 @@ export default function PostFooter({
   onToggleLike,
 }: PostFooterProps) {
   return (
-    <div className="flex items-center gap-6 text-gray-600">
+    <div className="flex items-center gap-6 text-gray600">
       <button
         onClick={onToggleLike}
         disabled={!isReady}
