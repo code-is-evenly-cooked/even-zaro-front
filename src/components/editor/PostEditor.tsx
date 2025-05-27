@@ -12,7 +12,7 @@ import MainCategoryDropdown from "@/components/Dropdown/MainCategoryDropdown";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { createPost } from "@/lib/api/posts";
-import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
+import { extractImageKeys, extractThumbnailKey } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
 import { useRestoreDraft } from "@/hooks/useRestoreDraft";
@@ -163,8 +163,8 @@ export default function PostEditor() {
         return;
       }
 
-      const imageUrls = extractImageUrls(content);
-      const thumbnail = extractThumbnailUrl(content);
+      const imageUrls = extractImageKeys(content);
+      const thumbnail = extractThumbnailKey(content);
 
       setImageList(imageUrls);
       setThumbnailImage(thumbnail);
