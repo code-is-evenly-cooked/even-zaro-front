@@ -41,3 +41,13 @@ export const getImageUrl = (src: string | null): string => {
   const normalizedPath = src.replace(/^\/?/, "/"); // 슬래시 없으면 추가
   return `${baseUrl}${normalizedPath}`;
 };
+
+/**
+ * 마크다운 이미지 태그 (![alt](url))를 제거한 문자열을 반환합니다.
+ * @param content 마크다운 콘텐츠 문자열
+ * @returns 이미지 태그가 제거된 문자열
+ */
+export function removeMarkdownImages(content: string): string {
+  console.log(content);
+  return content.replace(/!\[.*?\]\(.*?\)/g, "");
+}

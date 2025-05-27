@@ -14,6 +14,7 @@ const config = {
         gray900: "#22242B",
         gray600: "#73767E",
         gray200: "#EBECEF",
+        gray100: "#F5F5F5",
 
         skyblue100: "#EAEDF7",
         skyblue200: "#EBEDF8",

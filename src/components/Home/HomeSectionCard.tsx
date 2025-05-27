@@ -2,11 +2,11 @@ import React from "react";
 import HomeSectionHeader from "./HomeSectionHeader";
 import HomeSectionListItem from "./HomeSectionListItem";
 import { CommonPostItem, ImagePostItem } from "@/types/post";
-import PostImageCard from "../common/SectionCards/PostImageCard";
 import clsx from "clsx";
 import Link from "next/link";
 import { MainCategory } from "@/types/category";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
+import HomeSectionImageItem from "./HomeSectionImageItem";
 
 interface HomeSectionProps {
   category: MainCategory;
@@ -37,7 +37,7 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
           {items.map((item) => (
             <Link href={`/board/${category}/${item.postId}`} key={item.postId}>
-              <PostImageCard key={item.postId} {...item} />
+              <HomeSectionImageItem key={item.postId} {...item} />
             </Link>
           ))}
         </ul>

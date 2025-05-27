@@ -6,9 +6,7 @@ import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
-import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
-import MainCategoryDropdown from "@/components/Dropdown/MainCategoryDropdown";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { createPost } from "@/lib/api/posts";
@@ -19,6 +17,7 @@ import { useRestoreDraft } from "@/hooks/useRestoreDraft";
 import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
@@ -38,6 +37,15 @@ export default function PostEditor() {
     setThumbnailImage,
     resetPost,
   } = usePostStore();
+
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") as MainCategory | null;
+
+  useEffect(() => {
+    if (category) {
+      setMainCategory(category);
+    }
+  }, [mainCategory, category, setMainCategory]);
 
   // 에디터 툴바 아이템 (모바일 구분)
   const [isMobile] = useState(() => {
@@ -95,19 +103,10 @@ export default function PostEditor() {
     "Unordered list": "글머리 기호",
   });
 
-  const [openDropdown, setOpenDropdown] = useState<"main" | "sub" | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<"sub" | null>(null);
   const subButtonRef = useRef<HTMLButtonElement | null>(null);
-  const mainDropdownRef = useRef<HTMLUListElement | null>(null);
   const subDropdownRef = useRef<HTMLUListElement | null>(null);
-  const [buttonWidth, setButtonWidth] = useState(0);
   const [subButtonWidth, setSubButtonWidth] = useState(0);
-
-  useLayoutEffect(() => {
-    if (buttonRef.current) {
-      setButtonWidth(buttonRef.current.offsetWidth);
-    }
-  }, [mainCategory]);
 
   useLayoutEffect(() => {
     if (subButtonRef.current) {
@@ -119,9 +118,7 @@ export default function PostEditor() {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
       if (
-        buttonRef.current?.contains(target) ||
         subButtonRef.current?.contains(target) ||
-        mainDropdownRef.current?.contains(target) ||
         subDropdownRef.current?.contains(target)
       ) {
         return;
@@ -206,23 +203,6 @@ export default function PostEditor() {
     >
       <div className="flex justify-between items-center">
         <div className="my-4 flex gap-2 items-center">
-          <MainCategoryDropdown
-            selectedCategory={mainCategory}
-            isDropdownOpen={openDropdown === "main"}
-            toggleDropdown={() =>
-              setOpenDropdown((prev) => (prev === "main" ? null : "main"))
-            }
-            selectCategory={(c: MainCategory | null) => {
-              setMainCategory(c);
-              setSubCategory(null);
-              setOpenDropdown(null);
-            }}
-            buttonRef={buttonRef}
-            dropdownRef={mainDropdownRef}
-            buttonWidth={buttonWidth}
-            showAllOption={false}
-          />
-
           {mainCategory && (
             <SubCategoryDropdown
               selectedMainCategory={mainCategory}
@@ -241,32 +221,6 @@ export default function PostEditor() {
               showAllOption={false}
             />
           )}
-        </div>
-
-        {/* 임시 저장 버튼 */}
-        <div>
-          <BaseButton
-            type="button"
-            leftIcon={<SaveIcon />}
-            size="md"
-            color="skyblue300"
-            onClick={() => {
-              const instance = editorRef.current?.getInstance();
-              if (!instance) {
-                showToastMessage({
-                  message: "에디터 사용 중 문제가 발생했습니다.",
-                  type: "error",
-                });
-                return;
-              }
-              const content = instance.getMarkdown();
-              saveDraft({ title, mainCategory, subCategory, content });
-              showToastMessage({ message: "임시 저장 완료", type: "info" });
-            }}
-            className="p-1"
-          >
-            임시 저장
-          </BaseButton>
         </div>
       </div>
 
@@ -294,22 +248,36 @@ export default function PostEditor() {
         }
       />
 
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 items-center justify-end">
         <BaseButton
           type="button"
-          onClick={handleSubmit}
-          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
+          size="md"
+          variant="outlined"
+          color="skyblue300"
+          className="h-[44px] w-[120px] text-nowrap mt-4"
+          onClick={() => {
+            const instance = editorRef.current?.getInstance();
+            if (!instance) {
+              showToastMessage({
+                message: "에디터 사용 중 문제가 발생했습니다.",
+                type: "error",
+              });
+              return;
+            }
+            const content = instance.getMarkdown();
+            saveDraft({ title, mainCategory, subCategory, content });
+            showToastMessage({ message: "임시 저장 완료", type: "info" });
+          }}
         >
-          등록
+          임시 저장
         </BaseButton>
         <BaseButton
           type="button"
-          onClick={() => {
-            // TODO: 취소 처리
-          }}
-          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-gray200 text-white rounded"
+          color="skyblue300"
+          onClick={handleSubmit}
+          className="h-[44px] w-[120px] text-nowrap mt-4"
         >
-          취소
+          등록
         </BaseButton>
       </div>
       {/* 임시 저장 불러오기 모달 */}

@@ -43,11 +43,11 @@ export const BUTTON_VARIANT_STYLES: Record<
     violet800:
       "text-violet800 border border-violet600 hover:bg-violet800/5 active:bg-violet800/10",
     skyblue100:
-      "text-skyblue100 border border-skyblue100 hover:bg-skyblue100/5 active:bg-skyblue100/10",
+      "text-gray900 border border-skyblue100 hover:bg-skyblue100/5 active:bg-skyblue100/10",
     skyblue200:
-      "text-skyblue200 border border-skyblue200 hover:bg-skyblue200/5 active:bg-skyblue200/10",
+      "text-gray900 border border-skyblue200 hover:bg-skyblue200/5 active:bg-skyblue200/10",
     skyblue300:
-      "text-skyblue300 border border-skyblue300 hover:bg-skyblue300/5 active:bg-skyblue300/10",
+      "text-gray900 border border-skyblue300 hover:bg-skyblue300/5 active:bg-skyblue300/10",
   },
   text: {
     violet300: "text-violet300 hover:bg-violet300/10 active:bg-violet300/20",

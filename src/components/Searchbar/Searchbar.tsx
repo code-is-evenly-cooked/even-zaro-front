@@ -71,7 +71,7 @@ const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
           />
         )}
 
-        <div className="flex items-center bg-white border border-skyblue100 text-gray900 rounded-lg w-full">
+        <div className="flex items-center bg-white border border-gray200 text-gray900 rounded-lg w-full">
           <input
             type="text"
             className="flex-1 px-4 py-2 focus:outline-none focus:ring-0"
