@@ -29,7 +29,7 @@ export default function RestoreDraftModal({
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 rounded bg-violet600 text-white text-sm"
+            className="px-7 py-2 rounded bg-skyblue300 text-gray900 text-sm font-bold"
           >
             예
           </button>
