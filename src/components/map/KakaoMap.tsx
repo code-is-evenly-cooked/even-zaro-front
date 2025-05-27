@@ -11,7 +11,7 @@ declare global {
 }
 
 export default function KakaoMap() {
-  const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY; // 카카오지도 api
+  const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID; // 카카오지도 api
 
   const mapRef = useRef<HTMLDivElement>(null);
   const [placeList, setPlaceList] = useState<any[]>([]);
