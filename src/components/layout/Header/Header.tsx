@@ -51,6 +51,10 @@ const Header = ({ onMenuClick }: HeaderProps) => {
 
   if (hideHeaderRoutes.includes(pathname)) return null;
 
+  const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
   return (
     <header className="h-12 min-h-12 flex items-center justify-between">
       {!isMobileSearchOpen && (
@@ -84,7 +88,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2">
-          {!hideSearchbarRoutes.includes(pathname) && (
+          {!shouldHideSearchbar && (
             <>
               <div className="hidden sm:block">
                 <Searchbar />
