@@ -18,10 +18,12 @@ import { MainCategory } from "@/types/category";
 import { useRestoreDraft } from "@/hooks/useRestoreDraft";
 import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useRouter } from "next/navigation";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const { showToastMessage } = useToastMessageContext();
   const {
     title,
@@ -169,7 +171,7 @@ export default function PostEditor() {
       setImageList(imageUrls);
       setThumbnailImage(thumbnail);
 
-      await createPost({
+      const { category, postId } = await createPost({
         title,
         content,
         category: mainCategory,
@@ -183,6 +185,7 @@ export default function PostEditor() {
         type: "success",
       });
       resetPost(); // 상태 초기화
+      router.push(`/board/${category}/${postId}`);
     } catch (error) {
       const errorMessage =
         error instanceof Error
