@@ -94,7 +94,7 @@ export default function PostAuthor({
           disabled={isLoading}
           className={`text-sm px-8 py-2 rounded-3xl ${
             isFollowing
-              ? "bg-gray200 text-gray800"
+              ? "bg-gray200 text-gray900 hover:bg-opacity-70"
               : "bg-violet300 text-gray900 hover:bg-opacity-70"
           }`}
         >
