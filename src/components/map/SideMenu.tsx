@@ -21,7 +21,7 @@ export default class SideMenu extends Component {
           <li><TogetherIcon className="w-10 h-10" /></li>
           <li><TipIcon className="w-10 h-10" /></li>
           <li><ShoppingBagIcon className="w-10 h-10" /></li>
-          <li><DefaultProfileIcon className="w-10 h-10" /></li>
+          <li><DefaultProfileIcon className="w-10 h-10 rounded-full object-cover"/></li>
         </ul>
       </div>
     );
