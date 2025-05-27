@@ -47,7 +47,7 @@ export default function PostAuthor({
 
       {/* 팔로우 버튼 */}
       {!isMine && (
-        <button className="text-sm px-3 py-1 rounded-md bg-blue-500 text-white hover:bg-blue-600">
+        <button className="text-sm px-8 py-2 rounded-3xl bg-violet300 text-gray900 hover:bg-opacity-70">
           팔로우
         </button>
       )}
