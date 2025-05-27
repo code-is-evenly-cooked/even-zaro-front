@@ -40,12 +40,10 @@ export default function PostAuthor({
       if (!currentUserId || isMine) return;
 
       const followings = await fetchFollowings(currentUserId); // 리스트 전체
-      console.log("✅ followings 리스트:", followings);
       const isFollowing = followings.some(
         (user) => user.userId === authorUserId,
       );
       setIsFollowing(isFollowing);
-      console.log("✅ 현재 팔로우 여부:", isFollowing);
       setIsCheckingFollow(false);
     };
     fetch();
