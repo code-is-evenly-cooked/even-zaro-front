@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import useSse from "@/hooks/useSse";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -34,6 +35,9 @@ const Header = ({ onMenuClick }: HeaderProps) => {
 
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
+
+  // SSE 연결 시도
+  useSse(user?.userId);
 
   useEffect(() => {
     const handleResize = () => {
