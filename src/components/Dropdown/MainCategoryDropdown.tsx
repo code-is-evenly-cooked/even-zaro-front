@@ -29,7 +29,7 @@ const MainCategoryDropdown = ({
       <button
         ref={buttonRef}
         type="button"
-        className="flex items-center whitespace-nowrap bg-skyblue300 text-gray600 py-2 pl-3 pr-2 rounded-lg"
+        className="flex items-center whitespace-nowrap bg-gray100 text-gray600 py-2 pl-3 pr-2 rounded-lg"
         onClick={toggleDropdown}
       >
         {selectedCategory === null
@@ -41,7 +41,7 @@ const MainCategoryDropdown = ({
       {isDropdownOpen && (
         <ul
           ref={dropdownRef}
-          className="absolute z-10 top-full mt-2 w-max bg-skyblue300 rounded-lg p-2 shadow-md text-gray900"
+          className="absolute z-10 top-full mt-2 w-max bg-gray100 rounded-lg p-2 shadow-md text-gray900"
           style={{ minWidth: buttonWidth }}
         >
           {showAllOption && (

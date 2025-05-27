@@ -2,7 +2,6 @@
 
 import { MainCategory } from "@/types/category";
 import { getMainCategoryTitle } from "@/utils/category";
-import BaseButton from "../common/Button/BaseButton";
 import Link from "next/link";
 
 interface PostListHeaderProps {
@@ -13,9 +12,9 @@ const PostListHeader = ({ category }: PostListHeaderProps) => {
     <div className="flex items-center justify-between pt-10">
       <h1 className="text-3xl font-bold">{getMainCategoryTitle(category)}</h1>
       <Link href={"/editor"}>
-        <BaseButton size="md" color="skyblue100">
+        <span className="border border-gray200 hover:bg-gray100 px-3 py-2.5 rounded-md text-gray900 text-md">
           글쓰기
-        </BaseButton>
+        </span>
       </Link>
     </div>
   );
