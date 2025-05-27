@@ -6,7 +6,6 @@ import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
 import { usePostStore } from "@/stores/usePostStore";
 import { saveDraft } from "@/utils/editorStorage";
 import BaseButton from "@/components/common/Button/BaseButton";
-import { SaveIcon } from "lucide-react";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import MainCategoryDropdown from "@/components/Dropdown/MainCategoryDropdown";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
@@ -239,32 +238,6 @@ export default function PostEditor() {
             />
           )}
         </div>
-
-        {/* 임시 저장 버튼 */}
-        <div>
-          <BaseButton
-            type="button"
-            leftIcon={<SaveIcon />}
-            size="md"
-            color="skyblue300"
-            onClick={() => {
-              const instance = editorRef.current?.getInstance();
-              if (!instance) {
-                showToastMessage({
-                  message: "에디터 사용 중 문제가 발생했습니다.",
-                  type: "error",
-                });
-                return;
-              }
-              const content = instance.getMarkdown();
-              saveDraft({ title, mainCategory, subCategory, content });
-              showToastMessage({ message: "임시 저장 완료", type: "info" });
-            }}
-            className="p-1"
-          >
-            임시 저장
-          </BaseButton>
-        </div>
       </div>
 
       {/* 제목 입력창 */}
@@ -291,22 +264,36 @@ export default function PostEditor() {
         }
       />
 
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 items-center justify-end">
         <BaseButton
           type="button"
-          onClick={handleSubmit}
-          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-violet600 text-white rounded"
+          size="md"
+          variant="outlined"
+          color="skyblue300"
+          className="h-[44px] w-[120px] text-nowrap mt-4"
+          onClick={() => {
+            const instance = editorRef.current?.getInstance();
+            if (!instance) {
+              showToastMessage({
+                message: "에디터 사용 중 문제가 발생했습니다.",
+                type: "error",
+              });
+              return;
+            }
+            const content = instance.getMarkdown();
+            saveDraft({ title, mainCategory, subCategory, content });
+            showToastMessage({ message: "임시 저장 완료", type: "info" });
+          }}
         >
-          등록
+          임시 저장
         </BaseButton>
         <BaseButton
           type="button"
-          onClick={() => {
-            // TODO: 취소 처리
-          }}
-          className="w-[80px] h-[40px] mt-4 px-4 py-2 bg-gray200 text-white rounded"
+          color="skyblue300"
+          onClick={handleSubmit}
+          className="h-[44px] w-[120px] text-nowrap mt-4"
         >
-          취소
+          등록
         </BaseButton>
       </div>
       {/* 임시 저장 불러오기 모달 */}
