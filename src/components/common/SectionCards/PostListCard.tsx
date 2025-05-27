@@ -1,4 +1,4 @@
-import { PostDetailItem } from "@/types/post";
+import { CommonPostDetailItem } from "@/types/post";
 import { getSubCategoryEmoji, isSubCategoryValue } from "@/utils/category";
 import { getFormattedTimeAgo } from "@/utils/date";
 import { getImageUrl } from "@/utils/image";
@@ -6,7 +6,7 @@ import { HeartIcon, MessageCircle } from "lucide-react";
 import Image from "next/image";
 
 interface PostListCardProps {
-  post: PostDetailItem;
+  post: CommonPostDetailItem;
 }
 
 const PostListCard = ({ post }: PostListCardProps) => {

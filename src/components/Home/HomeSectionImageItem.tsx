@@ -1,4 +1,4 @@
-import { ImagePostDetailItem } from "@/types/post";
+import { ImagePostItem } from "@/types/post";
 import {
   getImageUrl,
   getProfileImageUrl,
@@ -6,7 +6,7 @@ import {
 } from "@/utils/image";
 import Image from "next/image";
 
-const PostImageCard = ({
+const HomeSectionImageItem = ({
   title,
   content,
   thumbnailImage,
@@ -14,10 +14,7 @@ const PostImageCard = ({
   commentCount,
   writerProfileImage,
   writerNickname,
-}: ImagePostDetailItem) => {
-  if (!thumbnailImage) {
-    return null;
-  }
+}: ImagePostItem) => {
   return (
     <div>
       <div className="relative w-full aspect-square">
@@ -35,7 +32,7 @@ const PostImageCard = ({
         <div className="flex items-center gap-1">
           <Image
             src={getProfileImageUrl(writerProfileImage)}
-            alt={writerNickname ?? "이미지"}
+            alt={writerNickname}
             width={20}
             height={20}
             className="rounded-full object-cover"
@@ -67,4 +64,4 @@ const PostImageCard = ({
   );
 };
 
-export default PostImageCard;
+export default HomeSectionImageItem;

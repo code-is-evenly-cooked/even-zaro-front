@@ -10,7 +10,7 @@ export const refreshTokenSSR = async (): Promise<string | null> => {
       {
         method: "POST",
         headers: {
-          Cookie: `refresh_token=${refreshToken}`,
+          Authorization: `Bearer ${refreshToken}`,
           "Content-Type": "application/json",
         },
       },
