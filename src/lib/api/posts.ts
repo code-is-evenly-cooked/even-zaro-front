@@ -2,6 +2,11 @@ import { client } from "@/lib/fetch/client";
 import { QueryParams } from "../fetch/util/objectToQueryString";
 import { PostDetailResponse } from "@/types/post";
 
+type CreatePostResponse = {
+  category: string;
+  postId: number;
+};
+
 // 게시글 작성
 export async function createPost(payload: {
   title: string;
@@ -10,8 +15,8 @@ export async function createPost(payload: {
   tag?: string;
   postImageList?: string[];
   thumbnailImage?: string | null;
-}): Promise<number> {
-  return await client<number>("/posts", {
+}): Promise<CreatePostResponse> {
+  return await client<CreatePostResponse>("/posts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
