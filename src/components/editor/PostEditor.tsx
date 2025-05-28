@@ -18,6 +18,7 @@ import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useEditorScrollLock } from "@/hooks/useEditorScrollLock";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
@@ -195,6 +196,9 @@ export default function PostEditor() {
       });
     }
   };
+
+  // 에디터 본문에서 외부 스크롤 차단
+  useEditorScrollLock();
 
   return (
     <div
