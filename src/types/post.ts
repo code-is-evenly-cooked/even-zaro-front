@@ -32,6 +32,7 @@ export interface CommonPostDetailItem {
   postId: number;
   title: string;
   content: string;
+  contentPreview?: string;
   thumbnailImage?: string;
   category: MainCategory;
   tag: SubCategoryValue;
