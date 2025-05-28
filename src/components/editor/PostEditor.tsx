@@ -138,11 +138,14 @@ export default function PostEditor() {
   // 에디터 내부 초기화
   useEffect(() => {
     const editor = editorRef.current?.getInstance();
-    if (editor && !content) {
+    if (!editor) return;
+  
+    if (content !== undefined && content !== null) {
+      editor.setMarkdown(content); // draft 또는 직접 작성 내용 반영
+    } else {
       editor.setMarkdown(""); // 진짜 초기화
     }
-    // eslint-disable-next-line
-  }, []);
+  }, [content]);
 
   // 글 작성
   const handleSubmit = async () => {
