@@ -69,32 +69,6 @@ export const RightArrowIcon = ({ className }: IconProps) => {
   );
 };
 
-export const EyeIcon = ({ className }: IconProps) => {
-  return (
-    <Image
-      src="/icons/eyeOpen.svg"
-      alt="비밀번호 보기"
-      width={24}
-      height={24}
-      className={className}
-      priority
-    />
-  );
-};
-
-export const EyeCloseIcon = ({ className }: IconProps) => {
-  return (
-    <Image
-      src="/icons/eyeClose.svg"
-      alt="비밀번호 숨기기"
-      width={24}
-      height={24}
-      className={className}
-      priority
-    />
-  );
-};
-
 export const KakaoIcon = ({ className }: IconProps) => {
   return (
     <Image
@@ -164,7 +138,7 @@ export const ShoppingBagIcon = ({ className }: IconProps) => {
   return (
     <Image
       src="/icons/shoppingBag.svg"
-      alt="아무거나 샀어요"
+      alt="텅장 일기"
       width={24}
       height={24}
       className={className}

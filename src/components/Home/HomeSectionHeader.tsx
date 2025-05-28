@@ -1,5 +1,6 @@
 import { CATEGORY_MAP } from "@/constants/category";
 import { MainCategory } from "@/types/category";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface HomeSectionHeaderProps {
@@ -18,7 +19,9 @@ const HomeSectionHeader = ({ category }: HomeSectionHeaderProps) => {
         href={`/board/${category}`}
         className="flex items-center justify-center text-gray600"
       >
-        <span className="text-sm">{"보러가기 >"}</span>
+        <span className="flex text-sm items-center">
+          {"보러가기"} <ChevronRight className="w-4 h-4" />
+        </span>
       </Link>
     </div>
   );

@@ -1,5 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { LogIn, MenuIcon, ArrowLeftIcon } from "lucide-react";
+
 import IconButton from "@/components/common/Button/IconButton";
 import {
   LogoLineIcon,
@@ -9,11 +15,6 @@ import {
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
-import { ArrowLeftIcon, LogIn, MenuIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import useSse from "@/hooks/useSse";
 
 interface HeaderProps {
@@ -22,6 +23,10 @@ interface HeaderProps {
 
 const Header = ({ onMenuClick }: HeaderProps) => {
   const pathname = usePathname();
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const { user } = useAuthStore();
+
+  // 숨길 전체 헤더 경로
   const hideHeaderRoutes = [
     "/login",
     "/signup",
@@ -31,32 +36,31 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/policy/terms",
     "/policy/privacy",
   ];
-  const hideSearchbarRoutes = ["/board", "/editor"];
 
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const { user } = useAuthStore();
+  // 검색창 숨김 경로 시작
+  const hideSearchbarRoutes = ["/board", "/editor"];
+  const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
 
   // SSE 연결 시도
   useSse();
 
   useEffect(() => {
     const handleResize = () => {
-      // md 이상일 경우 모바일 검색모드 자동해제
       if (window.innerWidth >= 428) {
         setIsMobileSearchOpen(false);
       }
     };
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="h-12 min-h-12 flex items-center justify-between">
+    <header className="relative h-12 min-h-12 flex items-center justify-between px-2">
+      {/* 왼쪽 영역: 메뉴 + 로고 */}
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
           <IconButton
@@ -72,6 +76,14 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       )}
 
+      {/* 가운데: sm 이상에서 중앙 정렬된 Searchbar */}
+      {!isMobileSearchOpen && !shouldHideSearchbar && (
+        <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-full max-w-md">
+          <Searchbar />
+        </div>
+      )}
+
+      {/* 모바일 검색 모드 */}
       {isMobileSearchOpen ? (
         <div className="flex justify-center items-center gap-2 w-full">
           <div className="shrink-0">
@@ -87,21 +99,17 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center gap-2">
-          {!hideSearchbarRoutes.includes(pathname) && (
-            <>
-              <div className="hidden sm:block">
-                <Searchbar />
-              </div>
-              <div className="sm:hidden">
-                <IconButton
-                  icon={<SearchIcon />}
-                  isTransparent
-                  label="검색"
-                  onClick={() => setIsMobileSearchOpen(true)}
-                />
-              </div>
-            </>
+        // 오른쪽 영역: 검색 아이콘 + 알림 + 로그인 or 프로필
+        <div className="flex items-center gap-2">
+          {!shouldHideSearchbar && (
+            <div className="sm:hidden">
+              <IconButton
+                icon={<SearchIcon />}
+                isTransparent
+                label="검색"
+                onClick={() => setIsMobileSearchOpen(true)}
+              />
+            </div>
           )}
           <IconButton
             icon={<NotificationIcon className="w-6 h-6" />}

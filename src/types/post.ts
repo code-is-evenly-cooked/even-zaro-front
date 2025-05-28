@@ -1,3 +1,5 @@
+import { MainCategory, SubCategoryValue } from "./category";
+
 export interface PostHomeResponse {
   together: CommonPostItem[];
   dailyLife: CommonPostItem[];
@@ -21,23 +23,25 @@ export interface ImagePostItem extends CommonPostItem {
 
 // detail
 export interface PostDetailResponse {
-  content: PostDetailItem[];
+  content: CommonPostDetailItem[];
+  totalPages: number;
+  number: number;
 }
-export interface PostDetailItem {
+
+export interface CommonPostDetailItem {
   postId: number;
   title: string;
   content: string;
   thumbnailImage?: string;
-  category: "TOGETHER" | "DAILY_LIFE" | "RANDOM_BUY";
-  tag: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
   likeCount: number;
   commentCount: number;
   postImageList: string[];
   createdAt: string;
-  user: WriterInfo;
 }
-export interface WriterInfo {
-  userId: number;
-  nickname: string;
-  profileImage: string | null;
+
+export interface ImagePostDetailItem extends CommonPostDetailItem {
+  writerNickname: string;
+  writerProfileImage: string;
 }
