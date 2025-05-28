@@ -8,7 +8,6 @@ import { LogIn, MenuIcon, ArrowLeftIcon } from "lucide-react";
 
 import IconButton from "@/components/common/Button/IconButton";
 import {
-  DefaultProfileIcon,
   LogoLineIcon,
   NotificationIcon,
   SearchIcon,
