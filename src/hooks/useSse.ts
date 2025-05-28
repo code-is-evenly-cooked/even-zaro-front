@@ -14,7 +14,7 @@ const useSse = () => {
     }
 
     const eventSource = new EventSource(
-      `http://localhost:8080/api/notifications/subscribe`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/subscribe`,
       { withCredentials: true },
     );
 
