@@ -6,7 +6,13 @@ import SideMenu from "./SideMenu";
 // Kakao 객체를 전역 선언합니다.
 declare global {
   interface Window {
-    kakao: any;
+    kakao: {
+      maps: {
+        LatLng: new (lat: number, lng: number) => void;
+        Map: new (container: HTMLElement, options: { center: void, level: number }) => void;
+        load: (callback: () => void) => void;
+      };
+    };
   }
 }
 
