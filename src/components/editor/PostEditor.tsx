@@ -10,17 +10,20 @@ import "@toast-ui/editor/dist/i18n/ko-kr";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { createPost } from "@/lib/api/posts";
-import { extractImageUrls, extractThumbnailUrl } from "@/utils/editorImage";
+import { extractImageKeys, extractThumbnailKey } from "@/utils/editorImage";
 import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
 import { MainCategory } from "@/types/category";
 import { useRestoreDraft } from "@/hooks/useRestoreDraft";
 import RestoreDraftModal from "./RestoreDraftModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useEditorScrollLock } from "@/hooks/useEditorScrollLock";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const { showToastMessage } = useToastMessageContext();
   const {
     title,
@@ -160,13 +163,13 @@ export default function PostEditor() {
         return;
       }
 
-      const imageUrls = extractImageUrls(content);
-      const thumbnail = extractThumbnailUrl(content);
+      const imageUrls = extractImageKeys(content);
+      const thumbnail = extractThumbnailKey(content);
 
       setImageList(imageUrls);
       setThumbnailImage(thumbnail);
 
-      await createPost({
+      const { category, postId } = await createPost({
         title,
         content,
         category: mainCategory,
@@ -180,6 +183,7 @@ export default function PostEditor() {
         type: "success",
       });
       resetPost(); // 상태 초기화
+      router.replace(`/board/${category}/${postId}`);
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -193,10 +197,13 @@ export default function PostEditor() {
     }
   };
 
+  // 에디터 본문에서 외부 스크롤 차단
+  useEditorScrollLock();
+
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow"
+      className="relative w-full max-w-[836px] mx-auto p-4 bg-white rounded-xl shadow"
     >
       <div className="flex justify-between items-center">
         <div className="my-4 flex gap-2 items-center">
@@ -236,7 +243,7 @@ export default function PostEditor() {
         language="ko-KR"
         initialValue={content || ""}
         previewStyle="vertical"
-        height="400px"
+        height="420px"
         initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
