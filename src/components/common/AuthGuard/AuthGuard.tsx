@@ -1,15 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { fetchUser } from "@/lib/api/auth";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { data, isLoading, isError } = useQuery({
+
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["me"],
-    queryFn: async () => {
-      const res = await fetch("/api/users/me", { credentials: "include" });
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.json();
-    },
+    queryFn: fetchUser,
     retry: false,
   });
 
