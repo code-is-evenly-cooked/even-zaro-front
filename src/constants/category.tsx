@@ -27,8 +27,8 @@ export const CATEGORY_MAP = {
     ],
   },
   RANDOM_BUY: {
-    title: "아무거나 샀어요",
-    label: "아무거나샀어요",
+    title: "텅장 일기",
+    label: "텅장 일기",
     icon: <ShoppingBagIcon />,
     route: "/random-buy",
     options: [

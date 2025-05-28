@@ -4,8 +4,7 @@ import { forwardRef, memo, useState } from "react";
 import BaseInput from "./BaseInput";
 import { BaseInputProps } from "@/types/input";
 import IconButton from "../Button/IconButton";
-import { EyeCloseIcon } from "../Icons";
-import { EyeIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export type PasswordInputProps = Omit<BaseInputProps, "type" | "rightElement">;
 
@@ -20,7 +19,13 @@ const PasswordInput = memo(
     const VisibilityToggle = (
       <IconButton
         type="button"
-        icon={isVisible ? <EyeCloseIcon /> : <EyeIcon />}
+        icon={
+          isVisible ? (
+            <EyeIcon className="w-5 h-5" />
+          ) : (
+            <EyeOffIcon className="w-5 h-5" />
+          )
+        }
         label={isVisible ? "비밀번호 숨기기" : "비밀번호 표시"}
         isTransparent
         onClick={toggleVisibility}

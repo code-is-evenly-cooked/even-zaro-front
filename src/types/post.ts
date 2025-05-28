@@ -1,3 +1,5 @@
+import { MainCategory, SubCategoryValue } from "./category";
+
 export interface PostHomeResponse {
   together: CommonPostItem[];
   dailyLife: CommonPostItem[];
@@ -31,8 +33,8 @@ export interface CommonPostDetailItem {
   title: string;
   content: string;
   thumbnailImage?: string;
-  category: "TOGETHER" | "DAILY_LIFE" | "RANDOM_BUY";
-  tag: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
   likeCount: number;
   commentCount: number;
   postImageList: string[];
