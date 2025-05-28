@@ -43,3 +43,30 @@ export const fetchPosts = async ({
     params: { category, ...(tag ? { tag } : {}), page, size },
   });
 };
+
+export interface FetchSearchPostsParams extends QueryParams {
+  keyword: string;
+  category?: string;
+  tag?: string;
+  page?: number;
+  size?: number;
+}
+
+export const fetchSearchPosts = async ({
+  keyword,
+  category,
+  tag,
+  page = 0,
+  size = 10,
+}: FetchSearchPostsParams): Promise<PostDetailResponse> => {
+  return await client<PostDetailResponse>("/search/es", {
+    needAuth: true,
+    params: {
+      keyword,
+      ...(category ? { category } : {}),
+      ...(tag ? { tag } : {}),
+      page,
+      size,
+    },
+  });
+};
