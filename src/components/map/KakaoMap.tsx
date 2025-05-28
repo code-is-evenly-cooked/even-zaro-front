@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import SideMenu from "./SideMenu";
 
 // Kakao 객체를 전역 선언합니다.
@@ -41,7 +41,7 @@ export default function KakaoMap() {
 
   return (
     <>
-      <div ref={mapRef} className="w-screen h-screen bg-gray-100" />
+      <div ref={mapRef} className={`w-screen h-screen`}/>
       <SideMenu />
     </>
   );
