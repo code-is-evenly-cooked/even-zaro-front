@@ -1,4 +1,5 @@
 import { ImagePostDetailItem } from "@/types/post";
+import { getSubCategoryEmoji, getSubCategoryLabel } from "@/utils/category";
 import {
   getImageUrl,
   getProfileImageUrl,
@@ -14,6 +15,7 @@ const PostImageCard = ({
   commentCount,
   writerProfileImage,
   writerNickname,
+  tag,
 }: ImagePostDetailItem) => {
   if (!thumbnailImage) {
     return null;
@@ -28,6 +30,9 @@ const PostImageCard = ({
           sizes="100%"
           className="object-cover"
         />
+        <div className="bg-gray200/70 px-2 py-0.5 rounded-md absolute top-2 left-2 text-[12px] z-10">
+          {getSubCategoryEmoji(tag) + " " + getSubCategoryLabel(tag)}
+        </div>
       </div>
       {/* 본문 */}
       <div className="pt-2 px-1 flex flex-col gap-2">
