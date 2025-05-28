@@ -1,7 +1,15 @@
+import { MainCategory, SubCategoryValue } from "./category";
+
+export interface PostHomeResponse {
+  together: CommonPostItem[];
+  dailyLife: CommonPostItem[];
+  randomBuy: CommonPostItem[];
+}
+
 export interface CommonPostItem {
   postId: number;
   title: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export interface ImagePostItem extends CommonPostItem {
@@ -9,26 +17,31 @@ export interface ImagePostItem extends CommonPostItem {
   thumbnailImage: string;
   likeCount: number;
   commentCount: number;
-  writerProfileImage: string;
+  writerProfileImage: string | null;
   writerNickname: string;
 }
 
 // detail
-export interface PostDetailItem {
+export interface PostDetailResponse {
+  content: CommonPostDetailItem[];
+  totalPages: number;
+  number: number;
+}
+
+export interface CommonPostDetailItem {
   postId: number;
   title: string;
   content: string;
   thumbnailImage?: string;
-  category: "TOGETHER" | "DAILY_LIFE" | "RANDOM_BUY";
-  tag: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
   likeCount: number;
   commentCount: number;
   postImageList: string[];
   createdAt: string;
-  user: WriterInfo;
 }
-export interface WriterInfo {
-  userId: number;
-  nickname: string;
-  profileImage: string;
+
+export interface ImagePostDetailItem extends CommonPostDetailItem {
+  writerNickname: string;
+  writerProfileImage: string;
 }

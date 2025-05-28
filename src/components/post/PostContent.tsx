@@ -9,7 +9,7 @@ interface PostContentProps {
 
 export default function PostContent({ content }: PostContentProps) {
   return (
-    <div className="mt-8">
+    <div className="mt-3 mb-8">
       <Viewer initialValue={content} />
     </div>
   );

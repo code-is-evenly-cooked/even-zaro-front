@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+// 게시글 상세 조회
 export async function fetchPostDetail(postId: string) {
     const token = (await cookies()).get("access_token")?.value;
 

@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import HeaderShell from "./Header/HeaderShell";
+import { Footer } from "./Footer/Footer";
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,9 +8,10 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen mx-4">
       <HeaderShell />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 mb-10">{children}</main>
+      <Footer />
     </div>
   );
 };

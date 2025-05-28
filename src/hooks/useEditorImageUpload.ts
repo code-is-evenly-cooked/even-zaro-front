@@ -1,16 +1,11 @@
 import { useEffect, MutableRefObject } from "react";
 import { Editor } from "@toast-ui/react-editor";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { getImageUrl } from "@/utils/image";
+import { client } from "@/lib/fetch/client";
 
 export function useEditorImageUpload(
   editorRef: MutableRefObject<Editor | null>,
 ) {
-  // AccessToken 가져오기
-  function getAccessToken(): string | null {
-    const match = document.cookie.match(/access_token=([^;]+)/);
-    return match ? match[1] : null;
-  }
   // 이미지 업로드 구현 (S3 Presigned URL)
   useEffect(() => {
     const editor = editorRef.current?.getInstance();
@@ -26,40 +21,27 @@ export function useEditorImageUpload(
           const ext = blob.type.split("/")[1]; // "image/png" → "png"
           const type = "post"; // post 또는 profile
 
-          // accessToken 가져오기
-          const accessToken = getAccessToken();
-
-          if (!accessToken) {
-            throw new Error("AccessToken이 없습니다.");
-          }
-
           // presigned URL 요청
-          const res = await fetch(
-            `${API_BASE_URL}/presigned-url?type=${type}&ext=${ext}`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            },
-          );
-
-          if (!res.ok) throw new Error("프리사인드 URL 요청 실패");
-
-          const json = await res.json();
-          const { url, key } = json.data;
+          const { url, key } = await client<{
+            url: string;
+            key: string;
+          }>(`/presigned-url?type=${type}&ext=${ext}`, {
+            method: "GET",
+          });
 
           // S3에 이미지 PUT 업로드
-          await fetch(url, {
+          const uploadRes = await fetch(url, {
             method: "PUT",
-            body: blob,
             headers: {
               "Content-Type": blob.type,
             },
+            body: blob,
           });
 
+          if (!uploadRes.ok) throw new Error("S3 업로드 실패");
+
           // S3 public 이미지 URL을 editor에 삽입
-          const imageUrl = `https://d1eni2d3ighqku.cloudfront.net/${key}`;
+          const imageUrl = getImageUrl(key);
           callback(imageUrl, "이미지");
         } catch (err) {
           console.error("이미지 업로드 오류", err);
