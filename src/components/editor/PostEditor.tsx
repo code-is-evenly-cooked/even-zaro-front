@@ -183,7 +183,7 @@ export default function PostEditor() {
         type: "success",
       });
       resetPost(); // 상태 초기화
-      router.push(`/board/${category}/${postId}`);
+      router.replace(`/board/${category}/${postId}`);
     } catch (error) {
       const errorMessage =
         error instanceof Error
