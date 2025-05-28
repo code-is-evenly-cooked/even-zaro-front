@@ -5,9 +5,7 @@ import type { Editor } from "@toast-ui/react-editor";
 import type { PostDraft } from "@/types/editor";
 
 export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
-  const { setMainCategory, setSubCategory, setTitle, setContent, resetPost } =
-    usePostStore();
-
+  const { setTitle, setContent, resetPost } = usePostStore();
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState<PostDraft | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -26,8 +24,6 @@ export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
   // "예" 선택 시
   const handleConfirm = () => {
     if (draft) {
-      setMainCategory(draft.mainCategory);
-      setSubCategory(draft.subCategory);
       setTitle(draft.title);
       setContent(draft.content);
       editorRef.current?.getInstance().setMarkdown(draft.content);

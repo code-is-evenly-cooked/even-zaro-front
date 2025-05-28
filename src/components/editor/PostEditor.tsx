@@ -275,7 +275,7 @@ export default function PostEditor() {
               return;
             }
             const content = instance.getMarkdown();
-            saveDraft({ title, mainCategory, subCategory, content });
+            saveDraft({ title, content });
             showToastMessage({ message: "임시 저장 완료", type: "info" });
           }}
         >
