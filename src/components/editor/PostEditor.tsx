@@ -203,7 +203,7 @@ export default function PostEditor() {
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow"
+      className="relative w-full max-w-[836px] mx-auto p-4 bg-white rounded-xl shadow"
     >
       <div className="flex justify-between items-center">
         <div className="my-4 flex gap-2 items-center">
@@ -243,7 +243,7 @@ export default function PostEditor() {
         language="ko-KR"
         initialValue={content || ""}
         previewStyle="vertical"
-        height="400px"
+        height="420px"
         initialEditType="wysiwyg"
         useCommandShortcut={true}
         toolbarItems={toolbarItems}
