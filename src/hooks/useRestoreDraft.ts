@@ -10,12 +10,15 @@ export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState<PostDraft | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     loadDraft().then((saved) => {
       if (saved) {
         setDraft(saved);
         setIsOpen(true); // 모달 열기
+      } else {
+        setIsReady(true);
       }
     });
   }, []);
@@ -31,6 +34,7 @@ export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
       clearDraft();
     }
     setIsOpen(false);
+    setIsReady(true);
   };
 
   // "아니오" 선택 시
@@ -39,7 +43,8 @@ export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
     resetPost(); // 상태 초기화
     clearDraft(); // indexedDB 삭제
     setIsOpen(false); // 모달 닫기
+    setIsReady(true);
   };
 
-  return { isOpen, onClose: handleClose, onConfirm: handleConfirm };
+  return { isOpen, onClose: handleClose, onConfirm: handleConfirm, isReady };
 };
