@@ -9,6 +9,7 @@ import FallbackMessage from "../common/Fallback/FallbackMessage";
 import Link from "next/link";
 import PostImageCard from "../common/SectionCards/PostImageCard";
 import PostListCard from "../common/SectionCards/PostListCard";
+import LoadingSpinnerBoundary from "../common/LoadingSpinner/LoadingSpinnerBoundary";
 
 interface PostListResultProps {
   category: MainCategory;
@@ -21,11 +22,33 @@ const PostListResult = ({ category, initialData }: PostListResultProps) => {
   const tag = searchParams.get("tag") as SubCategoryValue | null;
   const page = Number(searchParams.get("page") || 0);
 
-  const { data } = useQuery<PostDetailResponse>({
+  const { data, error, isError, isLoading } = useQuery<PostDetailResponse>({
     queryKey: ["posts", category, tag, page],
     queryFn: () => fetchPosts({ category, tag: tag ?? undefined, page }),
     initialData: initialData,
   });
+
+  if (isLoading) {
+    return <LoadingSpinnerBoundary />;
+  }
+
+  if (isError) {
+    if (error.message === "access token 없음") {
+      return (
+        <FallbackMessage
+          message="로그인이 필요한 서비스입니다"
+          className="mt-10"
+        />
+      );
+    }
+
+    return (
+      <FallbackMessage
+        message={error.message || "게시글을 불러오는 데 실패했습니다."}
+        className="mt-10"
+      />
+    );
+  }
 
   const posts = data.content ?? [];
   const isEmpty = posts.length === 0;
