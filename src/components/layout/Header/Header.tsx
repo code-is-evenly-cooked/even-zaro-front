@@ -124,7 +124,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           />
           <div className="relative">
             {isNotificationOpen && (
-              <div className="absolute top-full right-0 mt-2 z-50">
+              <div className="absolute top-full right-0 mt-6 z-50">
                 <NotificationModal />
               </div>
             )}

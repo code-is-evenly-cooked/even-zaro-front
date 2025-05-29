@@ -37,7 +37,7 @@ const NotificationModal = () => {
   ];
 
   return (
-    <div className="w-[360px] h-[360px] bg-white z-50 border border-gray-200">
+    <div className="w-[360px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-2">
       <header>
         <NotificationHeader />
       </header>
