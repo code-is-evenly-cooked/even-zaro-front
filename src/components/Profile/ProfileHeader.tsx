@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
+import { SettingIcon } from "../common/Icons";
 
 export default function ProfileHeader() {
   const { user } = useAuthStore();
@@ -32,7 +33,7 @@ export default function ProfileHeader() {
           <div className="flex items-center gap-2">
             <span className="font-bold">{user.nickname}</span>
             {days != null && <span>D+{days}</span>}
-            <div>톱니버튼</div>
+            <button><SettingIcon /></button>
           </div>
           <div className="flex gap-4">
             <div>글</div>
