@@ -18,14 +18,14 @@ const NotificationItem = ({
   isRead,
 }: NotificationItemProps) => {
   return (
-    <div className="flex items-center h-[80px]">
+    <div className="flex items-center h-[78px] mb-1">
       {/* 읽음표시 img */}
       <span
         className="inline-block w-2 h-2 rounded-full bg-purple-500 mt-1 mr-2"
         style={{ visibility: isRead ? "hidden" : "visible" }}
       />
 
-      <div className="flex">
+      <div className="flex items-center">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
         <img
           src="/icons/defaultProfile.svg"
@@ -34,7 +34,7 @@ const NotificationItem = ({
         />
 
         {/* (조건부) 알림 텍스트 + 썸네일 */}
-        <div className="flex">
+        <div className="flex items-center ml-2 mr-2">
           <div>
             <span>{username}</span>
             {type === "LIKE" && (
@@ -56,7 +56,7 @@ const NotificationItem = ({
             <img
               src={thumbnailImage || "/icons/placeholderImage.svg"}
               alt="썸네일 이미지"
-              className="w-16 h-16 object-cover rounded"
+              className="w-14 h-14 object-cover rounded ml-2"
             />
           )}
         </div>
