@@ -5,7 +5,7 @@ import NotificationItem from "./NotificationItem";
 
 const NotificationModal = () => {
   return (
-    <div>
+    <div className="w-[360px] h-[360px] bg-white z-50 border border-gray-200">
       <header>
         <NotificationHeader />
       </header>
