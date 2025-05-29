@@ -12,8 +12,8 @@ export default function ProfileHeader() {
   const userId = user?.userId ?? null;
 
   const { data: profile, isLoading, error } = useProfile(userId);
-  if (isLoading) return <div className="text-gray600">로딩 중...</div>
-  if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>
+  if (isLoading) return <div className="text-gray600">로딩 중...</div>;
+  if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>;
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
 
@@ -26,26 +26,34 @@ export default function ProfileHeader() {
 
   return (
     <div>
-      <div className="flex items-center">
+      <div className="flex gap-6 items-center justify-center">
         <Image
           src={imageUrl}
           alt="프로필 이미지"
-          width={64}
-          height={64}
+          width={80}
+          height={80}
           className="rounded-full object-cover m-6"
         />
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
-            {days != null && <span>D+{days}</span>}
+            {days != null && <span className="text-gray600">D+{days}</span>}
             <button>
               <SettingIcon />
             </button>
           </div>
-          <div className="flex gap-4">
-            <div>글</div>
-            <div>팔로잉</div>
-            <div>팔로워</div>
+          <div className="flex justify-around gap-20">
+            <div>
+              글<span className="ml-2 font-bold">{profile.postCount}</span>
+            </div>
+            <div>
+              팔로잉
+              <span className="ml-2 font-bold">{profile.followingCount}</span>
+            </div>
+            <div>
+              팔로워
+              <span className="ml-2 font-bold">{profile.followerCount}</span>
+            </div>
           </div>
         </div>
       </div>
