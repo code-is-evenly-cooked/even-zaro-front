@@ -40,21 +40,25 @@ const PostListResult = ({ category, initialData }: PostListResultProps) => {
   }
 
   return category === "RANDOM_BUY" ? (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4 mx-2">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4 mx-2">
       {(posts as ImagePostDetailItem[]).map((post) => (
-        <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-          <PostImageCard {...post} />
-        </Link>
+        <li key={post.postId}>
+          <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+            <PostImageCard {...post} />
+          </Link>
+        </li>
       ))}
-    </div>
+    </ul>
   ) : (
-    <div className="flex flex-col pt-4 mx-4">
+    <ul className="flex flex-col pt-4 mx-4">
       {posts.map((post) => (
-        <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
-          <PostListCard post={post} />
-        </Link>
+        <li key={post.postId}>
+          <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+            <PostListCard post={post} />
+          </Link>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

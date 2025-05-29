@@ -36,17 +36,27 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
       {isImage ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
           {items.map((item) => (
-            <Link href={`/board/${category}/${item.postId}`} key={item.postId}>
-              <HomeSectionImageItem key={item.postId} {...item} />
-            </Link>
+            <li key={item.postId}>
+              <Link
+                href={`/board/${category}/${item.postId}`}
+                key={item.postId}
+              >
+                <HomeSectionImageItem key={item.postId} {...item} />
+              </Link>
+            </li>
           ))}
         </ul>
       ) : (
         <ul className="flex flex-col pt-3 gap-3 pl-4 pr-2">
           {items.map((item) => (
-            <Link href={`/board/${category}/${item.postId}`} key={item.postId}>
-              <HomeSectionListItem key={item.postId} {...item} />
-            </Link>
+            <li key={item.postId}>
+              <Link
+                href={`/board/${category}/${item.postId}`}
+                key={item.postId}
+              >
+                <HomeSectionListItem key={item.postId} {...item} />
+              </Link>
+            </li>
           ))}
         </ul>
       )}
