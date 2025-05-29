@@ -1,8 +1,25 @@
+"use client";
+
+import Image from "next/image";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { getProfileImageUrl } from "@/utils/image";
+
 export default function ProfileHeader() {
+  const { user } = useAuthStore();
+  if (!user) return null;
+
+  const imageUrl = getProfileImageUrl(user.profileImage);
+
   return (
     <div>
-      <div className="flex">
-        <div>프로필 사진</div>
+      <div className="flex items-center">
+        <Image
+          src={imageUrl}
+          alt="프로필 이미지"
+          width={64}
+          height={64}
+          className="rounded-full object-cover m-6"
+        />
         <div>
           <div className="flex">
             <div>닉네임</div>
