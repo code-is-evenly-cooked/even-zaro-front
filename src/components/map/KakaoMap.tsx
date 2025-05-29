@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import SideMenu from "./SideMenu";
+import PlaceModal from "@/components/map/PlaceModal";
 
 // Kakao 객체를 전역 선언합니다.
 declare global {
@@ -49,6 +50,7 @@ export default function KakaoMap() {
     <>
       <div ref={mapRef} className={`w-screen h-screen`}/>
       <SideMenu />
+      <PlaceModal />
     </>
   );
 }
