@@ -18,7 +18,7 @@ const NotificationItem = ({
   isRead,
 }: NotificationItemProps) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center h-[80px]">
       {/* 읽음표시 img */}
       <span
         className="inline-block w-2 h-2 rounded-full bg-purple-500 mt-1 mr-2"

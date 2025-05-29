@@ -6,6 +6,14 @@ import NotificationItem from "./NotificationItem";
 const NotificationModal = () => {
   const dummyNotifications = [
     {
+      id: 5,
+      type: "LIKE" as const,
+      username: "아아",
+      createdAt: "1분 전",
+      //   thumbnailImage: "/images/post/uuid3.png",
+      isRead: true,
+    },
+    {
       id: 4,
       type: "COMMENT" as const,
       username: "냉장고요정",
@@ -45,7 +53,7 @@ const NotificationModal = () => {
       <header>
         <NotificationHeader />
       </header>
-      <div>
+      <div className="h-[310px] overflow-y-auto">
         {dummyNotifications.map((noti) => (
           <NotificationItem
             key={noti.id}
