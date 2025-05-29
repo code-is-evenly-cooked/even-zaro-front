@@ -9,10 +9,7 @@ export async function POST() {
 
   if (!refreshToken) {
     console.warn("[refreshToken] 쿠키에 refresh_token 없음");
-    return createSuccessResponse(
-      { accessToken: null },
-      "refresh_token 없음 - 로그인 유지 불가",
-    );
+    return createErrorResponse("refresh token 없음", 401);
   }
 
   try {
