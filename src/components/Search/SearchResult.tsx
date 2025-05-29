@@ -1,8 +1,9 @@
 "use client";
+
 import { fetchSearchPosts } from "@/lib/api/posts";
 import { MainCategory, SubCategoryValue } from "@/types/category";
 import { PostDetailResponse } from "@/types/post";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
@@ -12,16 +13,15 @@ import SearchListItem from "./SearchListItem";
 
 interface SearchResultProps {
   keyword: string;
-  initialData: PostDetailResponse;
 }
-const SearchResult = ({ keyword, initialData }: SearchResultProps) => {
+const SearchResult = ({ keyword }: SearchResultProps) => {
   const searchParams = useSearchParams();
 
   const category = searchParams.get("category") as MainCategory | null;
   const tag = searchParams.get("tag") as SubCategoryValue | null;
   const page = Number(searchParams.get("page") || 0);
 
-  const { data } = useQuery<PostDetailResponse>({
+  const { data } = useSuspenseQuery<PostDetailResponse>({
     queryKey: ["searchPosts", keyword, category, tag, page],
     queryFn: () =>
       fetchSearchPosts({
@@ -30,7 +30,7 @@ const SearchResult = ({ keyword, initialData }: SearchResultProps) => {
         tag: tag ?? undefined,
         page,
       }),
-    initialData: initialData,
+    retry: false,
     staleTime: 1000 * 60,
   });
 
