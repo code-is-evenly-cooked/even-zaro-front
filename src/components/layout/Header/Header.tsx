@@ -8,7 +8,6 @@ import { LogIn, MenuIcon, ArrowLeftIcon } from "lucide-react";
 
 import IconButton from "@/components/common/Button/IconButton";
 import {
-  DefaultProfileIcon,
   LogoLineIcon,
   NotificationIcon,
   SearchIcon,
@@ -36,11 +35,11 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/email-validation",
     "/policy/terms",
     "/policy/privacy",
-    "/map"
+    "/map",
   ];
 
   // 검색창 숨김 경로 시작
-  const hideSearchbarRoutes = ["/board", "/editor"];
+  const hideSearchbarRoutes = ["/board", "/editor", "/search"];
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
   );

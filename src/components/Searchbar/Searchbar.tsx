@@ -9,12 +9,19 @@ import { useEffect } from "react";
 
 interface SearchbarProps {
   mainCategory?: MainCategory | null;
+  onlyTag?: boolean;
+  inputKeyword?: string;
 }
 
-const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
+const Searchbar = ({
+  mainCategory = null,
+  onlyTag = false,
+  inputKeyword,
+}: SearchbarProps) => {
   const {
     keyword,
     setKeyword,
+    setOnlyTag,
     selectedMainCategory,
     selectedSubCategory,
     openDropdown,
@@ -32,6 +39,8 @@ const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
 
   useEffect(() => {
     if (mainCategory) selectMainCategory(mainCategory);
+    if (inputKeyword) setKeyword(inputKeyword);
+    if (onlyTag) setOnlyTag(onlyTag);
   }, []);
 
   return (
@@ -43,7 +52,7 @@ const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
       className="w-full max-w-full"
     >
       <div className="relative flex gap-2">
-        {mainCategory ? (
+        {mainCategory && onlyTag ? (
           <SubCategoryDropdown
             selectedMainCategory={selectedMainCategory ?? mainCategory}
             selectedSubCategory={selectedSubCategory}

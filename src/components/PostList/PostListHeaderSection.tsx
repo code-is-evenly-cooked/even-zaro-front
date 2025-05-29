@@ -40,7 +40,7 @@ const PostListHeaderSection = ({ category }: PostListHeaderSectionProps) => {
 
   return (
     <div className="min-h-full flex flex-col pt-10 items-center">
-      <Searchbar mainCategory={category} />
+      <Searchbar mainCategory={category} onlyTag={true} />
 
       <div className="flex flex-col w-full pr-2 px-2 gap-7">
         <PostListHeader category={category} />

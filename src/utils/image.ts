@@ -48,6 +48,5 @@ export const getImageUrl = (src: string | null): string => {
  * @returns 이미지 태그가 제거된 문자열
  */
 export function removeMarkdownImages(content: string): string {
-  console.log(content);
   return content.replace(/!\[.*?\]\(.*?\)/g, "");
 }
