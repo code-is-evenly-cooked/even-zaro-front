@@ -25,7 +25,7 @@ const PostListHeader = ({ category }: PostListHeaderProps) => {
 
   const handleEmailValidateClick = (email?: string) => {
     setModalOpen(false);
-    if (email) {
+    if (email && email.length > 0) {
       router.push(`/email-validation?email=${email}`);
     }
   };

@@ -38,7 +38,7 @@ const EmailValidateModal = ({ isOpen, onClose }: EmailValidateModalProps) => {
       }
     } else {
       showToastMessage({ type: "error", message: "이메일 확인이 필요합니다" });
-      onClose();
+      onClose("");
     }
   };
 
