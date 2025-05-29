@@ -1,4 +1,5 @@
 import React from "react";
+import PlaceCard from "@/components/map/PlaceCard";
 
 export default function PlaceModal() {
 
@@ -36,15 +37,13 @@ export default function PlaceModal() {
 
       {/* 장소 카드 리스트 */}
       <div className="flex flex-col gap-3 px-4 overflow-y-auto">
-        {/* 예시 카드 */}
         {dummyData.map((place) => (
-          <div
-            className="p-3 shadow-sm hover:bg-gray-100 transition"
-          >
-            <h3 className="font-bold text-base">맛집 이름 {place.placeName}</h3>
-            <p className="text-sm text-gray-500">{place.description}</p>
-            <p className="text-sm text-gray-400">즐겨찾기 {place.favoriteCount}개</p>
-          </div>
+          <PlaceCard
+            key={place.placeName} // 실제로는 place.id 같은 고유값 추천
+            placeName={place.placeName}
+            description={place.description}
+            favoriteCount={place.favoriteCount}
+          />
         ))}
       </div>
     </div>
