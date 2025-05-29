@@ -1,12 +1,35 @@
-export default function ProfileTabs() {
-    return (
-        <div className="my-6">
-            <div className="flex justify-around text-sm text-gray-500">
-                <span>내가 쓴 글</span>
-                <span>내 댓글</span>
-                <span>좋아요</span>
-                <span>즐겨찾기</span>
-            </div>
-        </div>
-    );
+import { ProfileTabType } from "@/types/profile";
+
+interface Props {
+  activeTab: ProfileTabType;
+  onTabChange: (tab: ProfileTabType) => void;
+}
+
+export default function ProfileTabs({ activeTab, onTabChange }: Props) {
+  const tabs: { label: string; key: ProfileTabType }[] = [
+    { key: "posts", label: "내가 쓴 글" },
+    { key: "comments", label: "내 댓글" },
+    { key: "likes", label: "좋아요" },
+    { key: "bookmarks", label: "즐겨찾기" },
+  ];
+
+  return (
+    <div className="mt-3 mb-6">
+      <div className="flex justify-around text-sm text-gray-500">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => onTabChange(tab.key)}
+            className={`py-2 ${
+              activeTab === tab.key
+                ? "text-black font-semibold border-b-2 border-black"
+                : "hover:text-black"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
