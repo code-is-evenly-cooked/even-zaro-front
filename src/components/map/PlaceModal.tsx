@@ -57,7 +57,7 @@ export default function PlaceModal() {
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       {/* 헤더 */}
       <div className="px-4 pt-4">
-        <span className="text-2xl font-extrabold block ">
+        <span className="text-2xl font-extrabold block text-gray900">
           서울시 &gt; 강남구
         </span>
         <div className="flex justify-end">
