@@ -11,7 +11,7 @@ const NotificationModal = () => {
       </header>
       <div>
         {/* map으로 돌려야함 */}
-        <NotificationItem />
+        <NotificationItem type="LIKE" />
       </div>
     </div>
   );
