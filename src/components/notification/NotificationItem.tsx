@@ -16,9 +16,9 @@ const NotificationItem = ({
   thumbnailImage,
 }: NotificationItemProps) => {
   return (
-    <div className="flex">
+    <div className="flex items-center">
       {/* 읽음표시 img */}
-      <img alt="읽 " />
+      <span className="w-1 h-1 rounded-full bg-purple-500 mt-1 mr-2" />
 
       <div className="flex">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
