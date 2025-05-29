@@ -18,10 +18,10 @@ const NotificationItem = ({
   isRead,
 }: NotificationItemProps) => {
   return (
-    <div className="flex items-center h-[78px] mb-1">
+    <div className="flex items-center h-[78px] mb-1 mt-1">
       {/* 읽음표시 img */}
       <span
-        className="inline-block w-2 h-2 rounded-full bg-purple-500 mt-1 mr-2"
+        className="inline-block ml-2 mr-2 w-1 h-1 rounded-full bg-purple-500"
         style={{ visibility: isRead ? "hidden" : "visible" }}
       />
 

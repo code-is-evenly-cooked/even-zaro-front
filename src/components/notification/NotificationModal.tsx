@@ -49,11 +49,11 @@ const NotificationModal = () => {
   ];
 
   return (
-    <div className="w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-1">
+    <div className="w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-1 overflow-hidden">
       <header>
         <NotificationHeader />
       </header>
-      <div className="h-[310px] overflow-y-auto pt-3 pb-4">
+      <div className="h-[310px] overflow-y-auto pt-1 pb-3">
         {dummyNotifications.map((noti) => (
           <NotificationItem
             key={noti.id}
