@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import IconButton from "../common/Button/IconButton";
+import IconButton from "../Button/IconButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 

@@ -1,5 +1,5 @@
 import PostListHeaderSection from "@/components/PostList/PostListHeaderSection";
-import PostListPagination from "@/components/PostList/PostListPagination";
+import PostListPagination from "@/components/common/Pagination/PostListPagination";
 import PostListResult from "@/components/PostList/PostListResult";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
