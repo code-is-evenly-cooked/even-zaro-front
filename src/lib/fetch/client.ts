@@ -1,4 +1,4 @@
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { APIErrorResponse, APISuccessResponse } from "@/types/api";
 import { buildHeaders, resolveUrl } from "./buildHeaders";
 import { parseErrorResponse } from "./parseError";
@@ -25,6 +25,14 @@ export const client = async <T>(
     const accessToken = getCookie("access_token");
     const headers = buildHeaders(init.headers, accessToken, needAuth);
 
+    if (!accessToken && needAuth) {
+      throw new APIErrorResponse({
+        code: "NO_ACCESS_TOKEN",
+        message: "access token 없음",
+        statusCode: 401,
+      });
+    }
+
     const res = await fetch(resolvedUrl, {
       ...init,
       headers,
@@ -43,6 +51,8 @@ export const client = async <T>(
           params,
         });
       } else {
+        deleteCookie("access_token");
+        deleteCookie("refresh_token");
         window.location.href = "/login";
         throw new APIErrorResponse({
           code: "AUTH_EXPIRED",
