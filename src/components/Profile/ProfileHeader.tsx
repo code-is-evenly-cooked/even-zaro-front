@@ -14,7 +14,7 @@ export default function ProfileHeader() {
   // 자취 기간 디데이 표시
   const mockStartDate = user.liveAloneDate ?? "2024-01-01"; // 임시 목업 데이터
   const days =
-    user.liveAloneDate != null
+    mockStartDate != null
       ? differenceInDays(new Date(), new Date(mockStartDate))
       : null;
 
