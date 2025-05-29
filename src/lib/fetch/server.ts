@@ -23,6 +23,15 @@ export const server = async <T>(
 
   const accessToken = (await cookies()).get("access_token")?.value;
   const headers = buildHeaders(init.headers, accessToken, needAuth);
+
+  if (!accessToken && needAuth) {
+    throw new APIErrorResponse({
+      code: "NO_ACCESS_TOKEN",
+      message: "access token 없음",
+      statusCode: 401,
+    });
+  }
+
   const res = await fetch(resolvedUrl, {
     ...init,
     headers,

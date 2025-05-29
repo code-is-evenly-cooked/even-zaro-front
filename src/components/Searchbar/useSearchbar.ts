@@ -1,8 +1,13 @@
+"use client";
+
 import { MainCategory, SubCategoryValue } from "@/types/category";
+import { useRouter } from "next/navigation";
 import { useLayoutEffect, useEffect, useRef, useState, RefObject } from "react";
 
 const useSearchbar = () => {
+  const router = useRouter();
   const [keyword, setKeyword] = useState("");
+  const [onlyTag, setOnlyTag] = useState(false);
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<MainCategory | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] =
@@ -65,20 +70,24 @@ const useSearchbar = () => {
   };
 
   const handleSearch = () => {
-    // TODO: 검색 화면으로 이동
-    console.log(
-      "keyword",
-      keyword,
-      "selectedCategory",
-      selectedMainCategory,
-      "subCategory",
-      selectedSubCategory,
-    );
+    const query = new URLSearchParams();
+    query.set("keyword", keyword);
+    if (selectedMainCategory) {
+      query.set("category", selectedMainCategory);
+    }
+    if (selectedSubCategory) {
+      query.set("tag", selectedSubCategory);
+    }
+    if (onlyTag) {
+      query.set("onlyTag", "true");
+    }
+    router.push(`/search?${query.toString()}`);
   };
 
   return {
     keyword,
     setKeyword,
+    setOnlyTag,
     selectedMainCategory,
     setSelectedMainCategory,
     selectedSubCategory,

@@ -9,12 +9,13 @@ import { LogIn, MenuIcon, ArrowLeftIcon } from "lucide-react";
 import IconButton from "@/components/common/Button/IconButton";
 import {
   LogoLineIcon,
-  SearchIcon,
   NotificationIcon,
+  SearchIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
+import useSse from "@/hooks/useSse";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -34,13 +35,17 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/email-validation",
     "/policy/terms",
     "/policy/privacy",
+    "/map",
   ];
 
   // 검색창 숨김 경로 시작
-  const hideSearchbarRoutes = ["/board", "/editor"];
+  const hideSearchbarRoutes = ["/board", "/editor", "/search"];
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
   );
+
+  // SSE 연결 시도
+  useSse();
 
   useEffect(() => {
     const handleResize = () => {
