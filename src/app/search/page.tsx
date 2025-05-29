@@ -3,20 +3,25 @@ import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSp
 
 import SearchResult from "@/components/Search/SearchResult";
 import Searchbar from "@/components/Searchbar/Searchbar";
+import { MainCategory } from "@/types/category";
 import { Suspense } from "react";
 
 interface PageProps {
   searchParams: Promise<{
     keyword: string;
+    category?: MainCategory;
   }>;
 }
 
 const SearchPage = async ({ searchParams }: PageProps) => {
-  const { keyword } = await searchParams;
+  const { keyword, category } = await searchParams;
 
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto mt-10">
-      <Searchbar />
+      <Searchbar
+        inputKeyword={keyword}
+        mainCategory={category}
+      />
       <AppErrorBoundary fallbackMessage="검색 결과가 없습니다." key={keyword}>
         <Suspense fallback={<LoadingSpinnerBoundary />}>
           <SearchResult keyword={keyword} />

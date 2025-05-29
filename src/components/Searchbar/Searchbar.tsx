@@ -9,9 +9,13 @@ import { useEffect } from "react";
 
 interface SearchbarProps {
   mainCategory?: MainCategory | null;
+  inputKeyword?: string;
 }
 
-const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
+const Searchbar = ({
+  mainCategory = null,
+  inputKeyword,
+}: SearchbarProps) => {
   const {
     keyword,
     setKeyword,
@@ -32,6 +36,7 @@ const Searchbar = ({ mainCategory = null }: SearchbarProps) => {
 
   useEffect(() => {
     if (mainCategory) selectMainCategory(mainCategory);
+    if (inputKeyword) setKeyword(inputKeyword);
   }, []);
 
   return (
