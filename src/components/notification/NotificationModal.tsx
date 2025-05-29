@@ -42,8 +42,16 @@ const NotificationModal = () => {
         <NotificationHeader />
       </header>
       <div>
-        {/* map으로 돌려야함 */}
-        <NotificationItem type="COMMENT" />
+        {dummyNotifications.map((noti) => (
+          <NotificationItem
+            key={noti.id}
+            type={noti.type}
+            username={noti.username}
+            createdAt={noti.createdAt}
+            comment={noti.comment}
+            thumbnailUrl={noti.thumbnailImage}
+          />
+        ))}
       </div>
     </div>
   );
