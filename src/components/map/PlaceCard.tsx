@@ -14,8 +14,6 @@ const categoryIcons: Record<string, JSX.Element> = {
   Market: <Market />,
   Etc : <Etc />,
   Favorite : <Favorite />
-  // Hospital: <Hospital />,
-  // Add more category-icon pairs as needed
 };
 
 
