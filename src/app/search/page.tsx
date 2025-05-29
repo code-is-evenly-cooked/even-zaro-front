@@ -10,17 +10,19 @@ interface PageProps {
   searchParams: Promise<{
     keyword: string;
     category?: MainCategory;
+    onlyTag?: boolean;
   }>;
 }
 
 const SearchPage = async ({ searchParams }: PageProps) => {
-  const { keyword, category } = await searchParams;
+  const { keyword, category, onlyTag } = await searchParams;
 
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto mt-10">
       <Searchbar
         inputKeyword={keyword}
         mainCategory={category}
+        onlyTag={onlyTag}
       />
       <AppErrorBoundary fallbackMessage="검색 결과가 없습니다." key={keyword}>
         <Suspense fallback={<LoadingSpinnerBoundary />}>

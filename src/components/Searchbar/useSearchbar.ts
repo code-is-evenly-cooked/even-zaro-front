@@ -7,6 +7,7 @@ import { useLayoutEffect, useEffect, useRef, useState, RefObject } from "react";
 const useSearchbar = () => {
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
+  const [onlyTag, setOnlyTag] = useState(false);
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<MainCategory | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] =
@@ -77,12 +78,16 @@ const useSearchbar = () => {
     if (selectedSubCategory) {
       query.set("tag", selectedSubCategory);
     }
+    if (onlyTag) {
+      query.set("onlyTag", "true");
+    }
     router.push(`/search?${query.toString()}`);
   };
 
   return {
     keyword,
     setKeyword,
+    setOnlyTag,
     selectedMainCategory,
     setSelectedMainCategory,
     selectedSubCategory,
