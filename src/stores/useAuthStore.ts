@@ -9,6 +9,7 @@ export interface UserInfo {
   nickname: string;
   profileImage: string | null;
   provider: AuthProvider;
+  liveAloneDate: string | null;
   // TODO: 선택입력 정보는 추후 추가하기
 }
 
