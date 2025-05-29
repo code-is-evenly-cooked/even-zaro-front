@@ -12,19 +12,22 @@ const NotificationModal = () => {
       createdAt: "3분 전",
       comment: "이건 진짜 꿀템이네요!",
       thumbnailImage: "/images/post/uuid4.png",
+      isRead: false,
     },
     {
       id: 3,
       type: "LIKE" as const,
       username: "자취왕",
       createdAt: "7분 전",
-      thumbnailImage: "/images/post/uuid3.png",
+      //   thumbnailImage: "/images/post/uuid3.png",
+      isRead: true,
     },
     {
       id: 2,
       type: "FOLLOW" as const,
       username: "맛잘알",
       createdAt: "15분 전",
+      isRead: true,
     },
     {
       id: 1,
@@ -33,11 +36,12 @@ const NotificationModal = () => {
       createdAt: "30분 전",
       comment: "레시피 공유 가능할까요?",
       thumbnailImage: "/images/post/uuid1.png",
+      isRead: false,
     },
   ];
 
   return (
-    <div className="w-[360px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-2">
+    <div className="w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-2">
       <header>
         <NotificationHeader />
       </header>
@@ -50,6 +54,7 @@ const NotificationModal = () => {
             createdAt={noti.createdAt}
             comment={noti.comment}
             thumbnailImage={noti.thumbnailImage}
+            isRead={noti.isRead}
           />
         ))}
       </div>

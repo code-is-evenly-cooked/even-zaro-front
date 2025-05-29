@@ -6,6 +6,7 @@ type NotificationItemProps = {
   createdAt: string;
   comment?: string;
   thumbnailImage?: string;
+  isRead: boolean;
 };
 
 const NotificationItem = ({
@@ -14,11 +15,15 @@ const NotificationItem = ({
   createdAt,
   comment,
   thumbnailImage,
+  isRead,
 }: NotificationItemProps) => {
   return (
     <div className="flex items-center">
       {/* 읽음표시 img */}
-      <span className="w-1 h-1 rounded-full bg-purple-500 mt-1 mr-2" />
+      <span
+        className="inline-block w-2 h-2 rounded-full bg-purple-500 mt-1 mr-2"
+        style={{ visibility: isRead ? "hidden" : "visible" }}
+      />
 
       <div className="flex">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
