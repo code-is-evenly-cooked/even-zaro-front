@@ -1,8 +1,20 @@
 "use client";
 
-type NotificationType = "LIKE" | "FOLLOW" | "COMMENT";
+type NotificationItemProps = {
+  type: "LIKE" | "FOLLOW" | "COMMENT";
+  username: string;
+  createdAt: string;
+  comment?: string;
+  thumbnailImage?: string;
+};
 
-const NotificationItem = ({ type }: { type: NotificationType }) => {
+const NotificationItem = ({
+  type,
+  username,
+  createdAt,
+  comment,
+  thumbnailImage,
+}: NotificationItemProps) => {
   return (
     <div className="flex">
       {/* 읽음표시 img */}
@@ -14,7 +26,7 @@ const NotificationItem = ({ type }: { type: NotificationType }) => {
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex">
           <div>
-            <span>상대유저</span>
+            <span>{username}</span>
             {type === "LIKE" && (
               <span> 님이 회원님의 게시글을 좋아합니다.</span>
             )}
@@ -24,13 +36,13 @@ const NotificationItem = ({ type }: { type: NotificationType }) => {
             {type === "COMMENT" && (
               <>
                 <span> 님이 댓글을 남겼습니다. : </span>
-                <span>와 자취꿀템 인정 ~ </span>
+                <span>{comment}</span>
               </>
             )}
-            <span> 5분 전</span>
+            <span> {createdAt}</span>
           </div>
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
-          {type === "LIKE" && <img alt="썸네일이미지" />}
+          {type === "LIKE" && <img src={thumbnailImage} alt="썸네일이미지" />}
         </div>
       </div>
     </div>

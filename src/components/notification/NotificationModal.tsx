@@ -49,7 +49,7 @@ const NotificationModal = () => {
             username={noti.username}
             createdAt={noti.createdAt}
             comment={noti.comment}
-            thumbnailUrl={noti.thumbnailImage}
+            thumbnailImage={noti.thumbnailImage}
           />
         ))}
       </div>
