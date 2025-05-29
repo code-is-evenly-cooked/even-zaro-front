@@ -5,15 +5,20 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../common/Icons";
+import { useProfile } from "@/hooks/useProfile";
 
 export default function ProfileHeader() {
   const { user } = useAuthStore();
-  if (!user) return null;
+  const userId = user?.userId ?? null;
 
-  const imageUrl = getProfileImageUrl(user.profileImage);
+  const { data: profile, isLoading, error } = useProfile(userId);
+  if (isLoading) return <div className="text-gray600">로딩 중...</div>
+  if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>
+
+  const imageUrl = getProfileImageUrl(profile.profileImage);
 
   // 자취 기간 디데이 표시
-  const mockStartDate = user.liveAloneDate ?? "2024-01-01"; // 임시 목업 데이터
+  const mockStartDate = profile.liveAloneDate ?? "2024-01-01"; // 임시 목업 데이터
   const days =
     mockStartDate != null
       ? differenceInDays(new Date(), new Date(mockStartDate))
@@ -31,9 +36,11 @@ export default function ProfileHeader() {
         />
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold">{user.nickname}</span>
+            <span className="font-bold">{profile.nickname}</span>
             {days != null && <span>D+{days}</span>}
-            <button><SettingIcon /></button>
+            <button>
+              <SettingIcon />
+            </button>
           </div>
           <div className="flex gap-4">
             <div>글</div>
