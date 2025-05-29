@@ -9,10 +9,7 @@ export async function GET() {
 
   if (!accessToken) {
     console.warn("[accessToken] 쿠키에 access_token 없음");
-    return createSuccessResponse(
-      { accessToken: null },
-      "access_token 없음 - 로그인 유지 불가",
-    );
+    return createErrorResponse("access token 없음", 401);
   }
 
   try {
