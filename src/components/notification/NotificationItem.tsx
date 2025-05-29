@@ -18,8 +18,9 @@ const NotificationItem = ({
   return (
     <div className="flex">
       {/* 읽음표시 img */}
-      <img />
-      <div>
+      <img alt="읽 " />
+
+      <div className="flex">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
         <img alt="프로필이미지" />
 
