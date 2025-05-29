@@ -3,6 +3,7 @@ import PostHeader from "@/components/post/PostHeader";
 import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
+import CommentList from "@/components/post/Comment/CommentList";
 
 export default async function Page({
   params,
@@ -32,6 +33,7 @@ export default async function Page({
         likeCount={post.data.likeCount}
         commentCount={post.data.commentCount}
       />
+      <CommentList />
     </main>
   );
 }
