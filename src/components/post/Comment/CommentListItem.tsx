@@ -1,14 +1,20 @@
-import IconButton from "@/components/common/Button/IconButton";
+"use client";
+
 import { CommentItem } from "@/types/comment";
 import { getProfileImageUrl } from "@/utils/image";
-import { MoreVerticalIcon } from "lucide-react";
+
 import Image from "next/image";
+import CommentAction from "./CommentAction";
 
 interface CommentItemProps {
   item: CommentItem;
 }
 
 const CommentListItem = ({ item }: CommentItemProps) => {
+  const handleAction = (action: string) => {
+    console.log(action);
+  };
+
   return (
     <div className="flex flex-col gap-2 py-3 border-b">
       <div className="flex justify-between">
@@ -23,7 +29,7 @@ const CommentListItem = ({ item }: CommentItemProps) => {
           <p className="text-md text-gray900">{item.nickname}</p>
           {/* TODO: livealonedate */}
         </div>
-        <IconButton icon={<MoreVerticalIcon />} label={"메뉴"} isTransparent />
+        <CommentAction isMine={item.isMine} onAction={handleAction} />
       </div>
       <p className="text-md text-gray900 px-2">{item.content}</p>
     </div>
