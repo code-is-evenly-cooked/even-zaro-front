@@ -1,14 +1,14 @@
 interface PlaceCardProps {
   placeName: string;
-  description: string;
+  address: string;
   favoriteCount: number;
 }
 
-export default function PlaceCard({ placeName, description, favoriteCount }: PlaceCardProps) {
+export default function PlaceCard({ placeName, address, favoriteCount }: PlaceCardProps) {
   return (
-    <div className="p-3 shadow-sm hover:bg-gray-100 transition rounded border border-gray-200">
+    <div className="p-3 shadow-sm hover:bg-gray-100 transition">
       <h3 className="font-bold text-base">{placeName}</h3>
-      <p className="text-sm text-gray-500">{description}</p>
+      <p className="text-sm text-gray-500">{address}</p>
       <p className="text-sm text-gray-400">즐겨찾기 {favoriteCount}개</p>
     </div>
   );
