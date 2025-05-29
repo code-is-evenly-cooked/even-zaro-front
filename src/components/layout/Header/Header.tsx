@@ -16,6 +16,7 @@ import {
 import Searchbar from "@/components/Searchbar/Searchbar";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
+import useSse from "@/hooks/useSse";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -43,6 +44,9 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
   );
+
+  // SSE 연결 시도
+  useSse();
 
   useEffect(() => {
     const handleResize = () => {
