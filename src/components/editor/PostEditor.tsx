@@ -135,14 +135,20 @@ export default function PostEditor() {
 
   const restore = useRestoreDraft(editorRef); // 임시 저장 불러오기
 
-  // 에디터 내부 초기화
+  // 에디터 내부 초기화 로직
   useEffect(() => {
     const editor = editorRef.current?.getInstance();
-    if (editor && !content) {
-      editor.setMarkdown(""); // 진짜 초기화
+    if (!editor) return;
+
+    // 준비 완료되기 전에는 항상 빈 화면
+    if (!restore.isReady) {
+      editor.setMarkdown("");
+      return;
     }
-    // eslint-disable-next-line
-  }, []);
+
+    // 준비 완료 후에는 store의 content 반영
+    editor.setMarkdown(content || "");
+  }, [restore.isReady, content]);
 
   // 글 작성
   const handleSubmit = async () => {
@@ -231,7 +237,7 @@ export default function PostEditor() {
       {/* 제목 입력창 */}
       <input
         type="text"
-        value={title}
+        value={restore.isReady ? title : ""}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="제목을 입력하세요"
         className="w-full h-[60px] text-2xl font-semibold outline-none placeholder-gray-400 mb-6 px-3 py-2 rounded-md bg-white shadow-[0_1px_4px_rgba(0,0,0,0.1)] focus:shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition"
@@ -241,7 +247,7 @@ export default function PostEditor() {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue={content || ""}
+        initialValue=""
         previewStyle="vertical"
         height="420px"
         initialEditType="wysiwyg"
@@ -269,7 +275,7 @@ export default function PostEditor() {
               return;
             }
             const content = instance.getMarkdown();
-            saveDraft({ title, mainCategory, subCategory, content });
+            saveDraft({ title, content });
             showToastMessage({ message: "임시 저장 완료", type: "info" });
           }}
         >

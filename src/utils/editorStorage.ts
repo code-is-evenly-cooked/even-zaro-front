@@ -19,6 +19,12 @@ export async function loadDraft(): Promise<PostDraft | null> {
   });
 }
 
+export async function clearDraft(): Promise<void> {
+  const db = await openDB();
+  const tx = db.transaction("drafts", "readwrite");
+  tx.objectStore("drafts").delete(STORE_KEY);
+}
+
 async function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
