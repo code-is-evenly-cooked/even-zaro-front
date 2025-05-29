@@ -22,7 +22,11 @@ const NotificationItem = ({
 
       <div className="flex">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
-        <img alt="프로필이미지" />
+        <img
+          src="/icons/defaultProfile.svg"
+          alt="프로필이미지"
+          className="w-10 h-10 rounded-full object-cover"
+        />
 
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex">
@@ -43,7 +47,13 @@ const NotificationItem = ({
             <span> {createdAt}</span>
           </div>
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
-          {type === "LIKE" && <img src={thumbnailImage} alt="썸네일이미지" />}
+          {type === "LIKE" && (
+            <img
+              src={thumbnailImage || "/icons/placeholderImage.svg"}
+              alt="썸네일 이미지"
+              className="w-16 h-16 object-cover rounded"
+            />
+          )}
         </div>
       </div>
     </div>
