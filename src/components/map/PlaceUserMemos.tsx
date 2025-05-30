@@ -13,7 +13,7 @@ export default function PlaceUserMemos() {
     userInfo: [
       {
         userId : 1,
-        profileImage : "/icons/sampleProfile.svg",
+        profileImage : "/icons/defaultProfile.svg",
         nickname: "이브니",
         memo: "요기 맛없어요asdsadasdasdasdasasdasd1",
       },
@@ -50,11 +50,11 @@ export default function PlaceUserMemos() {
 
             <div className="flex flex-col justify-center">
               <span className="font-bold text-gray-900 text-lg leading-snug">
-                갓덴스시 강남점
+                {dummyData.placeName}
               </span>
 
               <span className="text-xs text-gray-500 leading-snug">
-                서울 강남구 테헤란로 109
+                {dummyData.address}
               </span>
             </div>
           </div>
@@ -68,8 +68,8 @@ export default function PlaceUserMemos() {
           <SampleProfile className="rounded-full w-10 border-2 border-gray200" />
         </div>
         <div className="text-xs">
-          <span className="font-bold">nahuyk</span>
-          <span> 님 외 {123} 명이 즐겨찾기에 추가했습니다.</span>
+          <span className="font-bold">{dummyData.userInfo[0].nickname}</span>
+          <span> 님 외 {dummyData.favoriteCount} 명이 즐겨찾기에 추가했습니다.</span>
         </div>
       </div>
       <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
