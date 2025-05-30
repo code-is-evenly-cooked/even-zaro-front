@@ -13,6 +13,7 @@ import {
   SearchIcon,
 } from "@/components/common/Icons";
 import Searchbar from "@/components/Searchbar/Searchbar";
+import NotificationModal from "@/components/notification/NotificationModal";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import useSse from "@/hooks/useSse";
@@ -46,6 +47,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
 
   // SSE 연결 시도
   useSse();
+
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -116,7 +119,15 @@ const Header = ({ onMenuClick }: HeaderProps) => {
             icon={<NotificationIcon className="w-6 h-6" />}
             isTransparent
             label="알림"
+            onClick={() => setIsNotificationOpen((prev) => !prev)}
           />
+          <div className="relative">
+            {isNotificationOpen && (
+              <div className="absolute top-full right-0 mt-6 z-50">
+                <NotificationModal />
+              </div>
+            )}
+          </div>
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
               <Image
