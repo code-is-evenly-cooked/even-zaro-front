@@ -45,7 +45,7 @@ const NotificationItem = ({
       className="flex items-center h-[78px] mb-1 mt-1 p-1
                 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-150"
     >
-      <div className="flex items-center ml-1 mr-2">
+      <div className="flex w-13 items-center ml-1 mr-1">
         {/* 읽음 표시 */}
         <span
           className={
@@ -65,7 +65,7 @@ const NotificationItem = ({
         </Link>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex flex-1 items-center">
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex items-center ml-2 mr-2">
           <div>
