@@ -159,3 +159,29 @@ export const DefaultProfileIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const SettingIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/setting.svg"
+      alt="기본 유저 프로필"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const ShareIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/share.svg"
+      alt="기본 유저 프로필"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};

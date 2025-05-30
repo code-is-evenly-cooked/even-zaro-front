@@ -1,6 +1,8 @@
 "use client";
 
 import { MessageCircle, Heart } from "lucide-react";
+import { ShareIcon } from "../common/Icons";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface PostFooterProps {
   postId: number;
@@ -18,6 +20,24 @@ export default function PostFooter({
   isReady,
   onToggleLike,
 }: PostFooterProps) {
+  const { showToastMessage } = useToastMessageContext();
+
+  // 공유하기
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToastMessage({
+        message: "URL이 복사되었습니다.",
+        type: "success",
+      });
+    } catch {
+      showToastMessage({
+        message: "URL 복사에 실패하였습니다.",
+        type: "error",
+      });
+    }
+  };
+
   return (
     <div className="flex items-center gap-6 text-gray600">
       <button
@@ -32,6 +52,10 @@ export default function PostFooter({
         <MessageCircle size={20} />
         <span>{commentCount}</span>
       </div>
+      <button onClick={handleShare} className="flex items-center gap-2">
+        <ShareIcon />
+        <span>공유하기</span>
+      </button>
     </div>
   );
 }
