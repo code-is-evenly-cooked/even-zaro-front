@@ -29,24 +29,27 @@ const NotificationItem = ({
       className="flex items-center h-[78px] mb-1 mt-1 p-1
                 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-150"
     >
-      {/* 읽음표시 img */}
-      <span
-        className="inline-block ml-2 mr-2 w-1 h-1 rounded-full bg-purple-500"
-        style={{ visibility: isRead ? "hidden" : "visible" }}
-      />
-
-      <div className="flex items-center">
-        {/* 알림액션 한 상대유저의 프로필이미지 */}
+      <div className="flex items-center ml-1 mr-2">
+        {/* 읽음 표시 */}
+        <span
+          className={
+            isRead
+              ? "invisible w-1 h-1"
+              : "inline-block w-1 h-1 rounded-full bg-purple-500"
+          }
+        />
         <Link href={`/profile/${userId}`}>
           <Image
             src="/icons/defaultProfile.svg"
             alt="프로필이미지"
             width={40}
             height={40}
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-10 h-10 rounded-full object-cover ml-2"
           />
         </Link>
+      </div>
 
+      <div className="flex items-center">
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex items-center ml-2 mr-2">
           <div>
