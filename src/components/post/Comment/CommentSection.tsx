@@ -19,9 +19,9 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
   const comments = data?.content ?? [];
 
   return (
-    <section>
+    <section className="flex flex-col gap-2">
       <CommentList comments={comments} refresh={refetch} />
-      <CommentInput />
+      <CommentInput postId={postId} replyNickName={""} onSuccess={refetch} />
     </section>
   );
 };

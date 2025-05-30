@@ -1,12 +1,29 @@
 "use client";
 
+import { client } from "@/lib/fetch/client";
 import { FormEvent, useState } from "react";
 
-const CommentInput = () => {
+interface CommentInputProps {
+  postId: number;
+  isReply: boolean;
+  onSuccess: () => void;
+}
+
+const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
   const [comment, setComment] = useState("");
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(comment);
+    if (!comment.trim()) return;
+
+    await client(`/posts/${postId}/comments`, {
+      method: "POST",
+      needAuth: true,
+      body: JSON.stringify({ content: comment, mentionedNickname: "" }),
+    });
+
+    setComment("");
+    onSuccess();
   };
 
   return (
@@ -33,3 +50,8 @@ const CommentInput = () => {
 };
 
 export default CommentInput;
+
+/**
+ * TODO
+ * 답글 기능일때 UI를 어떻게 표시할것인가?
+ */
