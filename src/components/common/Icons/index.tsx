@@ -212,13 +212,13 @@ export const MoreIcon = ({ className }: IconProps) => {
   );
 };
 
-export const SampleProfile = ({ className }: IconProps) => {
+export const YellowStar = ({ className }: IconProps) => {
   return (
     <Image
-      src="/icons/sampleProfile.svg"
-      alt="동물 프로필"
-      width={6}
-      height={6}
+      src="/icons/yellowStar.svg"
+      alt="즐겨찾기 추가됨"
+      width={24}
+      height={24}
       className={className}
       priority
     />

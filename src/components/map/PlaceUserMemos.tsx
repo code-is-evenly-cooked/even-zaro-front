@@ -1,8 +1,10 @@
-import React from "react";
-import { MoreIcon, StarIcon } from "@/components/common/Icons";
+import React, { useState } from "react";
+import { MoreIcon, StarIcon, YellowStar } from "@/components/common/Icons";
 import UserMemoCard from "@/components/map/UserMemoCard";
 
 export default function PlaceUserMemos() {
+  const [favorite, setFavorite] = useState(false);
+
   const dummyData = {
     placeId: 1,
     placeName: "갓덴 스시 강남점",
@@ -37,6 +39,11 @@ export default function PlaceUserMemos() {
       },
     ],
   };
+
+  function handleClickFavorite() {
+    setFavorite(!favorite);
+  }
+
   return (
     <div className="flex flex-col absolute left-[400px] -bottom-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       <div className="relative w-full px-4 py-4">
@@ -46,10 +53,15 @@ export default function PlaceUserMemos() {
 
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center space-x-2">
-            <button className="flex self-start mt-0.5 w-5 h-5">
-              <StarIcon />
-            </button>
-
+            {favorite ? (
+              <button onClick={handleClickFavorite} className="flex self-start ">
+                <StarIcon />
+              </button>
+            ) : (
+              <button onClick={handleClickFavorite}  className="flex self-start">
+                <YellowStar />
+              </button>
+            )}
             <div className="flex flex-col justify-center">
               <span className="font-bold text-gray-900 text-lg leading-snug">
                 {dummyData.placeName}
