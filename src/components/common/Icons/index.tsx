@@ -212,3 +212,15 @@ export const MoreIcon = ({ className }: IconProps) => {
   );
 };
 
+export const SampleProfile = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/sampleProfile.svg"
+      alt="동물 프로필"
+      width={6}
+      height={6}
+      className={className}
+      priority
+    />
+  );
+};
