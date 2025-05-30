@@ -2,6 +2,9 @@
 
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
+import { CATEGORY_MAP } from "@/constants/category";
+
+export type MainCategory = keyof typeof CATEGORY_MAP;
 
 const NotificationModal = () => {
   const dummyNotifications = [
@@ -13,6 +16,8 @@ const NotificationModal = () => {
       createdAt: "2025-05-30T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
+      category: "TOGETHER" as MainCategory,
+      postId: 2,
     },
     {
       id: 4,
@@ -23,6 +28,8 @@ const NotificationModal = () => {
       comment: "이건 진짜 꿀템이네요!",
       thumbnailImage: "/images/post/uuid4.png",
       isRead: false,
+      category: "TOGETHER" as MainCategory,
+      postId: 2,
     },
     {
       id: 3,
@@ -32,6 +39,8 @@ const NotificationModal = () => {
       createdAt: "2025-05-21T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
+      category: "DAILY_LIFE" as MainCategory,
+      postId: 5,
     },
     {
       id: 2,
@@ -50,6 +59,8 @@ const NotificationModal = () => {
       comment: "레시피 공유 가능할까요?",
       thumbnailImage: "2025-05-21T12:34:56",
       isRead: false,
+      category: "RANDOM_BUY" as MainCategory,
+      postId: 8,
     },
   ];
 
@@ -69,6 +80,8 @@ const NotificationModal = () => {
             comment={noti.comment}
             thumbnailImage={noti.thumbnailImage}
             isRead={noti.isRead}
+            category={noti.category}
+            postId={noti.postId}
           />
         ))}
       </ul>

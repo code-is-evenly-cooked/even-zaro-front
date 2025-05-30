@@ -1,9 +1,12 @@
 "use client";
 
 import type { NotificationType } from "@/types/notification";
+import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
+
+export type MainCategory = keyof typeof CATEGORY_MAP;
 
 type NotificationItemProps = {
   type: NotificationType;
@@ -13,6 +16,8 @@ type NotificationItemProps = {
   comment?: string;
   thumbnailImage?: string;
   isRead: boolean;
+  category?: MainCategory;
+  postId?: number;
 };
 
 const NotificationItem = ({
@@ -23,8 +28,17 @@ const NotificationItem = ({
   comment,
   thumbnailImage,
   isRead,
+  category,
+  postId,
 }: NotificationItemProps) => {
-  return (
+  const href =
+    type === "FOLLOW"
+      ? `/profile/${userId}`
+      : type === "LIKE" || type === "COMMENT"
+        ? `/board/${category}/${postId}`
+        : undefined;
+
+  const itemContent = (
     <li
       className="flex items-center h-[78px] mb-1 mt-1 p-1
                 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-150"
@@ -90,6 +104,8 @@ const NotificationItem = ({
       </div>
     </li>
   );
+
+  return href ? <Link href={href}>{itemContent}</Link> : itemContent;
 };
 
 export default NotificationItem;
