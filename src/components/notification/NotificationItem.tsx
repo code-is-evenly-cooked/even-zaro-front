@@ -71,7 +71,10 @@ const NotificationItem = ({
                 <span>{comment}</span>
               </>
             )}
-            <span> {getRelativeTimeAgo(createdAt)}</span>
+            <span className="font-light text-gray-400">
+              {" "}
+              {getRelativeTimeAgo(createdAt)}
+            </span>
           </div>
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
