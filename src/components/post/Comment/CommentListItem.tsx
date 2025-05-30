@@ -5,6 +5,7 @@ import { getProfileImageUrl } from "@/utils/image";
 
 import Image from "next/image";
 import CommentAction from "./CommentAction";
+import { renderWithMentions } from "@/utils/comment";
 
 interface CommentItemProps {
   item: CommentItem;
@@ -32,7 +33,9 @@ const CommentListItem = ({ item, isLast }: CommentItemProps) => {
         </div>
         <CommentAction isMine={item.isMine} onAction={handleAction} />
       </div>
-      <p className="text-md text-gray900 px-2">{item.content}</p>
+      <p className="text-md text-gray900 px-2">
+        {renderWithMentions(item.content)}
+      </p>
     </div>
   );
 };
