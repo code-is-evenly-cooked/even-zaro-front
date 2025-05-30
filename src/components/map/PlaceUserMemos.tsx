@@ -3,6 +3,40 @@ import { DefaultProfileIcon, MoreIcon, SampleProfile, StarIcon } from "@/compone
 import UserMemoCard from "@/components/map/UserMemoCard";
 
 export default function PlaceUserMemos() {
+  const dummyData = {
+    placeId : 1,
+    placeName : "갓덴 스시 강남점",
+    address : "서울의 어딘가 123",
+    lat: 36.123,
+    lng: 127.232,
+    favoriteCount: 5,
+    userInfo: [
+      {
+        userId : 1,
+        profileImage : "/icons/sampleProfile.svg",
+        nickname: "이브니",
+        memo: "요기 맛없어요1",
+      },
+      {
+        userId : 2,
+        profileImage : "/icons/sampleProfile.svg",
+        nickname: "삼브니",
+        memo: "요기 맛없어2",
+      },
+      {
+        userId : 3,
+        profileImage : "/icons/sampleProfile.svg",
+        nickname: "사브니",
+        memo: "요기 맛없어요3",
+      },
+      {
+        userId : 4,
+        profileImage : "/icons/sampleProfile.svg",
+        nickname: "오브니",
+        memo: "요기 맛없어요4",
+      },
+    ],
+  };
   return (
     <div className="flex flex-col absolute left-[400px] -bottom-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       <div className="relative w-full px-4 py-4">
@@ -39,13 +73,13 @@ export default function PlaceUserMemos() {
         </div>
       </div>
       <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
-        <UserMemoCard />
-        <UserMemoCard />
-        <UserMemoCard />
-        <UserMemoCard />
-        <UserMemoCard />
-        <UserMemoCard />
-        <UserMemoCard />
+        {dummyData.userInfo.map((user) =>
+          <UserMemoCard
+            key={user.userId}
+            profileImage={user.profileImage}
+            nickName={user.nickname}
+            memo={user.memo}
+          />)}
       </div>
     </div>
   );
