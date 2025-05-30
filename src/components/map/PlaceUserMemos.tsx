@@ -7,14 +7,14 @@ export default function PlaceUserMemos() {
       <div className="relative w-full px-4 py-4">
         {/* 우측 상단 더보기 아이콘 */}
         <div className="absolute top-4 right-4">
-          <MoreIcon className="w-5 h-5 text-gray-500" />
+          <MoreIcon className="w-5 h-5 text-gray-500 mt-0.5" />
         </div>
 
         {/* 중앙 정렬된 아이콘 + 텍스트 */}
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center space-x-2">
             {/* 아이콘 */}
-            <StarIcon className="w-5 h-5 text-gray-700" />
+            <StarIcon className="flex self-start mt-0.5 w-5 h-5 text-gray-700" />
 
             {/* 텍스트 블록 */}
             <div className="flex flex-col justify-center">
