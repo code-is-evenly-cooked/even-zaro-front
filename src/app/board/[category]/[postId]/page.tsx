@@ -4,6 +4,7 @@ import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import ClientPostContent from "./PostPageClient";
 import CommentList from "@/components/post/Comment/CommentList";
+import type { MainCategory } from "@/types/category";
 
 export default async function Page({
   params,
@@ -12,11 +13,13 @@ export default async function Page({
 }) {
   const { postId } = params;
   const post = await fetchPostDetail(postId);
+  const categoryKey = post.category as MainCategory;
+
 
   return (
     <main className="w-full max-w-3xl mx-auto px-2 py-10">
       <PostHeader
-        category={post.category as "TOGETHER" | "DAILY_LIFE" | "RANDOM_BUY"}
+        category={categoryKey}
         tag={post.tag}
         title={post.title}
         createdAt={post.createdAt}

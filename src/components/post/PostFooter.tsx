@@ -32,7 +32,7 @@ export default function PostFooter({
       });
     } catch {
       showToastMessage({
-        message: "URL이 복사되었습니다.",
+        message: "URL 복사에 실패하였습니다.",
         type: "error",
       });
     }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
@@ -10,8 +11,16 @@ import { useProfile } from "@/hooks/useProfile";
 export default function ProfileHeader() {
   const { user } = useAuthStore();
   const userId = user?.userId ?? null;
-
   const { data: profile, isLoading, error } = useProfile(userId);
+
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (!isClient) return null;
+
+  if (!userId)
+    return <div className="text-red-500">유효하지 않은 사용자입니다.</div>;
   if (isLoading) return <div className="text-gray600">로딩 중...</div>;
   if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>;
 

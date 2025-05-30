@@ -1,3 +1,5 @@
+import { MoreVerticalIcon } from "lucide-react";
+
 interface BookmarkGroupProps {
   group: {
     id: number;
@@ -19,7 +21,9 @@ export default function BookmarkGroup({ group }: BookmarkGroupProps) {
         </div>
       </div>
 
-      <button className="text-gray600 hover:text-black">⋮</button>
+      <button className="text-gray600 hover:text-black">
+        <MoreVerticalIcon width={20} height={20} />
+      </button>
     </div>
   );
 }
