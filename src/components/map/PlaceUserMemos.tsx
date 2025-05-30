@@ -88,18 +88,20 @@ export default function PlaceUserMemos() {
                   className="flex items-center justify-center rounded-full w-10 h-10 border-2 border-gray200"
                   key={idx}
                 >
-                  <img
-                    className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
-                    src={user.profileImage}
-                    alt="유저 이미지"
-                  />
+                  <button>
+                    <img
+                      className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
+                      src={user.profileImage}
+                      alt="유저 이미지"
+                    />
+                  </button>
                 </div>
               ))}
             </div>
             <div className="text-xs">
-              <span className="font-bold">
+              <button className="font-bold">
                 {dummyData.userInfo[0].nickname}
-              </span>
+              </button>
               <span>
                 {" "}
                 님 외 {dummyData.favoriteCount} 명이 즐겨찾기에 추가했습니다.
