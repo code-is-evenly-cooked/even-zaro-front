@@ -185,3 +185,30 @@ export const ShareIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const StarIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/star.svg"
+      alt="즐겨찾기 아이콘"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const MoreIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/more.svg"
+      alt="더보기 아이콘"
+      width={6}
+      height={6}
+      className={className}
+      priority
+    />
+  );
+};
+
