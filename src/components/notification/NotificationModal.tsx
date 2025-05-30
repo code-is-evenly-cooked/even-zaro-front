@@ -53,19 +53,21 @@ const NotificationModal = () => {
       <header>
         <NotificationHeader />
       </header>
-      <div className="h-[310px] overflow-y-auto pt-1 pb-3">
+      <ul className="h-[310px] overflow-y-auto pt-1 pb-3">
         {dummyNotifications.map((noti) => (
-          <NotificationItem
-            key={noti.id}
-            type={noti.type}
-            username={noti.username}
-            createdAt={noti.createdAt}
-            comment={noti.comment}
-            thumbnailImage={noti.thumbnailImage}
-            isRead={noti.isRead}
-          />
+          <li key={noti.id}>
+            <NotificationItem
+              key={noti.id}
+              type={noti.type}
+              username={noti.username}
+              createdAt={noti.createdAt}
+              comment={noti.comment}
+              thumbnailImage={noti.thumbnailImage}
+              isRead={noti.isRead}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
