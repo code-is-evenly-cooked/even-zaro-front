@@ -15,13 +15,13 @@ export default function PlaceUserMemos() {
         userId : 1,
         profileImage : "/icons/sampleProfile.svg",
         nickname: "이브니",
-        memo: "요기 맛없어요1",
+        memo: "요기 맛없어요asdsadasdasdasdasasdasd1",
       },
       {
         userId : 2,
         profileImage : "/icons/sampleProfile.svg",
         nickname: "삼브니",
-        memo: "요기 맛없어2",
+        memo: "요기 맛없어asdasdasdsalkdjaslkdjaslkdjalskj2",
       },
       {
         userId : 3,
