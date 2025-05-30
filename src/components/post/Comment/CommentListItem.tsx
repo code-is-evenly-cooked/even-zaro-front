@@ -8,15 +8,16 @@ import CommentAction from "./CommentAction";
 
 interface CommentItemProps {
   item: CommentItem;
+  isLast: boolean;
 }
 
-const CommentListItem = ({ item }: CommentItemProps) => {
+const CommentListItem = ({ item, isLast }: CommentItemProps) => {
   const handleAction = (action: string) => {
     console.log(action);
   };
 
   return (
-    <div className="flex flex-col gap-2 py-3 border-b">
+    <div className={`flex flex-col gap-2 py-3 ${isLast ? "" : "border-b"}`}>
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
           <Image

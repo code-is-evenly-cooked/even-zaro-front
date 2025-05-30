@@ -4,6 +4,7 @@ import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import ClientPostContent from "./PostPageClient";
 import CommentList from "@/components/post/Comment/CommentList";
+import CommentInput from "@/components/post/Comment/CommentInput";
 import type { MainCategory } from "@/types/category";
 
 export default async function Page({
@@ -14,7 +15,6 @@ export default async function Page({
   const { postId } = params;
   const post = await fetchPostDetail(postId);
   const categoryKey = post.category as MainCategory;
-
 
   return (
     <main className="w-full max-w-3xl mx-auto px-2 py-10">
@@ -37,6 +37,7 @@ export default async function Page({
         commentCount={post.commentCount}
       />
       <CommentList />
+      <CommentInput />
     </main>
   );
 }
