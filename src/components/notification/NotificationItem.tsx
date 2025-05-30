@@ -1,6 +1,7 @@
 "use client";
 
 import type { NotificationType } from "@/types/notification";
+import Image from "next/image";
 
 type NotificationItemProps = {
   type: NotificationType;
@@ -29,9 +30,11 @@ const NotificationItem = ({
 
       <div className="flex items-center">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
-        <img
+        <Image
           src="/icons/defaultProfile.svg"
           alt="프로필이미지"
+          width={40}
+          height={40}
           className="w-10 h-10 rounded-full object-cover"
         />
 
@@ -55,9 +58,11 @@ const NotificationItem = ({
           </div>
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
-            <img
+            <Image
               src={thumbnailImage || "/icons/placeholderImage.svg"}
               alt="썸네일 이미지"
+              width={56}
+              height={56}
               className="w-14 h-14 object-cover rounded ml-2"
             />
           )}
