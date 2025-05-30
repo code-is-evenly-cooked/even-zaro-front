@@ -29,7 +29,6 @@ const CommentList = ({ comments, refresh }: CommentListProps) => {
         {comments.map((comment, index) => (
           <li key={comment.id}>
             <CommentListItem
-              key={comment.id}
               item={comment}
               isLast={index === comments.length - 1}
             />
