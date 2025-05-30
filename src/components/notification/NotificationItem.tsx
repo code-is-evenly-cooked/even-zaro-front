@@ -37,13 +37,15 @@ const NotificationItem = ({
 
       <div className="flex items-center">
         {/* 알림액션 한 상대유저의 프로필이미지 */}
-        <Image
-          src="/icons/defaultProfile.svg"
-          alt="프로필이미지"
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full object-cover"
-        />
+        <Link href={`/profile/${userId}`}>
+          <Image
+            src="/icons/defaultProfile.svg"
+            alt="프로필이미지"
+            width={40}
+            height={40}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        </Link>
 
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex items-center ml-2 mr-2">
