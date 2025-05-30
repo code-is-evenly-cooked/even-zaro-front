@@ -3,9 +3,8 @@ import PostHeader from "@/components/post/PostHeader";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import ClientPostContent from "./PostPageClient";
-import CommentList from "@/components/post/Comment/CommentList";
-import CommentInput from "@/components/post/Comment/CommentInput";
 import type { MainCategory } from "@/types/category";
+import CommentSection from "@/components/post/Comment/CommentSection";
 
 interface PageProps {
   params: Promise<{ postId: string; category: string }>;
@@ -36,8 +35,7 @@ export default async function Page({ params }: PageProps) {
         likeCount={post.likeCount}
         commentCount={post.commentCount}
       />
-      <CommentList />
-      <CommentInput />
+      <CommentSection postId={post.postId} />
     </main>
   );
 }
