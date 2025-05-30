@@ -21,7 +21,7 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
   return (
     <section className="flex flex-col gap-2">
       <CommentList comments={comments} refresh={refetch} />
-      <CommentInput postId={postId} replyNickName={""} onSuccess={refetch} />
+      <CommentInput postId={postId} replyNickname={""} onSuccess={refetch} />
     </section>
   );
 };
