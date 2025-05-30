@@ -1,6 +1,7 @@
 "use client";
 
 import type { NotificationType } from "@/types/notification";
+import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 
 type NotificationItemProps = {
@@ -54,7 +55,7 @@ const NotificationItem = ({
                 <span>{comment}</span>
               </>
             )}
-            <span> {createdAt}</span>
+            <span> {getRelativeTimeAgo(createdAt)}</span>
           </div>
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
