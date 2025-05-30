@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { MoreIcon, StarIcon, YellowStar } from "@/components/common/Icons";
 import UserMemoCard from "@/components/map/UserMemoCard";
-import { MoreVerticalIcon } from "lucide-react";
+import { LucideStar, MoreVerticalIcon} from "lucide-react";
 
 export default function PlaceUserMemos() {
   const [favorite, setFavorite] = useState(false);
@@ -56,11 +55,11 @@ export default function PlaceUserMemos() {
           <div className="flex items-center space-x-2">
             {favorite ? (
               <button onClick={handleClickFavorite} className="flex self-start ">
-                <StarIcon />
+                <LucideStar />
               </button>
             ) : (
               <button onClick={handleClickFavorite}  className="flex self-start">
-                <YellowStar />
+                <LucideStar className="text-yellow-400 fill-yellow-400" />
               </button>
             )}
             <div className="flex flex-col justify-center">
