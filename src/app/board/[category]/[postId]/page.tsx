@@ -1,8 +1,8 @@
 import { fetchPostDetail } from "@/lib/api/post";
 import PostHeader from "@/components/post/PostHeader";
-import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
+import ClientPostContent from "./PostPageClient";
 
 export default async function Page({
   params,
@@ -26,7 +26,7 @@ export default async function Page({
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
         authorUserId={post.user.userId}
       />
-      <PostContent content={post.content} />
+      <ClientPostContent content={post.content} />
       <PostFooterWithFloating
         postId={post.postId}
         likeCount={post.likeCount}
