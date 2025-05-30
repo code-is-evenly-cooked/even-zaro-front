@@ -62,24 +62,39 @@ export default function PlaceUserMemos() {
       </div>
 
       <div className="flex items-center space-x-2 justify-center pb-4">
-        <div className="flex -space-x-6">
-          <SampleProfile className="rounded-full w-10 border-2 border-gray200" />
-          <DefaultProfileIcon className="rounded-full w-10 border-2 border-gray200" />
-          <SampleProfile className="rounded-full w-10 border-2 border-gray200" />
-        </div>
-        <div className="text-xs">
-          <span className="font-bold">{dummyData.userInfo[0].nickname}</span>
-          <span> 님 외 {dummyData.favoriteCount} 명이 즐겨찾기에 추가했습니다.</span>
-        </div>
+        {dummyData.favoriteCount == 0 ? (
+          <div className="text-xs">
+            <span> 아무도 해당 장소를 즐겨찾기에 등록하지 않았습니다.</span>
+          </div>
+        ) : (
+          <>
+            <div className="flex -space-x-6">
+              {dummyData.userInfo.slice(0,3).map((user, idx) => (
+                <div className="flex items-center justify-center rounded-full w-10 h-10 border-2 border-gray200"
+                  key={idx}>
+                  <img className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
+                    src={user.profileImage} alt="유저 이미지"/>
+                </div>
+              ))}
+            </div>
+            <div className="text-xs">
+              <span className="font-bold">
+                {dummyData.userInfo[0].nickname}
+              </span>
+              <span> 님 외 {dummyData.favoriteCount} 명이 즐겨찾기에 추가했습니다.</span>
+            </div>
+          </>
+        )}
       </div>
       <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
-        {dummyData.userInfo.map((user) =>
+        {dummyData.userInfo.map((user) => (
           <UserMemoCard
             key={user.userId}
             profileImage={user.profileImage}
             nickName={user.nickname}
             memo={user.memo}
-          />)}
+          />
+        ))}
       </div>
     </div>
   );
