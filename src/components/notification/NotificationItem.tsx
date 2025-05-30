@@ -22,7 +22,10 @@ const NotificationItem = ({
   isRead,
 }: NotificationItemProps) => {
   return (
-    <li className="flex items-center h-[78px] mb-1 mt-1">
+    <li
+      className="flex items-center h-[78px] mb-1 mt-1 p-1
+                hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-150"
+    >
       {/* 읽음표시 img */}
       <span
         className="inline-block ml-2 mr-2 w-1 h-1 rounded-full bg-purple-500"
