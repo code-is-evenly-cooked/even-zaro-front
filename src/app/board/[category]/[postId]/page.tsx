@@ -4,6 +4,7 @@ import PostContent from "@/components/post/PostContent";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import CommentList from "@/components/post/Comment/CommentList";
+import CommentInput from "@/components/post/Comment/CommentInput";
 
 export default async function Page({
   params,
@@ -34,6 +35,7 @@ export default async function Page({
         commentCount={post.data.commentCount}
       />
       <CommentList />
+      <CommentInput />
     </main>
   );
 }
