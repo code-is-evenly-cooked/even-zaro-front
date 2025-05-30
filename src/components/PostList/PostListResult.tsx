@@ -66,7 +66,7 @@ const PostListResult = ({ category, initialData }: PostListResultProps) => {
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4 mx-2">
       {(posts as ImagePostDetailItem[]).map((post) => (
         <li key={post.postId}>
-          <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+          <Link href={`/board/${category}/${post.postId}`}>
             <PostImageCard {...post} />
           </Link>
         </li>
@@ -76,7 +76,7 @@ const PostListResult = ({ category, initialData }: PostListResultProps) => {
     <ul className="flex flex-col pt-4 mx-4">
       {posts.map((post) => (
         <li key={post.postId}>
-          <Link href={`/board/${category}/${post.postId}`} key={post.postId}>
+          <Link href={`/board/${category}/${post.postId}`}>
             <PostListCard post={post} />
           </Link>
         </li>

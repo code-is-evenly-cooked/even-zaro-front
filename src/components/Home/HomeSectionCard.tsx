@@ -41,7 +41,7 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
                 href={`/board/${category}/${item.postId}`}
                 key={item.postId}
               >
-                <HomeSectionImageItem key={item.postId} {...item} />
+                <HomeSectionImageItem {...item} />
               </Link>
             </li>
           ))}
