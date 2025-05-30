@@ -65,6 +65,15 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isNotificationOpen]);
 
+  const [prevPath, setPrevPath] = useState(pathname);
+
+  useEffect(() => {
+    if (prevPath !== pathname) {
+      setIsNotificationOpen(false);
+      setPrevPath(pathname);
+    }
+  }, [pathname]);
+
   return (
     <header className="relative h-12 min-h-12 flex items-center justify-between px-2">
       {/* 왼쪽 영역: 메뉴 + 로고 */}
