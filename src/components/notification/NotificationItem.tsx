@@ -76,15 +76,24 @@ const NotificationItem = ({
               {username}
             </Link>
             {type === "LIKE" && (
-              <span> 님이 회원님의 게시글을 좋아합니다.</span>
+              <span className="text-gray-700">
+                {" "}
+                님이 회원님의 게시글을 좋아합니다.
+              </span>
             )}
             {type === "FOLLOW" && (
-              <span> 님이 회원님을 팔로우하기 시작했습니다.</span>
+              <span className="text-gray-700">
+                {" "}
+                님이 회원님을 팔로우하기 시작했습니다.
+              </span>
             )}
             {type === "COMMENT" && (
               <>
-                <span> 님이 댓글을 남겼습니다. : </span>
-                <span>{comment}</span>
+                <span className="text-gray-700">
+                  {" "}
+                  님이 댓글을 남겼습니다. :{" "}
+                </span>
+                <span className="text-gray-700">{comment}</span>
               </>
             )}
             <span className="font-light text-gray-400">
