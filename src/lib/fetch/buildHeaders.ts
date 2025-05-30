@@ -8,6 +8,7 @@ export const buildHeaders = (
   if (needAuth && typeof accessToken === "string") {
     headers.set("Authorization", `Bearer ${accessToken}`);
   }
+  headers.set("Content-Type", "application/json");
 
   return headers;
 };
