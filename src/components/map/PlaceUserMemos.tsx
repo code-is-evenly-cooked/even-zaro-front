@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MoreIcon, StarIcon, YellowStar } from "@/components/common/Icons";
 import UserMemoCard from "@/components/map/UserMemoCard";
+import { MoreVerticalIcon } from "lucide-react";
 
 export default function PlaceUserMemos() {
   const [favorite, setFavorite] = useState(false);
@@ -48,7 +49,7 @@ export default function PlaceUserMemos() {
     <div className="flex flex-col absolute left-[400px] -bottom-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       <div className="relative w-full px-4 py-4">
         <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
-          <MoreIcon />
+          <MoreVerticalIcon />
         </button>
 
         <div className="flex flex-col items-center justify-center">
