@@ -7,12 +7,12 @@ import CommentList from "@/components/post/Comment/CommentList";
 import CommentInput from "@/components/post/Comment/CommentInput";
 import type { MainCategory } from "@/types/category";
 
-export default async function Page({
-  params,
-}: {
-  params: { postId: string; category: string };
-}) {
-  const { postId } = params;
+interface PageProps {
+  params: Promise<{ postId: string; category: string }>;
+}
+
+export default async function Page({ params }: PageProps) {
+  const { postId } = await params;
   const post = await fetchPostDetail(postId);
   const categoryKey = post.category as MainCategory;
 
