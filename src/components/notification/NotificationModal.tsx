@@ -6,7 +6,11 @@ import { CATEGORY_MAP } from "@/constants/category";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
-const NotificationModal = () => {
+interface NotificationModalProps {
+  onClose: () => void;
+}
+
+const NotificationModal = ({ onClose }: NotificationModalProps) => {
   const dummyNotifications = [
     {
       id: 5,
@@ -82,6 +86,7 @@ const NotificationModal = () => {
             isRead={noti.isRead}
             category={noti.category}
             postId={noti.postId}
+            onClose={onClose}
           />
         ))}
       </ul>

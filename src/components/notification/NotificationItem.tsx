@@ -18,6 +18,7 @@ type NotificationItemProps = {
   isRead: boolean;
   category?: MainCategory;
   postId?: number;
+  onClose: () => void;
 };
 
 const NotificationItem = ({
@@ -30,6 +31,7 @@ const NotificationItem = ({
   isRead,
   category,
   postId,
+  onClose,
 }: NotificationItemProps) => {
   const href =
     type === "FOLLOW"
@@ -105,7 +107,13 @@ const NotificationItem = ({
     </li>
   );
 
-  return href ? <Link href={href}>{itemContent}</Link> : itemContent;
+  return href ? (
+    <Link href={href} onClick={onClose}>
+      {itemContent}
+    </Link>
+  ) : (
+    itemContent
+  );
 };
 
 export default NotificationItem;
