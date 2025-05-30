@@ -3,10 +3,12 @@
 import type { NotificationType } from "@/types/notification";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
+import Link from "next/link";
 
 type NotificationItemProps = {
   type: NotificationType;
   username: string;
+  userId: number;
   createdAt: string;
   comment?: string;
   thumbnailImage?: string;
@@ -16,6 +18,7 @@ type NotificationItemProps = {
 const NotificationItem = ({
   type,
   username,
+  userId,
   createdAt,
   comment,
   thumbnailImage,
@@ -45,7 +48,12 @@ const NotificationItem = ({
         {/* (조건부) 알림 텍스트 + 썸네일 */}
         <div className="flex items-center ml-2 mr-2">
           <div>
-            <span>{username}</span>
+            <Link
+              href={`/profile/${userId}`}
+              className="font-semibold text-gray-600 hover:font-bold"
+            >
+              {username}
+            </Link>
             {type === "LIKE" && (
               <span> 님이 회원님의 게시글을 좋아합니다.</span>
             )}

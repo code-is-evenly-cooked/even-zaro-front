@@ -9,6 +9,7 @@ const NotificationModal = () => {
       id: 5,
       type: "LIKE" as const,
       username: "아아",
+      userId: 23,
       createdAt: "2025-05-30T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
@@ -17,6 +18,7 @@ const NotificationModal = () => {
       id: 4,
       type: "COMMENT" as const,
       username: "냉장고요정",
+      userId: 12,
       createdAt: "2025-05-28T12:34:56",
       comment: "이건 진짜 꿀템이네요!",
       thumbnailImage: "/images/post/uuid4.png",
@@ -26,6 +28,7 @@ const NotificationModal = () => {
       id: 3,
       type: "LIKE" as const,
       username: "자취왕",
+      userId: 9,
       createdAt: "2025-05-21T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
@@ -34,6 +37,7 @@ const NotificationModal = () => {
       id: 2,
       type: "FOLLOW" as const,
       username: "맛잘알",
+      userId: 5,
       createdAt: "2025-05-21T12:34:56",
       isRead: true,
     },
@@ -41,6 +45,7 @@ const NotificationModal = () => {
       id: 1,
       type: "COMMENT" as const,
       username: "혼밥천재",
+      userId: 88,
       createdAt: "2025-05-21T12:34:56",
       comment: "레시피 공유 가능할까요?",
       thumbnailImage: "2025-05-21T12:34:56",
@@ -59,6 +64,7 @@ const NotificationModal = () => {
             key={noti.id}
             type={noti.type}
             username={noti.username}
+            userId={noti.userId}
             createdAt={noti.createdAt}
             comment={noti.comment}
             thumbnailImage={noti.thumbnailImage}
