@@ -10,6 +10,7 @@ import FallbackMessage from "../common/Fallback/FallbackMessage";
 
 import Link from "next/link";
 import SearchListItem from "./SearchListItem";
+import PostListPagination from "../common/Pagination/PostListPagination";
 
 interface SearchResultProps {
   keyword: string;
@@ -51,6 +52,10 @@ const SearchResult = ({ keyword }: SearchResultProps) => {
           <SearchListItem post={post} />
         </Link>
       ))}
+      <PostListPagination
+        currentPage={data.number}
+        totalPage={data.totalPages}
+      />
     </div>
   );
 };

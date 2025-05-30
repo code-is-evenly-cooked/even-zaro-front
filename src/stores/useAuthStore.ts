@@ -10,6 +10,7 @@ export interface UserInfo {
   profileImage: string | null;
   provider: AuthProvider;
   liveAloneDate: string | null;
+  isValidated: boolean;
   // TODO: 선택입력 정보는 추후 추가하기
 }
 

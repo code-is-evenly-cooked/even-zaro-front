@@ -15,7 +15,7 @@ export default function SideMenu() {
 
   return (
     <div
-      className={`flex flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-0 z-10  transition-colors duration-300 ${
+      className={`flex flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-4 z-10  transition-colors duration-300 ${
         openModal ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >

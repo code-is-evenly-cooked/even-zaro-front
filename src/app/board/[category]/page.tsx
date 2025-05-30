@@ -1,11 +1,12 @@
 import PostListHeaderSection from "@/components/PostList/PostListHeaderSection";
-import PostListPagination from "@/components/PostList/PostListPagination";
+import PostListPagination from "@/components/common/Pagination/PostListPagination";
 import PostListResult from "@/components/PostList/PostListResult";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
 import { PostDetailResponse } from "@/types/post";
 import { isMainCategory } from "@/utils/category";
 import { notFound } from "next/navigation";
+import { APIErrorResponse } from "@/types/api";
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -23,11 +24,24 @@ export default async function PostListPage({
     notFound();
   }
   const categoryKey = category as MainCategory;
-  const posts = await server<PostDetailResponse>(`/posts`, {
-    needAuth: true,
-    params: { category, ...(tag ? { tag } : {}), page: Number(page) || 0 },
-  });
+  let posts: PostDetailResponse;
 
+  try {
+    posts = await server<PostDetailResponse>("/posts", {
+      needAuth: true,
+      params: {
+        category,
+        ...(tag ? { tag } : {}),
+        page: Number(page) || 0,
+      },
+    });
+  } catch (err) {
+    const statusCode = err instanceof APIErrorResponse ? err.statusCode : 500;
+    if (statusCode === 404) {
+      notFound();
+    }
+    throw err; // error.tsx로 넘어감
+  }
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto">
       <PostListHeaderSection category={categoryKey} />

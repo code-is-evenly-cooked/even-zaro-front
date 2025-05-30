@@ -29,6 +29,7 @@ const PostListHeaderSection = ({ category }: PostListHeaderSectionProps) => {
     } else {
       newParams.delete("tag");
     }
+    newParams.delete("page");
     router.push(`${pathname}?${newParams.toString()}`);
     setSelectedSubCategory(tag);
   };
