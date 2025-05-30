@@ -1,7 +1,9 @@
 "use client";
 
+import type { NotificationType } from "@/types/notification";
+
 type NotificationItemProps = {
-  type: "LIKE" | "FOLLOW" | "COMMENT";
+  type: NotificationType;
   username: string;
   createdAt: string;
   comment?: string;
