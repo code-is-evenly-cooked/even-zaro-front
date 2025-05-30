@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -49,18 +49,21 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   useSse();
 
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 428) {
-        setIsMobileSearchOpen(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isNotificationOpen &&
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setIsNotificationOpen(false);
       }
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  if (hideHeaderRoutes.includes(pathname)) return null;
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isNotificationOpen]);
 
   return (
     <header className="relative h-12 min-h-12 flex items-center justify-between px-2">
@@ -123,7 +126,10 @@ const Header = ({ onMenuClick }: HeaderProps) => {
           />
           <div className="relative">
             {isNotificationOpen && (
-              <div className="absolute top-full right-0 mt-6 z-50">
+              <div
+                ref={notificationRef}
+                className="absolute top-full right-0 mt-6 z-50"
+              >
                 <NotificationModal />
               </div>
             )}
