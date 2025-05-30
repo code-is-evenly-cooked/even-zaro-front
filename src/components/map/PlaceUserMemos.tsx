@@ -26,7 +26,7 @@ export default function PlaceUserMemos() {
         </div>
       </div>
 
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2 justify-center">
         <div className="flex -space-x-6">
           <SampleProfile className="rounded-full w-10 border-2 border-gray200" />
           <DefaultProfileIcon className="rounded-full w-10 border-2 border-gray200" />
