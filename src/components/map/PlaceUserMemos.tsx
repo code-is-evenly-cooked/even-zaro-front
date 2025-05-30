@@ -1,5 +1,6 @@
 import React from "react";
 import { DefaultProfileIcon, MoreIcon, SampleProfile, StarIcon } from "@/components/common/Icons";
+import UserMemoCard from "@/components/map/UserMemoCard";
 
 export default function PlaceUserMemos() {
   return (
@@ -26,7 +27,7 @@ export default function PlaceUserMemos() {
         </div>
       </div>
 
-      <div className="flex items-center space-x-2 justify-center">
+      <div className="flex items-center space-x-2 justify-center pb-4">
         <div className="flex -space-x-6">
           <SampleProfile className="rounded-full w-10 border-2 border-gray200" />
           <DefaultProfileIcon className="rounded-full w-10 border-2 border-gray200" />
@@ -36,6 +37,15 @@ export default function PlaceUserMemos() {
           <span className="font-bold">nahuyk</span>
           <span> 님 외 {123} 명이 즐겨찾기에 추가했습니다.</span>
         </div>
+      </div>
+      <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
+        <UserMemoCard />
+        <UserMemoCard />
+        <UserMemoCard />
+        <UserMemoCard />
+        <UserMemoCard />
+        <UserMemoCard />
+        <UserMemoCard />
       </div>
     </div>
   );
