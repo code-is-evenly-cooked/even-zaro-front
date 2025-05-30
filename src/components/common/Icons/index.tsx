@@ -172,3 +172,16 @@ export const SettingIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const ShareIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/share.svg"
+      alt="기본 유저 프로필"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
