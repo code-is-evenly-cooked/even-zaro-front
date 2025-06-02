@@ -42,7 +42,7 @@ export default function PlaceUserMemos() {
   };
 
   function handleClickFavorite() {
-    setFavorite(!favorite);
+    setFavorite((prev) => !prev);
   }
 
   return (
