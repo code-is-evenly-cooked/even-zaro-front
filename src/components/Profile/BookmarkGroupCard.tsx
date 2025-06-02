@@ -5,7 +5,7 @@ interface BookmarkGroupProps {
   group: BookmarkGroupType;
 }
 
-export default function BookmarkGroup({ group }: BookmarkGroupProps) {
+export default function BookmarkGroupCard({ group }: BookmarkGroupProps) {
   return (
     <div className="bg-gray100 rounded-lg px-6 py-4 flex justify-between items-center">
       <div className="flex items-center gap-6">
