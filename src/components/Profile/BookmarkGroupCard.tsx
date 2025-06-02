@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
 import type { BookmarkGroupType } from "@/types/bookmark";
+import { updateBookmarkGroupName } from "@/lib/api/bookmark";
 
 interface BookmarkGroupProps {
   group: BookmarkGroupType;
@@ -40,15 +41,18 @@ export default function BookmarkGroupCard({
     }
   }, [isEditing]);
 
-  // 수정 완료
-  const handleEditComplete = () => {
+  // 즐겨찾기 그룹 이름 수정
+  const handleEditComplete = async () => {
     if (editedName.trim() !== "") {
-      setDisplayName(editedName); // 화면 갱신
-      setIsEditing(false);
-      setIsMenuOpen(false);
-
-      // TODO: 추후 여기에 PATCH API 연결
-      // await updateBookmarkGroupName(group.groupId, editedName)
+      try {
+        await updateBookmarkGroupName(group.groupId, editedName);
+        setDisplayName(editedName);
+        setIsEditing(false);
+        setIsMenuOpen(false);
+      } catch (e) {
+        console.error("수정 실패:", e);
+        alert("수정에 실패했습니다.");
+      }
     }
   };
 
