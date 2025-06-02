@@ -64,11 +64,11 @@ export default function PlaceUserMemos() {
               </button>
             )}
             <div className="flex flex-col justify-center">
-              <span className="font-bold text-gray-900 text-lg leading-snug">
+              <span className="font-bold text-gray900 text-lg leading-snug">
                 {dummyData.placeName}
               </span>
 
-              <span className="text-xs text-gray-500 leading-snug">
+              <span className="text-xs text-gray600 leading-snug">
                 {dummyData.address}
               </span>
             </div>

@@ -11,7 +11,7 @@ export default function UserMemoCard({
   memo
 } : UserMemoProps) {
   return (
-    <div className="flex items-center hover:bg-gray-100 transition p-1">
+    <div className="flex items-center hover:bg-gray100 transition p-1">
       {/* 이미지 영역 */}
       <button className="flex items-center justify-center rounded-full w-10 h-10 border-2 border-gray200">
         <img src={profileImage} className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"/>
