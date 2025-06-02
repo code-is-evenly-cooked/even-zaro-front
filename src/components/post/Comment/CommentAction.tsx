@@ -4,7 +4,7 @@ import IconButton from "@/components/common/Button/IconButton";
 import { MoreVerticalIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-type CommentActionType = "edit" | "delete" | "reply" | "report";
+export type CommentActionType = "edit" | "delete" | "reply" | "report";
 
 interface CommentActionProps {
   isMine: boolean;

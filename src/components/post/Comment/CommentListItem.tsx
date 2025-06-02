@@ -4,7 +4,7 @@ import { CommentItem } from "@/types/comment";
 import { getProfileImageUrl } from "@/utils/image";
 
 import Image from "next/image";
-import CommentAction from "./CommentAction";
+import CommentAction, { CommentActionType } from "./CommentAction";
 import { renderWithMentions } from "@/utils/comment";
 
 interface CommentItemProps {
@@ -13,8 +13,18 @@ interface CommentItemProps {
 }
 
 const CommentListItem = ({ item, isLast }: CommentItemProps) => {
-  const handleAction = (action: string) => {
-    console.log(action);
+  const handleAction = (action: CommentActionType) => {
+    // "edit" | "delete" | "reply" | "report"
+    switch (action) {
+      case "edit":
+      // TODO: edit
+      case "delete":
+      // TODO: delete
+      case "reply":
+      // TODO: reply
+      case "report":
+      // TODO: report
+    }
   };
 
   return (
