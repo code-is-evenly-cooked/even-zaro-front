@@ -12,31 +12,21 @@ interface CommentItemProps {
   item: CommentItem;
   isLast: boolean;
   isEditing: boolean;
-  onStartEdit: () => void;
   onCancelEdit: () => void;
   onSubmitEdit: (content: string) => void;
+  onAction: (action: CommentActionType, item: CommentItem) => void;
 }
 
 const CommentListItem = ({
   item,
   isLast,
   isEditing,
-  onStartEdit,
   onCancelEdit,
   onSubmitEdit,
+  onAction,
 }: CommentItemProps) => {
   const handleAction = (action: CommentActionType) => {
-    // "edit" | "delete" | "reply" | "report"
-    switch (action) {
-      case "edit":
-        onStartEdit();
-      case "delete":
-      // TODO: delete
-      case "reply":
-      // TODO: reply
-      case "report":
-      // TODO: report
-    }
+    onAction(action, item);
   };
 
   return (
