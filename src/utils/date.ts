@@ -48,3 +48,37 @@ export const getRelativeTimeAgo = (isoDateString: string): string => {
   if (days < 7) return `${days}일`;
   return `${weeks}주`;
 };
+
+/**
+ * 댓글 날짜를 사용자 친화적으로 포맷함.
+ * - 오늘이면 "00:00"으로 표시
+ * - 오늘이 아니면 "yyyy.MM.dd" 형식으로 표시
+ *
+ * @param isoString - ISO 형식의 날짜 문자열
+ * @returns 포맷된 날짜 문자열
+ */
+export const getSimplifiedDate = (isoString: string): string => {
+  const now = new Date();
+  const created = new Date(isoString);
+
+  const isToday =
+    created.getFullYear() === now.getFullYear() &&
+    created.getMonth() === now.getMonth() &&
+    created.getDate() === now.getDate();
+
+  if (isToday) {
+    // getUTCHours로 시간 오차 보정 (UTC 그대로 쓰기)
+    const hours = String(created.getHours()).padStart(2, "0");
+    const minutes = String(created.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  return created
+    .toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .replace(/\. /g, ".")
+    .replace(/\.$/, "");
+};
