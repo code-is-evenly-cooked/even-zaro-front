@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import UserMemoCard from "@/components/map/UserMemoCard";
 import { LucideStar, MoreVerticalIcon} from "lucide-react";
 import { PlaceDetailResponse } from "@/types/map";
+import Image from "next/image";
+import { getProfileImageUrl } from "@/utils/image";
 
 export default function PlaceUserMemos() {
   const [favorite, setFavorite] = useState(false);
@@ -16,19 +18,19 @@ export default function PlaceUserMemos() {
     userInfo: [
       {
         userId: 1,
-        profileImage: "/icons/defaultProfile.svg",
+        profileImage: "/icons/sampleProfile.svg",
         nickname: "이브니",
         memo: "요기 맛없어요asdsadasdasdasdasasdasd1",
       },
       {
         userId: 2,
-        profileImage: "/icons/sampleProfile.svg",
+        profileImage: "",
         nickname: "삼브니",
         memo: "요기 맛없어asdasdasdsalkdjaslkdjaslkdjalskj2",
       },
       {
         userId: 3,
-        profileImage: "/icons/sampleProfile.svg",
+        profileImage: "",
         nickname: "사브니",
         memo: "요기 맛없어요3",
       },
@@ -90,10 +92,11 @@ export default function PlaceUserMemos() {
                   key={idx}
                 >
                   <button>
-                    <img
-                      className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
-                      src={user.profileImage}
-                      alt="유저 이미지"
+                    <Image src={getProfileImageUrl(user.profileImage)}
+                           alt="유저 이미지"
+                           className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
+                           width="28"
+                           height="28"
                     />
                   </button>
                 </li>
