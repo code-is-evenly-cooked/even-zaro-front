@@ -1,8 +1,8 @@
 export interface BookmarkGroupType {
-  userId: number;
+  userId?: number;
   groupId: number;
   name: string;
-  isDeleted: boolean;
+  deleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
