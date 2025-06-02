@@ -6,6 +6,7 @@ import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
+import { getProfileImageUrl } from "@/utils/image";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
@@ -13,6 +14,7 @@ type NotificationItemProps = {
   type: NotificationType;
   username: string;
   userId: number;
+  profileImage: string | null;
   createdAt: string;
   comment?: string;
   thumbnailImage?: string;
@@ -26,6 +28,7 @@ const NotificationItem = ({
   type,
   username,
   userId,
+  profileImage,
   createdAt,
   comment,
   thumbnailImage,
@@ -67,7 +70,9 @@ const NotificationItem = ({
         />
         <Link href={`/profile/${userId}`}>
           <Image
-            src="/icons/defaultProfile.svg"
+            src={
+              getProfileImageUrl(profileImage) || "/icons/defaultProfile.svg"
+            }
             alt="프로필이미지"
             width={40}
             height={40}

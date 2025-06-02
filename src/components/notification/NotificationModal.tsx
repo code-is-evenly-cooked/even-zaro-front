@@ -17,6 +17,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
       type: "LIKE" as const,
       username: "아아",
       userId: 23,
+      profileImage: null,
       createdAt: "2025-05-30T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
@@ -28,6 +29,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
       type: "COMMENT" as const,
       username: "냉장고요정",
       userId: 12,
+      profileImage: null,
       createdAt: "2025-05-28T12:34:56",
       comment: "이건 진짜 꿀템이네요!",
       thumbnailImage: "/images/post/uuid4.png",
@@ -40,6 +42,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
       type: "LIKE" as const,
       username: "자취왕",
       userId: 9,
+      profileImage: null,
       createdAt: "2025-05-21T12:34:56",
       //   thumbnailImage: "/images/post/uuid3.png",
       isRead: true,
@@ -51,6 +54,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
       type: "FOLLOW" as const,
       username: "맛잘알",
       userId: 5,
+      profileImage: null,
       createdAt: "2025-05-21T12:34:56",
       isRead: true,
     },
@@ -59,6 +63,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
       type: "COMMENT" as const,
       username: "혼밥천재",
       userId: 88,
+      profileImage: null,
       createdAt: "2025-05-21T12:34:56",
       comment: "레시피 공유 가능할까요?",
       thumbnailImage: "2025-05-21T12:34:56",
@@ -80,6 +85,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
             type={noti.type}
             username={noti.username}
             userId={noti.userId}
+            profileImage={noti.profileImage}
             createdAt={noti.createdAt}
             comment={noti.comment}
             thumbnailImage={noti.thumbnailImage}
