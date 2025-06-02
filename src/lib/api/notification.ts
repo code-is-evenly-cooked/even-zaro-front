@@ -12,3 +12,9 @@ export const markNotificationAsRead = async (notificationId: number) => {
     method: "PATCH",
   });
 };
+
+export const markAllNotificationsAsRead = async () => {
+  return await client("/notifications/bulk", {
+    method: "PATCH",
+  });
+};
