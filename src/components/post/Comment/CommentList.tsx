@@ -3,8 +3,7 @@ import { CommentItem } from "@/types/comment";
 import CommentListItem from "./CommentListItem";
 import IconButton from "@/components/common/Button/IconButton";
 import { RefreshCwIcon } from "lucide-react";
-import { useState } from "react";
-import { CommentActionType } from "./CommentAction";
+import useCommentList from "./useCommentList";
 
 interface CommentListProps {
   comments: CommentItem[];
@@ -12,38 +11,13 @@ interface CommentListProps {
 }
 
 const CommentList = ({ comments, refresh }: CommentListProps) => {
-  const [editingId, setEditingId] = useState<number | null>(null);
-
-  const handleRefresh = () => {
-    refresh();
-  };
-
-  const handleAction = async (action: CommentActionType, item: CommentItem) => {
-    switch (action) {
-      case "edit":
-        setEditingId(item.id);
-        break;
-      case "delete":
-        console.log("댓글 삭제:", item.id);
-        // TODO: await deleteComment(item.id);
-        refresh();
-        break;
-      case "report":
-        console.log("댓글 신고:", item.id);
-        break;
-      case "reply":
-        console.log("댓글 답글:", item.id);
-        break;
-    }
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-  };
-
-  const handleSubmitEdit = (id: number, newContent: string) => {
-    console.log(`"댓글 수정": ${id} -> ${newContent}`);
-  };
+  const {
+    editingId,
+    handleRefresh,
+    handleAction,
+    handleCancelEdit,
+    handleSubmitEdit,
+  } = useCommentList({ onRefresh: refresh });
 
   return (
     <div className="flex flex-col mt-4 pt-4 border-t">
