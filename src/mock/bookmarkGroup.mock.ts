@@ -2,7 +2,6 @@ import type { BookmarkGroupType } from "@/types/bookmark";
 
 export const mockBookmarkGroups: BookmarkGroupType[] = [
   {
-    userId: 5,
     groupId: 1,
     name: "성수동 힙하고 멋진 카페",
     deleted: false,
@@ -10,7 +9,6 @@ export const mockBookmarkGroups: BookmarkGroupType[] = [
     updatedAt: "2025-05-19T16:03:11.202026",
   },
   {
-    userId: 5,
     groupId: 2,
     name: "연남동 따뜻한 분위기 카페",
     deleted: false,
