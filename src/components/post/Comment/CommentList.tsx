@@ -3,6 +3,7 @@ import { CommentItem } from "@/types/comment";
 import CommentListItem from "./CommentListItem";
 import IconButton from "@/components/common/Button/IconButton";
 import { RefreshCwIcon } from "lucide-react";
+import useCommentList from "./useCommentList";
 
 interface CommentListProps {
   comments: CommentItem[];
@@ -10,9 +11,13 @@ interface CommentListProps {
 }
 
 const CommentList = ({ comments, refresh }: CommentListProps) => {
-  const handleRefresh = () => {
-    refresh();
-  };
+  const {
+    editingId,
+    handleRefresh,
+    handleAction,
+    handleCancelEdit,
+    handleSubmitEdit,
+  } = useCommentList({ onRefresh: refresh });
 
   return (
     <div className="flex flex-col mt-4 pt-4 border-t">
@@ -31,6 +36,12 @@ const CommentList = ({ comments, refresh }: CommentListProps) => {
             <CommentListItem
               item={comment}
               isLast={index === comments.length - 1}
+              isEditing={editingId === comment.id}
+              onCancelEdit={handleCancelEdit}
+              onSubmitEdit={(newContent) =>
+                handleSubmitEdit(comment.id, newContent)
+              }
+              onAction={handleAction}
             />
           </li>
         ))}
