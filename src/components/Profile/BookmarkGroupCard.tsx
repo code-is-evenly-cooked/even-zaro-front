@@ -3,7 +3,10 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
 import type { BookmarkGroupType } from "@/types/bookmark";
-import { updateBookmarkGroupName } from "@/lib/api/bookmark";
+import {
+  updateBookmarkGroupName,
+  deleteBookmarkGroup,
+} from "@/lib/api/bookmark";
 
 interface BookmarkGroupProps {
   group: BookmarkGroupType;
@@ -53,6 +56,17 @@ export default function BookmarkGroupCard({
         console.error("수정 실패:", e);
         alert("수정에 실패했습니다.");
       }
+    }
+  };
+
+  // 즐겨찾기 그룹 삭제
+  const handleDelete = async () => {
+    try {
+      await deleteBookmarkGroup(group.groupId);
+      onDelete?.(group.groupId); // 부모에서 상태 업데이트
+    } catch (e) {
+      console.error("삭제 실패:", e);
+      alert("삭제에 실패했습니다.");
     }
   };
 
@@ -111,7 +125,7 @@ export default function BookmarkGroupCard({
             className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100 flex items-center gap-2"
             onClick={() => {
               setIsMenuOpen(false);
-              onDelete(group.groupId);
+              handleDelete();
             }}
           >
             삭제
