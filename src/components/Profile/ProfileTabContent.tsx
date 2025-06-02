@@ -1,5 +1,5 @@
 import { ProfileTabType } from "@/types/profile";
-import BookmarkList from "./BookmarkList";
+import BookmarkGroupList from "./BookmarkGroupList"
 
 interface Props {
   activeTab: ProfileTabType;
@@ -16,7 +16,7 @@ export default function ProfileTabContent({ activeTab }: Props) {
     case "bookmarks":
       return (
         <div>
-          <BookmarkList />
+          <BookmarkGroupList />
         </div>
       );
     default:
