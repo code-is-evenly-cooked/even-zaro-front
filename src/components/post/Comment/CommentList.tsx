@@ -3,6 +3,7 @@ import { CommentItem } from "@/types/comment";
 import CommentListItem from "./CommentListItem";
 import IconButton from "@/components/common/Button/IconButton";
 import { RefreshCwIcon } from "lucide-react";
+import { useState } from "react";
 
 interface CommentListProps {
   comments: CommentItem[];
@@ -10,8 +11,22 @@ interface CommentListProps {
 }
 
 const CommentList = ({ comments, refresh }: CommentListProps) => {
+  const [editingId, setEditingId] = useState<number | null>(null);
+
   const handleRefresh = () => {
     refresh();
+  };
+
+  const handleStartEdit = (id: number) => {
+    setEditingId(id);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+  };
+
+  const handleSubmitEdit = (id: number, newContent: string) => {
+    console.log(`"댓글 수정": ${id} -> ${newContent}`);
   };
 
   return (
@@ -31,6 +46,12 @@ const CommentList = ({ comments, refresh }: CommentListProps) => {
             <CommentListItem
               item={comment}
               isLast={index === comments.length - 1}
+              isEditing={editingId === comment.id}
+              onStartEdit={() => handleStartEdit(comment.id)}
+              onCancelEdit={handleCancelEdit}
+              onSubmitEdit={(newContent) =>
+                handleSubmitEdit(comment.id, newContent)
+              }
             />
           </li>
         ))}
