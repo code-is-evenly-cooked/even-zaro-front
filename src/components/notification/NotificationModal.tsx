@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
-import { fetchNotifications } from "@/lib/api/notification";
+import {
+  fetchNotifications,
+  markAllNotificationsAsRead,
+} from "@/lib/api/notification";
 import type { Notification } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -35,10 +38,20 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
     fetchData();
   }, [userId]);
 
+  const handleMarkAllRead = async () => {
+    try {
+      await markAllNotificationsAsRead();
+      const updated = await fetchNotifications();
+      setNotifications(updated);
+    } catch (err) {
+      console.error("전체 읽음 처리 실패", err);
+    }
+  };
+
   return (
     <div className="w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-1 overflow-hidden">
       <header>
-        <NotificationHeader />
+        <NotificationHeader onMarkAllRead={handleMarkAllRead} />
       </header>
       <ul className="h-[310px] overflow-y-auto pt-1 pb-3">
         {notifications.map((noti) => (
