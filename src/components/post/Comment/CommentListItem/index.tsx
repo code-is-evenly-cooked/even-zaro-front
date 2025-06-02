@@ -4,7 +4,7 @@ import { CommentItem } from "@/types/comment";
 import { getProfileImageUrl } from "@/utils/image";
 
 import Image from "next/image";
-import CommentAction, { CommentActionType } from "./CommentAction";
+import CommentAction, { CommentActionType } from "../CommentAction";
 import { renderWithMentions } from "@/utils/comment";
 
 interface CommentItemProps {
