@@ -6,7 +6,7 @@ import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
-import { getProfileImageUrl } from "@/utils/image";
+import { getProfileImageUrl, getImageUrl } from "@/utils/image";
 import { markNotificationAsRead } from "@/lib/api/notification";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
@@ -20,7 +20,7 @@ type NotificationItemProps = {
   actorProfileImage: string | null;
   postId?: number | null;
   category?: MainCategory | null;
-  thumbnailImage?: string | null;
+  thumbnailImage: string | null;
   comment?: string | null;
   isRead: boolean;
   onClose: () => void;
@@ -117,7 +117,9 @@ const NotificationItem = ({
             )}
             {type === "COMMENT" && (
               <>
-                <span className="text-gray-700">님이 댓글을 남겼습니다. :</span>
+                <span className="text-gray-700">
+                  님이 댓글을 남겼습니다. :{" "}
+                </span>
                 <span className="text-gray-700">{comment}</span>
               </>
             )}
@@ -129,7 +131,7 @@ const NotificationItem = ({
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
             <Image
-              src={thumbnailImage || "/icons/placeholderImage.svg"}
+              src={getImageUrl(thumbnailImage) || "/icons/placeholderImage.svg"}
               alt="썸네일 이미지"
               width={56}
               height={56}
