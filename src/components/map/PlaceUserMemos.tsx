@@ -83,9 +83,9 @@ export default function PlaceUserMemos() {
           </div>
         ) : (
           <>
-            <div className="flex -space-x-6">
+            <ul className="flex -space-x-6">
               {dummyData.userInfo.slice(0, 3).map((user, idx) => (
-                <div
+                <li
                   className="flex items-center justify-center rounded-full w-10 h-10 border-2 border-gray200"
                   key={idx}
                 >
@@ -96,9 +96,9 @@ export default function PlaceUserMemos() {
                       alt="유저 이미지"
                     />
                   </button>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
             <div className="text-xs">
               <button className="font-bold">
                 {dummyData.userInfo[0].nickname}
@@ -111,7 +111,7 @@ export default function PlaceUserMemos() {
           </>
         )}
       </div>
-      <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
+      <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
         {dummyData.userInfo.map((user) => (
           <UserMemoCard
             key={user.userId}
@@ -120,7 +120,7 @@ export default function PlaceUserMemos() {
             memo={user.memo}
           />
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
