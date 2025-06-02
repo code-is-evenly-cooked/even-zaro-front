@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import UserMemoCard from "@/components/map/UserMemoCard";
 import { LucideStar, MoreVerticalIcon} from "lucide-react";
+import { PlaceDetailResponse } from "@/types/map";
 
 export default function PlaceUserMemos() {
   const [favorite, setFavorite] = useState(false);
 
-  const dummyData = {
+  const dummyData: PlaceDetailResponse = {
     placeId: 1,
     placeName: "갓덴 스시 강남점",
     address: "서울의 어딘가 123",
