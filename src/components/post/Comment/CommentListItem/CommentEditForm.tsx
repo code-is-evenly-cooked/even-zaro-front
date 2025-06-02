@@ -1,7 +1,7 @@
 "use client";
 
 import { CommentItem } from "@/types/comment";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CommentEditFormProps {
   item: CommentItem;
@@ -15,12 +15,25 @@ const CommentEditForm = ({
   onSubmit,
 }: CommentEditFormProps) => {
   const [content, setContent] = useState(item.content);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.focus();
+      // 커서를 텍스트 맨 뒤로 이동
+      const len = textarea.value.length;
+      textarea.setSelectionRange(len, len);
+    }
+  }, []);
+
   return (
     <div className="border p-2 flex flex-col rounded-md">
       <p className="font-semibold text-gray900 pt-1.5 pl-1.5">
         {item.nickname}
       </p>
       <textarea
+        ref={textareaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         className="w-full h-24 rounded-md p-2 resize-none focus:outline-none focus:ring-0"
