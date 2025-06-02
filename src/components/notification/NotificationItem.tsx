@@ -12,29 +12,29 @@ export type MainCategory = keyof typeof CATEGORY_MAP;
 
 type NotificationItemProps = {
   type: NotificationType;
+  createdAt: string;
   username: string;
   userId: number;
   profileImage: string | null;
-  createdAt: string;
-  comment?: string;
-  thumbnailImage?: string;
+  postId?: number | null;
+  category?: MainCategory | null;
+  thumbnailImage?: string | null;
+  comment?: string | null;
   isRead: boolean;
-  category?: MainCategory;
-  postId?: number;
   onClose: () => void;
 };
 
 const NotificationItem = ({
   type,
+  createdAt,
   username,
   userId,
   profileImage,
-  createdAt,
-  comment,
-  thumbnailImage,
-  isRead,
-  category,
   postId,
+  category,
+  thumbnailImage,
+  comment,
+  isRead,
   onClose,
 }: NotificationItemProps) => {
   const router = useRouter();
