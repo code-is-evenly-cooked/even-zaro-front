@@ -6,9 +6,13 @@ import type { BookmarkGroupType } from "@/types/bookmark";
 
 interface BookmarkGroupProps {
   group: BookmarkGroupType;
+  onDelete: (groupId: number) => void;
 }
 
-export default function BookmarkGroupCard({ group }: BookmarkGroupProps) {
+export default function BookmarkGroupCard({
+  group,
+  onDelete,
+}: BookmarkGroupProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(group.name);
@@ -103,6 +107,7 @@ export default function BookmarkGroupCard({ group }: BookmarkGroupProps) {
             className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100 flex items-center gap-2"
             onClick={() => {
               setIsMenuOpen(false);
+              onDelete(group.groupId);
             }}
           >
             삭제
