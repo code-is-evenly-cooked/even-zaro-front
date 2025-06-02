@@ -1,6 +1,8 @@
+import type { MainCategory } from "@/components/notification/NotificationModal";
+
 export type NotificationType = "LIKE" | "FOLLOW" | "COMMENT";
 
-export interface NotificationItem {
+export interface Notification {
   id: number;
   type: NotificationType;
   targetId: number;
@@ -8,7 +10,8 @@ export interface NotificationItem {
   userId: number;
   username: string;
   profileImage: string | null;
-  category: string | null;
+  postId: number | null;
+  category: MainCategory | null;
   thumbnailImage: string | null;
   comment: string | null;
   read: boolean;
