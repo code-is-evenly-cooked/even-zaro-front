@@ -7,10 +7,12 @@ import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
 import { getProfileImageUrl } from "@/utils/image";
+import { markNotificationAsRead } from "@/lib/api/notification";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
 type NotificationItemProps = {
+  id: number;
   type: NotificationType;
   createdAt: string;
   actorName: string;
@@ -25,6 +27,7 @@ type NotificationItemProps = {
 };
 
 const NotificationItem = ({
+  id,
   type,
   createdAt,
   actorName,
@@ -46,7 +49,15 @@ const NotificationItem = ({
         ? `/board/${category}/${postId}`
         : undefined;
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (!isRead) {
+      try {
+        await markNotificationAsRead(id);
+      } catch (err) {
+        console.error("알림 읽음 처리 실패", err);
+      }
+    }
+
     if (href) {
       router.push(href);
       onClose();
