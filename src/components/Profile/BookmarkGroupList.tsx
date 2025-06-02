@@ -30,7 +30,7 @@ export default function BookmarkGroupList() {
     return <div>즐겨찾기 그룹이 없습니다.</div>;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-2">
       {displayGroups.map((group) => (
         <BookmarkGroupCard key={group.groupId} group={group} />
       ))}
