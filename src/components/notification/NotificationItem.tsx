@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import type { NotificationType } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
@@ -33,6 +34,8 @@ const NotificationItem = ({
   postId,
   onClose,
 }: NotificationItemProps) => {
+  const router = useRouter();
+
   const href =
     type === "FOLLOW"
       ? `/profile/${userId}`
@@ -40,8 +43,16 @@ const NotificationItem = ({
         ? `/board/${category}/${postId}`
         : undefined;
 
-  const itemContent = (
+  const handleClick = () => {
+    if (href) {
+      router.push(href);
+      onClose();
+    }
+  };
+
+  return (
     <li
+      onClick={href ? handleClick : undefined}
       className="flex items-center h-[78px] mb-1 mt-1 p-1
                 hover:bg-gray-100 cursor-pointer rounded-lg transition-colors duration-150"
     >
@@ -61,6 +72,7 @@ const NotificationItem = ({
             width={40}
             height={40}
             className="w-10 h-10 rounded-full object-cover ml-2"
+            onClick={(e) => e.stopPropagation()} // 클릭 전파 방지
           />
         </Link>
       </div>
@@ -72,6 +84,7 @@ const NotificationItem = ({
             <Link
               href={`/profile/${userId}`}
               className="font-semibold text-gray-600 hover:font-bold"
+              onClick={(e) => e.stopPropagation()} // 클릭 전파 방지
             >
               {username}
             </Link>
@@ -114,14 +127,6 @@ const NotificationItem = ({
         </div>
       </div>
     </li>
-  );
-
-  return href ? (
-    <Link href={href} onClick={onClose}>
-      {itemContent}
-    </Link>
-  ) : (
-    itemContent
   );
 };
 
