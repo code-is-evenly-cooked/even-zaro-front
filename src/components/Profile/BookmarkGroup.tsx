@@ -1,11 +1,8 @@
 import { MoreVerticalIcon } from "lucide-react";
+import type { BookmarkGroupType } from "@/types/bookmark";
 
 interface BookmarkGroupProps {
-  group: {
-    id: number;
-    title: string;
-    placeCount: number;
-  };
+  group: BookmarkGroupType;
 }
 
 export default function BookmarkGroup({ group }: BookmarkGroupProps) {
@@ -16,8 +13,8 @@ export default function BookmarkGroup({ group }: BookmarkGroupProps) {
           ★
         </div>
         <div className="flex flex-col">
-          <span className="font-semibold">{group.title}</span>
-          <span className="text-sm text-gray-500">장소 {group.placeCount}</span>
+          <span className="font-semibold">{group.name}</span>
+          <span className="text-sm text-gray-500">장소 4</span>
         </div>
       </div>
 
