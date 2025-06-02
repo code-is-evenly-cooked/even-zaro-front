@@ -6,3 +6,9 @@ export const fetchNotifications = async (): Promise<Notification[]> => {
     method: "GET",
   });
 };
+
+export const markNotificationAsRead = async (notificationId: number) => {
+  await client(`/notifications/${notificationId}`, {
+    method: "PATCH",
+  });
+};
