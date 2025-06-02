@@ -13,9 +13,9 @@ export type MainCategory = keyof typeof CATEGORY_MAP;
 type NotificationItemProps = {
   type: NotificationType;
   createdAt: string;
-  username: string;
-  userId: number;
-  profileImage: string | null;
+  actorName: string;
+  actorId: number;
+  actorProfileImage: string | null;
   postId?: number | null;
   category?: MainCategory | null;
   thumbnailImage?: string | null;
@@ -27,9 +27,9 @@ type NotificationItemProps = {
 const NotificationItem = ({
   type,
   createdAt,
-  username,
-  userId,
-  profileImage,
+  actorName,
+  actorId,
+  actorProfileImage,
   postId,
   category,
   thumbnailImage,
@@ -41,7 +41,7 @@ const NotificationItem = ({
 
   const href =
     type === "FOLLOW"
-      ? `/profile/${userId}`
+      ? `/profile/${actorId}`
       : type === "LIKE" || type === "COMMENT"
         ? `/board/${category}/${postId}`
         : undefined;
@@ -68,10 +68,11 @@ const NotificationItem = ({
               : "inline-block w-1 h-1 rounded-full bg-purple-500"
           }
         />
-        <Link href={`/profile/${userId}`}>
+        <Link href={`/profile/${actorId}`}>
           <Image
             src={
-              getProfileImageUrl(profileImage) || "/icons/defaultProfile.svg"
+              getProfileImageUrl(actorProfileImage) ||
+              "/icons/defaultProfile.svg"
             }
             alt="프로필이미지"
             width={40}
@@ -87,11 +88,11 @@ const NotificationItem = ({
         <div className="flex items-center ml-2 mr-2">
           <div>
             <Link
-              href={`/profile/${userId}`}
+              href={`/profile/${actorId}`}
               className="font-semibold text-gray-600 hover:font-bold"
               onClick={(e) => e.stopPropagation()} // 클릭 전파 방지
             >
-              {username}
+              {actorName}
             </Link>
             {type === "LIKE" && (
               <span className="text-gray-700">

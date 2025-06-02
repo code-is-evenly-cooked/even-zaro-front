@@ -7,9 +7,9 @@ export interface Notification {
   type: NotificationType;
   targetId: number;
   createdAt: string;
-  userId: number;
-  username: string;
-  profileImage: string | null;
+  actorId: number;
+  actorName: string;
+  actorProfileImage: string | null;
   postId: number | null;
   category: MainCategory | null;
   thumbnailImage: string | null;

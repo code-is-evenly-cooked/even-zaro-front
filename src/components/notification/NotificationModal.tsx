@@ -39,9 +39,9 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
           <NotificationItem
             key={noti.id}
             type={noti.type}
-            username={noti.username}
-            userId={noti.userId}
-            profileImage={noti.profileImage}
+            actorName={noti.actorName}
+            actorId={noti.actorId}
+            actorProfileImage={noti.actorProfileImage}
             createdAt={noti.createdAt}
             comment={noti.comment}
             thumbnailImage={noti.thumbnailImage}
