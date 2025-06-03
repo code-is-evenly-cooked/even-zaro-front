@@ -2,14 +2,15 @@
 
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-const banners: { src: string }[] = [
-  { src: "/banner/banner_zaro.webp" },
-  { src: "/banner/banner_dailylife.webp" },
-  { src: "/banner/banner_together.webp"},
-  { src: "/banner/banner_randombuy.webp" },
-  { src: "/banner/banner_plz.webp" }
+const banners: { src: string; href: string }[] = [
+  { src: "/banner/banner_zaro.webp", href: "/" },
+  { src: "/banner/banner_dailylife.webp", href: "/board/DAILY_LIFE" },
+  { src: "/banner/banner_together.webp", href: "/board/TOGETHER" },
+  { src: "/banner/banner_randombuy.webp", href: "/board/RANDOM_BUY" },
+  { src: "/banner/banner_plz.webp", href: "mailto:zaro.even.team@gmail.com" },
 ];
 
 export default function BannerSlider() {
@@ -60,14 +61,16 @@ export default function BannerSlider() {
 
   return (
     <div>
-      <div ref={sliderRef} className="keen-slider rounded-2xl overflow-hidden">
+      <div ref={sliderRef} className="keen-slider rounded-2xl relative">
         {banners.map((banner, idx) => (
           <div key={idx} className="keen-slider__slide min-w-full">
+            <Link href={banner.href}>
               <img
                 src={banner.src}
                 alt={`배너 ${idx + 1}`}
-                className="object-cover"
+                className="w-full h-max-[382px] object-cover cursor-pointer"
               />
+            </Link>
           </div>
         ))}
       </div>
