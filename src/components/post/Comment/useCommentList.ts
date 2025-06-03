@@ -5,7 +5,7 @@ import { CommentActionType } from "./CommentAction";
 import { CommentItem } from "@/types/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { client } from "@/lib/fetch/client";
-import { renderWithMentions } from "@/utils/comment";
+import { extractMentionedNickname } from "@/utils/comment";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -41,7 +41,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   };
 
   const handleSubmitEdit = async (id: number, newContent: string) => {
-    const replyNickname = renderWithMentions(newContent);
+    const replyNickname = extractMentionedNickname(newContent);
     try {
       await client<CommentItem>(`/comments/${id}`, {
         method: "PATCH",

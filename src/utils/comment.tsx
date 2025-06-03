@@ -12,3 +12,8 @@ export const renderWithMentions = (text: string): React.ReactNode[] => {
     return word;
   });
 };
+
+export const extractMentionedNickname = (text: string): string => {
+  const match = text.trim().match(/^@(\S+)/);
+  return match ? match[1] : "";
+};
