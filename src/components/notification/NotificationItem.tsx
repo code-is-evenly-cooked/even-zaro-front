@@ -72,10 +72,7 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
         />
         <Link href={`/profile/${actorId}`}>
           <Image
-            src={
-              getProfileImageUrl(actorProfileImage) ||
-              "/icons/defaultProfile.svg"
-            }
+            src={getProfileImageUrl(actorProfileImage)}
             alt="프로필이미지"
             width={40}
             height={40}
@@ -122,7 +119,7 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
             <Image
-              src={getImageUrl(thumbnailImage) || "/icons/placeholderImage.svg"}
+              src={getImageUrl(thumbnailImage)}
               alt="썸네일 이미지"
               width={56}
               height={56}
