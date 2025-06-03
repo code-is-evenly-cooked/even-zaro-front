@@ -42,6 +42,11 @@ const NotificationButton = () => {
         label="알림"
         onClick={() => setIsOpen((prev) => !prev)}
       />
+      {unreadCount > 0 && (
+        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+          {unreadCount > 99 ? "99+" : unreadCount}
+        </span>
+      )}
       {isOpen && (
         <div className="absolute top-full right-0 mt-6 z-50">
           <NotificationModal onClose={() => setIsOpen(false)} />
