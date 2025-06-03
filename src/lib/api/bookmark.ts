@@ -1,6 +1,16 @@
 import { client } from "@/lib/fetch/client";
 import type { BookmarkGroupType } from "@/types/bookmark";
 
+// 즐겨찾기 그룹 추가
+export const createBookmarkGroup = async (
+  groupName: string,
+): Promise<BookmarkGroupType> => {
+  return await client<BookmarkGroupType>("/group", {
+    method: "POST",
+    body: JSON.stringify({ groupName }),
+  });
+};
+
 // 즐겨찾기 그룹 목록 조회
 export const fetchBookmarkGroups = async (
   userId: number,
