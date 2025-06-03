@@ -73,8 +73,7 @@ const CommentInput = ({
         />
         <button
           type="submit"
-          color="violet300"
-          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 px-4 py-2 rounded-lg"
+          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 px-4 py-2 rounded-lg font-semibold"
         >
           등록
         </button>
