@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
 import {
   fetchNotifications,
   markAllNotificationsAsRead,
 } from "@/lib/api/notification";
-import type { Notification } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
@@ -21,7 +21,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
   const { user } = useAuthStore();
   const userId = user?.userId ?? null;
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { notifications, setNotifications } = useNotificationStore();
 
   useEffect(() => {
     if (!userId) return;
