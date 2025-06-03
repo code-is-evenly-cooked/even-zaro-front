@@ -52,7 +52,7 @@ export default function BookmarkGroupList() {
   };
 
   return (
-      <div className="space-y-2">
+    <div className="space-y-2">
       {/* 그룹 추가 버튼 */}
       <div className="flex justify-end mb-2">
         <button
@@ -63,13 +63,14 @@ export default function BookmarkGroupList() {
         </button>
       </div>
 
-      {groupList.map((group) => (
-        <BookmarkGroupCard
-          key={group.groupId}
-          group={group}
-          onDelete={handleDeleteGroup}
-        />
-      ))}
+      {/* 즐겨찾기 그룹 리스트 */}
+      <ul className="space-y-2">
+        {groupList.map((group) => (
+          <li key={group.groupId}>
+            <BookmarkGroupCard group={group} onDelete={handleDeleteGroup} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
