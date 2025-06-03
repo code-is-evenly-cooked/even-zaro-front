@@ -5,18 +5,19 @@ import IconButton from "@/components/common/Button/IconButton";
 import NotificationModal from "@/components/notification/NotificationModal";
 import { NotificationIcon } from "@/components/common/Icons";
 import { fetchNotifications } from "@/lib/api/notification";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 const NotificationButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+
+  const { unreadCount, setNotifications } = useNotificationStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchNotifications();
-        const unread = data.filter((n) => !n.read).length;
-        setUnreadCount(unread);
+        setNotifications(data);
       } catch (e) {
         console.error("안 읽은 알림 개수 불러오기 실패", e);
       }
