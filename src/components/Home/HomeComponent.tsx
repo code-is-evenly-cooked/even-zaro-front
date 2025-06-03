@@ -16,7 +16,7 @@ const HomeComponent = ({ posts }: HomeComponentProps) => {
     <div className="min-h-full flex pt-20 items-start justify-center px-4">
       <div className="flex flex-col w-full max-w-5xl gap-10">
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="w-full md:w-2/3 overflow-hidden rounded-2xl">
+          <div className="w-full md:w-2/3 rounded-2xl">
             <BannerSlider />
           </div>
           <div className="hidden md:block md:w-1/3">실시간 인기 게시글</div>
