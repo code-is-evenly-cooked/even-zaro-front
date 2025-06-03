@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,11 +9,12 @@ import { LogIn, MenuIcon, ArrowLeftIcon } from "lucide-react";
 import IconButton from "@/components/common/Button/IconButton";
 import {
   LogoLineIcon,
-  NotificationIcon,
+  // NotificationIcon,
   SearchIcon,
 } from "@/components/common/Icons";
+import NotificationButton from "@/components/notification/NotificationButton";
 import Searchbar from "@/components/Searchbar/Searchbar";
-import NotificationModal from "@/components/notification/NotificationModal";
+// import NotificationModal from "@/components/notification/NotificationModal";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import useSse from "@/hooks/useSse";
@@ -48,22 +49,22 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   // SSE 연결 시도
   useSse();
 
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const notificationRef = useRef<HTMLDivElement>(null);
+  // const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  // const notificationRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isNotificationOpen &&
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target as Node)
-      ) {
-        setIsNotificationOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isNotificationOpen]);
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       isNotificationOpen &&
+  //       notificationRef.current &&
+  //       !notificationRef.current.contains(event.target as Node)
+  //     ) {
+  //       setIsNotificationOpen(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, [isNotificationOpen]);
 
   if (hideHeaderRoutes.includes(pathname)) return null;
 
@@ -120,7 +121,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               />
             </div>
           )}
-          <IconButton
+          <NotificationButton />
+          {/* <IconButton
             icon={<NotificationIcon className="w-6 h-6" />}
             isTransparent
             label="알림"
@@ -137,7 +139,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                 />
               </div>
             )}
-          </div>
+          </div> */}
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
               <Image
