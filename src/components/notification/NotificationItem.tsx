@@ -1,52 +1,54 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { NotificationType } from "@/types/notification";
+import type { Notification } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
-import { getProfileImageUrl } from "@/utils/image";
+import { getProfileImageUrl, getImageUrl } from "@/utils/image";
+import { markNotificationAsRead } from "@/lib/api/notification";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
 type NotificationItemProps = {
-  type: NotificationType;
-  username: string;
-  userId: number;
-  profileImage: string | null;
-  createdAt: string;
-  comment?: string;
-  thumbnailImage?: string;
-  isRead: boolean;
-  category?: MainCategory;
-  postId?: number;
+  notification: Notification;
   onClose: () => void;
 };
 
-const NotificationItem = ({
-  type,
-  username,
-  userId,
-  profileImage,
-  createdAt,
-  comment,
-  thumbnailImage,
-  isRead,
-  category,
-  postId,
-  onClose,
-}: NotificationItemProps) => {
+const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   const router = useRouter();
+
+  const {
+    id,
+    type,
+    createdAt,
+    actorName,
+    actorId,
+    actorProfileImage,
+    postId,
+    category,
+    thumbnailImage,
+    comment,
+    read,
+  } = notification;
 
   const href =
     type === "FOLLOW"
-      ? `/profile/${userId}`
+      ? `/profile/${actorId}`
       : type === "LIKE" || type === "COMMENT"
         ? `/board/${category}/${postId}`
         : undefined;
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (!read) {
+      try {
+        await markNotificationAsRead(id);
+      } catch (err) {
+        console.error("알림 읽음 처리 실패", err);
+      }
+    }
+
     if (href) {
       router.push(href);
       onClose();
@@ -63,16 +65,14 @@ const NotificationItem = ({
         {/* 읽음 표시 */}
         <span
           className={
-            isRead
+            read
               ? "invisible w-1 h-1"
               : "inline-block w-1 h-1 rounded-full bg-purple-500"
           }
         />
-        <Link href={`/profile/${userId}`}>
+        <Link href={`/profile/${actorId}`}>
           <Image
-            src={
-              getProfileImageUrl(profileImage) || "/icons/defaultProfile.svg"
-            }
+            src={getProfileImageUrl(actorProfileImage)}
             alt="프로필이미지"
             width={40}
             height={40}
@@ -87,28 +87,25 @@ const NotificationItem = ({
         <div className="flex items-center ml-2 mr-2">
           <div>
             <Link
-              href={`/profile/${userId}`}
+              href={`/profile/${actorId}`}
               className="font-semibold text-gray-600 hover:font-bold"
               onClick={(e) => e.stopPropagation()} // 클릭 전파 방지
             >
-              {username}
+              {actorName}
             </Link>
             {type === "LIKE" && (
               <span className="text-gray-700">
-                {" "}
                 님이 회원님의 게시글을 좋아합니다.
               </span>
             )}
             {type === "FOLLOW" && (
               <span className="text-gray-700">
-                {" "}
                 님이 회원님을 팔로우하기 시작했습니다.
               </span>
             )}
             {type === "COMMENT" && (
               <>
                 <span className="text-gray-700">
-                  {" "}
                   님이 댓글을 남겼습니다. :{" "}
                 </span>
                 <span className="text-gray-700">{comment}</span>
@@ -122,7 +119,7 @@ const NotificationItem = ({
           {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
           {type === "LIKE" && (
             <Image
-              src={thumbnailImage || "/icons/placeholderImage.svg"}
+              src={getImageUrl(thumbnailImage)}
               alt="썸네일 이미지"
               width={56}
               height={56}
