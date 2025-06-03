@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { NotificationType } from "@/types/notification";
+import type { Notification } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { getRelativeTimeAgo } from "@/utils/date";
 import Image from "next/image";
@@ -12,35 +12,26 @@ import { markNotificationAsRead } from "@/lib/api/notification";
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
 type NotificationItemProps = {
-  id: number;
-  type: NotificationType;
-  createdAt: string;
-  actorName: string;
-  actorId: number;
-  actorProfileImage: string | null;
-  postId?: number | null;
-  category?: MainCategory | null;
-  thumbnailImage: string | null;
-  comment?: string | null;
-  isRead: boolean;
+  notification: Notification;
   onClose: () => void;
 };
 
-const NotificationItem = ({
-  id,
-  type,
-  createdAt,
-  actorName,
-  actorId,
-  actorProfileImage,
-  postId,
-  category,
-  thumbnailImage,
-  comment,
-  isRead,
-  onClose,
-}: NotificationItemProps) => {
+const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   const router = useRouter();
+
+  const {
+    id,
+    type,
+    createdAt,
+    actorName,
+    actorId,
+    actorProfileImage,
+    postId,
+    category,
+    thumbnailImage,
+    comment,
+    read,
+  } = notification;
 
   const href =
     type === "FOLLOW"
@@ -50,7 +41,7 @@ const NotificationItem = ({
         : undefined;
 
   const handleClick = async () => {
-    if (!isRead) {
+    if (!read) {
       try {
         await markNotificationAsRead(id);
       } catch (err) {
@@ -74,7 +65,7 @@ const NotificationItem = ({
         {/* 읽음 표시 */}
         <span
           className={
-            isRead
+            read
               ? "invisible w-1 h-1"
               : "inline-block w-1 h-1 rounded-full bg-purple-500"
           }

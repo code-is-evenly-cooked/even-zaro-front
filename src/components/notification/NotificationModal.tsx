@@ -57,17 +57,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
         {notifications.map((noti) => (
           <NotificationItem
             key={noti.id}
-            id={noti.id}
-            type={noti.type}
-            actorName={noti.actorName}
-            actorId={noti.actorId}
-            actorProfileImage={noti.actorProfileImage}
-            createdAt={noti.createdAt}
-            comment={noti.comment}
-            thumbnailImage={noti.thumbnailImage}
-            isRead={noti.read}
-            category={noti.category}
-            postId={noti.postId}
+            notification={noti}
             onClose={onClose}
           />
         ))}
