@@ -6,12 +6,15 @@ import NotificationModal from "@/components/notification/NotificationModal";
 import { NotificationIcon } from "@/components/common/Icons";
 import { fetchNotifications } from "@/lib/api/notification";
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import useSse from "@/hooks/useSse";
 
 const NotificationButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const { unreadCount, setNotifications } = useNotificationStore();
+
+  useSse();
 
   useEffect(() => {
     fetchNotifications()
