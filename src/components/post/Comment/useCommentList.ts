@@ -4,8 +4,8 @@ import { useState } from "react";
 import { CommentActionType } from "./CommentAction";
 import { CommentItem } from "@/types/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { client } from "@/lib/fetch/client";
 import { extractMentionedNickname } from "@/utils/comment";
+import { editComment } from "@/lib/api/comment";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -43,15 +43,10 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const handleSubmitEdit = async (id: number, newContent: string) => {
     const replyNickname = extractMentionedNickname(newContent);
     try {
-      await client<CommentItem>(`/comments/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          content: newContent,
-          mentionedNickname:
-            replyNickname && newContent.startsWith(`@${replyNickname}`)
-              ? replyNickname
-              : "",
-        }),
+      await editComment({
+        postId: id,
+        content: newContent,
+        mentionedNickname: replyNickname,
       });
     } catch (error) {
       const errorMessage =
