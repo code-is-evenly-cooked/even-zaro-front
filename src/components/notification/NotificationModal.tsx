@@ -26,17 +26,12 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
   useEffect(() => {
     if (!userId) return;
 
-    const fetchData = async () => {
-      try {
-        const data = await fetchNotifications();
-        setNotifications(data);
-      } catch (e) {
+    fetchNotifications()
+      .then(setNotifications)
+      .catch((e) => {
         console.error("알림 목록 불러오기 실패", e);
-      }
-    };
-
-    fetchData();
-  }, [userId]);
+      });
+  }, [userId, setNotifications]);
 
   const handleMarkAllRead = async () => {
     try {

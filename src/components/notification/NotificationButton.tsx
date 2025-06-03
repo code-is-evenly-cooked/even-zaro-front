@@ -14,16 +14,12 @@ const NotificationButton = () => {
   const { unreadCount, setNotifications } = useNotificationStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchNotifications();
-        setNotifications(data);
-      } catch (e) {
-        console.error("안 읽은 알림 개수 불러오기 실패", e);
-      }
-    };
-    fetchData();
-  }, []);
+    fetchNotifications()
+      .then(setNotifications)
+      .catch((e) => {
+        console.error("알림 데이터 가져오기 실패", e);
+      });
+  }, [setNotifications]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
