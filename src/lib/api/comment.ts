@@ -10,7 +10,7 @@ export const fetchComment = async ({
   page = 0,
 }: FetchCommentParams) => {
   return await client<CommentResponse>(`/posts/${postId}/comments`, {
-    params: { postId, page, sort: "createdAt,DESC" },
+    params: { postId, page },
   });
 };
 
