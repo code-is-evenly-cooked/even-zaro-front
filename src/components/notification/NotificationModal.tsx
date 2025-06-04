@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
+import FallbackMessage from "../common/Fallback/FallbackMessage";
 import {
   fetchNotifications,
   markAllNotificationsAsRead,
@@ -49,13 +50,20 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
         <NotificationHeader onMarkAllRead={handleMarkAllRead} />
       </header>
       <ul className="h-[310px] overflow-y-auto pt-1 pb-3">
-        {notifications.map((noti) => (
-          <NotificationItem
-            key={noti.id}
-            notification={noti}
-            onClose={onClose}
+        {notifications.length === 0 ? (
+          <FallbackMessage
+            message="알림이 없습니다."
+            className="mt-14 text-center text-sm text-gray-400"
           />
-        ))}
+        ) : (
+          notifications.map((noti) => (
+            <NotificationItem
+              key={noti.id}
+              notification={noti}
+              onClose={onClose}
+            />
+          ))
+        )}
       </ul>
     </div>
   );
