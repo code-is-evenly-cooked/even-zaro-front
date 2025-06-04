@@ -9,7 +9,7 @@ import { fetchPlaceDetail, fetchPlaceList } from "@/lib/api/map";
 import { PlaceDetailResponse, PlaceListResponse } from "@/types/map";
 
 const MapPage = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [placeList, setPlaceList] = useState<PlaceListResponse | null>(null);
   const [placeId, setPlaceId] = useState<number | null>(null);
   const [placeDetail, setPlaceDetail] = useState<PlaceDetailResponse | null>(
@@ -38,7 +38,6 @@ const MapPage = () => {
           distanceKm,
         );
         setPlaceList(data);
-        setPage(2); // 장소 목록 가져온 뒤 페이지 전환
       } catch (error) {
         console.error("장소 목록을 불러오는 데 실패했습니다.", error);
       }
