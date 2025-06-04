@@ -42,21 +42,24 @@ const CommentInput = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!comment.trim()) return;
+    const replyNickname = extractMentionedNickname(comment);
 
-    await client(`/posts/${postId}/comments`, {
-      method: "POST",
-      needAuth: true,
-      body: JSON.stringify({
+    try {
+      await createComment({
+        postId,
         content: comment,
-        mentionedNickname:
-          replyNickname && comment.startsWith(`@${replyNickname}`)
-            ? replyNickname
-            : "",
-      }),
-    });
-
-    setComment("");
-    onSuccess();
+        mentionedNickname: replyNickname,
+      });
+      setComment("");
+      resetReplyTarget();
+      onSuccess();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "댓글 쓰기 중 오류가 발생했습니다.";
+      showToastMessage({ type: "error", message });
+    }
   };
 
   return (
