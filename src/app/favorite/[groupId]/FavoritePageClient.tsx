@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import { useFavoriteItems } from "@/hooks/useFavoriteItems";
 import FavoriteItemCard from "@/components/Profile/FavoriteItemCard";
 import { fetchBookmarkGroups } from "@/lib/api/bookmark";
-import { useAuthStore } from "@/stores/useAuthStore";
 import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
 
 export default function FavoritePage({ groupId }: { groupId: number }) {
   const { data: items, isLoading, error } = useFavoriteItems(groupId);
-  const { user } = useAuthStore();
 
   const displayItems = items?.filter((item) => !item.deleted) ?? [];
   const [groupName, setGroupName] = useState<string>("");
@@ -17,10 +15,11 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
   // 해당 groupId 그룹 이름 가져오기
   useEffect(() => {
     const fetchGroupName = async () => {
-      if (!user?.userId) return;
+      const ownerId = items?.[0]?.userId;
+      if (!ownerId) return;
 
       try {
-        const groups = await fetchBookmarkGroups(user.userId);
+        const groups = await fetchBookmarkGroups(ownerId);
         const matched = groups.find((g) => g.groupId === groupId);
         setGroupName(matched?.name ?? "(알 수 없음)");
       } catch {
@@ -29,7 +28,7 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
     };
 
     fetchGroupName();
-  }, [groupId, user?.userId]);
+  }, [groupId, items]);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다: {(error as Error).message}</div>;
