@@ -48,8 +48,9 @@ const CommentEditForm = ({
         </button>
         <button
           type="button"
+          disabled={!content}
           onClick={() => onSubmit(content)}
-          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 px-4 py-2 rounded-lg font-semibold"
+          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 disabled:bg-gray200 disabled:text-white px-4 py-2 rounded-lg font-semibold"
         >
           등록
         </button>

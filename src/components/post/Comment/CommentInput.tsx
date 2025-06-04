@@ -105,7 +105,8 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
         />
         <button
           type="submit"
-          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 px-4 py-2 rounded-lg font-semibold"
+          disabled={isLoading || !comment.trim()}
+          className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 disabled:bg-gray200 disabled:text-white  px-4 py-2 rounded-lg font-semibold"
         >
           {isLoading ? <LoadingSpinner className="px-4 py-2" /> : "등록"}
         </button>
