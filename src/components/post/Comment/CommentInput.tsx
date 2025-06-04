@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { createComment } from "@/lib/api/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useCommentReplyStore } from "@/stores/useCommentReply";
@@ -25,6 +26,7 @@ interface CommentInputProps {
 
 const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
   const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { replyTo, resetReplyTarget } = useCommentReplyStore();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -63,7 +65,7 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
     e.preventDefault();
     if (!comment.trim()) return;
     const replyNickname = extractMentionedNickname(comment);
-
+    setIsLoading(true);
     try {
       await createComment({
         postId,
@@ -79,6 +81,8 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
           ? error.message
           : "댓글 쓰기 중 오류가 발생했습니다.";
       showToastMessage({ type: "error", message });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,7 +107,7 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
           type="submit"
           className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 px-4 py-2 rounded-lg font-semibold"
         >
-          등록
+          {isLoading ? <LoadingSpinner className="px-4 py-2" /> : "등록"}
         </button>
       </form>
     </div>
