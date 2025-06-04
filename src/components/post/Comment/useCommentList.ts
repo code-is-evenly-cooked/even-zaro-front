@@ -7,6 +7,7 @@ import { extractMentionedNickname } from "@/utils/comment";
 import useCommentUpdate from "./useCommentUpdate";
 import useCommentDelete from "./useCommentDelete";
 import { useCommentReplyStore } from "@/stores/useCommentReply";
+import { useCommentLoadingStore } from "@/stores/useCommentLoadingStore";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -18,6 +19,9 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const { mutate: deleteCommentMutate } = useCommentDelete();
   const { setReplyTarget } = useCommentReplyStore();
 
+  const { setEditingId: setLoadingEditingId, setDeletingId } =
+    useCommentLoadingStore();
+
   const handleRefresh = () => {
     onRefresh();
   };
@@ -28,7 +32,10 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
         setEditingId(item.id);
         break;
       case "delete":
-        deleteCommentMutate(item.id);
+        setDeletingId(item.id);
+        deleteCommentMutate(item.id, {
+          onSettled: () => setDeletingId(null),
+        });
         break;
       case "report":
         console.log("댓글 신고:", item.id);
@@ -45,14 +52,20 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
 
   const handleSubmitEdit = async (id: number, newContent: string) => {
     const replyNickname = extractMentionedNickname(newContent);
-
-    await updateCommentMutate({
-      id,
-      content: newContent,
-      mentionedNickname: replyNickname,
-    });
-
-    setEditingId(null);
+    setLoadingEditingId(id);
+    await updateCommentMutate(
+      {
+        id,
+        content: newContent,
+        mentionedNickname: replyNickname,
+      },
+      {
+        onSettled: () => {
+          setLoadingEditingId(null);
+          setEditingId(null);
+        },
+      },
+    );
   };
 
   return {
