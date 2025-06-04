@@ -17,3 +17,6 @@ export const extractMentionedNickname = (text: string): string => {
   const match = text.trim().match(/^@(\S+)/);
   return match ? match[1] : "";
 };
+
+export const removeMentionPrefix = (text: string): string =>
+  text.replace(/^@\S+\s*/, "");

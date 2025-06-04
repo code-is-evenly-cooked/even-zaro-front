@@ -1,26 +1,40 @@
 "use client";
 
-import { client } from "@/lib/fetch/client";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { createComment } from "@/lib/api/comment";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useCommentReplyStore } from "@/stores/useCommentReply";
+import { extractMentionedNickname, removeMentionPrefix } from "@/utils/comment";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 interface CommentInputProps {
   postId: number;
-  replyNickname?: string;
   onSuccess: () => void;
 }
 
-const CommentInput = ({
-  postId,
-  replyNickname,
-  onSuccess,
-}: CommentInputProps) => {
+const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
   const [comment, setComment] = useState("");
+  const { replyTo, resetReplyTarget } = useCommentReplyStore();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const mention = replyNickname ? `@${replyNickname} ` : "";
+
+  const { showToastMessage } = useToastMessageContext();
+
+  const mention = useMemo(() => (replyTo ? `@${replyTo} ` : ""), [replyTo]);
 
   useEffect(() => {
-    if (replyNickname) setComment(mention);
-  }, [replyNickname]);
+    if (replyTo) setComment(mention);
+    setTimeout(() => {
+      const length = mention.length;
+      textareaRef.current?.focus();
+      textareaRef.current?.setSelectionRange(length, length);
+    }, 0);
+  }, [replyTo]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
@@ -28,12 +42,13 @@ const CommentInput = ({
 
     // mention이 있고, 커서가 mention안에 있고, 삭제중이면 전체 mention제거
     if (
-      replyNickname &&
+      replyTo &&
       comment.startsWith(mention) &&
       cursorPos <= mention.length &&
       newValue.length < comment.length
     ) {
-      setComment("");
+      setComment(removeMentionPrefix(newValue));
+      resetReplyTarget();
     } else {
       setComment(newValue);
     }
