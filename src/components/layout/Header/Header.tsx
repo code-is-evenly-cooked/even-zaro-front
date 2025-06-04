@@ -40,6 +40,18 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     pathname.startsWith(route),
   );
 
+  // 검색 창 md 사이즈 이후 resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileSearchOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+    
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
@@ -60,9 +72,9 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         </div>
       )}
 
-      {/* 가운데: sm 이상에서 중앙 정렬된 Searchbar */}
+      {/* 가운데: md 이상에서 중앙 정렬된 Searchbar */}
       {!isMobileSearchOpen && !shouldHideSearchbar && (
-        <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-full max-w-md">
+        <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-full max-w-md z-10">
           <Searchbar />
         </div>
       )}
@@ -86,7 +98,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
         // 오른쪽 영역: 검색 아이콘 + 알림 + 로그인 or 프로필
         <div className="flex items-center gap-2">
           {!shouldHideSearchbar && (
-            <div className="sm:hidden">
+            <div className="md:hidden">
               <IconButton
                 icon={<SearchIcon />}
                 isTransparent
