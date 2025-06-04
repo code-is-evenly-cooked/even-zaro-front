@@ -41,12 +41,12 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
         onClick={() => setIsOpen((prev) => !prev)}
       />
       {isOpen && (
-        <div className="absolute right-2 top-8 bg-gray100 rounded-xl shadow-md py-2 px-6 z-10 flex items-center justify-center text-nowrap">
+        <div className="absolute right-2 top-8 bg-gray100 rounded-xl shadow-md z-10 flex items-center justify-center text-nowrap">
           {isMine ? (
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col">
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold"
+                  className="text-gray900 hover:font-semibold px-4 pt-2 pb-1"
                   onClick={() => handleClickItem("edit")}
                 >
                   수정
@@ -54,7 +54,7 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
               </li>
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold"
+                  className="text-gray900 hover:font-semibold px-4 pt-1 pb-2"
                   onClick={() => handleClickItem("delete")}
                 >
                   삭제
@@ -65,7 +65,7 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
             <ul className="flex flex-col gap-2">
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold"
+                  className="text-gray900 hover:font-semibold px-4 pt-2 pb-1"
                   onClick={() => handleClickItem("reply")}
                 >
                   답글
@@ -73,7 +73,7 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
               </li>
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold"
+                  className="text-gray900 hover:font-semibold px-4 pt-1 pb-2"
                   onClick={() => handleClickItem("report")}
                 >
                   신고
