@@ -41,12 +41,12 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
         onClick={() => setIsOpen((prev) => !prev)}
       />
       {isOpen && (
-        <div className="absolute right-2 top-8 bg-gray100 rounded-xl shadow-md z-10 flex items-center justify-center text-nowrap">
+        <div className="absolute right-2 top-8 bg-gray100 rounded-md shadow-md z-10 flex items-center justify-center text-nowrap">
           {isMine ? (
-            <ul className="flex flex-col">
+            <ul className="flex flex-col py-2">
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold px-4 pt-2 pb-1"
+                  className="text-gray900 hover:underline hover:bg-gray600/10 pl-4 pr-8 py-1"
                   onClick={() => handleClickItem("edit")}
                 >
                   수정
@@ -54,7 +54,7 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
               </li>
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold px-4 pt-1 pb-2"
+                  className="text-gray900 hover:underline hover:bg-gray600/10 pl-4 pr-8 py-1"
                   onClick={() => handleClickItem("delete")}
                 >
                   삭제
@@ -62,10 +62,10 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
               </li>
             </ul>
           ) : (
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col py-2">
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold px-4 pt-2 pb-1"
+                  className="text-gray900 hover:underline hover:bg-gray600/10 pl-4 pr-8 py-1"
                   onClick={() => handleClickItem("reply")}
                 >
                   답글
@@ -73,7 +73,7 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
               </li>
               <li>
                 <button
-                  className="text-gray900 hover:font-semibold px-4 pt-1 pb-2"
+                  className="text-gray900 hover:underline hover:bg-gray600/10 pl-4 pr-8 py-1"
                   onClick={() => handleClickItem("report")}
                 >
                   신고
