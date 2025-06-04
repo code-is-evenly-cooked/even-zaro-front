@@ -1,6 +1,8 @@
 "use client";
 
 import BaseButton from "@/components/common/Button/BaseButton";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useEffect } from "react";
 
 interface ErrorPageProps {
   error: Error;
@@ -9,6 +11,13 @@ interface ErrorPageProps {
 
 const ErrorPage = ({ error, reset }: ErrorPageProps) => {
   const isAuthError = error.message === "access token 없음";
+  const { clearUser } = useAuthStore();
+
+  useEffect(() => {
+    if (isAuthError) {
+      clearUser();
+    }
+  }, [isAuthError, clearUser]);
 
   const handleClick = () => {
     if (isAuthError) {

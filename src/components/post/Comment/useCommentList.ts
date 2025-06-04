@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { CommentActionType } from "./CommentAction";
 import { CommentItem } from "@/types/comment";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { client } from "@/lib/fetch/client";
-import { renderWithMentions } from "@/utils/comment";
+import { extractMentionedNickname } from "@/utils/comment";
+import useCommentUpdate from "./useCommentUpdate";
+import useCommentDelete from "./useCommentDelete";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -13,7 +13,8 @@ interface useCommentListProps {
 
 const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const [editingId, setEditingId] = useState<number | null>(null);
-  const { showToastMessage } = useToastMessageContext();
+  const { mutate: updateCommentMutate } = useCommentUpdate();
+  const { mutate: deleteCommentMutate } = useCommentDelete();
 
   const handleRefresh = () => {
     onRefresh();
@@ -25,7 +26,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
         setEditingId(item.id);
         break;
       case "delete":
-        console.log("댓글 삭제:", item.id);
+        deleteCommentMutate(item.id);
         break;
       case "report":
         console.log("댓글 신고:", item.id);
@@ -41,26 +42,15 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   };
 
   const handleSubmitEdit = async (id: number, newContent: string) => {
-    const replyNickname = renderWithMentions(newContent);
-    try {
-      await client<CommentItem>(`/comments/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({
-          content: newContent,
-          mentionedNickname:
-            replyNickname && newContent.startsWith(`@${replyNickname}`)
-              ? replyNickname
-              : "",
-        }),
-      });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "오류가 발생했습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
-    } finally {
-      setEditingId(null);
-      onRefresh();
-    }
+    const replyNickname = extractMentionedNickname(newContent);
+
+    await updateCommentMutate({
+      id,
+      content: newContent,
+      mentionedNickname: replyNickname,
+    });
+
+    setEditingId(null);
   };
 
   return {

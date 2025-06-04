@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProfileImageUrl, getImageUrl } from "@/utils/image";
 import { markNotificationAsRead } from "@/lib/api/notification";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
@@ -18,6 +19,7 @@ type NotificationItemProps = {
 
 const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   const router = useRouter();
+  const { markAsRead } = useNotificationStore();
 
   const {
     id,
@@ -44,6 +46,7 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
     if (!read) {
       try {
         await markNotificationAsRead(id);
+        markAsRead(id);
       } catch (err) {
         console.error("알림 읽음 처리 실패", err);
       }

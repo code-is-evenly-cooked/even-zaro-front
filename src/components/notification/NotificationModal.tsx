@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NotificationHeader from "./NotificationHeader";
 import NotificationItem from "./NotificationItem";
+import FallbackMessage from "../common/Fallback/FallbackMessage";
 import {
   fetchNotifications,
   markAllNotificationsAsRead,
 } from "@/lib/api/notification";
-import type { Notification } from "@/types/notification";
 import { CATEGORY_MAP } from "@/constants/category";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
@@ -21,22 +22,17 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
   const { user } = useAuthStore();
   const userId = user?.userId ?? null;
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const { notifications, setNotifications } = useNotificationStore();
 
   useEffect(() => {
     if (!userId) return;
 
-    const fetchData = async () => {
-      try {
-        const data = await fetchNotifications();
-        setNotifications(data);
-      } catch (e) {
+    fetchNotifications()
+      .then(setNotifications)
+      .catch((e) => {
         console.error("알림 목록 불러오기 실패", e);
-      }
-    };
-
-    fetchData();
-  }, [userId]);
+      });
+  }, [userId, setNotifications]);
 
   const handleMarkAllRead = async () => {
     try {
@@ -54,13 +50,20 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
         <NotificationHeader onMarkAllRead={handleMarkAllRead} />
       </header>
       <ul className="h-[310px] overflow-y-auto pt-1 pb-3">
-        {notifications.map((noti) => (
-          <NotificationItem
-            key={noti.id}
-            notification={noti}
-            onClose={onClose}
+        {notifications.length === 0 ? (
+          <FallbackMessage
+            message="알림이 없습니다."
+            className="mt-14 text-center text-sm text-gray-400"
           />
-        ))}
+        ) : (
+          notifications.map((noti) => (
+            <NotificationItem
+              key={noti.id}
+              notification={noti}
+              onClose={onClose}
+            />
+          ))
+        )}
       </ul>
     </div>
   );
