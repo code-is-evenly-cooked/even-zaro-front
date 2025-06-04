@@ -5,6 +5,7 @@ import { useFavoriteItems } from "@/hooks/useFavoriteItems";
 import FavoriteItemCard from "@/components/Profile/FavoriteItemCard";
 import { fetchBookmarkGroups } from "@/lib/api/bookmark";
 import { useAuthStore } from "@/stores/useAuthStore";
+import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
 
 export default function FavoritePage({ groupId }: { groupId: number }) {
   const { data: items, isLoading, error } = useFavoriteItems(groupId);
@@ -36,6 +37,7 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
 
   return (
     <div className="max-w-3xl mx-auto py-6">
+      {items?.[0]?.userId && <FavoriteHeader userId={items[0].userId} />}
       <div className="flex flex-col items-center gap-4 mb-10">
         <h2 className="text-xl font-bold">{groupName}</h2>
         <p className="text-gray600">장소 {displayItems.length}</p>
