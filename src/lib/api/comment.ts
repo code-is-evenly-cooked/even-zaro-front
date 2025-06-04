@@ -1,4 +1,4 @@
-import { CommentResponse } from "@/types/comment";
+import { CommentItem, CommentResponse } from "@/types/comment";
 import { client } from "../fetch/client";
 
 interface FetchCommentParams {
@@ -11,5 +11,30 @@ export const fetchComment = async ({
 }: FetchCommentParams) => {
   return await client<CommentResponse>(`/posts/${postId}/comments`, {
     params: { postId, page, sort: "createdAt,DESC" },
+  });
+};
+
+interface EditCommentParams {
+  commentId: number;
+  content: string;
+  mentionedNickname: string;
+}
+export const editComment = async ({
+  commentId,
+  content,
+  mentionedNickname = "",
+}: EditCommentParams) => {
+  return await client<CommentItem>(`/comments/${commentId}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      content,
+      mentionedNickname,
+    }),
+  });
+};
+
+export const deleteComment = async (commentId: number) => {
+  return await client(`/comments/${commentId}`, {
+    method: "DELETE",
   });
 };

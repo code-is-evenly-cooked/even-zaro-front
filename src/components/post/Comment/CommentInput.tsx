@@ -83,10 +83,3 @@ const CommentInput = ({
 };
 
 export default CommentInput;
-
-/**
- * TODO
- * 답글 기능일때 UI를 어떻게 표시할것인가?
- * 글자 제한
- * 수정...
- */
