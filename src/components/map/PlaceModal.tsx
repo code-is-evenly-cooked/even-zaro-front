@@ -27,7 +27,7 @@ export default function PlaceModal( { placeList } : PlaceModalProps ) {
           <PlaceCard
             key={place.place_id}
             category={place.category}
-            placeName={place.placeName}
+            placeName={place.name}
             address={place.address}
             favoriteCount={place.favoriteCount}
           />

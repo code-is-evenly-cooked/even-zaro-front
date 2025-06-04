@@ -26,7 +26,7 @@ export interface PlaceListResponse {
 
 export interface PlaceInfos {
   place_id : number;
-  placeName: string;
+  name: string;
   address: string;
   category: string;
   lat: number,
