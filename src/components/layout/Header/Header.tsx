@@ -68,7 +68,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="relative h-12 min-h-12 flex items-center justify-between px-2">
+    <header className="relative z-50 h-12 min-h-12 flex items-center justify-between px-2">
       {/* 왼쪽 영역: 메뉴 + 로고 */}
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
