@@ -27,7 +27,7 @@ export default function ProfileHeader() {
   const imageUrl = getProfileImageUrl(profile.profileImage);
 
   // 자취 기간 디데이 표시
-  const mockStartDate = profile.liveAloneDate ?? "2024-01-01"; // 임시 목업 데이터
+  const mockStartDate = profile.liveAloneDate ?? "2024-01-01"; // TODO: 작업 최종 완료 후 목업 데이터 제거 필요
   const days =
     mockStartDate != null
       ? differenceInDays(new Date(), new Date(mockStartDate))
