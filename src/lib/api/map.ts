@@ -6,9 +6,9 @@ export const fetchPlaceList = async (
   lat: number,
   lng: number,
   distanceKm: number
-): Promise<PlaceListResponse[]> => {
+): Promise<PlaceListResponse> => {
   const url = `/map/place?lat=${lat}&lng=${lng}&distanceKm=${distanceKm}`;
-  return await client<PlaceListResponse[]>(url, {
+  return await client<PlaceListResponse>(url, {
     method: "GET",
   });
 };

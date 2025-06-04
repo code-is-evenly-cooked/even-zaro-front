@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import UserMemoCard from "@/components/map/UserMemoCard";
-import { LucideStar, MoreVerticalIcon } from "lucide-react";
+import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
 import { PlaceDetailResponse } from "@/types/map";
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 
 interface PlaceUserMemosProps {
   placeDetail: PlaceDetailResponse;
+  backPage: () => void;
 }
 
-export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
+export default function PlaceUserMemos({ placeDetail, backPage }: PlaceUserMemosProps) {
   const [favorite, setFavorite] = useState(false);
 
   function handleClickFavorite() {
@@ -17,13 +18,16 @@ export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
   }
 
   return (
-    <div className="flex flex-col absolute left-[400px] -bottom-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
+    <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       <div className="relative w-full px-4 py-4">
-        <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
-          <MoreVerticalIcon />
-        </button>
+
 
         <div className="flex flex-col items-center justify-center">
+          <button className="absolute left-4 top-4"
+            onClick={backPage}>
+            <ArrowLeftIcon />
+          </button>
+
           <div className="flex items-center space-x-2">
             {favorite ? (
               <button onClick={handleClickFavorite} className="flex self-start">
@@ -35,7 +39,6 @@ export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
               </button>
             )}
 
-            {/* 텍스트 영역 */}
             <div className="flex flex-col justify-center items-center text-center max-w-[200px]">
               <span className="font-bold text-gray900 text-lg leading-snug break-words">
                 {placeDetail?.placeName}
@@ -44,6 +47,9 @@ export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
                 {placeDetail?.address}
               </span>
             </div>
+            <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
+              <MoreVerticalIcon />
+            </button>
           </div>
         </div>
       </div>
