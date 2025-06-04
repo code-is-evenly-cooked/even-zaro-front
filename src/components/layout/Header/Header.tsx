@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -51,7 +51,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-    
+
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
