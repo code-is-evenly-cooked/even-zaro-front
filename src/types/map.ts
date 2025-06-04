@@ -5,15 +5,31 @@ export interface PlaceDetailResponse {
   address: string;
   lat: number;
   lng: number;
+  category: string;
   favoriteCount: number;
-  userInfo: UserInfo[];
+  usersInfo: UsersInfo[];
 }
 
 // 장소에 남긴 유저 정보
-export interface UserInfo {
+export interface UsersInfo {
   userId: number;
   profileImage: string;
   nickname: string;
   memo: string;
 }
 
+export interface PlaceListResponse {
+  totalCount: number;
+  placeInfos: PlaceInfos[];
+
+}
+
+export interface PlaceInfos {
+  place_id : number;
+  placeName: string;
+  address: string;
+  category: string;
+  lat: number,
+  lng: number,
+  favoriteCount: number,
+}
