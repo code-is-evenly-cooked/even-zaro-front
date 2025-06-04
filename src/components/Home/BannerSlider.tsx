@@ -61,9 +61,9 @@ export default function BannerSlider() {
 
   return (
     <div>
-      <div ref={sliderRef} className="keen-slider rounded-2xl relative">
+      <ul ref={sliderRef} className="keen-slider rounded-2xl relative">
         {banners.map((banner, idx) => (
-          <div key={idx} className="keen-slider__slide min-w-full">
+          <li key={idx} className="keen-slider__slide min-w-full list-none">
             <Link href={banner.href}>
               <img
                 src={banner.src}
@@ -71,20 +71,20 @@ export default function BannerSlider() {
                 className="w-full h-max-[382px] object-cover cursor-pointer"
               />
             </Link>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div className="flex justify-center mt-4 gap-2">
+      <ul className="flex justify-center mt-4 gap-2">
         {banners.map((_, idx) => (
-          <div
+          <li
             key={idx}
             className={`w-2 h-2 rounded-full transition ${
               currentSlide === idx ? "bg-gray900" : "bg-gray200"
             }`}
           />
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
