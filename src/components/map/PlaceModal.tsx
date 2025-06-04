@@ -1,57 +1,13 @@
 import React from "react";
 import PlaceCard from "@/components/map/PlaceCard";
+import { PlaceListResponse } from "@/types/map";
 
-export default function PlaceModal() {
-  const dummyData = {
-    totalCount: 5,
-    placeInfos: [
-      {
-        place_id: 1,
-        placeName: "갓덴 스시 강남점",
-        address: "서울의 어딘가 123",
-        category: "Food",
-        favoriteCount: 10,
-        lat: 36.123,
-        lng: 127.232,
-      },
-      {
-        place_id: 2,
-        placeName: "신동궁 감자탕 역삼직영",
-        address: "서울의 어딘가 1234",
-        category: "Cafe",
-        favoriteCount: 5,
-        lat: 36.123,
-        lng: 127.232,
-      },
-      {
-        place_id: 3,
-        placeName: "장인 닭갈비 강남점",
-        address: "서울의 어딘가 123 345",
-        category: "Etc",
-        favoriteCount: 12,
-        lat: 36.123,
-        lng: 127.232,
-      },
-      {
-        place_id: 4,
-        placeName: "장소1",
-        address: "서울의 어딘가 123 3211",
-        category: "Market",
-        favoriteCount: 11,
-        lat: 36.123,
-        lng: 127.232,
-      },
-      {
-        place_id: 5,
-        placeName: "장소2",
-        address: "서울의 어딘가 123 3211",
-        category: "Favorite",
-        favoriteCount: 5,
-        lat: 36.123,
-        lng: 127.232,
-      },
-    ],
-  };
+
+interface PlaceModalProps {
+  placeList : PlaceListResponse;
+}
+
+export default function PlaceModal( { placeList } : PlaceModalProps ) {
 
   return (
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
@@ -67,7 +23,7 @@ export default function PlaceModal() {
 
       {/* 장소 카드 리스트 */}
       <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
-        {dummyData.placeInfos.map((place) => (
+        {placeList?.placeInfos.map((place) => (
           <PlaceCard
             key={place.place_id}
             category={place.category}

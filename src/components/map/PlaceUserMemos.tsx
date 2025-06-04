@@ -1,47 +1,16 @@
 import React, { useState } from "react";
 import UserMemoCard from "@/components/map/UserMemoCard";
-import { LucideStar, MoreVerticalIcon} from "lucide-react";
+import { LucideStar, MoreVerticalIcon } from "lucide-react";
 import { PlaceDetailResponse } from "@/types/map";
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 
-export default function PlaceUserMemos() {
-  const [favorite, setFavorite] = useState(false);
+interface PlaceUserMemosProps {
+  placeDetail: PlaceDetailResponse;
+}
 
-  const dummyData: PlaceDetailResponse = {
-    placeId: 1,
-    placeName: "갓덴 스시 강남점",
-    address: "서울의 어딘가 123",
-    lat: 36.123,
-    lng: 127.232,
-    favoriteCount: 5,
-    userInfo: [
-      {
-        userId: 1,
-        profileImage: "/icons/sampleProfile.svg",
-        nickname: "이브니",
-        memo: "요기 맛없어요asdsadasdasdasdasasdasd1",
-      },
-      {
-        userId: 2,
-        profileImage: "",
-        nickname: "삼브니",
-        memo: "요기 맛없어asdasdasdsalkdjaslkdjaslkdjalskj2",
-      },
-      {
-        userId: 3,
-        profileImage: "",
-        nickname: "사브니",
-        memo: "요기 맛없어요3",
-      },
-      {
-        userId: 4,
-        profileImage: "/icons/sampleProfile.svg",
-        nickname: "오브니",
-        memo: "요기 맛없어요4",
-      },
-    ],
-  };
+export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
+  const [favorite, setFavorite] = useState(false);
 
   function handleClickFavorite() {
     setFavorite((prev) => !prev);
@@ -57,21 +26,24 @@ export default function PlaceUserMemos() {
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center space-x-2">
             {favorite ? (
-              <button onClick={handleClickFavorite} className="flex self-start ">
+              <button
+                onClick={handleClickFavorite}
+                className="flex self-start "
+              >
                 <LucideStar />
               </button>
             ) : (
-              <button onClick={handleClickFavorite}  className="flex self-start">
+              <button onClick={handleClickFavorite} className="flex self-start">
                 <LucideStar className="text-yellow-400 fill-yellow-400" />
               </button>
             )}
             <div className="flex flex-col justify-center">
               <span className="font-bold text-gray900 text-lg leading-snug">
-                {dummyData.placeName}
+                {placeDetail?.placeName}
               </span>
 
               <span className="text-xs text-gray600 leading-snug">
-                {dummyData.address}
+                {placeDetail?.address}
               </span>
             </div>
           </div>
@@ -79,24 +51,25 @@ export default function PlaceUserMemos() {
       </div>
 
       <div className="flex items-center space-x-2 justify-center pb-4">
-        {dummyData.favoriteCount == 0 ? (
+        {placeDetail?.favoriteCount == 0 ? (
           <div className="text-xs">
             <span> 아무도 해당 장소를 즐겨찾기에 등록하지 않았습니다.</span>
           </div>
         ) : (
           <>
             <ul className="flex -space-x-6">
-              {dummyData.userInfo.slice(0, 3).map((user, idx) => (
+              {placeDetail?.usersInfo.slice(0, 3).map((user, idx) => (
                 <li
                   className="flex items-center justify-center rounded-full w-10 h-10 border-2 border-gray200"
                   key={idx}
                 >
                   <button>
-                    <Image src={getProfileImageUrl(user.profileImage)}
-                           alt="유저 이미지"
-                           className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
-                           width="28"
-                           height="28"
+                    <Image
+                      src={getProfileImageUrl(user.profileImage)}
+                      alt="유저 이미지"
+                      className="rounded-full w-10 h-10 border-1 border-gray200 flex-shrink-0"
+                      width="28"
+                      height="28"
                     />
                   </button>
                 </li>
@@ -104,18 +77,18 @@ export default function PlaceUserMemos() {
             </ul>
             <div className="text-xs">
               <button className="font-bold">
-                {dummyData.userInfo[0].nickname}
+                {placeDetail?.usersInfo[0].nickname}
               </button>
               <span>
                 {" "}
-                님 외 {dummyData.favoriteCount} 명이 즐겨찾기에 추가했습니다.
+                님 외 {placeDetail?.favoriteCount} 명이 즐겨찾기에 추가했습니다.
               </span>
             </div>
           </>
         )}
       </div>
       <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
-        {dummyData.userInfo.map((user) => (
+        {placeDetail?.usersInfo.map((user) => (
           <UserMemoCard
             key={user.userId}
             profileImage={user.profileImage}
