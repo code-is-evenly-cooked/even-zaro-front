@@ -115,12 +115,8 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
           className="mt-2 text-sm px-2 py-1 rounded border border-gray300 w-full"
         />
       ) : (
-        <p className="text-sm text-gray600 mt-2">메모: {displayMemo}</p>
+        <p className="text-sm text-gray600 mt-2">{displayMemo}</p>
       )}
-
-      <p className="text-xs text-gray600 mt-1">
-        위도: {item.lat}, 경도: {item.lng}
-      </p>
     </li>
   );
 }
