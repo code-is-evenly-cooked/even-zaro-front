@@ -3,7 +3,12 @@
 import { createComment } from "@/lib/api/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useCommentReplyStore } from "@/stores/useCommentReply";
-import { extractMentionedNickname, removeMentionPrefix } from "@/utils/comment";
+import {
+  extractMentionedNickname,
+  limitTextLength,
+  MAX_COMMENT_LENGTH,
+  removeMentionPrefix,
+} from "@/utils/comment";
 import {
   ChangeEvent,
   FormEvent,
@@ -37,7 +42,7 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
   }, [replyTo]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
+    const newValue = limitTextLength(e.target.value);
     const cursorPos = e.target.selectionStart;
 
     // mention이 있고, 커서가 mention안에 있고, 삭제중이면 전체 mention제거
@@ -79,7 +84,12 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
 
   return (
     <div className="w-full border rounded-xl flex flex-col gap-3 p-4">
-      <p className="px-2 font-semibold ">댓글 쓰기</p>
+      <div className="flex justify-between items-end pr-1">
+        <p className="px-2 font-semibold ">댓글 쓰기</p>
+        <span className="text-gray600 text-sm">
+          {comment.length} / {MAX_COMMENT_LENGTH}
+        </span>
+      </div>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <textarea
           ref={textareaRef}
