@@ -108,7 +108,7 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
           disabled={!comment.trim()}
           className="self-end text-gray900 bg-violet300 hover:bg-violet300/80 disabled:bg-gray200 disabled:text-white px-4 py-2 rounded-lg font-semibold"
         >
-          {isLoading ? <LoadingSpinner className="px-4 py-2" /> : "등록"}
+          {isLoading ? <LoadingSpinner className="w-7 h-6" /> : "등록"}
         </button>
       </form>
     </div>
