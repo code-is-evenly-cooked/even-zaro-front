@@ -3,6 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
 import type { BookmarkGroupType } from "@/types/bookmark";
+import Link from "next/link";
+import {
+  updateBookmarkGroupName,
+  deleteBookmarkGroup,
+} from "@/lib/api/bookmark";
 
 interface BookmarkGroupProps {
   group: BookmarkGroupType;
@@ -40,15 +45,29 @@ export default function BookmarkGroupCard({
     }
   }, [isEditing]);
 
-  // 수정 완료
-  const handleEditComplete = () => {
+  // 즐겨찾기 그룹 이름 수정
+  const handleEditComplete = async () => {
     if (editedName.trim() !== "") {
-      setDisplayName(editedName); // 화면 갱신
-      setIsEditing(false);
-      setIsMenuOpen(false);
+      try {
+        await updateBookmarkGroupName(group.groupId, editedName);
+        setDisplayName(editedName);
+        setIsEditing(false);
+        setIsMenuOpen(false);
+      } catch (e) {
+        console.error("수정 실패:", e);
+        alert("수정에 실패했습니다.");
+      }
+    }
+  };
 
-      // TODO: 추후 여기에 PATCH API 연결
-      // await updateBookmarkGroupName(group.groupId, editedName)
+  // 즐겨찾기 그룹 삭제
+  const handleDelete = async () => {
+    try {
+      await deleteBookmarkGroup(group.groupId);
+      onDelete?.(group.groupId); // 부모에서 상태 업데이트
+    } catch (e) {
+      console.error("삭제 실패:", e);
+      alert("삭제에 실패했습니다.");
     }
   };
 
@@ -74,7 +93,12 @@ export default function BookmarkGroupCard({
               className="text-sm font-semibold px-2 py-1 rounded bg-white border border-gray300 focus:outline-none"
             />
           ) : (
-            <span className="font-semibold">{displayName}</span>
+            <Link
+              href={`/favorite/${group.groupId}`}
+              className="font-semibold hover:underline"
+            >
+              {displayName}
+            </Link>
           )}
           <span className="text-sm text-gray600">장소 4</span>
         </div>
@@ -107,7 +131,7 @@ export default function BookmarkGroupCard({
             className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100 flex items-center gap-2"
             onClick={() => {
               setIsMenuOpen(false);
-              onDelete(group.groupId);
+              handleDelete();
             }}
           >
             삭제
