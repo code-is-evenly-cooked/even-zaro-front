@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { CommentActionType } from "./CommentAction";
 import { CommentItem } from "@/types/comment";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { extractMentionedNickname } from "@/utils/comment";
 import useCommentUpdate from "./useCommentUpdate";
 import useCommentDelete from "./useCommentDelete";
@@ -14,8 +13,7 @@ interface useCommentListProps {
 
 const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const [editingId, setEditingId] = useState<number | null>(null);
-  const { showToastMessage } = useToastMessageContext();
-  const { mutateAsync: updateCommentMutate } = useCommentUpdate();
+  const { mutate: updateCommentMutate } = useCommentUpdate();
   const { mutate: deleteCommentMutate } = useCommentDelete();
 
   const handleRefresh = () => {
@@ -45,19 +43,14 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
 
   const handleSubmitEdit = async (id: number, newContent: string) => {
     const replyNickname = extractMentionedNickname(newContent);
-    try {
-      await updateCommentMutate({
-        id,
-        content: newContent,
-        mentionedNickname: replyNickname,
-      });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "오류가 발생했습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
-    } finally {
-      setEditingId(null);
-    }
+
+    await updateCommentMutate({
+      id,
+      content: newContent,
+      mentionedNickname: replyNickname,
+    });
+
+    setEditingId(null);
   };
 
   return {

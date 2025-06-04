@@ -1,4 +1,5 @@
 import { editComment } from "@/lib/api/comment";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { CommentItem } from "@/types/comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -10,6 +11,7 @@ interface UpdateCommentParams {
 
 const useCommentUpdate = () => {
   const queryClient = useQueryClient();
+  const { showToastMessage } = useToastMessageContext();
 
   return useMutation({
     mutationFn: ({ id, content, mentionedNickname }: UpdateCommentParams) =>
@@ -36,10 +38,16 @@ const useCommentUpdate = () => {
     },
 
     // 실패시 롤백
-    onError: (_err, _vars, context) => {
+    onError: (err, _vars, context) => {
       if (context?.prevComments) {
         queryClient.setQueryData(["comments"], context.prevComments);
       }
+
+      const message =
+        err instanceof Error
+          ? err.message
+          : "댓글 삭제 중 오류가 발생했습니다.";
+      showToastMessage({ type: "error", message: message });
     },
     // 성공 시 서버 상태 동기화
     onSuccess: () => {
