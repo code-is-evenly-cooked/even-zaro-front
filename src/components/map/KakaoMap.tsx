@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import SideMenu from "./SideMenu";
-import PlaceModal from "@/components/map/PlaceModal";
-import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 
 // Kakao 객체를 전역 선언합니다.
 declare global {
