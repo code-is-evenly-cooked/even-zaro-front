@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
 import type { BookmarkGroupType } from "@/types/bookmark";
+import Link from "next/link";
 import {
   updateBookmarkGroupName,
   deleteBookmarkGroup,
@@ -92,7 +93,12 @@ export default function BookmarkGroupCard({
               className="text-sm font-semibold px-2 py-1 rounded bg-white border border-gray300 focus:outline-none"
             />
           ) : (
-            <span className="font-semibold">{displayName}</span>
+            <Link
+              href={`/favorite/${group.groupId}`}
+              className="font-semibold hover:underline"
+            >
+              {displayName}
+            </Link>
           )}
           <span className="text-sm text-gray600">장소 4</span>
         </div>
