@@ -95,7 +95,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               />
             </div>
           )}
-          {/* {!shouldHideSearchbar && <NotificationButton />} */}
           <NotificationButton />
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
