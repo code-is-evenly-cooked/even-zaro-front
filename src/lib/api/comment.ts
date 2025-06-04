@@ -32,3 +32,9 @@ export const editComment = async ({
     }),
   });
 };
+
+export const deleteComment = async (commentId: number) => {
+  return await client(`/comments/${commentId}`, {
+    method: "DELETE",
+  });
+};
