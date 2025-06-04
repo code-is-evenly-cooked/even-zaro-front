@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
 import { useProfile } from "@/hooks/useProfile";
@@ -12,9 +11,6 @@ interface Props {
 
 export default function FavoriteHeader({ userId }: Props) {
   const { data: profile, isLoading, error } = useProfile(userId);
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => setIsClient(true), []);
-  if (!isClient) return null;
 
   if (!userId || error || !profile)
     return (
