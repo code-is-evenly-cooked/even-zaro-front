@@ -80,7 +80,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
-    <header className="relative z-50 h-12 min-h-12 flex items-center justify-between px-2">
+    <header className="relative h-12 min-h-12 flex items-center justify-between px-2">
       {/* 왼쪽 영역: 메뉴 + 로고 */}
       {!isMobileSearchOpen && (
         <div className="flex items-center text-violet800 font-bold text-lg gap-2">
@@ -99,7 +99,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
 
       {/* 가운데: md 이상에서 중앙 정렬된 Searchbar */}
       {!isMobileSearchOpen && !shouldHideSearchbar && (
-        <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-full max-w-md">
+        <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-full max-w-md z-10">
           <Searchbar />
         </div>
       )}
