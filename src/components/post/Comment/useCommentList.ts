@@ -5,7 +5,7 @@ import { CommentActionType } from "./CommentAction";
 import { CommentItem } from "@/types/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { extractMentionedNickname } from "@/utils/comment";
-import { editComment } from "@/lib/api/comment";
+import useCommentUpdate from "./useCommentUpdate";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -14,6 +14,7 @@ interface useCommentListProps {
 const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const { showToastMessage } = useToastMessageContext();
+  const { mutateAsync: updateCommentMutate } = useCommentUpdate();
 
   const handleRefresh = () => {
     onRefresh();
@@ -43,8 +44,8 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const handleSubmitEdit = async (id: number, newContent: string) => {
     const replyNickname = extractMentionedNickname(newContent);
     try {
-      await editComment({
-        postId: id,
+      await updateCommentMutate({
+        id,
         content: newContent,
         mentionedNickname: replyNickname,
       });
@@ -54,7 +55,6 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
       showToastMessage({ type: "error", message: errorMessage });
     } finally {
       setEditingId(null);
-      onRefresh();
     }
   };
 
