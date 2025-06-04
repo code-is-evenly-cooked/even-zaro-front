@@ -1,8 +1,11 @@
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
+import type { Notification } from "@/types/notification";
 
 const useSse = () => {
   const { user } = useAuthStore();
+  const { addNotification } = useNotificationStore();
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
@@ -19,8 +22,9 @@ const useSse = () => {
     );
 
     eventSource.addEventListener("notification", (event) => {
-      const data = JSON.parse(event.data);
+      const data: Notification = JSON.parse(event.data);
       console.log("📢 알림 도착!", data);
+      addNotification(data); // 🟢 상태 업데이트
     });
 
     eventSource.addEventListener("connect", () => {
@@ -36,7 +40,7 @@ const useSse = () => {
       console.log("🛑 SSE 연결 종료");
       eventSource.close();
     };
-  }, [user?.userId]);
+  }, [user?.userId, addNotification]);
 };
 
 export default useSse;
