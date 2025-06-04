@@ -6,6 +6,7 @@ import { CommentItem } from "@/types/comment";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { extractMentionedNickname } from "@/utils/comment";
 import useCommentUpdate from "./useCommentUpdate";
+import useCommentDelete from "./useCommentDelete";
 
 interface useCommentListProps {
   onRefresh: () => void;
@@ -15,6 +16,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const { showToastMessage } = useToastMessageContext();
   const { mutateAsync: updateCommentMutate } = useCommentUpdate();
+  const { mutate: deleteCommentMutate } = useCommentDelete();
 
   const handleRefresh = () => {
     onRefresh();
@@ -26,7 +28,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
         setEditingId(item.id);
         break;
       case "delete":
-        console.log("댓글 삭제:", item.id);
+        deleteCommentMutate(item.id);
         break;
       case "report":
         console.log("댓글 신고:", item.id);
