@@ -45,6 +45,18 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     pathname.startsWith(route),
   );
 
+  // 검색 창 md 사이즈 이후 resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileSearchOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // SSE 연결 시도
   useSse();
 
