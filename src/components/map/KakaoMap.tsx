@@ -50,9 +50,6 @@ export default function KakaoMap() {
   return (
     <>
       <div ref={mapRef} className={`w-screen h-screen`}/>
-      <SideMenu />
-      <PlaceModal />
-      <PlaceUserMemos />
     </>
   );
 }
