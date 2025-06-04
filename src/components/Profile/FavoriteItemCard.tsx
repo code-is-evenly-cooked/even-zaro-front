@@ -85,7 +85,7 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
                 setIsMenuOpen(false);
               }}
             >
-              수정
+              메모 수정
             </button>
             <button
               className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100"
