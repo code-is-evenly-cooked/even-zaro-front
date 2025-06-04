@@ -36,7 +36,10 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
 
   return (
     <div className="max-w-3xl mx-auto py-6">
-      <h2 className="text-xl font-bold mb-4 text-center">{groupName}</h2>
+      <div className="flex flex-col items-center gap-4 mb-10">
+        <h2 className="text-xl font-bold">{groupName}</h2>
+        <p className="text-gray600">장소 {displayItems.length}</p>
+      </div>
       <ul className="space-y-2">
         {displayItems.map((item) => (
           <li key={item.id}>
