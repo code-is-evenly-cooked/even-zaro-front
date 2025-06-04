@@ -26,10 +26,7 @@ export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center space-x-2">
             {favorite ? (
-              <button
-                onClick={handleClickFavorite}
-                className="flex self-start "
-              >
+              <button onClick={handleClickFavorite} className="flex self-start">
                 <LucideStar />
               </button>
             ) : (
@@ -37,12 +34,13 @@ export default function PlaceUserMemos({ placeDetail }: PlaceUserMemosProps) {
                 <LucideStar className="text-yellow-400 fill-yellow-400" />
               </button>
             )}
-            <div className="flex flex-col justify-center">
-              <span className="font-bold text-gray900 text-lg leading-snug">
+
+            {/* 텍스트 영역 */}
+            <div className="flex flex-col justify-center items-center text-center max-w-[200px]">
+              <span className="font-bold text-gray900 text-lg leading-snug break-words">
                 {placeDetail?.placeName}
               </span>
-
-              <span className="text-xs text-gray600 leading-snug">
+              <span className="text-xs text-gray600 leading-snug break-words">
                 {placeDetail?.address}
               </span>
             </div>

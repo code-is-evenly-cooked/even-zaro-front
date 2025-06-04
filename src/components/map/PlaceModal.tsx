@@ -5,9 +5,10 @@ import { PlaceListResponse } from "@/types/map";
 
 interface PlaceModalProps {
   placeList : PlaceListResponse;
+  onClick : (placeId: number) => void;
 }
 
-export default function PlaceModal( { placeList } : PlaceModalProps ) {
+export default function PlaceModal( { placeList, onClick } : PlaceModalProps ) {
 
   return (
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
@@ -25,11 +26,12 @@ export default function PlaceModal( { placeList } : PlaceModalProps ) {
       <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
         {placeList?.placeInfos.map((place) => (
           <PlaceCard
-            key={place.place_id}
+            key={place.placeId}
             category={place.category}
             placeName={place.name}
             address={place.address}
             favoriteCount={place.favoriteCount}
+            onClick={()=> onClick(place.placeId)}
           />
         ))}
       </div>

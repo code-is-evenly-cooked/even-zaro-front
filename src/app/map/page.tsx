@@ -12,13 +12,16 @@ const MapPage = () => {
 
   const [page, setPage] = useState(1);
   const [placeList, setPlaceList] = useState<PlaceListResponse | null>(null);
-  const [placeId, setPlaceId] = useState();
+  const [placeId, setPlaceId] = useState<number | null>(null);
   const [placeDetail, setPlaceDetail] = useState<PlaceDetailResponse | null>(null);
 
+  function handleClick(placeId: number | undefined) {
+    setPlaceId(placeId);
+  }
 
   useEffect(() => {
     const lat = 37.554722;
-    const lng = 126.970833;
+    const lng = 126.97083;
     const distanceKm = 5;
 
     (async () => {
@@ -37,9 +40,9 @@ const MapPage = () => {
     if (placeId !== null) {
       (async () => {
         try {
-          const data = await fetchPlaceDetail(3);
+          const data = await fetchPlaceDetail(placeId); // ✅ 동적 ID 사용
           setPlaceDetail(data);
-          // setPage(2);
+          setPage(2);
         } catch (error) {
           console.error("장소 상세 정보를 불러오는 데 실패했습니다.", error);
         }
@@ -52,7 +55,7 @@ const MapPage = () => {
       <KakaoMap />
       <SideMenu />
 
-      <PlaceModal placeList={placeList}></PlaceModal>
+      <PlaceModal onClick={handleClick} placeList={placeList}></PlaceModal>
       <PlaceUserMemos placeDetail={placeDetail} />
     </div>
   );

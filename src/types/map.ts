@@ -25,11 +25,11 @@ export interface PlaceListResponse {
 }
 
 export interface PlaceInfos {
-  place_id : number;
+  placeId : number;
   name: string;
   address: string;
   category: string;
-  lat: number,
-  lng: number,
-  favoriteCount: number,
+  lat: number;
+  lng: number;
+  favoriteCount: number;
 }
