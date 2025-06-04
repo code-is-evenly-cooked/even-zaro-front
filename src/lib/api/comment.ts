@@ -15,16 +15,16 @@ export const fetchComment = async ({
 };
 
 interface EditCommentParams {
-  postId: number;
+  commentId: number;
   content: string;
   mentionedNickname: string;
 }
 export const editComment = async ({
-  postId,
+  commentId,
   content,
   mentionedNickname = "",
 }: EditCommentParams) => {
-  return await client<CommentItem>(`/comments/${postId}`, {
+  return await client<CommentItem>(`/comments/${commentId}`, {
     method: "PATCH",
     body: JSON.stringify({
       content,
