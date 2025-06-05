@@ -7,6 +7,7 @@ import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 import { useEffect, useState } from "react";
 import { fetchPlaceDetail, fetchPlaceList } from "@/lib/api/map";
 import { PAGE, PageType, PlaceDetailResponse, PlaceListResponse } from "@/types/map";
+import { UserGroupList } from "@/components/map/UserGroupList";
 
 const MapPage = () => {
 
@@ -16,6 +17,12 @@ const MapPage = () => {
   const [placeDetail, setPlaceDetail] = useState<PlaceDetailResponse | null>(
     null,
   );
+  const [groupModal, setGroupModal] = useState(false);
+
+  function handleClickGroupList() {
+    setGroupModal((prev) => !prev);
+  }
+
 
   function handleClick(placeId: number) {
     setPlaceId(placeId);
@@ -67,8 +74,11 @@ const MapPage = () => {
         <PlaceModal onClick={handleClick} placeList={placeList}></PlaceModal>
       )}
       {page == PAGE.PLACEDETAIL && placeDetail && (
-        <PlaceUserMemos backPage={backPage} placeDetail={placeDetail} />
+        <PlaceUserMemos openGroupList={handleClickGroupList} backPage={backPage} placeDetail={placeDetail} />
+
       )}
+
+      {groupModal && <UserGroupList />}
     </div>
   );
 };
