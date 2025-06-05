@@ -35,7 +35,13 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   ];
 
   // 검색창 숨김 경로 시작
-  const hideSearchbarRoutes = ["/board", "/editor", "/search", "/profile"];
+  const hideSearchbarRoutes = [
+    "/board",
+    "/editor",
+    "/search",
+    "/profile",
+    "/setting",
+  ];
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
   );
