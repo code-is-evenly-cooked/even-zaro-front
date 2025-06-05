@@ -1,16 +1,17 @@
 import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
 import React, { useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
+import { useMapStore } from "@/stores/mapStore";
 
 interface PlaceUserMemosHeaderProps {
-  backPage: () => void;
   placeDetail: PlaceDetailResponse;
 }
 
 export default function PlaceUserMemosHeader({
-  backPage,
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
+  const { setPagePlaceList } = useMapStore();
+
   const [favorite, setFavorite] = useState(false);
 
   function handleClickFavorite() {
@@ -20,7 +21,7 @@ export default function PlaceUserMemosHeader({
   return (
     <div className="relative w-full px-4 py-4">
       <div className="flex flex-col items-center justify-center">
-        <button className="absolute left-4 top-4" onClick={backPage}>
+        <button className="absolute left-4 top-4" onClick={setPagePlaceList}>
           <ArrowLeftIcon />
         </button>
 

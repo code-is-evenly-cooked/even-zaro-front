@@ -40,7 +40,7 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
             </button>
             <span>
               {" "}
-              님 외 {placeDetail?.favoriteCount} 명이 즐겨찾기에 추가했습니다.
+              님 외 {placeDetail?.favoriteCount - 1} 명이 즐겨찾기에 추가했습니다.
             </span>
           </div>
         </>

@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PlaceCard from "@/components/map/PlaceCard";
 import { PlaceListResponse } from "@/types/map";
+import { fetchPlaceList } from "@/lib/api/map";
+import { useMapStore } from "@/stores/mapStore";
 
-interface PlaceModalProps {
-  placeList: PlaceListResponse;
-  onClick: (placeId: number) => void;
-}
+export default function PlaceModal() {
+  const placeList = useMapStore((state) => state.placeList);
+  const { setPlaceList } = useMapStore();
 
-export default function PlaceModal({ placeList, onClick }: PlaceModalProps) {
+  useEffect(() => {
+    const lat = 37.554722;
+    const lng = 126.97083;
+    const distanceKm = 5;
+
+    (async () => {
+      try {
+        const data: PlaceListResponse = await fetchPlaceList(
+          lat,
+          lng,
+          distanceKm,
+        );
+        setPlaceList(data);
+      } catch (error) {
+        console.error("장소 목록을 불러오는 데 실패했습니다.", error);
+      }
+    })();
+  }, []);
+
   return (
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       {/* 헤더 */}
@@ -30,7 +49,6 @@ export default function PlaceModal({ placeList, onClick }: PlaceModalProps) {
             placeName={place.name}
             address={place.address}
             favoriteCount={place.favoriteCount}
-            onClick={() => onClick(place.placeId)}
           />
         ))}
       </ul>

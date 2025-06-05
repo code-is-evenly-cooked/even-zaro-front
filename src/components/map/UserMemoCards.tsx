@@ -7,11 +7,13 @@ interface UserMemoCardsProps {
 }
 
 export function UserMemoCards({ placeDetail }: UserMemoCardsProps) {
+
   return (
     <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
       {placeDetail?.usersInfo.map((user) => (
         <UserMemoCard
           key={user.userId}
+          userId={user.userId}
           profileImage={user.profileImage}
           nickName={user.nickname}
           memo={user.memo}

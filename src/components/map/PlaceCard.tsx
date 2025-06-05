@@ -6,6 +6,7 @@ import {
   Market,
 } from "@/components/common/Icons/category";
 import { JSX } from "react";
+import { useMapStore } from "@/stores/mapStore";
 
 interface PlaceCardProps {
   placeId: number;
@@ -13,7 +14,7 @@ interface PlaceCardProps {
   address: string;
   category: string;
   favoriteCount: number;
-  onClick?: () => void; // 클릭 시 동작할 함수
+  onClick?: () => void;
 }
 
 const categoryIcons: Record<string, JSX.Element> = {
@@ -30,12 +31,13 @@ export default function PlaceCard({
   address,
   category,
   favoriteCount,
-  onClick,
 }: PlaceCardProps) {
+  const { setPagePlaceDetail } = useMapStore();
+
   return (
     <li
       className="flex items-center hover:bg-gray-100 transition p-1"
-      onClick={onClick}
+      onClick={() => setPagePlaceDetail(placeId)}
       key={placeId}
     >
       {/* 이미지 영역 */}
