@@ -10,7 +10,26 @@ export const fetchComment = async ({
   page = 0,
 }: FetchCommentParams) => {
   return await client<CommentResponse>(`/posts/${postId}/comments`, {
-    params: { postId, page, sort: "createdAt,DESC" },
+    params: { postId, page },
+  });
+};
+
+interface CreateCommentParams {
+  postId: number;
+  content: string;
+  mentionedNickname: string;
+}
+export const createComment = async ({
+  postId,
+  content,
+  mentionedNickname = "",
+}: CreateCommentParams) => {
+  return await client<CommentItem>(`/posts/${postId}/comments`, {
+    method: "POST",
+    body: JSON.stringify({
+      content,
+      mentionedNickname,
+    }),
   });
 };
 
@@ -19,6 +38,7 @@ interface EditCommentParams {
   content: string;
   mentionedNickname: string;
 }
+
 export const editComment = async ({
   commentId,
   content,

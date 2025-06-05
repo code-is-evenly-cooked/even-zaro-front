@@ -1,6 +1,8 @@
 "use client";
 
 import IconButton from "@/components/common/Button/IconButton";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { useCommentLoadingStore } from "@/stores/useCommentLoadingStore";
 import { MoreVerticalIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -14,6 +16,9 @@ interface CommentActionProps {
 const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const { deletingId } = useCommentLoadingStore();
+  const isDeleting = deletingId !== null;
 
   const handleClickItem = (action: CommentActionType) => {
     setIsOpen(false);
@@ -34,12 +39,17 @@ const CommentAction = ({ isMine, onAction }: CommentActionProps) => {
 
   return (
     <div className="relative" ref={menuRef}>
-      <IconButton
-        icon={<MoreVerticalIcon />}
-        label={"메뉴"}
-        isTransparent
-        onClick={() => setIsOpen((prev) => !prev)}
-      />
+      {isDeleting ? (
+        <LoadingSpinner />
+      ) : (
+        <IconButton
+          icon={<MoreVerticalIcon />}
+          label={"메뉴"}
+          isTransparent
+          onClick={() => setIsOpen((prev) => !prev)}
+        />
+      )}
+
       {isOpen && (
         <div className="absolute right-2 top-8 bg-gray100 rounded-md shadow-md z-10 flex items-center justify-center text-nowrap">
           {isMine ? (

@@ -29,7 +29,7 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
         totalPage={data?.totalPages ?? 1}
         onChangePage={setPage}
       />
-      <CommentInput postId={postId} replyNickname={""} onSuccess={refetch} />
+      <CommentInput postId={postId} onSuccess={refetch} />
     </section>
   );
 };
