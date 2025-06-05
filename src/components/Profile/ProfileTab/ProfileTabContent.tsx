@@ -1,6 +1,9 @@
 import { ProfileTabType } from "@/types/profile";
 import BookmarkGroupList from "../BookmarkGroupList";
-import React from "react";
+import React, { Suspense } from "react";
+import ProfilePostList from "../ProfilePostList";
+import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSpinnerBoundary";
+import AppErrorBoundary from "@/components/common/ErrorBoundary/ErrorBoundary";
 
 interface Props {
   activeTab: ProfileTabType;
@@ -11,13 +14,18 @@ export default function ProfileTabContent({ activeTab }: Props) {
 
   switch (activeTab) {
     case "posts":
-      content = <div>내가 쓴 글 리스트</div>;
-      break;
     case "comments":
-      content = <div>내 댓글 리스트</div>;
-      break;
     case "likes":
-      content = <div>좋아요 리스트</div>;
+      content = (
+        <AppErrorBoundary
+          fallbackMessage="프로필 정보를 불러오는 중 오류가 발생했습니다."
+          key={activeTab}
+        >
+          <Suspense fallback={<LoadingSpinnerBoundary />}>
+            <ProfilePostList type={activeTab} />
+          </Suspense>
+        </AppErrorBoundary>
+      );
       break;
     case "bookmarks":
       content = <BookmarkGroupList />;
