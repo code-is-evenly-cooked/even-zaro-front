@@ -1,11 +1,26 @@
 import { MoreVertical, Star } from "lucide-react";
 import { DefaultProfileIcon } from "@/components/common/Icons";
+import { useEffect } from "react";
+import { GroupListResponseList } from "@/types/map";
+import { fetchGroupList } from "@/lib/api/map";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useMapStore } from "@/stores/mapStore";
 
 export function UserGroupList() {
+  const userId = useAuthStore((state) => state.user?.userId);
+  const groupList = useMapStore((state) => state.groupList);
+  const { setGroupList } = useMapStore();
 
-
-
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const data: GroupListResponseList = await fetchGroupList(userId);
+        setGroupList(data);
+      } catch (error) {
+        console.error("유저의 그룹 리스트를 불러오는 데 실패했습니다.", error);
+      }
+    })();
+  }, []);
 
   return (
     <>
@@ -23,33 +38,35 @@ export function UserGroupList() {
         </div>
 
         <ul className="flex-1 overflow-y-auto divide-y">
-          {[
-            { name: "강남 나만 갈꺼야 맛집", count: 4 },
-            { name: "갈꺼야 카페", count: 25 },
-            { name: "집근처 공부 카페", count: 3 },
-          ].map((group, idx) => (
-            <li
-              key={idx}
-              className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
-                  <Star size={16} className="text-violet-500" />
-                </div>
-                <div>
-                  <div className="font-medium text-sm text-gray-900">
-                    {group.name}
+          {groupList && groupList.length > 0 ? (
+            groupList.map((group, idx) => (
+              <li
+                key={idx}
+                className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
+                    <Star size={16} className="text-violet-500" />
                   </div>
-                  <div className="text-xs text-gray-500">
-                    장소 {group.count}
+                  <div>
+                    <div className="font-medium text-sm text-gray-900">
+                      {group.name}
+                    </div>
+                    <div className="text-xs text-gray600">
+                      장소 {groupList.length}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button className="hover:bg-gray200 rounded-full">
-                <MoreVertical size={20} className="text-gray-400" />
-              </button>
-            </li>
-          ))}
+                <button className="hover:bg-gray200 rounded-full">
+                  <MoreVertical size={20} className="text-gray-400" />
+                </button>
+              </li>
+            ))
+          ) : (
+            <div className="text-sm text-gray600 text-center py-10">
+              등록된 그룹이 없습니다.
+            </div>
+          )}
         </ul>
       </div>
     </>
