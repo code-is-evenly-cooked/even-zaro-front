@@ -13,6 +13,7 @@ export function UserMemoCards({ placeDetail }: UserMemoCardsProps) {
       {placeDetail?.usersInfo.map((user) => (
         <UserMemoCard
           key={user.userId}
+          userId={user.userId}
           profileImage={user.profileImage}
           nickName={user.nickname}
           memo={user.memo}

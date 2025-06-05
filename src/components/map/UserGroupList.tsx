@@ -4,28 +4,23 @@ import { useEffect } from "react";
 import { GroupListResponseList, PAGE } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useProfile } from "@/hooks/useProfile";
 
 export function UserGroupList() {
-  const userId = useAuthStore((state) => state.user?.userId);
-  const { groupList, placeId, page } = useMapStore((state) => state);
+  const { groupList, placeId, page, otherUserId } = useMapStore((state) => state);
   const { setGroupList, setPagePlaceDetail } = useMapStore();
-  // const [otherUserId, setOtherUserId] = useState<number | undefined>(0);
+  const { data: profile } = useProfile(otherUserId);
 
   useEffect(() => {
     (async () => {
       try {
-        const data: GroupListResponseList = await fetchGroupList(5);
+        const data: GroupListResponseList = await fetchGroupList(otherUserId);
         setGroupList(data);
       } catch (error) {
         console.error("유저의 그룹 리스트를 불러오는 데 실패했습니다.", error);
       }
     })();
-  }, []);
-
-  useEffect(() => {
-    console.log("page:", page);
-  }, [page]);
+  }, [otherUserId]);
 
   return (
     <>
@@ -45,8 +40,8 @@ export function UserGroupList() {
 
           <div className="flex flex-col items-center py-4 border-b">
             <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
-            <span className="font-semibold text-lg mt-2">이브니</span>
-            <span className="text-sm text-gray-500">D+1187</span>
+            <span className="font-semibold text-lg mt-2">{profile?.nickname}</span>
+            <span className="text-sm text-gray-500">{profile?.liveAloneDate}</span>
           </div>
 
           <ul className="flex-1 overflow-y-auto divide-y">
@@ -65,7 +60,8 @@ export function UserGroupList() {
                         {group.name}
                       </div>
                       <div className="text-xs text-gray-600">
-                        장소 {groupList.length}
+                        {/* 여기 응답 객체 백엔드단 코드 추가 되면 수정해야함!!!!!!!!!!!1*/}
+                        장소 {22}
                       </div>
                     </div>
                   </div>

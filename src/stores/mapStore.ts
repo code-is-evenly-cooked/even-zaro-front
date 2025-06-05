@@ -13,9 +13,10 @@ type MapStore = {
   placeId: number | null;
   placeDetail: PlaceDetailResponse | null;
   groupList: GroupListResponse[] | null;
+  otherUserId: number | null;
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
-  setPageGroupList:() => void;
+  setPageGroupList:(otherUserId: number) => void;
   setPlaceList: (placeList: PlaceListResponse) => void;
   setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
   setGroupList: (groupList: GroupListResponse[]) => void;
@@ -28,6 +29,8 @@ export const useMapStore = create<MapStore>((set) => ({
   placeId: null,
   placeDetail: null,
   groupList: [],
+  otherUserId: null,
+
 
   setPagePlaceList: () =>
     set(() => ({
@@ -38,9 +41,10 @@ export const useMapStore = create<MapStore>((set) => ({
       page: PAGE.PLACEDETAIL,
       placeId: placeId,
     })),
-  setPageGroupList:() =>
+  setPageGroupList:(otherUserId: number) =>
     set(() => ({
       page: PAGE.USERGROUPLIST,
+      otherUserId: otherUserId,
     })),
   setPlaceList: (placeList: PlaceListResponse) =>
     set(() => ({
