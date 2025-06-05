@@ -1,4 +1,4 @@
-import ProfileHeader from "@/components/Profile/ProfileHeader/ProfileHeader";
+import ProfileHeader from "@/components/Profile/ProfileHeader/ProfileHeader.client";
 import ProfileTabClient from "@/components/Profile/ProfileTabClient";
 
 interface ProfilePageProps {
