@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useFavoriteGroups } from "@/hooks/useFavorite";
-import { mockBookmarkGroups } from "@/mock/bookmarkGroup.mock";
 import type { FavoriteGroupType } from "@/types/favorite";
 import { createFavoriteGroup } from "@/lib/api/favorite";
 import FavoriteGroupCard from "@/components/Favorite/FavoriteGroupCard";
@@ -17,16 +16,8 @@ export default function FavoriteGroupList() {
 
   // 초기 값을 setGroupList를 통해 useState 로 저장
   useEffect(() => {
-    if (groups) {
-      setGroupList(groups);
-    } else if (
-      error instanceof Error &&
-      "code" in error &&
-      (error as { code: string }).code === "GROUP_LIST_NOT_FOUND"
-    ) {
-      setGroupList(mockBookmarkGroups);
-    }
-  }, [groups, error]);
+    if (groups) setGroupList(groups);
+  }, [groups]);
 
   const handleDeleteGroup = (groupId: number) => {
     setGroupList((prev) => prev.filter((group) => group.groupId !== groupId));
