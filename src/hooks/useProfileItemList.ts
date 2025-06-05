@@ -10,22 +10,24 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 interface userProfilePostListProps {
   userId: number;
   type: ProfileTabType;
+  page: number;
 }
 
 export const useProfileItemList = ({
   userId,
   type,
+  page,
 }: userProfilePostListProps) => {
-  const queryKey = ["profile", userId, type];
+  const queryKey = ["profile", userId, type, page];
 
   const queryFn = () => {
     switch (type) {
       case "posts":
-        return fetchUserPosts(userId);
+        return fetchUserPosts(userId, page);
       case "comments":
-        return fetchUserComments(userId);
+        return fetchUserComments(userId, page);
       case "likes":
-        return fetchUserLikes(userId);
+        return fetchUserLikes(userId, page);
       default:
         throw new Error("지원하지 않는 타입입니다.");
     }

@@ -4,6 +4,8 @@ import { useProfileItemList } from "../../hooks/useProfileItemList";
 import PostListCard from "../common/SectionCards/PostListCard";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
 import Link from "next/link";
+import CommentListPagination from "../common/Pagination/CommentListPagination";
+import { useState } from "react";
 
 interface ProfilePostListProps {
   type: Exclude<ProfileTabType, "bookmarks">;
@@ -13,6 +15,8 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
   const { user } = useAuthStore();
   const userId = user?.userId;
 
+  const [currentPage, setCurrentPage] = useState(0);
+
   if (userId === null || userId === undefined) {
     throw new Error("로그인이 필요합니다");
   }
@@ -20,6 +24,7 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
   const { data: posts } = useProfileItemList({
     userId: userId,
     type,
+    page: currentPage,
   });
 
   const isEmpty = posts?.content.length === 0;
@@ -30,15 +35,22 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
       className="mt-10"
     />
   ) : (
-    <ul>
-      {posts.content.map((post) => (
-        <li key={post.postId}>
-          <Link href={`/board/${post.category}/${post.postId}`}>
-            <PostListCard post={post} />
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <div className="flex flex-col">
+      <ul>
+        {posts.content.map((post) => (
+          <li key={post.postId}>
+            <Link href={`/board/${post.category}/${post.postId}`}>
+              <PostListCard post={post} />
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <CommentListPagination
+        currentPage={currentPage}
+        totalPage={posts.totalPages}
+        onChangePage={setCurrentPage}
+      />
+    </div>
   );
 };
 export default ProfilePostList;
