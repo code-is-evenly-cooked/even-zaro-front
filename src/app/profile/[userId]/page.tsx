@@ -1,5 +1,5 @@
 import ProfileHeader from "@/components/Profile/ProfileHeader/ProfileHeader.client";
-import ProfileTabClient from "@/components/Profile/ProfileTabClient";
+import ProfileTabClient from "@/components/Profile/ProfileTab/ProfileTabClient";
 
 interface ProfilePageProps {
   params: Promise<{ userId: string }>;

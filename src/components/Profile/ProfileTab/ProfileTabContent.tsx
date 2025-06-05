@@ -1,5 +1,5 @@
 import { ProfileTabType } from "@/types/profile";
-import BookmarkGroupList from "./BookmarkGroupList";
+import BookmarkGroupList from "../BookmarkGroupList";
 import React from "react";
 
 interface Props {

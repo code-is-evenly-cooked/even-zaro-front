@@ -6,7 +6,7 @@ import ProfileTabContent from "./ProfileTabContent";
 import { ProfileTabType } from "@/types/profile";
 
 const ProfileTabClient = () => {
-  const [activeTab, setActiveTab] = useState<ProfileTabType>("bookmarks");
+  const [activeTab, setActiveTab] = useState<ProfileTabType>("posts");
 
   return (
     <div>
