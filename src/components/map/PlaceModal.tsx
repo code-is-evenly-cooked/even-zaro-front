@@ -4,10 +4,9 @@ import { PlaceListResponse } from "@/types/map";
 
 interface PlaceModalProps {
   placeList: PlaceListResponse;
-  onClick: (placeId: number) => void;
 }
 
-export default function PlaceModal({ placeList, onClick }: PlaceModalProps) {
+export default function PlaceModal({ placeList }: PlaceModalProps) {
   return (
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
       {/* 헤더 */}
@@ -30,7 +29,6 @@ export default function PlaceModal({ placeList, onClick }: PlaceModalProps) {
             placeName={place.name}
             address={place.address}
             favoriteCount={place.favoriteCount}
-            onClick={() => onClick(place.placeId)}
           />
         ))}
       </ul>

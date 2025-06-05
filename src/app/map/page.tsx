@@ -6,14 +6,14 @@ import PlaceModal from "@/components/map/PlaceModal";
 import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 import { useEffect, useState } from "react";
 import { fetchPlaceDetail, fetchPlaceList } from "@/lib/api/map";
-import { PAGE, PageType, PlaceDetailResponse, PlaceListResponse } from "@/types/map";
+import { PAGE, PlaceDetailResponse, PlaceListResponse } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
+import { useMapStore } from "@/stores/mapStore";
 
 const MapPage = () => {
+  const { page, placeId, placeList } = useMapStore((state) => state);
+  const { setPlaceList } = useMapStore();
 
-  const [page, setPage] = useState<PageType>(PAGE.PLACELIST);
-  const [placeList, setPlaceList] = useState<PlaceListResponse | null>(null);
-  const [placeId, setPlaceId] = useState<number | null>(null);
   const [placeDetail, setPlaceDetail] = useState<PlaceDetailResponse | null>(
     null,
   );
@@ -21,16 +21,6 @@ const MapPage = () => {
 
   function handleClickGroupList() {
     setGroupModal((prev) => !prev);
-  }
-
-
-  function handleClick(placeId: number) {
-    setPlaceId(placeId);
-    setPage(PAGE.PLACEDETAIL);
-  }
-
-  function backPage() {
-    setPage(PAGE.PLACELIST);
   }
 
   useEffect(() => {
@@ -71,11 +61,13 @@ const MapPage = () => {
       <SideMenu />
 
       {page === PAGE.PLACELIST && placeList && (
-        <PlaceModal onClick={handleClick} placeList={placeList}></PlaceModal>
+        <PlaceModal placeList={placeList}></PlaceModal>
       )}
       {page == PAGE.PLACEDETAIL && placeDetail && (
-        <PlaceUserMemos openGroupList={handleClickGroupList} backPage={backPage} placeDetail={placeDetail} />
-
+        <PlaceUserMemos
+          openGroupList={handleClickGroupList}
+          placeDetail={placeDetail}
+        />
       )}
 
       {groupModal && <UserGroupList />}

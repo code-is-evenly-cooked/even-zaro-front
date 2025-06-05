@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { PAGE, PageType, PlaceDetailResponse, PlaceListResponse } from "@/types/map";
+import {
+  PAGE,
+  PageType,
+  PlaceDetailResponse,
+  PlaceListResponse,
+} from "@/types/map";
 
 type MapStore = {
   page: PageType;
@@ -8,7 +13,8 @@ type MapStore = {
   placeDetail: PlaceDetailResponse | null;
   groupModal: boolean;
   setPagePlaceList: () => void;
-  setPagePlaceDetail: (placeDetail: PlaceDetailResponse) => void;
+  setPagePlaceDetail: (placeId: number) => void;
+  setPlaceList: (placeList: PlaceListResponse) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -23,9 +29,13 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       page: PAGE.PLACELIST,
     })),
-  setPagePlaceDetail: () =>
+  setPagePlaceDetail: (placeId: number) =>
     set(() => ({
       page: PAGE.PLACEDETAIL,
+      placeId: placeId,
     })),
-
+  setPlaceList: (placeList: PlaceListResponse) =>
+    set(() => ({
+      placeList: placeList,
+    }))
 }));
