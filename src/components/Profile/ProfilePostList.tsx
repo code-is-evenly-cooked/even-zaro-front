@@ -8,7 +8,7 @@ import { useState } from "react";
 import ClientSidePagination from "../common/Pagination/ClientSidePagination";
 
 interface ProfilePostListProps {
-  type: Exclude<ProfileTabType, "bookmarks">;
+  type: Exclude<ProfileTabType, "favorites">;
 }
 
 const ProfilePostList = ({ type }: ProfilePostListProps) => {

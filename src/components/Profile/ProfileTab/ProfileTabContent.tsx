@@ -21,7 +21,7 @@ export default function ProfileTabContent({ activeTab }: Props) {
         >
           <Suspense fallback={<LoadingSpinnerBoundary />}>
             <ProfilePostList
-              type={activeTab as Exclude<ProfileTabType, "bookmarks">}
+              type={activeTab as Exclude<ProfileTabType, "favorites">}
             />
           </Suspense>
         </AppErrorBoundary>
