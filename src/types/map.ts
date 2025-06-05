@@ -5,15 +5,38 @@ export interface PlaceDetailResponse {
   address: string;
   lat: number;
   lng: number;
+  category: string;
   favoriteCount: number;
-  userInfo: UserInfo[];
+  usersInfo: UsersInfo[];
 }
 
 // 장소에 남긴 유저 정보
-export interface UserInfo {
+export interface UsersInfo {
   userId: number;
   profileImage: string;
   nickname: string;
   memo: string;
 }
 
+export interface PlaceListResponse {
+  totalCount: number;
+  placeInfos: PlaceInfos[];
+
+}
+
+export interface PlaceInfos {
+  placeId : number;
+  name: string;
+  address: string;
+  category: string;
+  lat: number;
+  lng: number;
+  favoriteCount: number;
+}
+
+export const PAGE = {
+  PLACELIST: "PLACELIST",
+  PLACEDETAIL: "PLACEDETAIL",
+} as const;
+
+export type PageType = (typeof PAGE)[keyof typeof PAGE];

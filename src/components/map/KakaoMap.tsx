@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import SideMenu from "./SideMenu";
-import PlaceModal from "@/components/map/PlaceModal";
-import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 
 // Kakao 객체를 전역 선언합니다.
 declare global {
@@ -11,7 +8,10 @@ declare global {
     kakao: {
       maps: {
         LatLng: new (lat: number, lng: number) => void;
-        Map: new (container: HTMLElement, options: { center: void, level: number }) => void;
+        Map: new (
+          container: HTMLElement,
+          options: { center: void; level: number },
+        ) => void;
         load: (callback: () => void) => void;
       };
     };
@@ -49,10 +49,7 @@ export default function KakaoMap() {
 
   return (
     <>
-      <div ref={mapRef} className={`w-screen h-screen`}/>
-      <SideMenu />
-      <PlaceModal />
-      <PlaceUserMemos />
+      <div ref={mapRef} className={`w-screen h-screen`} />
     </>
   );
 }

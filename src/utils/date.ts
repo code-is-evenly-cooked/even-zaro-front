@@ -7,6 +7,7 @@ import {
   format,
 } from "date-fns";
 import { ko } from "date-fns/locale";
+import { toZonedTime, format as fnsTzFormat } from "date-fns-tz";
 
 /**
  * 하루 이내면 "x분 전", 하루 이상이면 "yyyy.MM.dd"로 표기
@@ -57,28 +58,22 @@ export const getRelativeTimeAgo = (isoDateString: string): string => {
  * @param isoString - ISO 형식의 날짜 문자열
  * @returns 포맷된 날짜 문자열
  */
+
 export const getSimplifiedDate = (isoString: string): string => {
-  const now = new Date();
-  const created = new Date(isoString);
+  const timeZone = "Asia/Seoul";
+
+  const utcDate = new Date(isoString + "Z"); // UTC로 변경. 서버와 논의 후 제거하거나 붙여두거나
+  const zonedDate = toZonedTime(new Date(utcDate), timeZone);
+  const now = toZonedTime(new Date(), timeZone);
 
   const isToday =
-    created.getFullYear() === now.getFullYear() &&
-    created.getMonth() === now.getMonth() &&
-    created.getDate() === now.getDate();
+    zonedDate.getFullYear() === now.getFullYear() &&
+    zonedDate.getMonth() === now.getMonth() &&
+    zonedDate.getDate() === now.getDate();
 
   if (isToday) {
-    // getUTCHours로 시간 오차 보정 (UTC 그대로 쓰기)
-    const hours = String(created.getHours()).padStart(2, "0");
-    const minutes = String(created.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
+    return fnsTzFormat(zonedDate, "HH:mm", { timeZone });
   }
 
-  return created
-    .toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .replace(/\. /g, ".")
-    .replace(/\.$/, "");
+  return fnsTzFormat(zonedDate, "yyyy.MM.dd", { timeZone });
 };
