@@ -1,23 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
-import { SettingIcon } from "../common/Icons";
+import { SettingIcon } from "../../common/Icons";
 import { useProfile } from "@/hooks/useProfile";
+import { Stat } from "./Stat";
 
 export default function ProfileHeader() {
   const { user } = useAuthStore();
   const userId = user?.userId ?? null;
   const { data: profile, isLoading, error } = useProfile(userId);
-
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  if (!isClient) return null;
 
   if (!userId)
     return <div className="text-red-500">유효하지 않은 사용자입니다.</div>;
@@ -34,7 +28,7 @@ export default function ProfileHeader() {
       : null;
 
   return (
-    <div>
+    <div className="py-4">
       <div className="flex gap-6 items-center justify-center">
         <Image
           src={imageUrl}
@@ -43,7 +37,7 @@ export default function ProfileHeader() {
           height={80}
           className="rounded-full object-cover m-6"
         />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="flex items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
             {days != null && <span className="text-gray600">D+{days}</span>}
@@ -51,19 +45,11 @@ export default function ProfileHeader() {
               <SettingIcon />
             </button>
           </div>
-          <div className="flex justify-around gap-20">
-            <div>
-              글<span className="ml-2 font-bold">{profile.postCount}</span>
-            </div>
-            <div>
-              팔로잉
-              <span className="ml-2 font-bold">{profile.followingCount}</span>
-            </div>
-            <div>
-              팔로워
-              <span className="ml-2 font-bold">{profile.followerCount}</span>
-            </div>
-          </div>
+          <ul className="flex justify-around gap-20">
+            <Stat label="글" count={profile.postCount} />
+            <Stat label="팔로잉" count={profile.followingCount} />
+            <Stat label="팔로워" count={profile.followerCount} />
+          </ul>
         </div>
       </div>
     </div>
