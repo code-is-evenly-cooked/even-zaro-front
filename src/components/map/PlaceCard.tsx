@@ -8,6 +8,7 @@ import {
 import { JSX } from "react";
 
 interface PlaceCardProps {
+  placeId: number;
   placeName: string;
   address: string;
   category: string;
@@ -24,6 +25,7 @@ const categoryIcons: Record<string, JSX.Element> = {
 };
 
 export default function PlaceCard({
+  placeId,
   placeName,
   address,
   category,
@@ -34,6 +36,7 @@ export default function PlaceCard({
     <li
       className="flex items-center hover:bg-gray-100 transition p-1"
       onClick={onClick}
+      key={placeId}
     >
       {/* 이미지 영역 */}
       <div className="flex w-14 h-14 items-center justify-center mr-4 border border-gray-300 rounded-full">

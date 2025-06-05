@@ -27,6 +27,7 @@ export default function PlaceModal( { placeList, onClick } : PlaceModalProps ) {
         {placeList?.placeInfos.map((place) => (
           <PlaceCard
             key={place.placeId}
+            placeId={place.placeId}
             category={place.category}
             placeName={place.name}
             address={place.address}
