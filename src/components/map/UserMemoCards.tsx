@@ -6,9 +6,8 @@ interface UserMemoCardsProps {
   placeDetail: PlaceDetailResponse;
 }
 
-export function UserMemoCards ( {placeDetail} : UserMemoCardsProps ) {
-
-  return(
+export function UserMemoCards({ placeDetail }: UserMemoCardsProps) {
+  return (
     <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
       {placeDetail?.usersInfo.map((user) => (
         <UserMemoCard

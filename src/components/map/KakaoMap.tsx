@@ -8,7 +8,10 @@ declare global {
     kakao: {
       maps: {
         LatLng: new (lat: number, lng: number) => void;
-        Map: new (container: HTMLElement, options: { center: void, level: number }) => void;
+        Map: new (
+          container: HTMLElement,
+          options: { center: void; level: number },
+        ) => void;
         load: (callback: () => void) => void;
       };
     };
@@ -46,7 +49,7 @@ export default function KakaoMap() {
 
   return (
     <>
-      <div ref={mapRef} className={`w-screen h-screen`}/>
+      <div ref={mapRef} className={`w-screen h-screen`} />
     </>
   );
 }
