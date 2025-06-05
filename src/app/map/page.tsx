@@ -6,17 +6,13 @@ import PlaceModal from "@/components/map/PlaceModal";
 import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 import { useEffect, useState } from "react";
 import { fetchPlaceDetail, fetchPlaceList } from "@/lib/api/map";
-import { PAGE, PlaceDetailResponse, PlaceListResponse } from "@/types/map";
+import { PAGE, PlaceListResponse } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
 import { useMapStore } from "@/stores/mapStore";
 
 const MapPage = () => {
-  const { page, placeId, placeList } = useMapStore((state) => state);
-  const { setPlaceList } = useMapStore();
-
-  const [placeDetail, setPlaceDetail] = useState<PlaceDetailResponse | null>(
-    null,
-  );
+  const { page, placeId, placeList, placeDetail } = useMapStore((state) => state);
+  const { setPlaceList, setPlaceDetail } = useMapStore();
   const [groupModal, setGroupModal] = useState(false);
 
   function handleClickGroupList() {
