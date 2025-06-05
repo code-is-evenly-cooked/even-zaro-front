@@ -68,7 +68,7 @@ export const client = async <T>(
 
     return (raw as APISuccessResponse<T>).data;
   } catch (err) {
-    console.error("🔥 client fetch error ->", err);
+    console.error("🔥 client fetch error ->", input, err);
     throw err;
   }
 };

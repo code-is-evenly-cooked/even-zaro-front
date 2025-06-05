@@ -1,5 +1,5 @@
 import PostListHeaderSection from "@/components/PostList/PostListHeaderSection";
-import PostListPagination from "@/components/common/Pagination/PostListPagination";
+import QueryStringPagination from "@/components/common/Pagination/QueryStringPagination";
 import PostListResult from "@/components/PostList/PostListResult";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
@@ -53,7 +53,7 @@ export default async function PostListPage({
           number: posts.number,
         }}
       />
-      <PostListPagination
+      <QueryStringPagination
         currentPage={posts.number}
         totalPage={posts.totalPages}
       />

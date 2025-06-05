@@ -4,19 +4,19 @@ import IconButton from "../Button/IconButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 
-interface CommentListPaginationProps {
+interface ClientSidePaginationProps {
   currentPage: number;
   totalPage: number;
   visiblePages?: number;
   onChangePage: (page: number) => void;
 }
 
-const CommentListPagination = ({
+const ClientSidePagination = ({
   currentPage,
   totalPage,
   visiblePages = 5,
   onChangePage,
-}: CommentListPaginationProps) => {
+}: ClientSidePaginationProps) => {
   const isFirst = currentPage === 0;
   const isLast = currentPage + 1 >= totalPage;
 
@@ -76,4 +76,4 @@ const CommentListPagination = ({
   );
 };
 
-export default CommentListPagination;
+export default ClientSidePagination;
