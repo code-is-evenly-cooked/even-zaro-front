@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  GroupListResponse,
   PAGE,
   PageType,
   PlaceDetailResponse,
@@ -11,12 +12,14 @@ type MapStore = {
   placeList: PlaceListResponse | null;
   placeId: number | null;
   placeDetail: PlaceDetailResponse | null;
+  groupList: GroupListResponse | null;
   groupModal: boolean;
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
   setPlaceList: (placeList: PlaceListResponse) => void;
   setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
   setGroupModal: (groupModal: boolean) => void;
+  setGroupList: (groupList: GroupListResponse) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -26,6 +29,7 @@ export const useMapStore = create<MapStore>((set) => ({
   placeId: null,
   placeDetail: null,
   groupModal: false,
+  groupList: null,
 
   setPagePlaceList: () =>
     set(() => ({
@@ -47,5 +51,9 @@ export const useMapStore = create<MapStore>((set) => ({
   setGroupModal: (groupModal: boolean) =>
     set(() => ({
       groupModal: !groupModal,
+    })),
+  setGroupList: (groupList: GroupListResponse) =>
+    set(() => ({
+      groupList: groupList,
     })),
 }));
