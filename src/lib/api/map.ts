@@ -19,8 +19,8 @@ export const fetchPlaceDetail = async (placeId: number): Promise<PlaceDetailResp
   });
 };
 
-export const fetchGroupList = async (userId: number): Promise<GroupListResponse> => {
-  return await client<GroupListResponse>(`/api/group/user/${userId}/group`, {
+export const fetchGroupList = async (userId: number): Promise<GroupListResponse[]> => {
+  return await client<GroupListResponse[]>(`/api/group/user/${userId}/group`, {
     method: "GET",
   })
 }

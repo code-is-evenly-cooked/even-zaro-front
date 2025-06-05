@@ -41,6 +41,7 @@ export const PAGE = {
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
 
+export type GroupListResponseList = GroupListResponse[];
 
 export interface GroupListResponse {
   groupId: number;

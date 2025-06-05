@@ -12,14 +12,14 @@ type MapStore = {
   placeList: PlaceListResponse | null;
   placeId: number | null;
   placeDetail: PlaceDetailResponse | null;
-  groupList: GroupListResponse | null;
+  groupList: GroupListResponse[] | null;
   groupModal: boolean;
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
   setPlaceList: (placeList: PlaceListResponse) => void;
   setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
   setGroupModal: (groupModal: boolean) => void;
-  setGroupList: (groupList: GroupListResponse) => void;
+  setGroupList: (groupList: GroupListResponse[]) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -29,7 +29,7 @@ export const useMapStore = create<MapStore>((set) => ({
   placeId: null,
   placeDetail: null,
   groupModal: false,
-  groupList: null,
+  groupList: [],
 
   setPagePlaceList: () =>
     set(() => ({
@@ -52,7 +52,7 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       groupModal: !groupModal,
     })),
-  setGroupList: (groupList: GroupListResponse) =>
+  setGroupList: (groupList: GroupListResponse[]) =>
     set(() => ({
       groupList: groupList,
     })),
