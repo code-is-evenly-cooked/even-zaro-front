@@ -10,30 +10,32 @@ interface Props {
 }
 
 export default function ProfileTabContent({ activeTab }: Props) {
-  let content: React.ReactNode;
+  const isPostRelatedTab = ["posts", "comments", "likes"].includes(activeTab);
 
-  switch (activeTab) {
-    case "posts":
-    case "comments":
-    case "likes":
-      content = (
+  if (isPostRelatedTab) {
+    return (
+      <div className="mt-4">
         <AppErrorBoundary
           fallbackMessage="프로필 정보를 불러오는 중 오류가 발생했습니다."
           key={activeTab}
         >
           <Suspense fallback={<LoadingSpinnerBoundary />}>
-            <ProfilePostList type={activeTab} />
+            <ProfilePostList
+              type={activeTab as Exclude<ProfileTabType, "bookmarks">}
+            />
           </Suspense>
         </AppErrorBoundary>
-      );
-      break;
-    case "bookmarks":
-      content = <BookmarkGroupList />;
-      break;
-    default:
-      content = null;
-      break;
+      </div>
+    );
   }
 
-  return <div className="mt-4">{content}</div>;
+  if (activeTab === "bookmarks") {
+    return (
+      <div className="mt-4">
+        <BookmarkGroupList />
+      </div>
+    );
+  }
+
+  return null;
 }
