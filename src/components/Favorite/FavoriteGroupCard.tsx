@@ -2,22 +2,22 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
-import type { BookmarkGroupType } from "@/types/bookmark";
+import type { FavoriteGroupType } from "@/types/favorite";
 import Link from "next/link";
 import {
-  updateBookmarkGroupName,
-  deleteBookmarkGroup,
-} from "@/lib/api/bookmark";
+  updateFavoriteGroupName,
+  deleteFavoriteGroup,
+} from "@/lib/api/favorite";
 
-interface BookmarkGroupProps {
-  group: BookmarkGroupType;
+interface FavoriteGroupProps {
+  group: FavoriteGroupType;
   onDelete: (groupId: number) => void;
 }
 
-export default function BookmarkGroupCard({
+export default function FavoriteGroupCard({
   group,
   onDelete,
-}: BookmarkGroupProps) {
+}: FavoriteGroupProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(group.name);
@@ -49,7 +49,7 @@ export default function BookmarkGroupCard({
   const handleEditComplete = async () => {
     if (editedName.trim() !== "") {
       try {
-        await updateBookmarkGroupName(group.groupId, editedName);
+        await updateFavoriteGroupName(group.groupId, editedName);
         setDisplayName(editedName);
         setIsEditing(false);
         setIsMenuOpen(false);
@@ -63,7 +63,7 @@ export default function BookmarkGroupCard({
   // 즐겨찾기 그룹 삭제
   const handleDelete = async () => {
     try {
-      await deleteBookmarkGroup(group.groupId);
+      await deleteFavoriteGroup(group.groupId);
       onDelete?.(group.groupId); // 부모에서 상태 업데이트
     } catch (e) {
       console.error("삭제 실패:", e);

@@ -1,5 +1,5 @@
 import { ProfileTabType } from "@/types/profile";
-import BookmarkGroupList from "../BookmarkGroupList";
+import FavoriteGroupList from "@/components/Favorite/FavoriteGroupList";
 import React, { Suspense } from "react";
 import ProfilePostList from "../ProfilePostList";
 import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSpinnerBoundary";
@@ -21,7 +21,7 @@ export default function ProfileTabContent({ activeTab }: Props) {
         >
           <Suspense fallback={<LoadingSpinnerBoundary />}>
             <ProfilePostList
-              type={activeTab as Exclude<ProfileTabType, "bookmarks">}
+              type={activeTab as Exclude<ProfileTabType, "favorites">}
             />
           </Suspense>
         </AppErrorBoundary>
@@ -29,10 +29,10 @@ export default function ProfileTabContent({ activeTab }: Props) {
     );
   }
 
-  if (activeTab === "bookmarks") {
+  if (activeTab === "favorites") {
     return (
       <div className="mt-4">
-        <BookmarkGroupList />
+        <FavoriteGroupList />
       </div>
     );
   }

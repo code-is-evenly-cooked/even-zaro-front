@@ -10,7 +10,7 @@ export default function ProfileTabs({ activeTab, onTabChange }: Props) {
     { key: "posts", label: "내가 쓴 글" },
     { key: "comments", label: "내 댓글" },
     { key: "likes", label: "좋아요" },
-    { key: "bookmarks", label: "즐겨찾기" },
+    { key: "favorites", label: "즐겨찾기" },
   ];
 
   return (
