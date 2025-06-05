@@ -14,12 +14,12 @@ export default function UserMemoCard({
   nickName,
   memo,
 }: UserMemoProps) {
-  const groupModal = useMapStore((state) => state.groupModal);
-  const { setGroupModal } = useMapStore();
+  const page = useMapStore((state) => state.page);
+  const { setPageGroupList } = useMapStore();
 
   useEffect(() => {
-    console.log("groupModal : ", groupModal);
-  }, [groupModal]);
+    console.log("page : ", page);
+  }, [page]);
 
 
   return (
@@ -36,7 +36,7 @@ export default function UserMemoCard({
       </button>
       <div className="items-center flex p-3 shadow-sm space-x-3">
         <button
-          onClick={() => setGroupModal(groupModal)}
+          onClick={() => setPageGroupList()}
           className="font-bold text-base flex-shrink-0 text-left text-gray900 hover:underline focus:outline-none"
         >
           {nickName}

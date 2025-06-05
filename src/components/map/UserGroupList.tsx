@@ -1,20 +1,21 @@
-import { MoreVertical, Star } from "lucide-react";
+import { ArrowLeft, MoreVertical, Star } from "lucide-react";
 import { DefaultProfileIcon } from "@/components/common/Icons";
 import { useEffect } from "react";
-import { GroupListResponseList } from "@/types/map";
+import { GroupListResponseList, PAGE } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useMapStore } from "@/stores/mapStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export function UserGroupList() {
   const userId = useAuthStore((state) => state.user?.userId);
-  const groupList = useMapStore((state) => state.groupList);
-  const { setGroupList } = useMapStore();
+  const { groupList, placeId, page } = useMapStore((state) => state);
+  const { setGroupList, setPagePlaceDetail } = useMapStore();
+  // const [otherUserId, setOtherUserId] = useState<number | undefined>(0);
 
   useEffect(() => {
     (async () => {
       try {
-        const data: GroupListResponseList = await fetchGroupList(userId);
+        const data: GroupListResponseList = await fetchGroupList(5);
         setGroupList(data);
       } catch (error) {
         console.error("유저의 그룹 리스트를 불러오는 데 실패했습니다.", error);
@@ -22,53 +23,65 @@ export function UserGroupList() {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log("page:", page);
+  }, [page]);
+
   return (
     <>
-      <div className="w-[24rem] h-[24rem] rounded-t-2xl shadow-lg overflow-hidden bg-white absolute left-4 bottom-[-1rem] z-10 flex flex-col">
-        <div className="flex justify-center pt-2">
-          <div className="w-10 h-1.5 bg-gray-300 rounded-full" />
-        </div>
+      {page === PAGE.USERGROUPLIST && (
+        <div className={`w-[24rem] h-[24rem] rounded-t-2xl shadow-lg overflow-hidden bg-white absolute left-4 bottom-[-1rem] z-10 flex flex-col`}>
+          <div className="flex items-center justify-between px-4 py-2 border-b">
+            {/* 뒤로 가기*/}
+            <button
+              onClick={() => setPagePlaceDetail(placeId)}
+              className="p-1 rounded-full hover:bg-gray-100"
+            >
+              <ArrowLeft size={20} className="text-gray-700" />
+            </button>
+            <div className="text-sm font-medium text-gray-600">그룹 목록</div>
+            <div className="w-6" />
+          </div>
 
-        {/* 유저 정보 */}
-        <div className="flex flex-col items-center py-4 border-b">
-          <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
+          <div className="flex flex-col items-center py-4 border-b">
+            <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
+            <span className="font-semibold text-lg mt-2">이브니</span>
+            <span className="text-sm text-gray-500">D+1187</span>
+          </div>
 
-          <span className="font-semibold text-lg mt-2">이브니</span>
-          <span className="text-sm text-gray-500">D+1187</span>
-        </div>
-
-        <ul className="flex-1 overflow-y-auto divide-y">
-          {groupList && groupList.length > 0 ? (
-            groupList.map((group, idx) => (
-              <li
-                key={idx}
-                className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
-                    <Star size={16} className="text-violet-500" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm text-gray-900">
-                      {group.name}
+          <ul className="flex-1 overflow-y-auto divide-y">
+            {groupList && groupList.length > 0 ? (
+              groupList.map((group, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
+                      <Star size={16} className="text-violet-500" />
                     </div>
-                    <div className="text-xs text-gray600">
-                      장소 {groupList.length}
+                    <div>
+                      <div className="font-medium text-sm text-gray-900">
+                        {group.name}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        장소 {groupList.length}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <button className="hover:bg-gray200 rounded-full">
-                  <MoreVertical size={20} className="text-gray-400" />
-                </button>
-              </li>
-            ))
-          ) : (
-            <div className="text-sm text-gray600 text-center py-10">
-              등록된 그룹이 없습니다.
-            </div>
-          )}
-        </ul>
-      </div>
+                  <button className="hover:bg-gray-200 rounded-full p-1">
+                    <MoreVertical size={20} className="text-gray-400" />
+                  </button>
+                </li>
+              ))
+            ) : (
+              <div className="text-sm text-gray-600 text-center py-10">
+                등록된 그룹이 없습니다.
+              </div>
+            )}
+          </ul>
+        </div>
+      )}
     </>
   );
 }

@@ -9,7 +9,7 @@ import { UserGroupList } from "@/components/map/UserGroupList";
 import { useMapStore } from "@/stores/mapStore";
 
 const MapPage = () => {
-  const { page, groupModal } = useMapStore((state) => state);
+  const { page } = useMapStore((state) => state);
 
   return (
     <div>
@@ -18,8 +18,7 @@ const MapPage = () => {
 
       {page === PAGE.PLACELIST && <PlaceModal />}
       {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
-
-      {groupModal && <UserGroupList />}
+      {page === PAGE.USERGROUPLIST && <UserGroupList />}
     </div>
   );
 };
