@@ -5,17 +5,17 @@ import IconButton from "../Button/IconButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 
-interface PostListPaginationProps {
+interface QueryStringPaginationProps {
   currentPage: number;
   totalPage: number;
   visiblePages?: number;
 }
 
-const PostListPagination = ({
+const QueryStringPagination = ({
   currentPage,
   totalPage,
   visiblePages = 5,
-}: PostListPaginationProps) => {
+}: QueryStringPaginationProps) => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -90,4 +90,4 @@ const PostListPagination = ({
   );
 };
 
-export default PostListPagination;
+export default QueryStringPagination;

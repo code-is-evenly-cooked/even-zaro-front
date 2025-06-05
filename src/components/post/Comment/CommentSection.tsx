@@ -4,7 +4,7 @@ import CommentList from "./CommentList";
 import CommentInput from "./CommentInput";
 import { useQuery } from "@tanstack/react-query";
 import { fetchComment } from "@/lib/api/comment";
-import CommentListPagination from "@/components/common/Pagination/CommentListPagination";
+import ClientSidePagination from "@/components/common/Pagination/ClientSidePagination";
 import { CommentResponse } from "@/types/comment";
 
 interface CommentSectionProps {
@@ -24,7 +24,7 @@ const CommentSection = ({ postId }: CommentSectionProps) => {
   return (
     <section className="flex flex-col gap-2">
       <CommentList comments={comments} refresh={refetch} />
-      <CommentListPagination
+      <ClientSidePagination
         currentPage={page}
         totalPage={data?.totalPages ?? 1}
         onChangePage={setPage}

@@ -4,8 +4,8 @@ import { useProfileItemList } from "../../hooks/useProfileItemList";
 import PostListCard from "../common/SectionCards/PostListCard";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
 import Link from "next/link";
-import CommentListPagination from "../common/Pagination/CommentListPagination";
 import { useState } from "react";
+import ClientSidePagination from "../common/Pagination/ClientSidePagination";
 
 interface ProfilePostListProps {
   type: Exclude<ProfileTabType, "bookmarks">;
@@ -45,7 +45,7 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
           </li>
         ))}
       </ul>
-      <CommentListPagination
+      <ClientSidePagination
         currentPage={currentPage}
         totalPage={posts.totalPages}
         onChangePage={setCurrentPage}
