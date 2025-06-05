@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { MoreVertical, Star } from "lucide-react";
+import { DefaultProfileIcon } from "@/components/common/Icons";
 
 export function UserGroupList() {
 
@@ -7,25 +7,19 @@ export function UserGroupList() {
   return (
     <>
       <div className="w-[24rem] h-[24rem] rounded-t-2xl shadow-lg overflow-hidden bg-white absolute left-4 bottom-[-1rem] z-10 flex flex-col">
-        {/* 위쪽 드래그 핸들 */}
+
         <div className="flex justify-center pt-2">
           <div className="w-10 h-1.5 bg-gray-300 rounded-full" />
         </div>
 
         {/* 유저 정보 */}
         <div className="flex flex-col items-center py-4 border-b">
-          <Image
-            src="/mock-profile.jpg" // 실제 프로필 이미지 URL
-            alt="프로필 이미지"
-            width={60}
-            height={60}
-            className="rounded-full"
-          />
+          <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
+
           <span className="font-semibold text-lg mt-2">이브니</span>
           <span className="text-sm text-gray-500">D+1187</span>
         </div>
 
-        {/* 그룹 리스트 */}
         <ul className="flex-1 overflow-y-auto divide-y">
           {[
             { name: "강남 나만 갈꺼야 맛집", count: 4 },
