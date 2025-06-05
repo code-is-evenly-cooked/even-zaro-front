@@ -15,7 +15,8 @@ type MapStore = {
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
   setPlaceList: (placeList: PlaceListResponse) => void;
-  setPlaceDetail :(placeDetail: PlaceDetailResponse) => void;
+  setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
+  setGroupModal: (groupModal: boolean) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -39,8 +40,12 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       placeList: placeList,
     })),
-  setPlaceDetail: (placeDetail : PlaceDetailResponse) =>
+  setPlaceDetail: (placeDetail: PlaceDetailResponse) =>
     set(() => ({
       placeDetail: placeDetail,
-    }))
+    })),
+  setGroupModal: (groupModal: boolean) =>
+    set(() => ({
+      groupModal: !groupModal,
+    })),
 }));

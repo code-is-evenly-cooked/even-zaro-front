@@ -6,12 +6,10 @@ import { UserMemoCards } from "@/components/map/UserMemoCards";
 
 interface PlaceUserMemosProps {
   placeDetail: PlaceDetailResponse;
-  openGroupList?: () => void;
 }
 
 export default function PlaceUserMemos({
   placeDetail,
-  openGroupList,
 }: PlaceUserMemosProps) {
   return (
     <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
@@ -20,7 +18,7 @@ export default function PlaceUserMemos({
       {/* 즐겨찾기 정보 */}
       <BookmarkInfo placeDetail={placeDetail} />
       {/* 유저 메모 리스트 */}
-      <UserMemoCards openGroupList={openGroupList} placeDetail={placeDetail} />
+      <UserMemoCards placeDetail={placeDetail} />
     </div>
   );
 }

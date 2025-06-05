@@ -4,20 +4,15 @@ import KakaoMap from "@/components/map/KakaoMap";
 import SideMenu from "@/components/map/SideMenu";
 import PlaceModal from "@/components/map/PlaceModal";
 import PlaceUserMemos from "@/components/map/PlaceUserMemos";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { fetchPlaceDetail, fetchPlaceList } from "@/lib/api/map";
 import { PAGE, PlaceListResponse } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
 import { useMapStore } from "@/stores/mapStore";
 
 const MapPage = () => {
-  const { page, placeId, placeList, placeDetail } = useMapStore((state) => state);
+  const { page, placeId, placeList, placeDetail, groupModal } = useMapStore((state) => state);
   const { setPlaceList, setPlaceDetail } = useMapStore();
-  const [groupModal, setGroupModal] = useState(false);
-
-  function handleClickGroupList() {
-    setGroupModal((prev) => !prev);
-  }
 
   useEffect(() => {
     const lat = 37.554722;
@@ -61,7 +56,6 @@ const MapPage = () => {
       )}
       {page == PAGE.PLACEDETAIL && placeDetail && (
         <PlaceUserMemos
-          openGroupList={handleClickGroupList}
           placeDetail={placeDetail}
         />
       )}

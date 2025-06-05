@@ -1,21 +1,27 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
-import { useState } from "react";
-import { UserGroupList } from "@/components/map/UserGroupList";
+import { useMapStore } from "@/stores/mapStore";
+import { useEffect } from "react";
 
 interface UserMemoProps {
   profileImage: string;
   nickName: string;
   memo: string;
-  openGroupList?: (() => void) | undefined;
 }
 
 export default function UserMemoCard({
   profileImage,
   nickName,
   memo,
-  openGroupList,
 }: UserMemoProps) {
+  const groupModal = useMapStore((state) => state.groupModal);
+  const { setGroupModal } = useMapStore();
+
+  useEffect(() => {
+    console.log("groupModal : ", groupModal);
+  }, [groupModal]);
+
+
   return (
     <li className="flex items-center hover:bg-gray100 transition p-1">
       {/* 이미지 영역 */}
@@ -30,7 +36,7 @@ export default function UserMemoCard({
       </button>
       <div className="items-center flex p-3 shadow-sm space-x-3">
         <button
-          onClick={openGroupList}
+          onClick={() => setGroupModal(groupModal)}
           className="font-bold text-base flex-shrink-0 text-left text-gray900 hover:underline focus:outline-none"
         >
           {nickName}
