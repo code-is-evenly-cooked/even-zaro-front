@@ -23,7 +23,13 @@ export default function BannerSlider() {
       perView: 1,
       spacing: 0,
     },
-    slideChanged: (s) => setCurrentSlide(s.track.details.rel),
+    slideChanged: (s) => {
+			setCurrentSlide(s.track.details.rel);
+			if (timer.current) clearInterval(timer.current);
+			timer.current = setInterval(() => {
+				instanceRef.current?.next();
+			}, 5000);
+		},
   });
 
   useEffect(() => {
