@@ -29,15 +29,9 @@ export default function PlaceUserMemos({ placeDetail, backPage }: PlaceUserMemos
           </button>
 
           <div className="flex items-center space-x-2">
-            {favorite ? (
-              <button onClick={handleClickFavorite} className="flex self-start">
-                <LucideStar />
-              </button>
-            ) : (
-              <button onClick={handleClickFavorite} className="flex self-start">
-                <LucideStar className="text-yellow-400 fill-yellow-400" />
-              </button>
-            )}
+            <button onClick={handleClickFavorite} className="flex self-start">
+              <LucideStar className={favorite ? " " : "text-yellow-400 fill-yellow-400"} />
+            </button>
 
             <div className="flex flex-col justify-center items-center text-center max-w-[200px]">
               <span className="font-bold text-gray900 text-lg leading-snug break-words">
