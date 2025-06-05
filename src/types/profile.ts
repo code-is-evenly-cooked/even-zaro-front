@@ -1,5 +1,12 @@
 export type ProfileTabType = "posts" | "comments" | "likes" | "bookmarks";
 
+export const PROFILE_TAB_MAP: Record<ProfileTabType, string> = {
+  posts: "내가 쓴",
+  comments: "내가 댓글 쓴",
+  likes: "내가 좋아요한",
+  bookmarks: "북마크",
+};
+
 export interface ProfileResponse {
   userId: number;
   nickname: string;
