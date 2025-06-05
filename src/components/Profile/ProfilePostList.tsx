@@ -11,9 +11,14 @@ interface ProfilePostListProps {
 
 const ProfilePostList = ({ type }: ProfilePostListProps) => {
   const { user } = useAuthStore();
+  const userId = user?.userId;
+
+  if (userId === null || userId === undefined) {
+    throw new Error("로그인이 필요합니다");
+  }
 
   const { data: posts } = useProfileItemList({
-    userId: user?.userId ?? 0, // TODO ID 없을 때 예외처리
+    userId: userId,
     type,
   });
 
