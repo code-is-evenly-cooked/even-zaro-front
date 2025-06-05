@@ -53,7 +53,9 @@ const BaseInput = memo(
           `,
         }[styleState];
 
-        const disabledStyles = disabled ? `opacity-50 cursor-not-allowed` : ``;
+        const disabledStyles = disabled
+          ? `cursor-not-allowed disabled:bg-gray200`
+          : ``;
 
         return `${baseStyles} ${sizeStyles} ${stateStyles} ${disabledStyles} ${
           className || ""
@@ -94,8 +96,8 @@ const BaseInput = memo(
 
           {(error || helper) && (
             <p
-              className={`mt-2 mx-2 text-sm ${
-                error ? "text-red-500" : "text-gray900"
+              className={`mt-1.5 mx-2 text-sm ${
+                error ? "text-red-500" : "text-gray600"
               }`}
             >
               {error || helper}
