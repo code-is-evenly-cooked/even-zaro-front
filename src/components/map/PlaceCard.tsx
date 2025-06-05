@@ -14,7 +14,7 @@ interface PlaceCardProps {
   address: string;
   category: string;
   favoriteCount: number;
-  onClick?: () => void; // 클릭 시 동작할 함수
+  onClick?: () => void;
 }
 
 const categoryIcons: Record<string, JSX.Element> = {
