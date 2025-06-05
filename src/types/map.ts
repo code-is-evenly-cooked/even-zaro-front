@@ -40,3 +40,12 @@ export const PAGE = {
 } as const;
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
+
+
+export interface GroupListResponse {
+  groupId: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+}
