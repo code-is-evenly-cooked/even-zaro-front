@@ -7,7 +7,7 @@ import ProfileTabContent from "@/components/Profile/ProfileTabContent";
 import { ProfileTabType } from "@/types/profile";
 
 export default function ProfilePage() {
-    const [activeTab, setActiveTab] = useState<ProfileTabType>("bookmarks");
+    const [activeTab, setActiveTab] = useState<ProfileTabType>("favorites");
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <ProfileHeader />

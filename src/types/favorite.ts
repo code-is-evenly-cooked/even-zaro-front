@@ -1,3 +1,11 @@
+export interface FavoriteGroupType {
+  groupId: number;
+  name: string;
+  deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface FavoriteItemType {
   id: number;
   userId: number;

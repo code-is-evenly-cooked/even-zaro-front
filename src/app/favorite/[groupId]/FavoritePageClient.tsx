@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useFavoriteItems } from "@/hooks/useFavoriteItems";
-import FavoriteItemCard from "@/components/Profile/FavoriteItemCard";
-import { fetchBookmarkGroups } from "@/lib/api/bookmark";
+import { useFavoriteItems } from "@/hooks/useFavorite";
+import FavoriteItemCard from "@/components/Favorite/FavoriteItemCard";
+import { fetchFavoriteGroups } from "@/lib/api/favorite";
 import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
 
 export default function FavoritePage({ groupId }: { groupId: number }) {
@@ -19,7 +19,7 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
       if (!ownerId) return;
 
       try {
-        const groups = await fetchBookmarkGroups(ownerId);
+        const groups = await fetchFavoriteGroups(ownerId);
         const matched = groups.find((g) => g.groupId === groupId);
         setGroupName(matched?.name ?? "(알 수 없음)");
       } catch {

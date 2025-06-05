@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BookmarkGroupCard from "./BookmarkGroupCard";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useBookmarkGroups } from "@/hooks/useBookmarkGroups";
+import { useFavoriteGroups } from "@/hooks/useFavorite";
 import { mockBookmarkGroups } from "@/mock/bookmarkGroup.mock";
-import type { BookmarkGroupType } from "@/types/bookmark";
-import { createBookmarkGroup } from "@/lib/api/bookmark";
+import type { FavoriteGroupType } from "@/types/favorite";
+import { createFavoriteGroup } from "@/lib/api/favorite";
+import FavoriteGroupCard from "@/components/Favorite/FavoriteGroupCard";
 
-export default function BookmarkGroupList() {
+export default function FavoriteGroupList() {
   const { user } = useAuthStore();
   const userId = user?.userId ?? null;
 
-  const { data: groups, isLoading, error } = useBookmarkGroups(userId);
-  const [groupList, setGroupList] = useState<BookmarkGroupType[]>([]);
+  const { data: groups, isLoading, error } = useFavoriteGroups(userId);
+  const [groupList, setGroupList] = useState<FavoriteGroupType[]>([]);
 
   // 초기 값을 setGroupList를 통해 useState 로 저장
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function BookmarkGroupList() {
     if (!name?.trim()) return;
 
     try {
-      const newGroup = await createBookmarkGroup(name.trim());
+      const newGroup = await createFavoriteGroup(name.trim());
       setGroupList((prev) => [...prev, newGroup]);
     } catch (e) {
       console.error("그룹 생성 실패", e);
@@ -67,7 +67,7 @@ export default function BookmarkGroupList() {
       <ul className="space-y-2">
         {groupList.map((group) => (
           <li key={group.groupId}>
-            <BookmarkGroupCard group={group} onDelete={handleDeleteGroup} />
+            <FavoriteGroupCard group={group} onDelete={handleDeleteGroup} />
           </li>
         ))}
       </ul>

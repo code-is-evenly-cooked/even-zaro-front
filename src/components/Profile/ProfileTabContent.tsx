@@ -1,5 +1,5 @@
 import { ProfileTabType } from "@/types/profile";
-import BookmarkGroupList from "./BookmarkGroupList"
+import FavoriteGroupList from "@/components/Favorite/FavoriteGroupList";
 
 interface Props {
   activeTab: ProfileTabType;
@@ -13,10 +13,10 @@ export default function ProfileTabContent({ activeTab }: Props) {
       return <div>내 댓글 리스트</div>;
     case "likes":
       return <div>좋아요 리스트</div>;
-    case "bookmarks":
+    case "favorites":
       return (
         <div>
-          <BookmarkGroupList />
+          <FavoriteGroupList />
         </div>
       );
     default:

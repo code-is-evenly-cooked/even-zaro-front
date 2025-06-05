@@ -1,4 +1,4 @@
-export type ProfileTabType = "posts" | "comments" | "likes" | "bookmarks";
+export type ProfileTabType = "posts" | "comments" | "likes" | "favorites";
 
 export interface ProfileResponse {
   userId: number;
