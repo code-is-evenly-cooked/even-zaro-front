@@ -23,7 +23,7 @@ export default function PlaceModal( { placeList, onClick } : PlaceModalProps ) {
       </div>
 
       {/* 장소 카드 리스트 */}
-      <div className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
+      <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
         {placeList?.placeInfos.map((place) => (
           <PlaceCard
             key={place.placeId}
@@ -34,7 +34,7 @@ export default function PlaceModal( { placeList, onClick } : PlaceModalProps ) {
             onClick={()=> onClick(place.placeId)}
           />
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

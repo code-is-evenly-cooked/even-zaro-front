@@ -31,7 +31,7 @@ export default function PlaceCard({
   onClick,
 }: PlaceCardProps) {
   return (
-    <div
+    <li
       className="flex items-center hover:bg-gray-100 transition p-1"
       onClick={onClick}
     >
@@ -44,6 +44,6 @@ export default function PlaceCard({
         <p className="text-sm text-gray600">{address}</p>
         <p className="text-sm text-gray-400">즐겨찾기 {favoriteCount}개</p>
       </div>
-    </div>
+    </li>
   );
 }
