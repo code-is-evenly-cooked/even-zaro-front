@@ -33,3 +33,10 @@ export interface PlaceInfos {
   lng: number;
   favoriteCount: number;
 }
+
+export const PAGE = {
+  PLACELIST: "PLACELIST",
+  PLACEDETAIL: "PLACEDETAIL",
+} as const;
+
+export type PageType = (typeof PAGE)[keyof typeof PAGE];
