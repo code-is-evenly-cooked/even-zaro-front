@@ -61,7 +61,7 @@ export function UserGroupList() {
                       </div>
                       <div className="text-xs text-gray-600">
                         {/* 여기 응답 객체 백엔드단 코드 추가 되면 수정해야함!!!!!!!!!!!1*/}
-                        장소 {22}
+                        장소 {group.groupFavoriteCount ?? 0}
                       </div>
                     </div>
                   </div>

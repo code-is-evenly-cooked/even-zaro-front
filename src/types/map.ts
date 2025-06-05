@@ -50,4 +50,5 @@ export interface GroupListResponse {
   createdAt: string;
   updatedAt: string;
   deleted: boolean;
+  groupFavoriteCount: number;
 }
