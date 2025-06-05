@@ -45,7 +45,7 @@ export default function ProfileHeader() {
               <SettingIcon />
             </button>
           </div>
-          <ul className="flex justify-around gap-20">
+          <ul className="flex justify-around gap-16">
             <Stat label="글" count={profile.postCount} />
             <Stat label="팔로잉" count={profile.followingCount} />
             <Stat label="팔로워" count={profile.followerCount} />

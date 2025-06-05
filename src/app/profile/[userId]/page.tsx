@@ -11,7 +11,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   if (!userId) return null;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8">
       <ProfileHeader />
       <div className="flex flex-col max-w-3xl mx-auto">
         <ProfileTabClient />

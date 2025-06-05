@@ -14,23 +14,21 @@ export default function ProfileTabs({ activeTab, onTabChange }: Props) {
   ];
 
   return (
-    <div className="mt-3 mb-6">
-      <ul className="flex justify-around text-sm text-gray-500">
-        {tabs.map((tab) => (
-          <li key={tab.key}>
-            <button
-              onClick={() => onTabChange(tab.key)}
-              className={`py-2 ${
-                activeTab === tab.key
-                  ? "text-black font-semibold border-b-2 border-black"
-                  : "hover:text-black"
-              }`}
-            >
-              {tab.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="flex justify-around text-sm text-gray600 mt-3 mb-6">
+      {tabs.map((tab) => (
+        <li key={tab.key}>
+          <button
+            onClick={() => onTabChange(tab.key)}
+            className={`py-2 ${
+              activeTab === tab.key
+                ? "text-black font-semibold border-b-2 border-black"
+                : "hover:text-black"
+            }`}
+          >
+            {tab.label}
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 }

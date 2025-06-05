@@ -1,8 +1,8 @@
 export function Stat({ label, count }: { label: string; count: number }) {
   return (
-    <li key={label}>
+    <li key={label} className="flex gap-2">
       {label}
-      <span className="ml-2 font-bold">{count}</span>
+      <span className="font-bold">{count}</span>
     </li>
   );
 }
