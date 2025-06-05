@@ -1,25 +1,31 @@
 import { ProfileTabType } from "@/types/profile";
-import BookmarkGroupList from "./BookmarkGroupList"
+import BookmarkGroupList from "./BookmarkGroupList";
+import React from "react";
 
 interface Props {
   activeTab: ProfileTabType;
 }
 
 export default function ProfileTabContent({ activeTab }: Props) {
+  let content: React.ReactNode;
+
   switch (activeTab) {
     case "posts":
-      return <div>내가 쓴 글 리스트</div>;
+      content = <div>내가 쓴 글 리스트</div>;
+      break;
     case "comments":
-      return <div>내 댓글 리스트</div>;
+      content = <div>내 댓글 리스트</div>;
+      break;
     case "likes":
-      return <div>좋아요 리스트</div>;
+      content = <div>좋아요 리스트</div>;
+      break;
     case "bookmarks":
-      return (
-        <div>
-          <BookmarkGroupList />
-        </div>
-      );
+      content = <BookmarkGroupList />;
+      break;
     default:
-      return null;
+      content = null;
+      break;
   }
+
+  return <div className="mt-4">{content}</div>;
 }
