@@ -14,8 +14,11 @@ export function UserGroupList() {
   useEffect(() => {
     (async () => {
       try {
-        const data: GroupListResponseList = await fetchGroupList(otherUserId);
-        setGroupList(data);
+        if (otherUserId != null) {
+          const data: GroupListResponseList = await fetchGroupList(otherUserId);
+          setGroupList(data);
+        }
+
       } catch (error) {
         console.error("유저의 그룹 리스트를 불러오는 데 실패했습니다.", error);
       }
@@ -29,7 +32,7 @@ export function UserGroupList() {
           <div className="flex items-center justify-between px-4 py-2 border-b">
             {/* 뒤로 가기*/}
             <button
-              onClick={() => setPagePlaceDetail(placeId)}
+              onClick={() => setPagePlaceDetail(placeId!)}
               className="p-1 rounded-full hover:bg-gray-100"
             >
               <ArrowLeft size={20} className="text-gray-700" />
