@@ -6,7 +6,7 @@ import FallbackMessage from "../common/Fallback/FallbackMessage";
 import Link from "next/link";
 
 interface ProfilePostListProps {
-  type: ProfileTabType;
+  type: Exclude<ProfileTabType, "bookmarks">;
 }
 
 const ProfilePostList = ({ type }: ProfilePostListProps) => {
