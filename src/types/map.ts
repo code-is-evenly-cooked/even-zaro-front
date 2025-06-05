@@ -37,6 +37,7 @@ export interface PlaceInfos {
 export const PAGE = {
   PLACELIST: "PLACELIST",
   PLACEDETAIL: "PLACEDETAIL",
+  USERGROUPLIST: "USERGROUPLIST",
 } as const;
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
