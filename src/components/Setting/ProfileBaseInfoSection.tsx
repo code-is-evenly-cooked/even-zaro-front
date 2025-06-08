@@ -5,10 +5,10 @@ import BaseButton from "../common/Button/BaseButton";
 import { EditIcon } from "lucide-react";
 import { UserInfo } from "@/stores/useAuthStore";
 
-interface ProfileInfoSectionProp {
+interface ProfileBaseInfoSectionProp {
   user: UserInfo;
 }
-const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
+const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-8">
       <h2 className="text-lg font-bold">기본 정보</h2>
@@ -66,4 +66,4 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
   );
 };
 
-export default ProfileInfoSection;
+export default ProfileBaseInfoSection;
