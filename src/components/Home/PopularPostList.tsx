@@ -27,11 +27,11 @@ export default function PopularPostList() {
   }, []);
 
   return (
-    <div className="p-4 bg-white rounded-xl">
-      <div>
-        <h5 className="bg-white rounded-xl">🔥 실시간 인기</h5>
+    <div className="p-4">
+      <div className="mt-[-12px]">
+        <h5 className="text-sm text-gray-500 mb-1">🔥 실시간 인기</h5>
+        <h2 className="text-xl font-bold mb-4">실시간 인기 게시글</h2>
       </div>
-      <h2 className="text-xl font-bold mb-4">실시간 인기 게시글</h2>
 
       <div className="flex flex-col space-y-3 justify-between">
         {posts.slice(0,5).map((post) => (
