@@ -7,6 +7,7 @@ import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../../common/Icons";
 import { useProfile } from "@/hooks/useProfile";
 import { Stat } from "./Stat";
+import Link from "next/link";
 
 export default function ProfileHeader() {
   const { user } = useAuthStore();
@@ -41,9 +42,9 @@ export default function ProfileHeader() {
           <div className="flex items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
             {days != null && <span className="text-gray600">D+{days}</span>}
-            <button>
+            <Link href="/setting">
               <SettingIcon />
-            </button>
+            </Link>
           </div>
           <ul className="flex justify-around gap-16">
             <Stat label="글" count={profile.postCount} />

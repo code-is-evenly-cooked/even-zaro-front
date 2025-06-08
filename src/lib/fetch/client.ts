@@ -68,7 +68,13 @@ export const client = async <T>(
 
     return (raw as APISuccessResponse<T>).data;
   } catch (err) {
-    console.error("🔥 client fetch error ->", input, err);
+    const isTokenMissing =
+      err instanceof APIErrorResponse && err.code === "NO_ACCESS_TOKEN";
+    const isDev = process.env.NODE_ENV === "development";
+    if (!isTokenMissing && isDev) {
+      console.error("🔥 client fetch error ->", input, err);
+    }
+
     throw err;
   }
 };
