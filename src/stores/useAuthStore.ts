@@ -8,10 +8,12 @@ export interface UserInfo {
   email: string;
   nickname: string;
   profileImage: string | null;
-  provider: AuthProvider;
+  birthday: string | null;
   liveAloneDate: string | null;
+  gender: "MALE" | "FEMALE" | null;
+  mbti: string | null;
+  provider: AuthProvider;
   isValidated: boolean;
-  // TODO: 선택입력 정보는 추후 추가하기
 }
 
 interface AuthState {
