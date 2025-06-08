@@ -3,15 +3,19 @@ import Image from "next/image";
 import TextInput from "../common/Input/TextInput";
 import BaseButton from "../common/Button/BaseButton";
 import { EditIcon } from "lucide-react";
+import { UserInfo } from "@/stores/useAuthStore";
 
-const ProfileInfoSection = () => {
+interface ProfileInfoSectionProp {
+  user: UserInfo;
+}
+const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-8">
       <h2 className="text-lg font-bold">기본 정보</h2>
       <div className="flex flex-col gap-8 mx-4">
         <div className="relative w-[80px] h-[80px]">
           <Image
-            src={getProfileImageUrl("")}
+            src={getProfileImageUrl(user.profileImage)}
             alt="프로필"
             width={80}
             height={80}
@@ -32,7 +36,7 @@ const ProfileInfoSection = () => {
             <TextInput
               size="xl"
               fullWidth={false}
-              placeholder="test@test.com"
+              placeholder={user.email}
               disabled
               containerClassName="w-5/12"
             />
@@ -42,7 +46,8 @@ const ProfileInfoSection = () => {
             <TextInput
               size="xl"
               fullWidth={false}
-              placeholder="테스터"
+              value={user.nickname}
+              placeholder="닉네임을 입력하세요"
               helper="닉네임은 14일마다 한번 변경할 수 있어요."
               containerClassName="w-5/12"
             />
