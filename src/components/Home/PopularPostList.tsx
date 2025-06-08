@@ -33,13 +33,13 @@ export default function PopularPostList() {
         <h2 className="text-xl font-bold mb-4">실시간 인기 게시글</h2>
       </div>
 
-      <div className="flex flex-col space-y-3 justify-between">
+      <div className="flex flex-col justify-between h-full">
         {posts.slice(0,5).map((post) => (
           <div
             key={post.id}
-            className="px-4 py-2 min-h-[64px] hover:bg-gray-50 flex flex-col justify-between">
+            className="px-4 py-2 hover:bg-gray-50">
             <div className="flex items-center gap-2">
-              <span className="text-red-500 text-sm">🔺</span>
+              <span className="text-sm">🔺</span>
               <span className="text-base font-semibold truncate">{post.title}</span>
             </div>
             <div className="flex justify-end gap-3 mt-1  text-sm text-gray-600">
