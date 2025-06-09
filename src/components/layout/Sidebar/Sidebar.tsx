@@ -9,7 +9,7 @@ import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonLi
 import SidebarActionButton from "@/components/common/SidebarButton/SidebarActionButton";
 import { LogIn, LogOut } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
-import SidebarLinkButton from "@/components/common/SidebarButton/SideberLinkButton";
+import SidebarButton from "@/components/common/SidebarButton/SidebarButton";
 import { logout } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
 
@@ -86,7 +86,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                 onClick={handleLogout}
               />
             ) : (
-              <SidebarLinkButton
+              <SidebarButton
                 icon={<LogIn size={20} />}
                 title="로그인"
                 href="/login"
