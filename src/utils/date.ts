@@ -77,3 +77,11 @@ export const getSimplifiedDate = (isoString: string): string => {
 
   return fnsTzFormat(zonedDate, "yyyy.MM.dd", { timeZone });
 };
+
+export const convertDashToDot = (date: string): string => {
+  return date.replace(/-/g, ".");
+};
+
+export const convertDotToDash = (date: string): string => {
+  return date.replace(/\./g, "-");
+};
