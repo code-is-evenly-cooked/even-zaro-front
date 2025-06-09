@@ -85,3 +85,24 @@ export const convertDashToDot = (date: string): string => {
 export const convertDotToDash = (date: string): string => {
   return date.replace(/\./g, "-");
 };
+
+export const formatDate = (val: string): string => {
+  const numbersOnly = val.replace(/\D/g, "").slice(0, 8); // 숫자만 추출, 8자리까지 자르기
+  const parts = [];
+
+  if (numbersOnly.length >= 4) {
+    parts.push(numbersOnly.slice(0, 4)); // yyyy
+    if (numbersOnly.length >= 6) {
+      parts.push(numbersOnly.slice(4, 6)); // MM
+      if (numbersOnly.length > 6) {
+        parts.push(numbersOnly.slice(6, 8)); // dd
+      }
+    } else {
+      parts.push(numbersOnly.slice(4)); // MM만 입력 중
+    }
+  } else {
+    parts.push(numbersOnly); // yyyy 입력 중
+  }
+
+  return parts.join(".");
+};
