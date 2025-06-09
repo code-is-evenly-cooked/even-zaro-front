@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  FavoriteListResponse,
   GroupListResponse,
   PAGE,
   PageType,
@@ -32,6 +33,10 @@ interface MapStore {
   groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
 
+  // 즐겨찾기 리스트
+  favoriteList: FavoriteListResponse[] | null;
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
+
   // 즐겨찾기 추가 모달
   favoriteAddModal: boolean;
   setFavoriteAddModal: (favoriteAddModal: boolean) => void;
@@ -47,6 +52,7 @@ export const useMapStore = create<MapStore>((set) => ({
   groupList: [],
   otherUserId: null,
   favoriteAddModal: false,
+  favoriteList: null,
 
   setPagePlaceList: () =>
     set(() => ({
@@ -82,5 +88,9 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       groupId: grouId,
       page: PAGE.FAVORITELIST,
+    })),
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
+    set(() => ({
+      favoriteList: favoriteList
     })),
 }));
