@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
+export type Gender = "MALE" | "FEMALE";
 
 export interface UserInfo {
   userId: number;
@@ -10,7 +11,7 @@ export interface UserInfo {
   profileImage: string | null;
   birthday: string | null;
   liveAloneDate: string | null;
-  gender: "MALE" | "FEMALE" | null;
+  gender: Gender | undefined;
   mbti: string | null;
   provider: AuthProvider;
   isValidated: boolean;
