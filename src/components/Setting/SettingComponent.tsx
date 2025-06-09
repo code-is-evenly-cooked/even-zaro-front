@@ -1,11 +1,14 @@
 "use client";
 
-import { UserInfo } from "@/stores/useAuthStore";
+import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
 import ProfileBaseInfoSection from "./ProfileBaseInfoSection";
 import ProfileInfoSection from "./ProfileInfoSection";
 import ProfileChangePassword from "./ProfileChangePassword";
 import WithdrawConfirmModal from "./WithdrawConfirmModal";
 import { useState } from "react";
+import { withdrawUser } from "@/lib/api/profile";
+import { logout } from "@/lib/api/auth";
+import { useRouter } from "next/navigation";
 
 interface SettingComponentProps {
   user: UserInfo;
@@ -13,16 +16,24 @@ interface SettingComponentProps {
 
 const SettingComponent = ({ user }: SettingComponentProps) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
-  const handleWithdraw = () => {
+  const handleWithdrawModal = () => {
     setOpen(true);
   };
 
-  const handleConfirm = (reason: string) => {
-    // 탈퇴 API 호출
-
-    console.log("탈퇴 사유:", reason);
-    setOpen(false);
+  const handleConfirm = async (reason: string) => {
+    try {
+      await withdrawUser(reason);
+      await logout();
+      useAuthStore.getState().clearUser();
+      router.push("/");
+    } catch (e) {
+      console.error(e);
+      alert("탈퇴에 실패했습니다.");
+    } finally {
+      setOpen(false);
+    }
   };
 
   return (
@@ -33,7 +44,7 @@ const SettingComponent = ({ user }: SettingComponentProps) => {
       <ProfileChangePassword />
       <button
         className="mt-6 text-sm text-gray600 underline item-center"
-        onClick={handleWithdraw}
+        onClick={handleWithdrawModal}
       >
         회원 탈퇴하기
       </button>
