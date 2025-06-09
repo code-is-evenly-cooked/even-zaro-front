@@ -8,6 +8,7 @@ import { getProfileImageUrl } from "@/utils/image";
 import { EditIcon } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
 
 interface ProfileImageUploaderProps {
   initialImage: string;
@@ -17,6 +18,7 @@ interface ProfileImageUploaderProps {
 const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState(initialImage);
+  const [isLoading, setIsLoading] = useState(false);
   const { showToastMessage } = useToastMessageContext();
   const { user } = useAuthStore();
 
@@ -34,7 +36,7 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
   const handleImageUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("profileImage", file);
-    console.log(formData);
+    setIsLoading(true);
     try {
       const userId = user?.userId;
       const key = await uploadImageToS3(file, "profile", userId);
@@ -45,6 +47,8 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
         error instanceof Error ? error.message : "이미지 업로드 실패";
       setPreview(initialImage);
       showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,6 +62,11 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
         className="rounded-full border"
         priority
       />
+      {isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full rounded-full flex items-center justify-center bg-gray200/50">
+          <LoadingSpinner className="w-[30px] h-[30px]" />
+        </div>
+      )}
       <button
         type="button"
         className="absolute -top-0.5 -right-1 bg-violet600 rounded-full p-1 shadow-md hover:bg-violet-500"
