@@ -1,30 +1,34 @@
 "use client";
 
-import { Editor as ToastEditorCore } from "@toast-ui/editor";
 import { Editor } from "@toast-ui/react-editor";
-import { useRef, useEffect, useState, useMemo, useLayoutEffect } from "react";
+import { useRef, useEffect, useState, useLayoutEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { usePostStore } from "@/stores/usePostStore";
-import { saveDraft } from "@/utils/editorStorage";
-import BaseButton from "@/components/common/Button/BaseButton";
+import { MainCategory } from "@/types/category";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
-import { createPost } from "@/lib/api/posts";
-import { extractImageKeys, extractThumbnailKey } from "@/utils/editorImage";
-import SubCategoryDropdown from "../Dropdown/SubCategoryDropdown";
-import { MainCategory } from "@/types/category";
-import { useRestoreDraft } from "@/hooks/useRestoreDraft";
-import RestoreDraftModal from "./RestoreDraftModal";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 import { useEditorScrollLock } from "@/hooks/useEditorScrollLock";
+import { useEditorToolbar } from "@/hooks/editor/useEditorToolbar";
+import { useDropdownClose } from "@/hooks/editor/useDropdownClose";
+import { useEditorInit } from "@/hooks/editor/useEditorInit";
+import { usePostSubmitHandler } from "@/hooks/editor/usePostSubmitHandler";
+import { useRestoreDraft } from "@/hooks/useRestoreDraft";
+import EditorHeader from "@/components/editor/EditorHeader";
+import EditorContent from "@/components/editor/EditorContent";
+import EditorActions from "@/components/editor/EditorActions";
+import RestoreDraftModal from "./RestoreDraftModal";
 
 export default function PostEditor() {
   const editorRef = useRef<Editor | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-  const { showToastMessage } = useToastMessageContext();
+  const subButtonRef = useRef<HTMLButtonElement | null>(null);
+  const subDropdownRef = useRef<HTMLUListElement | null>(null);
+
+  const [openDropdown, setOpenDropdown] = useState<"sub" | null>(null);
+  const [subButtonWidth, setSubButtonWidth] = useState(0);
+
   const {
     title,
     content,
@@ -34,41 +38,27 @@ export default function PostEditor() {
     setContent,
     setMainCategory,
     setSubCategory,
-    setImageList,
-    setThumbnailImage,
-    resetPost,
   } = usePostStore();
+
+  const { showToastMessage } = useToastMessageContext();
+  const { toolbarItems } = useEditorToolbar();
+  const { handleSubmit } = usePostSubmitHandler();
 
   const searchParams = useSearchParams();
   const category = searchParams.get("category") as MainCategory | null;
+  const restore = useRestoreDraft(editorRef);
+
+  useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
+  useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
+  useEditorInit(editorRef, restore.isReady, content); // 에디터 초기화
+  useEditorScrollLock(); // 외부 스크롤 차단
+  useDropdownClose([subButtonRef, subDropdownRef], () => setOpenDropdown(null)); // 드롭다운 외부 클릭 감지
 
   useEffect(() => {
     if (category) {
       setMainCategory(category);
     }
   }, [mainCategory, category, setMainCategory]);
-
-  // 에디터 툴바 아이템 (모바일 구분)
-  const [isMobile] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.innerWidth < 640;
-    }
-    return false;
-  });
-
-  const toolbarItems = useMemo(() => {
-    return isMobile
-      ? [
-          ["heading", "bold", "strike"],
-          ["link", "image"],
-        ]
-      : [
-          ["heading", "bold", "italic", "strike"],
-          ["link", "image"],
-          ["hr", "quote"],
-          ["ul", "ol", "task"],
-        ];
-  }, [isMobile]);
 
   // 에디터 내부 UI 변경 (한글화)
   useEffect(() => {
@@ -89,207 +79,47 @@ export default function PostEditor() {
     return () => clearTimeout(timer);
   }, [toolbarItems]);
 
-  // 툴바 아이템 툴팁 한글화
-  ToastEditorCore.setLanguage("ko-KR", {
-    Headings: "글씨 크기",
-    Bold: "굵게",
-    Italic: "기울임",
-    Strike: "취소선",
-    Link: "링크 삽입",
-    Image: "이미지 삽입",
-    Line: "가로선",
-    Quote: "인용구",
-    Task: "체크박스",
-    "Ordered list": "번호 목록",
-    "Unordered list": "글머리 기호",
-  });
-
-  const [openDropdown, setOpenDropdown] = useState<"sub" | null>(null);
-  const subButtonRef = useRef<HTMLButtonElement | null>(null);
-  const subDropdownRef = useRef<HTMLUListElement | null>(null);
-  const [subButtonWidth, setSubButtonWidth] = useState(0);
-
   useLayoutEffect(() => {
     if (subButtonRef.current) {
       setSubButtonWidth(subButtonRef.current.offsetWidth);
     }
   }, [subCategory, mainCategory]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (
-        subButtonRef.current?.contains(target) ||
-        subDropdownRef.current?.contains(target)
-      ) {
-        return;
-      }
-      setOpenDropdown(null);
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
-  useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
-
-  const restore = useRestoreDraft(editorRef); // 임시 저장 불러오기
-
-  // 에디터 내부 초기화 로직
-  useEffect(() => {
-    const editor = editorRef.current?.getInstance();
-    if (!editor) return;
-
-    // 준비 완료되기 전에는 항상 빈 화면
-    if (!restore.isReady) {
-      editor.setMarkdown("");
-      return;
-    }
-
-    // 준비 완료 후에는 store의 content 반영
-    editor.setMarkdown(content || "");
-  }, [restore.isReady, content]);
-
-  // 글 작성
-  const handleSubmit = async () => {
-    try {
-      if (!title || !content) {
-        showToastMessage({
-          message: "제목, 내용을 입력해주세요.",
-          type: "error",
-        });
-        return;
-      }
-
-      if (!mainCategory || !subCategory) {
-        showToastMessage({
-          message: "카테고리와 태그를 선택해주세요.",
-          type: "error",
-        });
-        return;
-      }
-
-      const imageUrls = extractImageKeys(content);
-      const thumbnail = extractThumbnailKey(content);
-
-      setImageList(imageUrls);
-      setThumbnailImage(thumbnail);
-
-      const { category, postId } = await createPost({
-        title,
-        content,
-        category: mainCategory,
-        tag: subCategory,
-        postImageList: imageUrls,
-        thumbnailImage: thumbnail,
-      });
-
-      showToastMessage({
-        message: "게시글 작성이 완료되었습니다!",
-        type: "success",
-      });
-      resetPost(); // 상태 초기화
-      router.replace(`/board/${category}/${postId}`);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "알 수 없는 오류가 발생했습니다";
-
-      showToastMessage({
-        message: errorMessage,
-        type: "error",
-      });
-    }
-  };
-
-  // 에디터 본문에서 외부 스크롤 차단
-  useEditorScrollLock();
-
   return (
     <div
       ref={wrapperRef}
       className="relative w-full max-w-[836px] mx-auto p-4 bg-white rounded-xl shadow"
     >
-      <div className="flex justify-between items-center">
-        <div className="my-4 flex gap-2 items-center">
-          {mainCategory && (
-            <SubCategoryDropdown
-              selectedMainCategory={mainCategory}
-              selectedSubCategory={subCategory}
-              isDropdownOpen={openDropdown === "sub"}
-              toggleDropdown={() =>
-                setOpenDropdown((prev) => (prev === "sub" ? null : "sub"))
-              }
-              selectSubCategory={(tag) => {
-                setSubCategory(tag);
-                setOpenDropdown(null);
-              }}
-              buttonRef={subButtonRef}
-              dropdownRef={subDropdownRef}
-              buttonWidth={subButtonWidth}
-              showAllOption={false}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* 제목 입력창 */}
-      <input
-        type="text"
-        value={restore.isReady ? title : ""}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="제목을 입력하세요"
-        className="w-full h-[60px] text-2xl font-semibold outline-none placeholder-gray-400 mb-6 px-3 py-2 rounded-md bg-white shadow-[0_1px_4px_rgba(0,0,0,0.1)] focus:shadow-[0_2px_6px_rgba(0,0,0,0.2)] transition"
+      {/* 카테고리 드롭 다운 */}
+      <EditorHeader
+        mainCategory={mainCategory}
+        subCategory={subCategory}
+        setSubCategory={setSubCategory}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
+        subButtonRef={subButtonRef}
+        subDropdownRef={subDropdownRef}
+        subButtonWidth={subButtonWidth}
       />
 
-      {/* 본문 에디터 */}
-      <Editor
-        ref={editorRef}
-        language="ko-KR"
-        initialValue=""
-        previewStyle="vertical"
-        height="420px"
-        initialEditType="wysiwyg"
-        useCommandShortcut={true}
+      {/* 제목 + 본문 에디터 */}
+      <EditorContent
+        editorRef={editorRef}
+        title={title}
+        setTitle={setTitle}
+        setContent={setContent}
         toolbarItems={toolbarItems}
-        onChange={() =>
-          setContent(editorRef.current?.getInstance().getMarkdown() ?? "")
-        }
+        isReady={restore.isReady}
       />
 
-      <div className="flex gap-2 items-center justify-end">
-        <BaseButton
-          type="button"
-          size="md"
-          variant="outlined"
-          color="skyblue300"
-          className="h-[44px] w-[120px] text-nowrap mt-4"
-          onClick={() => {
-            const instance = editorRef.current?.getInstance();
-            if (!instance) {
-              showToastMessage({
-                message: "에디터 사용 중 문제가 발생했습니다.",
-                type: "error",
-              });
-              return;
-            }
-            const content = instance.getMarkdown();
-            saveDraft({ title, content });
-            showToastMessage({ message: "임시 저장 완료", type: "info" });
-          }}
-        >
-          임시 저장
-        </BaseButton>
-        <BaseButton
-          type="button"
-          color="skyblue300"
-          onClick={handleSubmit}
-          className="h-[44px] w-[120px] text-nowrap mt-4"
-        >
-          등록
-        </BaseButton>
-      </div>
+      {/* 글쓰기 에디터 액션 버튼 */}
+      <EditorActions
+        editorRef={editorRef}
+        title={title}
+        showToastMessage={showToastMessage}
+        onSubmit={handleSubmit}
+      />
+
       {/* 임시 저장 불러오기 모달 */}
       <RestoreDraftModal
         isOpen={restore.isOpen}
