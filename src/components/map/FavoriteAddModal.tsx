@@ -1,6 +1,15 @@
 import { X } from "lucide-react";
+import { useState } from "react";
 
 export function FavoriteAddModal() {
+  const [selectedGroup, setSelectedGroup] = useState<string>("");
+  const [newGroupName, setNewGroupName] = useState<string>("");
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedGroup(e.target.value);
+  };
+
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
@@ -17,14 +26,31 @@ export function FavoriteAddModal() {
           </label>
           <select
             className="w-full border border-gray-300  rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
-            defaultValue=""
+            value={selectedGroup}
+            onChange={handleSelectChange}
           >
             <option value="" disabled>
               그룹을 선택해주세요.
             </option>
+            <option value="__new__">그룹 추가</option>
             <option value="group1">그룹 1</option>
             <option value="group2">그룹 2</option>
           </select>
+
+          {selectedGroup === "__new__" && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium text-gray600 mb-1">
+                새 그룹 이름
+              </label>
+              <input
+                type="text"
+                value={newGroupName}
+                onChange={(e) => setNewGroupName(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+                placeholder="새 그룹 이름을 입력하세요"
+              />
+            </div>
+          )}
         </div>
 
         <div className="mb-6">
