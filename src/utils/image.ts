@@ -10,9 +10,16 @@
  */
 export const getProfileImageUrl = (src: string | null): string => {
   if (!src) return "/icons/defaultProfile.svg";
-  if (src.startsWith("http") && src.includes("k.kakaocdn.net")) {
-    return src;
-  }
+
+  // 카카오 CDN 이미지인 경우
+  if (src.startsWith("http") && src.includes("k.kakaocdn.net")) return src;
+
+  // 로컬 미리보기
+  if (src.startsWith("blob:")) return src;
+
+  // 이미 full URL일 경우
+  if (src.startsWith("http")) return src;
+
   const baseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_URL;
   return `${baseUrl}${src.startsWith("/") ? src : "/" + src}`;
 };
