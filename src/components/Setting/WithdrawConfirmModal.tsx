@@ -17,7 +17,7 @@ export default function WithdrawConfirmModal({
   return (
     <BaseModal isOpen={isOpen} onClose={onClose}>
       <div className="space-y-4">
-        <p className="text-lg font-semibold text-center">
+        <p className="text-lg font-semibold">
           정말 탈퇴하시겠어요?
         </p>
         <TextInput
