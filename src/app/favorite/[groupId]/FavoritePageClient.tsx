@@ -37,7 +37,7 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
   return (
     <div className="max-w-3xl mx-auto py-6">
       {items?.[0]?.userId && <FavoriteHeader userId={items[0].userId} />}
-      <div className="flex flex-col items-center gap-4 mb-10">
+      <div className="flex flex-col items-center gap-2 mb-8">
         <h2 className="text-xl font-bold">{groupName}</h2>
         <p className="text-gray600">장소 {displayItems.length}</p>
       </div>
