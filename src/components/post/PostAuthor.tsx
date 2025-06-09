@@ -4,7 +4,7 @@ import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
 
@@ -26,6 +26,7 @@ export default function PostAuthor({
   const [isCheckingFollow, setIsCheckingFollow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
 
   // 자취 기간 디데이 표시
   const days =
@@ -73,6 +74,17 @@ export default function PostAuthor({
     }
   };
 
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   // 게시글 수정
   const handleEdit = () => {};
 
@@ -112,7 +124,7 @@ export default function PostAuthor({
 
       {/* 수정 삭제 모달 */}
       {isMine && (
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <button onClick={() => setMenuOpen((prev) => !prev)}>
             <MoreVerticalIcon width={20} height={20} className="text-gray600" />
           </button>
