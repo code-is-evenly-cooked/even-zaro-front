@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { MoreVerticalIcon } from "lucide-react";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import type { FavoriteGroupType } from "@/types/favorite";
 import Link from "next/link";
 import {
@@ -22,6 +23,7 @@ export default function FavoriteGroupCard({
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(group.name);
   const [displayName, setDisplayName] = useState(group.name);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -133,13 +135,22 @@ export default function FavoriteGroupCard({
             className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100 flex items-center gap-2"
             onClick={() => {
               setIsMenuOpen(false);
-              handleDelete();
+              setIsDeleteModalOpen(true);
             }}
           >
             삭제
           </button>
         </div>
       )}
+
+      {/* 삭제 확인 모달 */}
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="그룹을 삭제할까요?"
+        description="삭제하면 이 그룹은 더 이상 표시되지 않습니다."
+      />
     </div>
   );
 }
