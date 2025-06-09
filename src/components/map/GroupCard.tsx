@@ -1,16 +1,20 @@
 import { MoreVertical, Star } from "lucide-react";
 import { GroupListResponse } from "@/types/map";
-
+import { useMapStore } from "@/stores/mapStore";
 
 interface GroupCardProps {
-  group : GroupListResponse,
+  group: GroupListResponse;
 }
 
-export function GroupCard ( {group} : GroupCardProps) {
+export function GroupCard({ group }: GroupCardProps) {
+  const { setPageFavoriteList } = useMapStore();
+
   return (
     <>
       <li
         className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
+        onClick={() => setPageFavoriteList(group.groupId)}
+        key={group.groupId}
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-violet-100 flex items-center justify-center">
