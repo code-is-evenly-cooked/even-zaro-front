@@ -18,7 +18,7 @@ export function FavoriteAddModal() {
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold">즐겨찾기 추가</h2>
-          <button>
+          <button onClick={() => setFavoriteAddModal(favoriteAddModal)}>
             <X className="w-5 h-5 text-gray600" />
           </button>
         </div>
