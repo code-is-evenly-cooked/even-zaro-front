@@ -11,11 +11,11 @@ export interface FavoriteItemType {
   userId: number;
   groupId: number;
   placeId: number;
+  placeName: string;
   lat: number;
   lng: number;
   memo: string;
   address: string;
-  deleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
