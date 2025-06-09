@@ -5,28 +5,14 @@ import { FavoriteListResponse, PAGE } from "@/types/map";
 import { useEffect } from "react";
 import { fetchFavoritesByGroup } from "@/lib/api/map";
 import { useProfile } from "@/hooks/useProfile";
+import { FavoriteList } from "@/components/map/FavoriteList";
 
 export function GroupsFavoriteList() {
   const { groupId, page, otherUserId } = useMapStore((state) => state);
   const { setFavoriteList, setPageGroupList } = useMapStore();
   const { data: profile } = useProfile(otherUserId);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (groupId != null) {
-          const data: FavoriteListResponse[] =
-            await fetchFavoritesByGroup(groupId);
-          setFavoriteList(data);
-        }
-      } catch (error) {
-        console.error(
-          "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다.",
-          error,
-        );
-      }
-    })();
-  }, [groupId]);
+
 
   return (
     <>
@@ -59,6 +45,7 @@ export function GroupsFavoriteList() {
               </span>
             </div>
           </div>
+          <FavoriteList />
         </div>
       )}
     </>
