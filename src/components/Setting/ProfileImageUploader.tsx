@@ -34,11 +34,16 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
   };
 
   const handleImageUpload = async (file: File) => {
+    const userId = user?.userId;
+    if (!userId) {
+      showToastMessage({ type: "error", message: "로그인이 필요합니다." });
+      return;
+    }
+
     const formData = new FormData();
     formData.append("profileImage", file);
     setIsLoading(true);
     try {
-      const userId = user?.userId;
       const key = await uploadImageToS3(file, "profile", userId);
       const { profileImage } = await updateProfileImage(key);
       setPreview(profileImage);
