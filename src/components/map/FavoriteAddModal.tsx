@@ -7,7 +7,7 @@ export function FavoriteAddModal() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold">즐겨찾기 추가</h2>
           <button>
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 text-gray600" />
           </button>
         </div>
 
@@ -39,10 +39,10 @@ export function FavoriteAddModal() {
         </div>
 
         <div className="flex justify-end space-x-2">
-          <button className="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-800 hover:bg-gray-200">
+          <button className="px-4 py-2 text-sm rounded-md bg-gray100 text-gray900 hover:bg-gray200">
             Close
           </button>
-          <button className="px-4 py-2 text-sm rounded-md bg-purple-600 text-white hover:bg-purple-700">
+          <button className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600">
             Apply
           </button>
         </div>
