@@ -43,8 +43,6 @@ export const PAGE = {
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
 
-export type GroupListResponseList = GroupListResponse[];
-
 export interface GroupListResponse {
   groupId: number;
   name: string;
@@ -53,8 +51,6 @@ export interface GroupListResponse {
   deleted: boolean;
   groupFavoriteCount: number;
 }
-
-export type FavoriteListResponseList = FavoriteListResponse[];
 
 export interface FavoriteListResponse {
   id: number,

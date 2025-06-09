@@ -1,6 +1,6 @@
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { useEffect } from "react";
-import { GroupListResponseList } from "@/types/map";
+import { GroupListResponse } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { GroupCard } from "@/components/map/GroupCard";
@@ -13,7 +13,7 @@ export function GroupCardList() {
     (async () => {
       try {
         if (otherUserId != null) {
-          const data: GroupListResponseList = await fetchGroupList(otherUserId);
+          const data: GroupListResponse[] = await fetchGroupList(otherUserId);
           setGroupList(data);
         }
       } catch (error) {
