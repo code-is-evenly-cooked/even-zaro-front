@@ -6,8 +6,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function POST() {
   try {
-    const cookieStore = cookies();
-    const accessToken = (await cookieStore).get("access_token")?.value;
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token")?.value;
 
     if (!accessToken) {
       return createErrorResponse("access token 없음", 401);
