@@ -12,11 +12,11 @@ export function FavoriteAddModal() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray600 mb-1">
             그룹 선택
           </label>
           <select
-            className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="w-full border border-gray-300  rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
             defaultValue=""
           >
             <option value="" disabled>
@@ -28,8 +28,8 @@ export function FavoriteAddModal() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            메모 <span className="text-gray-400 text-xs">(Optional)</span>
+          <label className="block text-sm font-medium text-gray600 mb-1">
+            메모 <span className="text-gray600 text-xs">(Optional)</span>
           </label>
           <input
             type="text"
