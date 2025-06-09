@@ -31,6 +31,7 @@ const BaseInput = memo(
           focus:outline-none
           focus:ring-0
           ${rightElement ? "pr-18" : "pr-10"}
+          ${fullWidth ? "w-full" : ""}
         `;
 
         const sizeStyles =
@@ -45,7 +46,7 @@ const BaseInput = memo(
           default: `
             border border-gray200
             focus:border-violet600
-						focus:shadow-violetGlow
+            focus:shadow-violetGlow
           `,
           invalid: `
             border border-violet600 shadow-violetGlow
@@ -56,15 +57,13 @@ const BaseInput = memo(
           ? `cursor-not-allowed disabled:bg-gray200`
           : ``;
 
-        return `${baseStyles} ${sizeStyles} ${stateStyles} ${disabledStyles} ${
-          className || ""
-        }`;
+        return `${baseStyles} ${sizeStyles} ${stateStyles} ${disabledStyles} ${className || ""}`;
       };
+
       return (
         <div
           className={`
             relative
-            ${fullWidth ? "w-full" : "w-auto"}
             ${containerClassName || ""}
             transition-all duration-300 rounded-lg
           `}
