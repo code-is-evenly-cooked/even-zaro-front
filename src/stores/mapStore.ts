@@ -30,6 +30,10 @@ interface MapStore {
   // 유저 그룹 리스트
   groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
+
+  // 즐겨찾기 추가 모달
+  favoriteAddModal: boolean;
+  setFavoriteAddModal: (favoriteAddModal:boolean) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -40,6 +44,7 @@ export const useMapStore = create<MapStore>((set) => ({
   placeDetail: null,
   groupList: [],
   otherUserId: null,
+  favoriteAddModal: false,
 
 
   setPagePlaceList: () =>
@@ -67,5 +72,9 @@ export const useMapStore = create<MapStore>((set) => ({
   setGroupList: (groupList: GroupListResponse[]) =>
     set(() => ({
       groupList: groupList,
+    })),
+  setFavoriteAddModal: (favoriteAddModal: boolean) =>
+    set(() => ({
+      favoriteAddModal: !favoriteAddModal,
     })),
 }));
