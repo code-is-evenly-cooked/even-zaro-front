@@ -5,6 +5,7 @@ import { GroupListResponseList, PAGE } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { useProfile } from "@/hooks/useProfile";
+import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 
 export function UserGroupList() {
   const { groupList, placeId, page, otherUserId } = useMapStore((state) => state);
@@ -74,9 +75,12 @@ export function UserGroupList() {
                 </li>
               ))
             ) : (
-              <div className="text-sm text-gray-600 text-center py-10">
-                등록된 그룹이 없습니다.
-              </div>
+              <FallbackMessage
+                className="등록된 그룹이 없습니다."
+              />
+              // <div className="text-sm text-gray-600 text-center py-10">
+              //   등록된 그룹이 없습니다.
+              // </div>
             )}
           </ul>
         </div>
