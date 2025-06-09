@@ -31,7 +31,7 @@ const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
             <EditIcon className="w-5 h-5 text-violet800 m-0.5" />
           </button>
         </div>
-        <ul className="space-y-4 px-8">
+        <ul className="space-y-2 px-8">
           <FormFieldRow label="이메일">
             <TextInput
               size="xl"

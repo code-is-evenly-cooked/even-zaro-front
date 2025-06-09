@@ -1,24 +1,39 @@
-import { UserInfo } from "@/stores/useAuthStore";
+import { Gender, UserInfo } from "@/stores/useAuthStore";
 import TextInput from "../common/Input/TextInput";
 import FormFieldRow from "./FormFieldRow";
 import BaseButton from "../common/Button/BaseButton";
 import DateInput from "../common/Input/DateInput";
+import GenderRadioGroup from "./GenderRadioGroup";
+import { useState } from "react";
 
 interface ProfileInfoSectionProp {
   user: UserInfo;
 }
 
 const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
+  const [userInfo, setUserInfo] = useState<{
+    birthday: string;
+    liveAloneDate: string;
+    gender?: Gender;
+    mbti: string;
+  }>({
+    birthday: user.birthday ?? "",
+    liveAloneDate: user.liveAloneDate ?? "",
+    gender: user.gender,
+    mbti: user.mbti ?? "",
+  });
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
       <h2 className="text-lg font-bold">프로필 정보</h2>
-      <ul className="space-y-4 px-8">
+      <ul className="space-y-2 px-8">
         <FormFieldRow label="생년월일">
           <DateInput
             size="xl"
             fullWidth={false}
-            value={user.birthday ?? ""}
-            onChange={() => {}}
+            value={userInfo.birthday}
+            onChange={(value) =>
+              setUserInfo((prev) => ({ ...prev, birthday: value }))
+            }
             containerClassName="w-80"
           />
         </FormFieldRow>
@@ -26,25 +41,26 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
           <DateInput
             size="xl"
             fullWidth={false}
-            value={user.liveAloneDate ?? ""}
-            onChange={() => {}}
+            value={userInfo.liveAloneDate}
+            onChange={(value) =>
+              setUserInfo((prev) => ({ ...prev, liveAloneDate: value }))
+            }
             containerClassName="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="성별">
-          <TextInput
-            size="xl"
-            fullWidth={false}
-            value={user.birthday ?? ""}
-            placeholder="성별을 선택해주세요"
-            containerClassName="w-80"
+          <GenderRadioGroup
+            value={userInfo.gender}
+            onChange={(selected) =>
+              setUserInfo((prev) => ({ ...prev, gender: selected }))
+            }
           />
         </FormFieldRow>
         <FormFieldRow label="MBTI">
           <TextInput
             size="xl"
             fullWidth={false}
-            value={user.birthday ?? ""}
+            value={userInfo.mbti}
             placeholder="MBTI을 선택해주세요"
             containerClassName="w-80"
           />
