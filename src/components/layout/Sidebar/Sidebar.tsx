@@ -25,7 +25,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     if (!isOpen) setVisible(false);
   };
 
-  const handleLogout = () => {};
+  const handleLogout = async () => {
+    await logout();
+
+    useAuthStore.getState().clearUser();
+    onClose();
+    router.push("/");
+  };
 
   return (
     <>
