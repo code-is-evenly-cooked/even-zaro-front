@@ -1,7 +1,8 @@
 import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
+import { fetchFavoriteStatus, fetchPlaceDetail } from "@/lib/api/map";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
@@ -11,8 +12,24 @@ export default function PlaceUserMemosHeader({
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
   const { setPagePlaceList } = useMapStore();
+  const placeId = useMapStore((status) => status.placeId);
 
   const [favorite, setFavorite] = useState(false);
+
+  useEffect(() => {
+    if (placeId !== null) {
+      (async () => {
+        try {
+          const data = await fetchFavoriteStatus(placeId);
+          console.log("data(boolean) : ", data);
+          setFavorite(data);
+        } catch (error) {
+          console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
+        }
+      })();
+    }
+  }, [placeId]);
+
 
   return (
     <div className="relative w-full px-4 py-4">
@@ -24,7 +41,7 @@ export default function PlaceUserMemosHeader({
         <div className="flex items-center space-x-2">
           <div className="flex self-start">
             <LucideStar
-              className={favorite ? " " : "text-yellow-400 fill-yellow-400"}
+              className={favorite ? "text-yellow-400 fill-yellow-400" : " "}
             />
           </div>
 
