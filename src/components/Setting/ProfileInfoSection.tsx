@@ -34,7 +34,7 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
             onChange={(value) =>
               setUserInfo((prev) => ({ ...prev, birthday: value }))
             }
-            containerClassName="w-80"
+            className="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="자취 시작일">
@@ -45,7 +45,7 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
             onChange={(value) =>
               setUserInfo((prev) => ({ ...prev, liveAloneDate: value }))
             }
-            containerClassName="w-80"
+            className="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="성별">

@@ -16,7 +16,7 @@ const FormFieldRow = ({ label, children, className }: FormFieldRowProps) => {
       >
         {label}
       </label>
-      {children}
+      <div className="w-auto">{children}</div>
     </li>
   );
 };
