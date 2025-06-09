@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
-export type Gender = "MALE" | "FEMALE";
+export type Gender = "MALE" | "FEMALE" | "UNKNOWN";
 export const MBTI_LIST = [
   "INTJ",
   "INTP",

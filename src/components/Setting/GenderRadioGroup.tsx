@@ -13,6 +13,7 @@ interface GenderRadioGroupProps {
 const options = [
   { label: "남성", value: "MALE" },
   { label: "여성", value: "FEMALE" },
+  { label: "기타", value: "UNKNOWN" },
 ];
 
 const GenderRadioGroup = ({
