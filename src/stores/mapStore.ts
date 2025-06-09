@@ -7,7 +7,6 @@ import {
   PlaceDetailResponse,
   PlaceListResponse,
 } from "@/types/map";
-import { Group } from "next/dist/shared/lib/router/utils/route-regex";
 
 interface MapStore {
   // 상태 변수

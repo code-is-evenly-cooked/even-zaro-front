@@ -16,7 +16,6 @@ export function FavoriteList() {
           const data: FavoriteListResponse[] =
             await fetchFavoritesByGroup(groupId);
           setFavoriteList(data);
-          console.log("그룹 즐겨찾기 조회 성공");
         }
       } catch (error) {
         console.error(
@@ -36,7 +35,7 @@ export function FavoriteList() {
             <FavoriteCard favorite={favorite} key={idx} />
           ))
         ) : (
-          <FallbackMessage message="등록된 그룹이 없습니다." />
+          <FallbackMessage message="등록된 즐겨찾기가 없습니다." />
         )}
       </ul>
     </>
