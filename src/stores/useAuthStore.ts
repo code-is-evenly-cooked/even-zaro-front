@@ -2,16 +2,38 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
+export type Gender = "MALE" | "FEMALE" | "UNKNOWN";
+export const MBTI_LIST = [
+  "INTJ",
+  "INTP",
+  "ENTJ",
+  "ENTP",
+  "INFJ",
+  "INFP",
+  "ENFJ",
+  "ENFP",
+  "ISTJ",
+  "ISFJ",
+  "ESTJ",
+  "ESFJ",
+  "ISTP",
+  "ISFP",
+  "ESTP",
+  "ESFP",
+] as const;
+export type MBTI = (typeof MBTI_LIST)[number];
 
 export interface UserInfo {
   userId: number;
   email: string;
   nickname: string;
   profileImage: string | null;
-  provider: AuthProvider;
+  birthday: string | null;
   liveAloneDate: string | null;
+  gender: Gender | undefined;
+  mbti: MBTI | undefined;
+  provider: AuthProvider;
   isValidated: boolean;
-  // TODO: 선택입력 정보는 추후 추가하기
 }
 
 interface AuthState {

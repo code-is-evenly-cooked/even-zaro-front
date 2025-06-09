@@ -37,6 +37,18 @@ export interface PlaceInfos {
 export const PAGE = {
   PLACELIST: "PLACELIST",
   PLACEDETAIL: "PLACEDETAIL",
+  USERGROUPLIST: "USERGROUPLIST",
 } as const;
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
+
+export type GroupListResponseList = GroupListResponse[];
+
+export interface GroupListResponse {
+  groupId: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  deleted: boolean;
+  groupFavoriteCount: number;
+}

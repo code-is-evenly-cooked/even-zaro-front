@@ -1,12 +1,21 @@
 "use client";
 
+import { UserInfo } from "@/stores/useAuthStore";
+import ProfileBaseInfoSection from "./ProfileBaseInfoSection";
 import ProfileInfoSection from "./ProfileInfoSection";
+import ProfileChangePassword from "./ProfileChangePassword";
 
-const SettingComponent = () => {
+interface SettingComponentProps {
+  user: UserInfo;
+}
+
+const SettingComponent = ({ user }: SettingComponentProps) => {
   return (
     <div className="flex flex-col py-20 gap-4">
       <h1 className="text-2xl font-bold pb-4">계정 정보</h1>
-      <ProfileInfoSection />
+      <ProfileBaseInfoSection user={user} />
+      <ProfileInfoSection user={user} />
+      <ProfileChangePassword />
     </div>
   );
 };

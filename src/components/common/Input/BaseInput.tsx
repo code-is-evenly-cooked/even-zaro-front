@@ -21,7 +21,6 @@ const BaseInput = memo(
     ) => {
       const getInputStyles = () => {
         const baseStyles = `
-          w-full
           bg-transparent
           text-gray900
           placeholder:text-gray600
