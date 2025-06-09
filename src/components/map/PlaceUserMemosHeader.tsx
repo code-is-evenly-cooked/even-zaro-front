@@ -21,7 +21,6 @@ export default function PlaceUserMemosHeader({
       (async () => {
         try {
           const data = await fetchFavoriteStatus(placeId);
-          console.log("data(boolean) : ", data);
           setFavorite(data);
         } catch (error) {
           console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
