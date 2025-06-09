@@ -9,7 +9,7 @@ import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
 export default function FavoritePage({ groupId }: { groupId: number }) {
   const { data: items, isLoading, error } = useFavoriteItems(groupId);
 
-  const displayItems = items?.filter((item) => !item.deleted) ?? [];
+  const displayItems = items ?? [];
   const [groupName, setGroupName] = useState<string>("");
 
   // 해당 groupId 그룹 이름 가져오기
