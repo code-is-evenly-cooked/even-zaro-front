@@ -24,3 +24,12 @@ export const fetchGroupList = async (userId: number): Promise<GroupListResponse[
     method: "GET",
   })
 }
+
+export const fetchFavoriteStatus = async(placeId : number) : Promise<boolean> => {
+  return await client<boolean>(`/favorite/check`, {
+    method: "GET",
+    params: {
+      placeId: placeId,
+    }
+  })
+}

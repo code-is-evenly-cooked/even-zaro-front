@@ -17,7 +17,7 @@ const ProfileChangePassword = () => {
             onChange={handleFormChange("currentPassword")}
             styleState={errors.currentPassword ? "invalid" : "default"}
             error={errors.currentPassword}
-            className="w-80"
+            containerClassName="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="새 비밀번호">
@@ -28,7 +28,7 @@ const ProfileChangePassword = () => {
             onChange={handleFormChange("newPassword")}
             styleState={errors.newPassword ? "invalid" : "default"}
             error={errors.newPassword}
-            className="w-80"
+            containerClassName="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="비밀번호 확인">
@@ -39,7 +39,7 @@ const ProfileChangePassword = () => {
             onChange={handleFormChange("confirmPassword")}
             styleState={errors.confirmPassword ? "invalid" : "default"}
             error={errors.confirmPassword}
-            className="w-80"
+            containerClassName="w-80"
           />
         </FormFieldRow>
       </ul>

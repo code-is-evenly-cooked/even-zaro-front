@@ -8,18 +8,32 @@ import {
 } from "@/types/map";
 
 interface MapStore {
-  page: PageType;
-  placeList: PlaceListResponse | null;
+
+  // 상태 변수
   placeId: number | null;
-  placeDetail: PlaceDetailResponse | null;
-  groupList: GroupListResponse[] | null;
   otherUserId: number | null;
+
+  // 모달 페이지
+  page: PageType;
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
   setPageGroupList:(otherUserId: number) => void;
+
+  // 장소 리스트
+  placeList: PlaceListResponse | null;
   setPlaceList: (placeList: PlaceListResponse) => void;
+
+  // 장소 상세
+  placeDetail: PlaceDetailResponse | null;
   setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
+
+  // 유저 그룹 리스트
+  groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
+
+  // 즐겨찾기 추가 모달
+  favoriteAddModal: boolean;
+  setFavoriteAddModal: (favoriteAddModal:boolean) => void;
 };
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -30,6 +44,7 @@ export const useMapStore = create<MapStore>((set) => ({
   placeDetail: null,
   groupList: [],
   otherUserId: null,
+  favoriteAddModal: false,
 
 
   setPagePlaceList: () =>
@@ -57,5 +72,9 @@ export const useMapStore = create<MapStore>((set) => ({
   setGroupList: (groupList: GroupListResponse[]) =>
     set(() => ({
       groupList: groupList,
+    })),
+  setFavoriteAddModal: (favoriteAddModal: boolean) =>
+    set(() => ({
+      favoriteAddModal: !favoriteAddModal,
     })),
 }));

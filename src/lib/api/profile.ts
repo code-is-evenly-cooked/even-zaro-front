@@ -30,3 +30,23 @@ export const fetchUserLikes = async (
     params: { page: page },
   });
 };
+
+export const updateProfileImage = async (
+  key: string,
+): Promise<{ profileImage: string }> => {
+  return await client<{ profileImage: string }>("/users/me/profileImage", {
+    method: "PATCH",
+    needAuth: true,
+    body: JSON.stringify({ profileImage: `/${key}` }),
+  });
+};
+
+export const updateNickname = async (
+  nickname: string,
+): Promise<{ nickname: string }> => {
+  return await client("/users/me/nickname", {
+    method: "PATCH",
+    needAuth: true,
+    body: JSON.stringify({ newNickname: nickname }),
+  });
+};
