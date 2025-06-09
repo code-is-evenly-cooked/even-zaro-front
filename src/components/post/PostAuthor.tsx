@@ -6,6 +6,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
+import { MoreVerticalIcon } from "lucide-react";
 
 interface PostAuthorProps {
   nickname: string;
@@ -24,6 +25,7 @@ export default function PostAuthor({
   const [isFollowing, setIsFollowing] = useState(false);
   const [isCheckingFollow, setIsCheckingFollow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // 자취 기간 디데이 표시
   const days =
@@ -71,6 +73,12 @@ export default function PostAuthor({
     }
   };
 
+  // 게시글 수정
+  const handleEdit = () => {};
+
+  // 게시글 삭제
+  const handleDelete = () => {};
+
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
       <div className="flex items-center gap-4">
@@ -100,6 +108,31 @@ export default function PostAuthor({
         >
           {isLoading ? "처리 중..." : isFollowing ? "팔로잉" : "팔로우"}
         </button>
+      )}
+
+      {/* 수정 삭제 모달 */}
+      {isMine && (
+        <div className="relative">
+          <button onClick={() => setMenuOpen((prev) => !prev)}>
+            <MoreVerticalIcon width={20} height={20} className="text-gray600" />
+          </button>
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-24 bg-white border border-gray200 rounded shadow-md z-10">
+              <button
+                className="w-full px-4 py-2 text-left text-sm hover:bg-gray100"
+                onClick={handleEdit}
+              >
+                수정
+              </button>
+              <button
+                className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100"
+                onClick={handleDelete}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
