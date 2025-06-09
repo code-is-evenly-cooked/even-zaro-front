@@ -26,7 +26,7 @@ export default function WithdrawConfirmModal({
           placeholder="(선택) 탈퇴 사유를 입력해주세요"
           className="w-full px-3 py-3"
         />
-        <div className="flex justify-center gap-2">
+        <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray200 hover:bg-gray100 rounded transition-colors"
@@ -35,7 +35,7 @@ export default function WithdrawConfirmModal({
           </button>
           <button
             onClick={() => onConfirm(reason)}
-            className="px-4 py-2 bg-red-400 hover:bg-red200 text-white rounded transition-colors"
+            className="px-4 py-2 bg-red500 hover:bg-red200 text-white rounded transition-colors"
           >
             탈퇴
           </button>
