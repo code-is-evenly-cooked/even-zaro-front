@@ -7,7 +7,11 @@ import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
 import SidebarActionButton from "@/components/common/SidebarButton/SidebarActionButton";
-import { LogOut } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import SidebarLinkButton from "@/components/common/SidebarButton/SideberLinkButton";
+import { logout } from "@/lib/api/auth";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -16,6 +20,8 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [visible, setVisible] = useState(isOpen);
+  const { user } = useAuthStore();
+  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) setVisible(true);
@@ -73,11 +79,20 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         </div>
         <div className="p-4 space-y-2">
           <ul>
-						<SidebarActionButton
+            {user ? (
+              <SidebarActionButton
                 icon={<LogOut size={20} />}
                 title="로그아웃"
                 onClick={handleLogout}
               />
+            ) : (
+              <SidebarLinkButton
+                icon={<LogIn size={20} />}
+                title="로그인"
+                href="/login"
+                onClick={onClose}
+              />
+            )}
           </ul>
         </div>
       </aside>
