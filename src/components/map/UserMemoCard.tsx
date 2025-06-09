@@ -1,17 +1,29 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
+import { useMapStore } from "@/stores/mapStore";
+import { useEffect } from "react";
 
 interface UserMemoProps {
+  userId: number;
   profileImage: string;
   nickName: string;
   memo: string;
 }
 
 export default function UserMemoCard({
+  userId,
   profileImage,
   nickName,
   memo,
 }: UserMemoProps) {
+  const page = useMapStore((state) => state.page);
+  const { setPageGroupList } = useMapStore();
+
+
+  useEffect(() => {
+    console.log("page : ", page);
+  }, [page]);
+
   return (
     <li className="flex items-center hover:bg-gray100 transition p-1">
       {/* 이미지 영역 */}
@@ -25,7 +37,12 @@ export default function UserMemoCard({
         />
       </button>
       <div className="items-center flex p-3 shadow-sm space-x-3">
-        <span className="font-bold text-base flex-shrink-0">{nickName}</span>
+        <button
+          onClick={() => setPageGroupList(userId)}
+          className="font-bold text-base flex-shrink-0 text-left text-gray900 hover:underline focus:outline-none"
+        >
+          {nickName}
+        </button>
         <span className="text-gray600">{memo}</span>
       </div>
     </li>
