@@ -61,7 +61,7 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
     <li className="p-4 border rounded-md shadow-sm relative">
       <div className="flex justify-between">
         <div className="font-semibold">
-          장소 이름
+          {item.placeName}
           <span className="font-normal text-gray600 ml-4">{item.address}</span>
         </div>
 
