@@ -30,7 +30,7 @@ export default function ConfirmDeleteModal({
         <div className="mt-4 flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded bg-gray200 text-sm"
+            className="px-4 py-2 bg-gray200 hover:bg-gray100 rounded transition-colors text-sm"
           >
             취소
           </button>
