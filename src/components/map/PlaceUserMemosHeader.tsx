@@ -14,10 +14,6 @@ export default function PlaceUserMemosHeader({
 
   const [favorite, setFavorite] = useState(false);
 
-  function handleClickFavorite() {
-    setFavorite((prev) => !prev);
-  }
-
   return (
     <div className="relative w-full px-4 py-4">
       <div className="flex flex-col items-center justify-center">
@@ -26,11 +22,11 @@ export default function PlaceUserMemosHeader({
         </button>
 
         <div className="flex items-center space-x-2">
-          <button onClick={handleClickFavorite} className="flex self-start">
+          <div className="flex self-start">
             <LucideStar
               className={favorite ? " " : "text-yellow-400 fill-yellow-400"}
             />
-          </button>
+          </div>
 
           <div className="flex flex-col justify-center items-center text-center max-w-[200px]">
             <span className="font-bold text-gray900 text-lg leading-snug break-words">
