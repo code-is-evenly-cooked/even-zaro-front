@@ -4,13 +4,14 @@ import TextInput from "../common/Input/TextInput";
 import BaseButton from "../common/Button/BaseButton";
 import { EditIcon } from "lucide-react";
 import { UserInfo } from "@/stores/useAuthStore";
+import FormFieldRow from "./FormFieldRow";
 
 interface ProfileBaseInfoSectionProp {
   user: UserInfo;
 }
 const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
   return (
-    <section className="flex flex-col border rounded-sm px-4 py-6 gap-8">
+    <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
       <h2 className="text-lg font-bold">기본 정보</h2>
       <div className="flex flex-col gap-8 mx-4">
         <div className="relative w-[80px] h-[80px]">
@@ -30,29 +31,27 @@ const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
             <EditIcon className="w-5 h-5 text-violet800 m-0.5" />
           </button>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex justify-start items-center gap-20">
-            <p className="text-lg">이메일</p>
+        <ul className="space-y-4 px-8">
+          <FormFieldRow label="이메일">
             <TextInput
               size="xl"
               fullWidth={false}
               placeholder={user.email}
               disabled
-              containerClassName="w-5/12"
+              containerClassName="w-80"
             />
-          </div>
-          <div className="flex justify-start items-center gap-20">
-            <p className="text-lg">닉네임</p>
+          </FormFieldRow>
+          <FormFieldRow label="닉네임">
             <TextInput
               size="xl"
               fullWidth={false}
               value={user.nickname}
               placeholder="닉네임을 입력하세요"
               helper="닉네임은 14일마다 한번 변경할 수 있어요."
-              containerClassName="w-5/12"
+              containerClassName="w-80"
             />
-          </div>
-        </div>
+          </FormFieldRow>
+        </ul>
         <BaseButton
           size="xl"
           variant="filled"
