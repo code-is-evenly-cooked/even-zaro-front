@@ -27,7 +27,7 @@ const SettingComponent = ({ user }: SettingComponentProps) => {
       await withdrawUser(reason);
       await logout();
       useAuthStore.getState().clearUser();
-      router.push("/");
+      router.push("/withdrawal-complete");
     } catch (e) {
       console.error(e);
       alert("탈퇴에 실패했습니다.");
