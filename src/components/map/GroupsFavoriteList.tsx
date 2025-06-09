@@ -7,7 +7,9 @@ import { FavoriteList } from "@/components/map/FavoriteList";
 import { getDdayFromDate } from "@/utils/date";
 
 export function GroupsFavoriteList() {
-  const {  page, otherUserId } = useMapStore((state) => state);
+  const { page, otherUserId, groupInfo } = useMapStore(
+    (state) => state,
+  );
   const { setPageGroupList } = useMapStore();
   const { data: profile } = useProfile(otherUserId);
 
@@ -42,6 +44,14 @@ export function GroupsFavoriteList() {
               </span>
             </div>
           </div>
+
+          <div className="flex flex-col justify-center items-center p-4">
+            <span className="font-bold">{groupInfo?.name}</span>
+            <span className="text-xs text-gray600">
+              장소 {groupInfo?.groupFavoriteCount}
+            </span>
+          </div>
+
           <FavoriteList />
         </div>
       )}

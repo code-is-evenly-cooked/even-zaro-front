@@ -7,6 +7,7 @@ import {
   PlaceDetailResponse,
   PlaceListResponse,
 } from "@/types/map";
+import { Group } from "next/dist/shared/lib/router/utils/route-regex";
 
 interface MapStore {
   // 상태 변수
@@ -36,6 +37,8 @@ interface MapStore {
   // 즐겨찾기 리스트
   favoriteList: FavoriteListResponse[] | null;
   setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
+  groupInfo: GroupListResponse | null;
+  setGroupInfo: (groupInfo : GroupListResponse) => void;
 
   // 즐겨찾기 추가 모달
   favoriteAddModal: boolean;
@@ -53,6 +56,7 @@ export const useMapStore = create<MapStore>((set) => ({
   otherUserId: null,
   favoriteAddModal: false,
   favoriteList: null,
+  groupInfo: null,
 
   setPagePlaceList: () =>
     set(() => ({
@@ -93,4 +97,8 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       favoriteList: favoriteList
     })),
+  setGroupInfo: (groupInfo: GroupListResponse) =>
+    set(() => ({
+      groupInfo: groupInfo,
+    }))
 }));

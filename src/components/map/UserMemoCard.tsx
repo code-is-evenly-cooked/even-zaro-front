@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import { useMapStore } from "@/stores/mapStore";
-import { useEffect } from "react";
 
 interface UserMemoProps {
   userId: number;
@@ -16,13 +15,7 @@ export default function UserMemoCard({
   nickName,
   memo,
 }: UserMemoProps) {
-  const page = useMapStore((state) => state.page);
   const { setPageGroupList } = useMapStore();
-
-
-  useEffect(() => {
-    console.log("page : ", page);
-  }, [page]);
 
   return (
     <li className="flex items-center hover:bg-gray100 transition p-1">

@@ -7,13 +7,18 @@ interface GroupCardProps {
 }
 
 export function GroupCard({ group }: GroupCardProps) {
-  const { setPageFavoriteList } = useMapStore();
+  const { setPageFavoriteList, setGroupInfo } = useMapStore();
+
+  const handleClick = () => {
+    setGroupInfo(group);
+    setPageFavoriteList(group.groupId);
+  };
 
   return (
     <>
       <li
         className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-        onClick={() => setPageFavoriteList(group.groupId)}
+        onClick={handleClick}
         key={group.groupId}
       >
         <div className="flex items-center gap-3">
@@ -25,7 +30,6 @@ export function GroupCard({ group }: GroupCardProps) {
               {group.name}
             </div>
             <div className="text-xs text-gray-600">
-              {/* 여기 응답 객체 백엔드단 코드 추가 되면 수정해야함!!!!!!!!!!!1*/}
               장소 {group.groupFavoriteCount}
             </div>
           </div>
