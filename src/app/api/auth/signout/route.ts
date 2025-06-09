@@ -26,7 +26,7 @@ export async function POST() {
       return createErrorResponse(data.message ?? "로그아웃  실패", res.status);
     }
 
-    await removeAuthCookies();
+    removeAuthCookies();
 
     return createSuccessResponse(null, "로그아웃 성공");
   } catch (err) {
