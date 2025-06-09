@@ -2,10 +2,12 @@
 
 import TextInput from "../common/Input/TextInput";
 import BaseButton from "../common/Button/BaseButton";
-import { UserInfo } from "@/stores/useAuthStore";
+import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
 import FormFieldRow from "./FormFieldRow";
 import { useState } from "react";
 import ProfileImageUploader from "./ProfileImageUploader";
+import { updateNickname } from "@/lib/api/profile";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface ProfileBaseInfoSectionProp {
   user: UserInfo;
@@ -18,9 +20,26 @@ const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
     nickname: user.nickname,
     profileImage: user.profileImage ?? "",
   });
+  const { setUser } = useAuthStore();
+  const { showToastMessage } = useToastMessageContext();
 
-  const handleChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeNickname = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setUserInfo((prev) => ({ ...prev, nickname: e.target.value }));
+  };
+
+  const handleSubmitNickname = async () => {
+    console.log(userInfo.nickname);
+    try {
+      const res = await updateNickname(userInfo.nickname);
+      showToastMessage({ type: "success", message: "닉네임이 변경되었어요." });
+      setUser({ ...user, nickname: res.nickname });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "닉네임 변경 실패";
+      showToastMessage({ type: "error", message: errorMessage });
+    }
   };
 
   return (
@@ -58,6 +77,7 @@ const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
           variant="filled"
           color="violet800"
           className="w-6/12 items-center mx-auto"
+          onClick={handleSubmitNickname}
         >
           닉네임 변경하기
         </BaseButton>

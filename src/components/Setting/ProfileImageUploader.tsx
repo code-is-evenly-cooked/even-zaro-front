@@ -20,7 +20,7 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
   const [preview, setPreview] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
   const { showToastMessage } = useToastMessageContext();
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
 
   const handleClickEdit = () => {
     fileInputRef.current?.click();
@@ -42,6 +42,7 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
       const key = await uploadImageToS3(file, "profile", userId);
       const { profileImage } = await updateProfileImage(key);
       setPreview(profileImage);
+      setUser({ ...user, profileImage });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "이미지 업로드 실패";
