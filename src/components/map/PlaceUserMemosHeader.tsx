@@ -2,7 +2,7 @@ import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
-import { fetchFavoriteStatus, fetchPlaceDetail } from "@/lib/api/map";
+import { fetchFavoriteStatus } from "@/lib/api/map";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
