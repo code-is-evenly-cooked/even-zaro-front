@@ -6,6 +6,8 @@ import clsx from "clsx";
 import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
+import SidebarActionButton from "@/components/common/SidebarButton/SidebarActionButton";
+import { LogOut } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -23,6 +25,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     if (!isOpen) setVisible(false);
   };
 
+  const handleLogout = () => {};
+
   return (
     <>
       <div
@@ -36,28 +40,40 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       <aside
         className={clsx(
           "fixed top-0 left-0 h-full bg-white z-50 w-60",
+          "flex flex-col justify-between",
           "transition-transform duration-300",
           isOpen ? "translate-x-0" : "-translate-x-full",
           !visible && "hidden",
         )}
         onTransitionEnd={handleAnimationEnd}
       >
-        <div className="h-[3rem] px-4 pt-2 flex justify-between items-center">
-          <div className="flex justify-center items-center gap-2 text-violet800 font-bold text-lg">
-            <LogoLineIcon />
-            ZARO
+        <div>
+          <div className="h-[3rem] px-4 pt-2 flex justify-between items-center">
+            <div className="flex justify-center items-center gap-2 text-violet800 font-bold text-lg">
+              <LogoLineIcon />
+              ZARO
+            </div>
+            <IconButton
+              icon={<CloseIcon />}
+              isTransparent
+              label="닫기"
+              onClick={onClose}
+              className="sm:hidden"
+            />
           </div>
-          <IconButton
-            icon={<CloseIcon />}
-            isTransparent
-            label="닫기"
-            onClick={onClose}
-            className="sm:hidden"
-          />
+          <nav className="p-4 space-y-2">
+            <SidebarButtonList onItemClick={onClose} />
+          </nav>
         </div>
-        <nav className="p-4 space-y-2">
-          <SidebarButtonList onItemClick={onClose} />
-        </nav>
+        <div className="p-4 space-y-2">
+          <ul>
+						<SidebarActionButton
+                icon={<LogOut size={20} />}
+                title="로그아웃"
+                onClick={handleLogout}
+              />
+          </ul>
+        </div>
       </aside>
     </>
   );
