@@ -2,6 +2,7 @@ import { UserInfo } from "@/stores/useAuthStore";
 import TextInput from "../common/Input/TextInput";
 import FormFieldRow from "./FormFieldRow";
 import BaseButton from "../common/Button/BaseButton";
+import DateInput from "../common/Input/DateInput";
 
 interface ProfileInfoSectionProp {
   user: UserInfo;
@@ -13,20 +14,20 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
       <h2 className="text-lg font-bold">프로필 정보</h2>
       <ul className="space-y-4 px-8">
         <FormFieldRow label="생년월일">
-          <TextInput
+          <DateInput
             size="xl"
             fullWidth={false}
             value={user.birthday ?? ""}
-            placeholder="1990.01.01"
+            onChange={() => {}}
             containerClassName="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="자취 시작일">
-          <TextInput
+          <DateInput
             size="xl"
             fullWidth={false}
-            value={user.birthday ?? ""}
-            placeholder="1990.01.01"
+            value={user.liveAloneDate ?? ""}
+            onChange={() => {}}
             containerClassName="w-80"
           />
         </FormFieldRow>
