@@ -1,14 +1,17 @@
 import { X } from "lucide-react";
 import { useState } from "react";
+import { useMapStore } from "@/stores/mapStore";
 
 export function FavoriteAddModal() {
+  const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
+  const { setFavoriteAddModal } = useMapStore();
+
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGroup(e.target.value);
   };
-
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -65,7 +68,10 @@ export function FavoriteAddModal() {
         </div>
 
         <div className="flex justify-end space-x-2">
-          <button className="px-4 py-2 text-sm rounded-md bg-gray100 text-gray900 hover:bg-gray200">
+          <button
+            onClick={() => setFavoriteAddModal(favoriteAddModal)}
+            className="px-4 py-2 text-sm rounded-md bg-gray100 text-gray900 hover:bg-gray200"
+          >
             Close
           </button>
           <button className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600">
