@@ -4,6 +4,7 @@ import { PAGE } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
 import { useProfile } from "@/hooks/useProfile";
 import { GroupCardList } from "@/components/map/GroupCardList";
+import { getDdayFromDate } from "@/utils/date";
 
 export function UserGroupList() {
   const { placeId, page, otherUserId } = useMapStore((state) => state);
@@ -36,7 +37,7 @@ export function UserGroupList() {
                 {profile?.nickname}
               </span>
               <span className="text-sm text-gray-500">
-                {profile?.liveAloneDate ?? "등록된 자취 시작일이 없습니다."}
+                {getDdayFromDate(profile?.liveAloneDate)}
               </span>
             </div>
           </div>

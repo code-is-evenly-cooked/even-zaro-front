@@ -4,13 +4,12 @@ import { useMapStore } from "@/stores/mapStore";
 import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
+import { getDdayFromDate } from "@/utils/date";
 
 export function GroupsFavoriteList() {
   const {  page, otherUserId } = useMapStore((state) => state);
   const { setPageGroupList } = useMapStore();
   const { data: profile } = useProfile(otherUserId);
-
-
 
   return (
     <>
@@ -39,7 +38,7 @@ export function GroupsFavoriteList() {
                 {profile?.nickname}
               </span>
               <span className="text-sm text-gray-500">
-                {profile?.liveAloneDate ?? "등록된 자취 시작일이 없습니다."}
+                {getDdayFromDate(profile?.liveAloneDate)}
               </span>
             </div>
           </div>
