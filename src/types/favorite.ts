@@ -4,6 +4,7 @@ export interface FavoriteGroupType {
   deleted: boolean;
   createdAt: string;
   updatedAt: string;
+  groupFavoriteCount: number;
 }
 
 export interface FavoriteItemType {

@@ -100,7 +100,9 @@ export default function FavoriteGroupCard({
               {displayName}
             </Link>
           )}
-          <span className="text-sm text-gray600">장소 4</span>
+          <span className="text-sm text-gray600">
+            장소 {group.groupFavoriteCount}
+          </span>
         </div>
       </div>
 
