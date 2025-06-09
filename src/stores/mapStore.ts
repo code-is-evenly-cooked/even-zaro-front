@@ -7,7 +7,7 @@ import {
   PlaceListResponse,
 } from "@/types/map";
 
-type MapStore = {
+interface MapStore {
   page: PageType;
   placeList: PlaceListResponse | null;
   placeId: number | null;
