@@ -3,6 +3,25 @@ import { persist } from "zustand/middleware";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
 export type Gender = "MALE" | "FEMALE";
+export const MBTI_LIST = [
+  "INTJ",
+  "INTP",
+  "ENTJ",
+  "ENTP",
+  "INFJ",
+  "INFP",
+  "ENFJ",
+  "ENFP",
+  "ISTJ",
+  "ISFJ",
+  "ESTJ",
+  "ESFJ",
+  "ISTP",
+  "ISFP",
+  "ESTP",
+  "ESFP",
+] as const;
+export type MBTI = (typeof MBTI_LIST)[number];
 
 export interface UserInfo {
   userId: number;
@@ -12,7 +31,7 @@ export interface UserInfo {
   birthday: string | null;
   liveAloneDate: string | null;
   gender: Gender | undefined;
-  mbti: string | null;
+  mbti: MBTI | undefined;
   provider: AuthProvider;
   isValidated: boolean;
 }

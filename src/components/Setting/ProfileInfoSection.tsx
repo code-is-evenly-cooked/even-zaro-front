@@ -1,10 +1,10 @@
-import { Gender, UserInfo } from "@/stores/useAuthStore";
-import TextInput from "../common/Input/TextInput";
+import { Gender, MBTI, UserInfo } from "@/stores/useAuthStore";
 import FormFieldRow from "./FormFieldRow";
 import BaseButton from "../common/Button/BaseButton";
 import DateInput from "../common/Input/DateInput";
 import GenderRadioGroup from "./GenderRadioGroup";
 import { useState } from "react";
+import MbtiSelect from "./MbtiSelectBox";
 
 interface ProfileInfoSectionProp {
   user: UserInfo;
@@ -15,12 +15,12 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
     birthday: string;
     liveAloneDate: string;
     gender?: Gender;
-    mbti: string;
+    mbti?: MBTI;
   }>({
     birthday: user.birthday ?? "",
     liveAloneDate: user.liveAloneDate ?? "",
     gender: user.gender,
-    mbti: user.mbti ?? "",
+    mbti: user.mbti,
   });
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
@@ -57,12 +57,11 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
           />
         </FormFieldRow>
         <FormFieldRow label="MBTI">
-          <TextInput
-            size="xl"
-            fullWidth={false}
+          <MbtiSelect
             value={userInfo.mbti}
-            placeholder="MBTI을 선택해주세요"
-            containerClassName="w-80"
+            onChange={(value) =>
+              setUserInfo((prev) => ({ ...prev, mbti: value }))
+            }
           />
         </FormFieldRow>
       </ul>
