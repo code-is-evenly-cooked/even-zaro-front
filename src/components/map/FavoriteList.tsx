@@ -23,6 +23,7 @@ export function FavoriteList() {
           "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다.",
           error,
         );
+        setFavoriteList([]);
       }
     })();
   }, [groupId]);
@@ -35,7 +36,7 @@ export function FavoriteList() {
             <FavoriteCard favorite={favorite} key={idx} />
           ))
         ) : (
-          <FallbackMessage className="등록된 그룹이 없습니다." />
+          <FallbackMessage message="등록된 그룹이 없습니다." />
         )}
       </ul>
     </>

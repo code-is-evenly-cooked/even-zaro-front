@@ -1,15 +1,13 @@
 import { ArrowLeft } from "lucide-react";
 import { DefaultProfileIcon } from "@/components/common/Icons";
 import { useMapStore } from "@/stores/mapStore";
-import { FavoriteListResponse, PAGE } from "@/types/map";
-import { useEffect } from "react";
-import { fetchFavoritesByGroup } from "@/lib/api/map";
+import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
 
 export function GroupsFavoriteList() {
-  const { groupId, page, otherUserId } = useMapStore((state) => state);
-  const { setFavoriteList, setPageGroupList } = useMapStore();
+  const {  page, otherUserId } = useMapStore((state) => state);
+  const { setPageGroupList } = useMapStore();
   const { data: profile } = useProfile(otherUserId);
 
 
