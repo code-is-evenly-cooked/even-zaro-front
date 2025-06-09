@@ -17,7 +17,7 @@ const SidebarButton = ({ icon, title, href, onClick }: SidebarButtonProps) => {
       <Link
         href={href}
         onClick={handleClick}
-        className="flex px-2 py-2 items-center round-2xl gap-2 hover:bg-skyblue100"
+        className="flex px-2 py-2 items-center round-2xl gap-2 hover:bg-gray100"
         aria-label={title}
       >
         {icon}
