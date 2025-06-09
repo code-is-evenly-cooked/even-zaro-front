@@ -49,7 +49,7 @@ export default function KakaoMap() {
 
   return (
     <>
-      <div ref={mapRef} className={`w-screen h-screen`} />
+      <div ref={mapRef} className={`absolute w-screen h-screen left-0`} />
     </>
   );
 }

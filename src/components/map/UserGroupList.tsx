@@ -29,7 +29,7 @@ export function UserGroupList() {
   return (
     <>
       {page === PAGE.USERGROUPLIST && (
-        <div className={`w-[24rem] h-[24rem] rounded-t-2xl shadow-lg overflow-hidden bg-white absolute left-4 bottom-[-1rem] z-10 flex flex-col`}>
+        <div className={`w-[24rem] h-[24rem] rounded-t-2xl shadow-lg overflow-hidden bg-white absolute left-0 bottom-[-1rem] z-10 flex flex-col`}>
           <div className="flex items-center justify-between px-4 py-2 border-b">
             {/* 뒤로 가기*/}
             <button
