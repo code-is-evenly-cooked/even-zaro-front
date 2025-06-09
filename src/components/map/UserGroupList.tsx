@@ -28,14 +28,17 @@ export function UserGroupList() {
             <div className="w-6" />
           </div>
 
-          <div className="flex flex-col items-center py-4 border-b">
+          <div className="flex justify-center gap-4 items-center py-4 border-b">
             <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
-            <span className="font-semibold text-lg mt-2">
-              {profile?.nickname}
-            </span>
-            <span className="text-sm text-gray-500">
-              {profile?.liveAloneDate}
-            </span>
+
+            <div className="flex flex-col">
+              <span className="font-semibold text-lg mt-2">
+                {profile?.nickname}
+              </span>
+              <span className="text-sm text-gray-500">
+                {profile?.liveAloneDate ?? "등록된 자취 시작일이 없습니다."}
+              </span>
+            </div>
           </div>
 
           <GroupCardList />

@@ -21,6 +21,7 @@ export function GroupCardList() {
       }
     })();
   }, [otherUserId]);
+
   return (
     <>
       <ul className="flex-1 overflow-y-auto divide-y">
