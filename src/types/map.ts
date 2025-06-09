@@ -53,3 +53,20 @@ export interface GroupListResponse {
   deleted: boolean;
   groupFavoriteCount: number;
 }
+
+export type FavoriteListResponseList = FavoriteListResponse[];
+
+export interface FavoriteListResponse {
+  id: number,
+  userId: number,
+  groupId: number,
+  placeId: number,
+  placeName: string,
+  lat: number,
+  lng: number,
+  memo: string,
+  createdAt: string,
+  updatedAt: string,
+  address: string,
+  deleted: boolean
+}
