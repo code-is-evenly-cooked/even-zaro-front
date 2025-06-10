@@ -11,6 +11,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import SidebarButton from "@/components/common/SidebarButton/SidebarButton";
 import { logout } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [visible, setVisible] = useState(isOpen);
   const { user } = useAuthStore();
   const router = useRouter();
+  const { showToastMessage } = useToastMessageContext();
 
   useEffect(() => {
     if (isOpen) setVisible(true);
@@ -31,8 +33,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   };
 
   const handleLogout = async () => {
-    await logout();
-
+    try {
+      await logout();
+    } catch {
+      showToastMessage({
+        type: "error",
+        message: "로그아웃에 실패했습니다. 다시 시도해주세요.",
+      });
+      return;
+    }
     useAuthStore.getState().clearUser();
     onClose();
     router.push("/");
