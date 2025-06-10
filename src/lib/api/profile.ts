@@ -50,3 +50,11 @@ export const updateNickname = async (
     body: JSON.stringify({ newNickname: nickname }),
   });
 };
+
+export const withdrawUser = async (reason: string): Promise<void> => {
+  return await client("/users/me", {
+    method: "DELETE",
+    needAuth: true,
+    body: JSON.stringify({ reason }),
+  });
+};

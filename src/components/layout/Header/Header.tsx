@@ -32,6 +32,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/policy/terms",
     "/policy/privacy",
     "/map",
+    "/withdrawal-complete",
   ];
 
   // 검색창 숨김 경로 시작
