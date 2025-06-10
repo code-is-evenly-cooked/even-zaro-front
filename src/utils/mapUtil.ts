@@ -137,10 +137,28 @@ export const setupGeocoder = () => {
 // 중심 좌표 주소정보를 가져와 콜백 실행
 export function updateCenterAddress(
   map: any,
+  setRegionName: (region: string) => void,
   callback: (address: string) => void,
 ) {
   setupGeocoder();
 
+  // 최초 1회 즉시 실행, null값 방지
+  const center = map.getCenter();
+  geocoder.coord2RegionCode(
+    center.getLng(),
+    center.getLat(),
+    (result: any, status: any) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const region = result.find((r: any) => r.region_type === "H");
+        if (region) {
+          setRegionName(region.address_name);
+          callback(region.address_name);
+        }
+      }
+    },
+  );
+
+  // 확대 축소 이벤트 감지
   window.kakao.maps.event.addListener(map, "idle", () => {
     const center = map.getCenter();
     geocoder.coord2RegionCode(
@@ -150,6 +168,7 @@ export function updateCenterAddress(
         if (status === window.kakao.maps.services.Status.OK) {
           const region = result.find((r: any) => r.region_type === "H");
           if (region) {
+            setRegionName(region.address_name); // 행정동 이름을 전역 상태에 저장
             callback(region.address_name);
           }
         }

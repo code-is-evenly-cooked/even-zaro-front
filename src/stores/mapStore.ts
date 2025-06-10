@@ -45,7 +45,9 @@ interface MapStore {
 
   // 내 위치
   myLocation : {lat: number, lng: number} | null;
+  regionName: string | null;
   setMyLocation: (myLocation : {lat: number, lng: number}) => void;
+  setRegionName: (myRegionName : string) => void;
 }
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -61,6 +63,7 @@ export const useMapStore = create<MapStore>((set) => ({
   favoriteList: null,
   groupInfo: null,
   myLocation : null,
+  regionName: null,
 
 
   setPagePlaceList: () =>
@@ -109,5 +112,9 @@ export const useMapStore = create<MapStore>((set) => ({
   setMyLocation: (myLocation : {lat: number, lng: number}) =>
     set(() => ({
       myLocation: myLocation,
-    }))
+    })),
+  setRegionName: (regionName : string) =>
+    set(() => ({
+      regionName: regionName,
+    })),
 }));

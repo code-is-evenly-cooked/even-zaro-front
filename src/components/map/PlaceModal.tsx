@@ -7,7 +7,7 @@ import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function PlaceModal() {
   const placeList = useMapStore((state) => state.placeList);
-  const { setPlaceList } = useMapStore();
+  const { setPlaceList, regionName } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
 
 
@@ -36,7 +36,7 @@ export default function PlaceModal() {
       {/* 헤더 */}
       <div className="px-4 pt-4">
         <span className="text-2xl font-extrabold block text-gray900">
-          서울시 &gt; 강남구
+          {regionName}
         </span>
         <div className="flex justify-end">
           <span className="text-sm text-gray-400">즐겨찾기 많은 순</span>

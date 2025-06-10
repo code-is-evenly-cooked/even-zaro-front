@@ -12,7 +12,7 @@ import { useMapStore } from "@/stores/mapStore"; // 지도 좌측상단에 지�
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const myLocation = useMapStore((state) => state.myLocation);
-  const { setMyLocation } = useMapStore();
+  const { setMyLocation, setRegionName } = useMapStore();
   const [centerAddr, setCenterAddr] = useState("");
 
   useEffect(() => {
@@ -21,8 +21,8 @@ export default function KakaoMap() {
       initializeMap(mapRef.current, (map) => {
         addMarkers(map); // 마커 추가 테스트
         moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
-        updateCenterAddress(map, setCenterAddr); // 지도 중심 주소 업데이트
-        enableClickToShowAddress(map);           // 클릭 시 주소 표시
+        updateCenterAddress(map, setRegionName ,setCenterAddr); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
+        enableClickToShowAddress(map); // 클릭 시 주소 표시
       });
     });
   }, []);
@@ -37,7 +37,7 @@ export default function KakaoMap() {
       <div
         id="centerAddr"
         className="absolute top-2 left-2 bg-white text-sm px-3 py-1 rounded shadow z-50 left-40 top-40"
-      >야호야홍
+      >
         {centerAddr || "중심 좌표의 주소를 불러오는 중..."}
       </div>
     </>
