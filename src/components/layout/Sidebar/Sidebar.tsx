@@ -6,6 +6,12 @@ import clsx from "clsx";
 import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
+import { LogIn, LogOut } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import SidebarButton from "@/components/common/SidebarButton/SidebarButton";
+import { logout } from "@/lib/api/auth";
+import { useRouter } from "next/navigation";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -14,6 +20,9 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [visible, setVisible] = useState(isOpen);
+  const { user } = useAuthStore();
+  const router = useRouter();
+  const { showToastMessage } = useToastMessageContext();
 
   useEffect(() => {
     if (isOpen) setVisible(true);
@@ -21,6 +30,21 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
   const handleAnimationEnd = () => {
     if (!isOpen) setVisible(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      showToastMessage({
+        type: "error",
+        message: "로그아웃에 실패했습니다. 다시 시도해주세요.",
+      });
+      return;
+    }
+    useAuthStore.getState().clearUser();
+    onClose();
+    router.push("/");
   };
 
   return (
@@ -36,28 +60,49 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       <aside
         className={clsx(
           "fixed top-0 left-0 h-full bg-white z-50 w-60",
+          "flex flex-col justify-between",
           "transition-transform duration-300",
           isOpen ? "translate-x-0" : "-translate-x-full",
           !visible && "hidden",
         )}
         onTransitionEnd={handleAnimationEnd}
       >
-        <div className="h-[3rem] px-4 pt-2 flex justify-between items-center">
-          <div className="flex justify-center items-center gap-2 text-violet800 font-bold text-lg">
-            <LogoLineIcon />
-            ZARO
+        <div>
+          <div className="h-[3rem] px-4 pt-2 flex justify-between items-center">
+            <div className="flex justify-center items-center gap-2 text-violet800 font-bold text-lg">
+              <LogoLineIcon />
+              ZARO
+            </div>
+            <IconButton
+              icon={<CloseIcon />}
+              isTransparent
+              label="닫기"
+              onClick={onClose}
+              className="sm:hidden"
+            />
           </div>
-          <IconButton
-            icon={<CloseIcon />}
-            isTransparent
-            label="닫기"
-            onClick={onClose}
-            className="sm:hidden"
-          />
+          <nav className="p-4 space-y-2">
+            <SidebarButtonList onItemClick={onClose} />
+          </nav>
         </div>
-        <nav className="p-4 space-y-2">
-          <SidebarButtonList onItemClick={onClose} />
-        </nav>
+        <div className="p-4 space-y-2">
+          <ul>
+            {user ? (
+              <SidebarButton
+                icon={<LogOut size={20} />}
+                title="로그아웃"
+                onClick={handleLogout}
+              />
+            ) : (
+              <SidebarButton
+                icon={<LogIn size={20} />}
+                title="로그인"
+                href="/login"
+                onClick={onClose}
+              />
+            )}
+          </ul>
+        </div>
       </aside>
     </>
   );

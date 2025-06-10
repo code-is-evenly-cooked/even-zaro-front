@@ -21,6 +21,7 @@ const config = {
         skyblue300: "#D1D6E8",
 
         red200: "#FFA49D",
+        red500: "#F5535E",
         green200: "#C9EDE9",
 
         kakao: "#FEE500",

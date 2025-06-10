@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  FavoriteListResponse,
   GroupListResponse,
   PAGE,
   PageType,
@@ -8,16 +9,17 @@ import {
 } from "@/types/map";
 
 interface MapStore {
-
   // 상태 변수
   placeId: number | null;
   otherUserId: number | null;
+  groupId: number | null;
 
   // 모달 페이지
   page: PageType;
   setPagePlaceList: () => void;
   setPagePlaceDetail: (placeId: number) => void;
-  setPageGroupList:(otherUserId: number) => void;
+  setPageGroupList: (otherUserId: number) => void;
+  setPageFavoriteList: (groupId: number) => void;
 
   // 장소 리스트
   placeList: PlaceListResponse | null;
@@ -31,21 +33,29 @@ interface MapStore {
   groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
 
+  // 즐겨찾기 리스트
+  favoriteList: FavoriteListResponse[] | null;
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
+  groupInfo: GroupListResponse | null;
+  setGroupInfo: (groupInfo : GroupListResponse) => void;
+
   // 즐겨찾기 추가 모달
   favoriteAddModal: boolean;
-  setFavoriteAddModal: (favoriteAddModal:boolean) => void;
-};
+  setFavoriteAddModal: (favoriteAddModal: boolean) => void;
+}
 
 export const useMapStore = create<MapStore>((set) => ({
   // 초기값
   page: PAGE.PLACELIST,
   placeList: null,
   placeId: null,
+  groupId: null,
   placeDetail: null,
   groupList: [],
   otherUserId: null,
   favoriteAddModal: false,
-
+  favoriteList: null,
+  groupInfo: null,
 
   setPagePlaceList: () =>
     set(() => ({
@@ -56,7 +66,7 @@ export const useMapStore = create<MapStore>((set) => ({
       page: PAGE.PLACEDETAIL,
       placeId: placeId,
     })),
-  setPageGroupList:(otherUserId: number) =>
+  setPageGroupList: (otherUserId: number) =>
     set(() => ({
       page: PAGE.USERGROUPLIST,
       otherUserId: otherUserId,
@@ -77,4 +87,17 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       favoriteAddModal: !favoriteAddModal,
     })),
+  setPageFavoriteList: (grouId: number) =>
+    set(() => ({
+      groupId: grouId,
+      page: PAGE.FAVORITELIST,
+    })),
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
+    set(() => ({
+      favoriteList: favoriteList
+    })),
+  setGroupInfo: (groupInfo: GroupListResponse) =>
+    set(() => ({
+      groupInfo: groupInfo,
+    }))
 }));

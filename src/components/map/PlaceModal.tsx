@@ -3,10 +3,13 @@ import PlaceCard from "@/components/map/PlaceCard";
 import { PlaceListResponse } from "@/types/map";
 import { fetchPlaceList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function PlaceModal() {
   const placeList = useMapStore((state) => state.placeList);
   const { setPlaceList } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
+
 
   useEffect(() => {
     const lat = 37.554722;
@@ -22,6 +25,7 @@ export default function PlaceModal() {
         );
         setPlaceList(data);
       } catch (error) {
+        showToastMessage({type: "error", message: "장소 목록을 불러오는 데 실패했습니다."})
         console.error("장소 목록을 불러오는 데 실패했습니다.", error);
       }
     })();
