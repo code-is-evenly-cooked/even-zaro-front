@@ -30,16 +30,27 @@ export default function ProfileHeader() {
 
   return (
     <div className="py-4">
-      <div className="flex gap-6 items-center justify-center">
+      <div className="flex sm:gap-6 gap-12 items-center justify-center">
         <Image
           src={imageUrl}
           alt="프로필 이미지"
           width={80}
           height={80}
-          className="rounded-full object-cover m-6"
+          className="sm:block hidden rounded-full object-cover m-6"
         />
+        <div className="sm:hidden flex flex-col">
+          <Image
+            src={imageUrl}
+            alt="프로필 이미지"
+            width={64}
+            height={64}
+            className="rounded-full object-cover m-4"
+          />
+          <span className="font-bold text-center">{profile.nickname}</span>
+          {days != null && <span className="text-gray600 text-center">D+{days}</span>}
+        </div>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4 text-xl">
+          <div className="sm:flex hidden items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
             {days != null && <span className="text-gray600">D+{days}</span>}
             <Link href="/setting">

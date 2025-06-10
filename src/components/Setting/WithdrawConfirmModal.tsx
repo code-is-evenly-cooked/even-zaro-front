@@ -29,13 +29,13 @@ export default function WithdrawConfirmModal({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray200 hover:bg-gray100 rounded transition-colors"
+            className="px-4 py-2 bg-gray200 hover:bg-gray100/80 rounded transition-colors"
           >
             취소
           </button>
           <button
             onClick={() => onConfirm(reason)}
-            className="px-4 py-2 bg-red500 hover:bg-red200 text-white rounded transition-colors"
+            className="px-4 py-2 bg-red500 hover:bg-red200/80 text-white rounded transition-colors"
           >
             탈퇴
           </button>
