@@ -6,7 +6,6 @@ import clsx from "clsx";
 import { LogoLineIcon } from "@/components/common/Icons";
 import { useEffect, useState } from "react";
 import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonList";
-import SidebarActionButton from "@/components/common/SidebarButton/SidebarActionButton";
 import { LogIn, LogOut } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SidebarButton from "@/components/common/SidebarButton/SidebarButton";
@@ -80,7 +79,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         <div className="p-4 space-y-2">
           <ul>
             {user ? (
-              <SidebarActionButton
+              <SidebarButton
                 icon={<LogOut size={20} />}
                 title="로그아웃"
                 onClick={handleLogout}
