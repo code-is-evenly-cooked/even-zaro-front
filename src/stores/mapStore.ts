@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import {
   FavoriteListResponse,
-  GroupListResponse,
+  GroupListResponse, MyLoc,
   PAGE,
   PageType,
   PlaceDetailResponse,
@@ -23,7 +23,7 @@ interface MapStore {
 
   // 장소 리스트
   placeList: PlaceListResponse | null;
-  setPlaceList: (placeList: PlaceListResponse) => void;
+  setPlaceList: (placeList: PlaceListResponse | null) => void;
 
   // 장소 상세
   placeDetail: PlaceDetailResponse | null;
@@ -44,7 +44,7 @@ interface MapStore {
   setFavoriteAddModal: (favoriteAddModal: boolean) => void;
 
   // 내 위치
-  myLocation : {lat: number, lng: number} | null;
+  myLocation : MyLoc | null;
   regionName: string | null;
   setMyLocation: (myLocation : {lat: number, lng: number}) => void;
   setRegionName: (myRegionName : string) => void;
@@ -80,7 +80,7 @@ export const useMapStore = create<MapStore>((set) => ({
       page: PAGE.USERGROUPLIST,
       otherUserId: otherUserId,
     })),
-  setPlaceList: (placeList: PlaceListResponse) =>
+  setPlaceList: (placeList: PlaceListResponse | null) =>
     set(() => ({
       placeList: placeList,
     })),
@@ -109,7 +109,7 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       groupInfo: groupInfo,
     })),
-  setMyLocation: (myLocation : {lat: number, lng: number}) =>
+  setMyLocation: (myLocation : MyLoc) =>
     set(() => ({
       myLocation: myLocation,
     })),

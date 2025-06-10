@@ -26,14 +26,15 @@ export default function PlaceModal() {
           );
           setPlaceList(data);
         } catch (error) {
+          setPlaceList(null);
           // showToastMessage({
           //   type: "error",
           //   message: "장소 목록을 불러오는 데 실패했습니다.",
           // });
-          console.error("장소 목록을 불러오는 데 실패했습니다.", error);
+          console.error("장소 목록을 불러오는 데 실패했습니다.");
         }
       })();
-    }, 800); // 800ms 동안 변화가 없을 경우에만 API 호출
+    }, 500); // 800ms 동안 변화가 없을 경우에만 API 호출
 
     return () => clearTimeout(timer); // 위치가 변경되면 이전 요청 타이머 제거
   }, [myLocation]);
