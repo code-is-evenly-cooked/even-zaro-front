@@ -107,7 +107,7 @@ export const formatDate = (val: string): string => {
   return parts.join(".");
 };
 
-export function getDdayFromDate(dateString?: string | null | undefined): string {
+export function getDdayFromDate(dateString?: string | null): string {
   if (!dateString) return "D+?";
 
   const start = new Date(dateString);
