@@ -1,16 +1,17 @@
 import { client } from "../fetch/client";
 
-interface ReportCommentParams {
-  commentId: string;
+interface ReportParams {
+  id: string;
   reasonType: string;
   reasonText: string;
 }
+
 export const reportComment = async ({
-  commentId,
+  id,
   reasonType,
   reasonText,
-}: ReportCommentParams): Promise<void> => {
-  return await client<void>(`/comments/${commentId}/report`, {
+}: ReportParams): Promise<void> => {
+  return await client<void>(`/comments/${id}/report`, {
     method: "POST",
     needAuth: true,
     body: JSON.stringify({ reasonType, reasonText }),
