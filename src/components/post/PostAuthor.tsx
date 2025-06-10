@@ -9,6 +9,7 @@ import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
 import { deletePost } from "@/lib/api/posts";
 import { useRouter } from "next/navigation";
+import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 
 interface PostAuthorProps {
   postId: number;
@@ -32,6 +33,7 @@ export default function PostAuthor({
   const [isCheckingFollow, setIsCheckingFollow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
@@ -97,9 +99,6 @@ export default function PostAuthor({
 
   // 게시글 삭제
   const handleDelete = async () => {
-    const confirmed = confirm("정말 삭제하시겠습니까?");
-    if (!confirmed) return;
-
     try {
       await deletePost(postId);
       alert("게시글이 삭제되었습니다.");
@@ -141,7 +140,7 @@ export default function PostAuthor({
         </button>
       )}
 
-      {/* 수정 삭제 모달 */}
+      {/* 메뉴 모달 */}
       {isMine && (
         <div className="relative" ref={menuRef}>
           <button onClick={() => setMenuOpen((prev) => !prev)}>
@@ -157,7 +156,10 @@ export default function PostAuthor({
               </button>
               <button
                 className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100"
-                onClick={handleDelete}
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsDeleteModalOpen(true);
+                }}
               >
                 삭제
               </button>
@@ -165,6 +167,14 @@ export default function PostAuthor({
           )}
         </div>
       )}
+      {/* 삭제 확인 모달 */}
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="게시글을 삭제할까요?"
+        description="삭제하면 이 글은 복구할 수 없습니다."
+      />
     </div>
   );
 }
