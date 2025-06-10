@@ -51,12 +51,10 @@ export const updateNickname = async (
   });
 };
 
-export const withdrawUser = async (
-	reason: string,
-): Promise<void> => {
-	return await client("/users/me", {
-		method: "DELETE",
-		needAuth: true,
-		body: JSON.stringify({ reason }),
-	});
+export const withdrawUser = async (reason: string): Promise<void> => {
+  return await client("/users/me", {
+    method: "DELETE",
+    needAuth: true,
+    body: JSON.stringify({ reason }),
+  });
 };
