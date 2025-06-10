@@ -42,6 +42,10 @@ interface MapStore {
   // 즐겨찾기 추가 모달
   favoriteAddModal: boolean;
   setFavoriteAddModal: (favoriteAddModal: boolean) => void;
+
+  // 내 위치
+  myLocation : {lat: number, lng: number} | null;
+  setMyLocation: (myLocation : {lat: number, lng: number}) => void;
 }
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -56,6 +60,8 @@ export const useMapStore = create<MapStore>((set) => ({
   favoriteAddModal: false,
   favoriteList: null,
   groupInfo: null,
+  myLocation : null,
+
 
   setPagePlaceList: () =>
     set(() => ({
@@ -99,5 +105,9 @@ export const useMapStore = create<MapStore>((set) => ({
   setGroupInfo: (groupInfo: GroupListResponse) =>
     set(() => ({
       groupInfo: groupInfo,
+    })),
+  setMyLocation: (myLocation : {lat: number, lng: number}) =>
+    set(() => ({
+      myLocation: myLocation,
     }))
 }));
