@@ -10,6 +10,7 @@ import LoadingSpinnerBoundary from "../common/LoadingSpinner/LoadingSpinnerBound
 import AppErrorBoundary from "../common/ErrorBoundary/ErrorBoundary";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
 import AddFavoriteGroupModal from "./AddFavoriteGroupModal";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function FavoriteGroupList() {
   const { user } = useAuthStore();
@@ -18,6 +19,7 @@ export default function FavoriteGroupList() {
   const { data: groups, isLoading } = useFavoriteGroups(userId);
   const [groupList, setGroupList] = useState<FavoriteGroupType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
 
   // 초기 값을 setGroupList를 통해 useState 로 저장
   useEffect(() => {
@@ -40,7 +42,10 @@ export default function FavoriteGroupList() {
       setGroupList((prev) => [...prev, newGroup]);
     } catch (e) {
       console.error("그룹 생성 실패", e);
-      alert("그룹 생성에 실패했습니다.");
+      showToastMessage({
+        message: "그룹 생성에 실패했습니다.",
+        type: "error",
+      });
     }
   };
 
