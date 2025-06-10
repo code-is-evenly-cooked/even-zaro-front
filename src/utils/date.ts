@@ -106,3 +106,19 @@ export const formatDate = (val: string): string => {
 
   return parts.join(".");
 };
+
+export function getDdayFromDate(dateString?: string | null): string {
+  if (!dateString) return "D+?";
+
+  const start = new Date(dateString);
+  const today = new Date();
+
+  // 시간 요소 제거 (날짜만 비교)
+  start.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const diff = today.getTime() - start.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  return `D+${days}`;
+}
