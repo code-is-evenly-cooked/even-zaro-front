@@ -13,6 +13,8 @@
 //     };
 //   }
 // }
+import { useMapStore } from "@/stores/mapStore";
+
 declare global {
   interface Window {
     kakao: any; // kakao.maps.* 전부 포괄
@@ -35,13 +37,13 @@ export const loadKakaoMapSdk = (callback: () => void) => {
 // 지도 초기화
 export const initializeMap = (
   container: HTMLDivElement,
-  callback: (map: any) => void
+  callback: (map: any) => void,
 ) => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const center = new window.kakao.maps.LatLng(
         position.coords.latitude,
-        position.coords.longitude
+        position.coords.longitude,
       );
 
       const map = new window.kakao.maps.Map(container, {
@@ -59,11 +61,9 @@ export const initializeMap = (
       });
 
       callback(map);
-    }
+    },
   );
 };
-
-
 
 // 마커 표시 함수 (재사용 가능)
 export const addMarkers = (map: any) => {
@@ -89,8 +89,8 @@ export const addMarkers = (map: any) => {
     },
     {
       title: "dd",
-      latlng: new kakao.maps.LatLng(37.55123, 127.1234455)
-    }
+      latlng: new kakao.maps.LatLng(37.55123, 127.1234455),
+    },
   ];
 
   const imageSrc =
@@ -107,3 +107,19 @@ export const addMarkers = (map: any) => {
     });
   });
 };
+
+// 내 위치를 추적해서 전역상태변수에 저장
+export function moveMyLocation(map: any, setMyLocation: (loc: { lat: number; lng: number }) => void) {
+  window.kakao.maps.event.addListener(map, "center_changed", function () {
+    // 지도의  레벨을 얻어옵니다
+    // const level = map.getLevel();
+
+    // 지도의 중심좌표를 얻어옵니다
+    const latlng = map.getCenter();
+
+    const lat = latlng.getLat();
+    const lng = latlng.getLng();
+
+    setMyLocation({ lat, lng });
+  });
+}
