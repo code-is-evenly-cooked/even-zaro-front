@@ -1,7 +1,9 @@
 "use client";
 
-import { Gender, MBTI, UserInfo } from "@/stores/useAuthStore";
-import { validateDateInput } from "@/utils/date";
+import { updateProfile, UpdateProfileParams } from "@/lib/api/profile";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { Gender, MBTI, useAuthStore, UserInfo } from "@/stores/useAuthStore";
+import { convertDotToDash, validateDateInput } from "@/utils/date";
 import { useCallback, useState } from "react";
 
 interface UseProfileInfoSectionProp {
@@ -15,6 +17,7 @@ interface FormError {
 
 const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
   const [errors, setErrors] = useState<FormError>({});
+  const { setUser } = useAuthStore();
   const [userInfo, setUserInfo] = useState<{
     birthday: string;
     liveAloneDate: string;
@@ -26,6 +29,8 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
     gender: user.gender,
     mbti: user.mbti,
   });
+
+  const { showToastMessage } = useToastMessageContext();
 
   const handleChange = <T extends keyof typeof userInfo>(
     key: T,
@@ -58,9 +63,37 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
   }, [userInfo.birthday, userInfo.liveAloneDate]);
 
   const handleSave = async () => {
-    console.log(userInfo);
     if (!validateForm()) return;
-    console.log(userInfo);
+
+    try {
+      const item: UpdateProfileParams = {
+        birthday: convertDotToDash(userInfo.birthday),
+        liveAloneDate: convertDotToDash(userInfo.liveAloneDate),
+        gender: userInfo.gender,
+        mbti: userInfo.mbti,
+      };
+      console.log(item);
+
+      await updateProfile(item);
+
+      setUser({
+        ...user,
+        birthday: item.birthday ?? null,
+        liveAloneDate: item.liveAloneDate ?? null,
+        gender: (item.gender as Gender) ?? undefined,
+        mbti: (item.mbti as MBTI) ?? undefined,
+      });
+      showToastMessage({
+        type: "success",
+        message: "프로필 업데이트가 완료되었습니다.",
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "프로필 업데이트가 실패하였습니다.";
+      showToastMessage({ type: "error", message: errorMessage });
+    }
   };
 
   return { userInfo, errors, handleChange, handleSave };
