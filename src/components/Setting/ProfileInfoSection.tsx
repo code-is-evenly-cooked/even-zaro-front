@@ -5,6 +5,7 @@ import DateInput from "../common/Input/DateInput";
 import GenderRadioGroup from "./GenderRadioGroup";
 import MbtiSelect from "./MbtiSelectBox";
 import useProfileInfoSection from "./useProfileInfoSection";
+import { convertDashToDot } from "@/utils/date";
 
 interface ProfileInfoSectionProp {
   user: UserInfo;
@@ -26,7 +27,7 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
             fullWidth={false}
             styleState={errors.birthday ? "invalid" : "default"}
             error={errors.birthday}
-            value={userInfo.birthday}
+            value={convertDashToDot(userInfo.birthday)}
             onChange={(value) => handleChange("birthday", value)}
             className="w-80"
           />
@@ -37,7 +38,7 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
             fullWidth={false}
             styleState={errors.liveAloneDate ? "invalid" : "default"}
             error={errors.liveAloneDate}
-            value={userInfo.liveAloneDate}
+            value={convertDashToDot(userInfo.liveAloneDate)}
             onChange={(value) => handleChange("liveAloneDate", value)}
             className="w-80"
           />

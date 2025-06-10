@@ -120,12 +120,13 @@ export const formatDate = (val: string): string => {
  * @returns 오류 메시지 (유효하면 null 반환)
  */
 export const validateDateInput = (dateStr: string): string | null => {
+  const dateString = convertDashToDot(dateStr);
   const dateRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
-  if (!dateRegex.test(dateStr)) {
+  if (!dateRegex.test(dateString)) {
     return "날짜 형식이 올바르지 않습니다. 예: 1990.01.01";
   }
 
-  const parsedDate = parse(dateStr, "yyyy.MM.dd", new Date());
+  const parsedDate = parse(dateString, "yyyy.MM.dd", new Date());
   if (!isValid(parsedDate)) {
     return "존재하지 않는 날짜입니다.";
   }
