@@ -64,3 +64,11 @@ export const updateProfile = async (params: UpdateProfileParams) => {
     body: JSON.stringify(params),
   });
 };
+
+export const withdrawUser = async (reason: string): Promise<void> => {
+  return await client("/users/me", {
+    method: "DELETE",
+    needAuth: true,
+    body: JSON.stringify({ reason }),
+  });
+};

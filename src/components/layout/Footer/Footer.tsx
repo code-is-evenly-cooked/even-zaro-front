@@ -16,6 +16,7 @@ export const Footer = () => {
     "/policy/privacy",
     "/editor",
     "/map",
+    "/withdrawal-complete",
   ];
 
   if (hideFooterRoutes.includes(pathname)) return null;
