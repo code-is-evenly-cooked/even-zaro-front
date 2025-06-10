@@ -36,7 +36,7 @@ export default function KakaoMap() {
     script.onload = () => {
       if (!window.kakao || !window.kakao.maps) return;
 
-      const kakao = window.kakao;
+      // const kakao = window.kakao;
 
       window.kakao.maps.load(() => {
         const container = mapRef.current;
@@ -47,7 +47,7 @@ export default function KakaoMap() {
           const lng = position.coords.longitude;
           const userLocation = new window.kakao.maps.LatLng(lat, lng);
 
-          const map = new window.kakao.maps.Map(container, {
+          new window.kakao.maps.Map(container, {
             center: userLocation,
             level: 3,
           });
