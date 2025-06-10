@@ -11,6 +11,8 @@ interface PostFooterProps {
   liked: boolean;
   isReady: boolean;
   onToggleLike: () => void;
+  authorUserId: number;
+  currentUserId?: number;
 }
 
 export default function PostFooter({
@@ -19,8 +21,13 @@ export default function PostFooter({
   liked,
   isReady,
   onToggleLike,
+  authorUserId,
+  currentUserId,
 }: PostFooterProps) {
   const { showToastMessage } = useToastMessageContext();
+
+  // 글 작성자와 로그인 유저가 같은 지 확인
+  const isMine = currentUserId === authorUserId;
 
   // 공유하기
   const handleShare = async () => {
@@ -58,14 +65,16 @@ export default function PostFooter({
           <span>공유하기</span>
         </button>
       </div>
-      <div>
-        <button
-          // TODO: 신고 기능 추가하기 (onClick={handleReport})
-          className="flex items-center gap-2 text-red-500 hover:text-red-600"
-        >
-          <span>신고</span>
-        </button>
-      </div>
+      {!isMine && currentUserId && (
+        <div>
+          <button
+            // TODO: 신고 기능 추가하기 (onClick={handleReport})
+            className="flex items-center gap-2 text-red-500 hover:text-red-600"
+          >
+            <span>신고</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

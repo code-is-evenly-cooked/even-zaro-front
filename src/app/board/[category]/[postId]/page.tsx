@@ -36,6 +36,7 @@ export default async function Page({ params }: PageProps) {
         postId={post.postId}
         likeCount={post.likeCount}
         commentCount={post.commentCount}
+        authorUserId={post.user.userId}
       />
       <CommentSection postId={post.postId} />
     </main>
