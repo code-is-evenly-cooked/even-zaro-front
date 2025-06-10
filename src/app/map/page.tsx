@@ -8,6 +8,7 @@ import { PAGE } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteAddModal } from "@/components/map/FavoriteAddModal";
+import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
 
 const MapPage = () => {
   const { page, favoriteAddModal } = useMapStore((state) => state);
@@ -21,6 +22,7 @@ const MapPage = () => {
       {page === PAGE.PLACELIST && <PlaceModal />}
       {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
       {page === PAGE.USERGROUPLIST && <UserGroupList />}
+      {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
 
       {favoriteAddModal && <FavoriteAddModal /> }
       <button className="absolute left-10 bg-amber-500 w-40 h-15 z-50"

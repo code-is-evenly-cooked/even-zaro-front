@@ -1,6 +1,7 @@
 "use client";
 
-import { useModal } from "@/hooks/useModal";
+import BaseModal from "@/components/common/Modal/BaseModal";
+import BaseButton from "@/components/common/Button/BaseButton";
 
 interface ConfirmDeleteModalProps {
   isOpen: boolean;
@@ -17,34 +18,24 @@ export default function ConfirmDeleteModal({
   title = "정말 삭제하시겠어요?",
   description = "삭제하면 되돌릴 수 없습니다.",
 }: ConfirmDeleteModalProps) {
-  useModal({ isOpen, onClose });
-
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl mx-4 p-6 max-w-sm w-full">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-sm text-gray600 mt-2">{description}</p>
-
-        <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray200 hover:bg-gray100 rounded transition-colors text-sm"
-          >
-            취소
-          </button>
-          <button
+    <BaseModal isOpen={isOpen} onClose={onClose}>
+      <div className="p-4 space-y-4">
+        <h2 className="text-lg font-bold">{title}</h2>
+        <p className="text-sm text-gray600">{description}</p>
+        <div className="flex justify-end space-x-2">
+          <BaseButton onClick={onClose}>취소</BaseButton>
+          <BaseButton
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            className="px-7 py-2 rounded bg-red-500 text-white text-sm font-bold hover:bg-red-600"
+            className="bg-red-500 text-white hover:bg-red-600"
           >
             삭제
-          </button>
+          </BaseButton>
         </div>
       </div>
-    </div>
+    </BaseModal>
   );
 }
