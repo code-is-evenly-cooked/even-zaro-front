@@ -17,3 +17,15 @@ export const reportComment = async ({
     body: JSON.stringify({ reasonType, reasonText }),
   });
 };
+
+export const reportPost = async ({
+  id,
+  reasonType,
+  reasonText,
+}: ReportParams): Promise<void> => {
+  return await client<void>(`/posts/${id}/report`, {
+    method: "POST",
+    needAuth: true,
+    body: JSON.stringify({ reasonType, reasonText }),
+  });
+};

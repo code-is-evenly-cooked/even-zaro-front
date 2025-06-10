@@ -4,7 +4,7 @@ import BaseButton from "../common/Button/BaseButton";
 import ReportSelector from "./ReportSelector";
 import { useState } from "react";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { reportComment } from "@/lib/api/report";
+import { reportComment, reportPost } from "@/lib/api/report";
 
 interface ReportComponentProps {
   reportId: string;
@@ -41,11 +41,14 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
     setIsLoading(true);
     try {
       await reportComment({
-        commentId: reportId,
+        id: reportId,
         reasonType: selectedReason as string,
         reasonText: selectedReason === ReportReason.ETC ? etcReason : "",
       });
-      showToastMessage({ type: "success", message: "신고가 접수되었습니다." });
+      showToastMessage({
+        type: "success",
+        message: "댓글 신고가 접수되었습니다.",
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "오류가 발생했습니다.";
@@ -54,7 +57,27 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
       setIsLoading(false);
     }
   };
-  const handlePostReport = async () => {};
+
+  const handlePostReport = async () => {
+    setIsLoading(true);
+    try {
+      await reportPost({
+        id: reportId,
+        reasonType: selectedReason as string,
+        reasonText: selectedReason === ReportReason.ETC ? etcReason : "",
+      });
+      showToastMessage({
+        type: "success",
+        message: "게시글 신고가 접수되었습니다.",
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "오류가 발생했습니다.";
+      showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-8">
