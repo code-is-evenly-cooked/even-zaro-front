@@ -2,6 +2,7 @@ import React from "react";
 import HomeSectionCard from "./HomeSectionCard";
 import { CommonPostItem } from "@/types/post";
 import BannerSlider from "./BannerSlider";
+import PopularPostList from './PopularPostList';
 
 interface HomeComponentProps {
   posts: {
@@ -19,7 +20,9 @@ const HomeComponent = ({ posts }: HomeComponentProps) => {
           <div className="w-full md:w-2/3 rounded-2xl">
             <BannerSlider />
           </div>
-          <div className="hidden md:block md:w-1/3">실시간 인기 게시글</div>
+          <div className="hidden md:block md:w-1/3">
+            <PopularPostList />
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6 sm:gap-y-12 w-full max-w-5xl px-4">
           <HomeSectionCard category="TOGETHER" items={posts.together} />
