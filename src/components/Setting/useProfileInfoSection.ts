@@ -16,6 +16,7 @@ interface FormError {
 }
 
 const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<FormError>({});
   const { setUser } = useAuthStore();
   const [userInfo, setUserInfo] = useState<{
@@ -65,6 +66,8 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
   const handleSave = async () => {
     if (!validateForm()) return;
 
+    setIsLoading(true);
+
     try {
       const item: UpdateProfileParams = {
         birthday: convertDotToDash(userInfo.birthday),
@@ -93,10 +96,12 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
           ? error.message
           : "프로필 업데이트가 실패하였습니다.";
       showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { userInfo, errors, handleChange, handleSave };
+  return { userInfo, isLoading, errors, handleChange, handleSave };
 };
 
 export default useProfileInfoSection;

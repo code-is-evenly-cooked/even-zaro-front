@@ -11,9 +11,10 @@ interface ProfileInfoSectionProp {
 }
 
 const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
-  const { userInfo, errors, handleChange, handleSave } = useProfileInfoSection({
-    user,
-  });
+  const { userInfo, isLoading, errors, handleChange, handleSave } =
+    useProfileInfoSection({
+      user,
+    });
 
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
@@ -59,6 +60,7 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
         variant="filled"
         color="violet800"
         className="w-6/12 items-center mx-auto"
+        isLoading={isLoading}
         onClick={handleSave}
       >
         프로필 변경
