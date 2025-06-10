@@ -5,6 +5,7 @@ import ReportSelector from "./ReportSelector";
 import { useState } from "react";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { reportComment, reportPost } from "@/lib/api/report";
+import { useRouter } from "next/navigation";
 
 interface ReportComponentProps {
   reportId: string;
@@ -12,6 +13,7 @@ interface ReportComponentProps {
 }
 
 const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedReason, setSelectedReason] = useState<ReportReason | null>(
     null,
@@ -49,6 +51,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
         type: "success",
         message: "댓글 신고가 접수되었습니다.",
       });
+      router.back();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "오류가 발생했습니다.";
@@ -70,6 +73,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
         type: "success",
         message: "게시글 신고가 접수되었습니다.",
       });
+      router.back();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "오류가 발생했습니다.";
