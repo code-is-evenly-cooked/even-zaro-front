@@ -4,6 +4,7 @@ import BaseButton from "../common/Button/BaseButton";
 import ReportSelector from "./ReportSelector";
 import { useState } from "react";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { reportComment } from "@/lib/api/report";
 
 interface ReportComponentProps {
   reportId: string;
@@ -11,7 +12,7 @@ interface ReportComponentProps {
 }
 
 const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
-  console.log(reportId, type);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedReason, setSelectedReason] = useState<ReportReason | null>(
     null,
   );
@@ -28,13 +29,32 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
       return;
     }
 
-    const payload = {
-      reason: selectedReason,
-      detail: selectedReason === ReportReason.ETC ? etcReason : null,
-    };
-
-    console.log(payload);
+    if (type === "COMMENT") {
+      handleComemntReport();
+    }
+    if (type === "POST") {
+      handlePostReport();
+    }
   };
+
+  const handleComemntReport = async () => {
+    setIsLoading(true);
+    try {
+      await reportComment({
+        commentId: reportId,
+        reasonType: selectedReason as string,
+        reasonText: selectedReason === ReportReason.ETC ? etcReason : "",
+      });
+      showToastMessage({ type: "success", message: "신고가 접수되었습니다." });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "오류가 발생했습니다.";
+      showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handlePostReport = async () => {};
 
   return (
     <div className="flex flex-col gap-8">
@@ -53,6 +73,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
         size="xl"
         className="items-center mx-auto w-6/12 min-w-20"
         disabled={!selectedReason}
+        isLoading={isLoading}
         onClick={handleSubmit}
       >
         신고하기
