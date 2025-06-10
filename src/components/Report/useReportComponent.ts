@@ -71,7 +71,7 @@ const useReportComponent = ({ reportId, type }: UseReportComponentProps) => {
       await reportPost({
         id: reportId,
         reasonType: selectedReason as string,
-        reasonText: selectedReason === ReportReason.ETC ? etcReason : "",
+        reasonText: etcReason,
       });
       showToastMessage({
         type: "success",
@@ -91,6 +91,7 @@ const useReportComponent = ({ reportId, type }: UseReportComponentProps) => {
     selectedReason,
     etcReason,
     handleChangeReason,
+    setEtcReason,
     handleSubmit,
   };
 };
