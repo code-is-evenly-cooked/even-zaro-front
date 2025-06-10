@@ -69,6 +69,11 @@ const useProfileChangePassword = () => {
         type: "success",
         message: "비밀번호 변경에 성공했습니다.",
       });
+      setFormState({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error
