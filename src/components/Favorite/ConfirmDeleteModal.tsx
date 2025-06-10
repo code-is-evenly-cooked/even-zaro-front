@@ -24,13 +24,15 @@ export default function ConfirmDeleteModal({
         <h2 className="text-lg font-bold">{title}</h2>
         <p className="text-sm text-gray600">{description}</p>
         <div className="flex justify-end space-x-2">
-          <BaseButton onClick={onClose}>취소</BaseButton>
+          <BaseButton onClick={onClose} color="violet300">
+            취소
+          </BaseButton>
           <BaseButton
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            className="bg-red-500 text-white hover:bg-red-600"
+            color="violet800"
           >
             삭제
           </BaseButton>

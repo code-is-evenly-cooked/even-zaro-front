@@ -37,8 +37,12 @@ export default function AddFavoriteGroupModal({
           className="w-full px-3 py-2 border rounded"
         />
         <div className="flex justify-end space-x-2">
-          <BaseButton onClick={onClose}>삭제</BaseButton>
-          <BaseButton onClick={handleSubmit}>추가</BaseButton>
+          <BaseButton color="violet300" onClick={onClose}>
+            취소
+          </BaseButton>
+          <BaseButton color="violet800" onClick={handleSubmit}>
+            추가
+          </BaseButton>
         </div>
       </div>
     </BaseModal>
