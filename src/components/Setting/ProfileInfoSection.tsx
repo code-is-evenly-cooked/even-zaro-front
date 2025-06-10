@@ -1,27 +1,22 @@
-import { Gender, MBTI, UserInfo } from "@/stores/useAuthStore";
+import { UserInfo } from "@/stores/useAuthStore";
 import FormFieldRow from "./FormFieldRow";
 import BaseButton from "../common/Button/BaseButton";
 import DateInput from "../common/Input/DateInput";
 import GenderRadioGroup from "./GenderRadioGroup";
-import { useState } from "react";
 import MbtiSelect from "./MbtiSelectBox";
+import useProfileInfoSection from "./useProfileInfoSection";
+import { convertDashToDot } from "@/utils/date";
 
 interface ProfileInfoSectionProp {
   user: UserInfo;
 }
 
 const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
-  const [userInfo, setUserInfo] = useState<{
-    birthday: string;
-    liveAloneDate: string;
-    gender?: Gender;
-    mbti?: MBTI;
-  }>({
-    birthday: user.birthday ?? "",
-    liveAloneDate: user.liveAloneDate ?? "",
-    gender: user.gender,
-    mbti: user.mbti,
-  });
+  const { userInfo, isLoading, errors, handleChange, handleSave } =
+    useProfileInfoSection({
+      user,
+    });
+
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
       <h2 className="text-lg font-bold">프로필 정보</h2>
@@ -30,10 +25,10 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
           <DateInput
             size="xl"
             fullWidth={false}
-            value={userInfo.birthday}
-            onChange={(value) =>
-              setUserInfo((prev) => ({ ...prev, birthday: value }))
-            }
+            styleState={errors.birthday ? "invalid" : "default"}
+            error={errors.birthday}
+            value={convertDashToDot(userInfo.birthday)}
+            onChange={(value) => handleChange("birthday", value)}
             className="w-80"
           />
         </FormFieldRow>
@@ -41,27 +36,23 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
           <DateInput
             size="xl"
             fullWidth={false}
-            value={userInfo.liveAloneDate}
-            onChange={(value) =>
-              setUserInfo((prev) => ({ ...prev, liveAloneDate: value }))
-            }
+            styleState={errors.liveAloneDate ? "invalid" : "default"}
+            error={errors.liveAloneDate}
+            value={convertDashToDot(userInfo.liveAloneDate)}
+            onChange={(value) => handleChange("liveAloneDate", value)}
             className="w-80"
           />
         </FormFieldRow>
         <FormFieldRow label="성별">
           <GenderRadioGroup
             value={userInfo.gender}
-            onChange={(selected) =>
-              setUserInfo((prev) => ({ ...prev, gender: selected }))
-            }
+            onChange={(selected) => handleChange("gender", selected)}
           />
         </FormFieldRow>
         <FormFieldRow label="MBTI">
           <MbtiSelect
             value={userInfo.mbti}
-            onChange={(value) =>
-              setUserInfo((prev) => ({ ...prev, mbti: value }))
-            }
+            onChange={(value) => handleChange("mbti", value)}
           />
         </FormFieldRow>
       </ul>
@@ -70,6 +61,8 @@ const ProfileInfoSection = ({ user }: ProfileInfoSectionProp) => {
         variant="filled"
         color="violet800"
         className="w-6/12 items-center mx-auto"
+        isLoading={isLoading}
+        onClick={handleSave}
       >
         프로필 변경
       </BaseButton>

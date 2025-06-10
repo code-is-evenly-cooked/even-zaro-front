@@ -5,6 +5,9 @@ import {
   differenceInWeeks,
   formatDistanceToNow,
   format,
+  parse,
+  isValid,
+  isAfter,
 } from "date-fns";
 import { ko } from "date-fns/locale";
 import { toZonedTime, format as fnsTzFormat } from "date-fns-tz";
@@ -105,6 +108,34 @@ export const formatDate = (val: string): string => {
   }
 
   return parts.join(".");
+};
+
+/**
+ * 날짜 문자열 유효성 검사
+ * - 형식이 yyyy.MM.dd 인지 확인
+ * - 존재하지 않는 날짜(ex. 2023.02.30 등)인지 확인
+ * - 오늘보다 미래 날짜인지 확인
+ *
+ * @param dateStr 사용자 입력 날짜 문자열
+ * @returns 오류 메시지 (유효하면 null 반환)
+ */
+export const validateDateInput = (dateStr: string): string | null => {
+  const dateString = convertDashToDot(dateStr);
+  const dateRegex = /^\d{4}\.(0[1-9]|1[0-2])\.(0[1-9]|[12]\d|3[01])$/;
+  if (!dateRegex.test(dateString)) {
+    return "날짜 형식이 올바르지 않습니다. 예: 1990.01.01";
+  }
+
+  const parsedDate = parse(dateString, "yyyy.MM.dd", new Date());
+  if (!isValid(parsedDate)) {
+    return "존재하지 않는 날짜입니다.";
+  }
+
+  if (isAfter(parsedDate, new Date())) {
+    return "미래 날짜는 입력할 수 없습니다.";
+  }
+
+  return null;
 };
 
 export function getDdayFromDate(dateString?: string | null): string {
