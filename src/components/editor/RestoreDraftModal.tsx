@@ -1,4 +1,7 @@
-import { useModal } from "@/hooks/useModal";
+"use client";
+
+import BaseModal from "@/components/common/Modal/BaseModal";
+import BaseButton from "@/components/common/Button/BaseButton";
 
 interface RestoreDraftModalProps {
   isOpen: boolean;
@@ -11,30 +14,24 @@ export default function RestoreDraftModal({
   onClose,
   onConfirm,
 }: RestoreDraftModalProps) {
-  useModal({ isOpen, onClose });
-
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-xl mx-4 p-6 max-w-sm w-full">
-        <h2 className="text-lg font-semibold">임시 저장된 글이 있습니다.</h2>
-        <p className="text-sm text-gray-600 mt-2">불러오시겠습니까?</p>
-        <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded bg-gray-200 text-sm"
-          >
-            아니요
-          </button>
-          <button
-            onClick={onConfirm}
-            className="px-7 py-2 rounded bg-skyblue300 text-gray900 text-sm font-bold"
+    <BaseModal isOpen={isOpen} onClose={onClose}>
+      <div className="p-4 space-y-4">
+        <h2 className="text-lg font-bold">임시 저장된 글이 있습니다.</h2>
+        <p className="text-sm text-gray600">불러오시겠습니까?</p>
+        <div className="flex justify-end space-x-2">
+          <BaseButton onClick={onClose}>아니요</BaseButton>
+          <BaseButton
+            onClick={() => {
+              onConfirm();
+              onClose();
+            }}
+            className="bg-skyblue300 text-gray900 font-bold hover:bg-skyblue400"
           >
             예
-          </button>
+          </BaseButton>
         </div>
       </div>
-    </div>
+    </BaseModal>
   );
 }
