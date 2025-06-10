@@ -13,7 +13,6 @@
 //     };
 //   }
 // }
-import { useMapStore } from "@/stores/mapStore";
 
 declare global {
   interface Window {
@@ -109,7 +108,10 @@ export const addMarkers = (map: any) => {
 };
 
 // 내 위치를 추적해서 전역상태변수에 저장
-export function moveMyLocation(map: any, setMyLocation: (loc: { lat: number; lng: number }) => void) {
+export function moveMyLocation(
+  map: any,
+  setMyLocation: (loc: { lat: number; lng: number }) => void,
+) {
   window.kakao.maps.event.addListener(map, "center_changed", function () {
     // 지도의  레벨을 얻어옵니다
     // const level = map.getLevel();
@@ -121,5 +123,66 @@ export function moveMyLocation(map: any, setMyLocation: (loc: { lat: number; lng
     const lng = latlng.getLng();
 
     setMyLocation({ lat, lng });
+  });
+}
+
+let geocoder: any = null;
+
+export const setupGeocoder = () => {
+  if (typeof window !== "undefined" && !geocoder) {
+    geocoder = new window.kakao.maps.services.Geocoder();
+  }
+};
+
+// 중심 좌표 주소정보를 가져와 콜백 실행
+export function updateCenterAddress(
+  map: any,
+  callback: (address: string) => void,
+) {
+  setupGeocoder();
+
+  window.kakao.maps.event.addListener(map, "idle", () => {
+    const center = map.getCenter();
+    geocoder.coord2RegionCode(
+      center.getLng(),
+      center.getLat(),
+      (result: any, status: any) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const region = result.find((r: any) => r.region_type === "H");
+          if (region) {
+            callback(region.address_name);
+          }
+        }
+      },
+    );
+  });
+}
+
+// 클릭한 위치에 마커와 주소 출력
+export function enableClickToShowAddress(map: any) {
+  setupGeocoder();
+
+  const marker = new window.kakao.maps.Marker();
+  const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+
+  window.kakao.maps.event.addListener(map, "click", function (mouseEvent: any) {
+    const coords = mouseEvent.latLng;
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), function (result: any, status: any) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const roadAddr = result[0].road_address?.address_name;
+        const jibunAddr = result[0].address?.address_name;
+
+        const content = `<div class="bAddr">
+          <span class="title">법정동 주소정보</span>
+          ${roadAddr ? `<div>도로명주소 : ${roadAddr}</div>` : ""}
+          <div>지번 주소 : ${jibunAddr}</div>
+        </div>`;
+
+        marker.setPosition(coords);
+        marker.setMap(map);
+        infowindow.setContent(content);
+        infowindow.open(map, marker);
+      }
+    });
   });
 }
