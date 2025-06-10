@@ -20,11 +20,6 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
   const { showToastMessage } = useToastMessageContext();
 
   const handleSubmit = () => {
-    if (!selectedReason) {
-      showToastMessage({ type: "info", message: "신고 사유를 선택해주세요." });
-      return;
-    }
-
     if (selectedReason === ReportReason.ETC && etcReason.trim() === "") {
       showToastMessage({
         type: "info",
@@ -57,6 +52,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
         color="violet800"
         size="xl"
         className="items-center mx-auto w-6/12 min-w-20"
+        disabled={!selectedReason}
         onClick={handleSubmit}
       >
         신고하기
