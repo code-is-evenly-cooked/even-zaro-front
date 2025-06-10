@@ -41,7 +41,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
         break;
       case "report":
         console.log("댓글 신고:", item.id);
-        router.push(`/report/${item.id}?type=comment`);
+        router.push(`/report/${item.id}?type=COMMENT`);
         break;
       case "reply":
         setReplyTarget(item.nickname);

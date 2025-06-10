@@ -1,9 +1,9 @@
 "use client";
-import { ReportReason, ReportType } from "@/types/report";
+
+import { ReportType } from "@/types/report";
 import BaseButton from "../common/Button/BaseButton";
 import ReportSelector from "./ReportSelector";
-import { useState } from "react";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import useReportComponent from "./useReportComponent";
 
 interface ReportComponentProps {
   reportId: string;
@@ -11,30 +11,14 @@ interface ReportComponentProps {
 }
 
 const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
-  console.log(reportId, type);
-  const [selectedReason, setSelectedReason] = useState<ReportReason | null>(
-    null,
-  );
-  const [etcReason, setEtcReason] = useState("");
-
-  const { showToastMessage } = useToastMessageContext();
-
-  const handleSubmit = () => {
-    if (selectedReason === ReportReason.ETC && etcReason.trim() === "") {
-      showToastMessage({
-        type: "info",
-        message: "기타 사유에 대해 간단히 설명해주세요.",
-      });
-      return;
-    }
-
-    const payload = {
-      reason: selectedReason,
-      detail: selectedReason === ReportReason.ETC ? etcReason : null,
-    };
-
-    console.log(payload);
-  };
+  const {
+    isLoading,
+    selectedReason,
+    etcReason,
+    handleChangeReason,
+    setEtcReason,
+    handleSubmit,
+  } = useReportComponent({ reportId, type });
 
   return (
     <div className="flex flex-col gap-8">
@@ -45,7 +29,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
       <ReportSelector
         selected={selectedReason}
         etcReason={etcReason}
-        onChangeReason={setSelectedReason}
+        onChangeReason={handleChangeReason}
         onChangeEtcReason={setEtcReason}
       />
       <BaseButton
@@ -53,6 +37,7 @@ const ReportComponent = ({ reportId, type }: ReportComponentProps) => {
         size="xl"
         className="items-center mx-auto w-6/12 min-w-20"
         disabled={!selectedReason}
+        isLoading={isLoading}
         onClick={handleSubmit}
       >
         신고하기
