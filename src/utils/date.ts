@@ -64,9 +64,7 @@ export const getRelativeTimeAgo = (isoDateString: string): string => {
 
 export const getSimplifiedDate = (isoString: string): string => {
   const timeZone = "Asia/Seoul";
-
-  const utcDate = new Date(isoString + "Z"); // UTC로 변경. 서버와 논의 후 제거하거나 붙여두거나
-  const zonedDate = toZonedTime(new Date(utcDate), timeZone);
+  const zonedDate = toZonedTime(new Date(isoString), timeZone);
   const now = toZonedTime(new Date(), timeZone);
 
   const isToday =
