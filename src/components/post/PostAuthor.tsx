@@ -7,8 +7,11 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
+import { deletePost } from "@/lib/api/posts";
+import { useRouter } from "next/navigation";
 
 interface PostAuthorProps {
+  postId: number;
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;
@@ -16,6 +19,7 @@ interface PostAuthorProps {
 }
 
 export default function PostAuthor({
+  postId,
   nickname,
   profileImage,
   liveAloneDate,
@@ -27,6 +31,7 @@ export default function PostAuthor({
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   // 자취 기간 디데이 표시
   const days =
@@ -85,11 +90,23 @@ export default function PostAuthor({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 게시글 수정
+  // TODO: 게시글 수정 기능 추가
   const handleEdit = () => {};
 
   // 게시글 삭제
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    const confirmed = confirm("정말 삭제하시겠습니까?");
+    if (!confirmed) return;
+
+    try {
+      await deletePost(postId);
+      alert("게시글이 삭제되었습니다.");
+      router.push("/board");
+    } catch (e) {
+      console.error("게시글 삭제 실패:", e);
+      alert("삭제에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
