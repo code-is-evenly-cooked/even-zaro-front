@@ -42,6 +42,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/search",
     "/profile",
     "/setting",
+    "/report",
   ];
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
