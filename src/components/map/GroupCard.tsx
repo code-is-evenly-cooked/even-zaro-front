@@ -15,7 +15,6 @@ export function GroupCard({ group }: GroupCardProps) {
   };
 
   return (
-    <>
       <li
         className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
         onClick={handleClick}
@@ -38,6 +37,5 @@ export function GroupCard({ group }: GroupCardProps) {
           <MoreVertical size={20} className="text-gray-400" />
         </button>
       </li>
-    </>
   );
 }

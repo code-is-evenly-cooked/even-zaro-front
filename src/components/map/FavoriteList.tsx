@@ -4,10 +4,13 @@ import { FavoriteListResponse } from "@/types/map";
 import { fetchFavoritesByGroup } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteCard } from "@/components/map/FavoriteCard";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export function FavoriteList() {
   const { groupId, favoriteList } = useMapStore((state) => state);
   const { setFavoriteList } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
+
 
   useEffect(() => {
     (async () => {
@@ -18,6 +21,7 @@ export function FavoriteList() {
           setFavoriteList(data);
         }
       } catch (error) {
+        showToastMessage({ type: "error", message: "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다." });
         console.error(
           "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다.",
           error,
@@ -28,7 +32,6 @@ export function FavoriteList() {
   }, [groupId]);
 
   return (
-    <>
       <ul className="flex-1 overflow-y-auto divide-y">
         {favoriteList && favoriteList.length > 0 ? (
           favoriteList.map((favorite, idx) => (
@@ -38,6 +41,5 @@ export function FavoriteList() {
           <FallbackMessage message="등록된 즐겨찾기가 없습니다." />
         )}
       </ul>
-    </>
   );
 }

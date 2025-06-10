@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
 import { fetchFavoriteStatus } from "@/lib/api/map";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
@@ -13,6 +14,8 @@ export default function PlaceUserMemosHeader({
 }: PlaceUserMemosHeaderProps) {
   const { setPagePlaceList } = useMapStore();
   const placeId = useMapStore((status) => status.placeId);
+  const { showToastMessage } = useToastMessageContext();
+
 
   const [favorite, setFavorite] = useState(false);
 
@@ -23,6 +26,7 @@ export default function PlaceUserMemosHeader({
           const data = await fetchFavoriteStatus(placeId);
           setFavorite(data);
         } catch (error) {
+          showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})
           console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
         }
       })();

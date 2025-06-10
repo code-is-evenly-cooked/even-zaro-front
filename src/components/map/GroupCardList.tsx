@@ -4,10 +4,13 @@ import { GroupListResponse } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { GroupCard } from "@/components/map/GroupCard";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export function GroupCardList() {
   const { groupList, otherUserId } = useMapStore((state) => state);
   const { setGroupList } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
+
 
   useEffect(() => {
     (async () => {
@@ -17,13 +20,13 @@ export function GroupCardList() {
           setGroupList(data);
         }
       } catch (error) {
-        console.error("유저의 그룹 리스트를 불러오는 데 실패했습니다.", error);
+        showToastMessage({ type: "error", message: "유저의 그룹 리스트를 불러오는 데 실패했습니다" });
+        console.error(".", error);
       }
     })();
   }, [otherUserId]);
 
   return (
-    <>
       <ul className="flex-1 overflow-y-auto divide-y">
         {groupList && groupList.length > 0 ? (
           groupList.map((group, idx) => <GroupCard group={group} key={idx} />)
@@ -31,6 +34,5 @@ export function GroupCardList() {
           <FallbackMessage className="등록된 그룹이 없습니다." />
         )}
       </ul>
-    </>
   );
 }

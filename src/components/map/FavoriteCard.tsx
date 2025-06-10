@@ -16,7 +16,7 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
       >
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
-            <span className="font-medium text-sm text-gray-900">
+            <span className="font-medium text-sm text-gray900">
               {favorite.placeName}
             </span>
             <span className="text-xs text-gray600">{favorite.address}</span>
