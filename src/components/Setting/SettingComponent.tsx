@@ -9,6 +9,7 @@ import { useState } from "react";
 import { withdrawUser } from "@/lib/api/profile";
 import { logout } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface SettingComponentProps {
   user: UserInfo;
@@ -17,6 +18,7 @@ interface SettingComponentProps {
 const SettingComponent = ({ user }: SettingComponentProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { showToastMessage } = useToastMessageContext();
 
   const handleWithdrawModal = () => {
     setOpen(true);
@@ -28,9 +30,8 @@ const SettingComponent = ({ user }: SettingComponentProps) => {
       await logout();
       useAuthStore.getState().clearUser();
       router.push("/withdrawal-complete");
-    } catch (e) {
-      console.error(e);
-      alert("탈퇴에 실패했습니다.");
+    } catch {
+      showToastMessage({ type: "error", message: "탈퇴에 실패했습니다." });
     } finally {
       setOpen(false);
     }
