@@ -4,10 +4,17 @@ import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
+import { MoreVerticalIcon } from "lucide-react";
+import { deletePost } from "@/lib/api/posts";
+import { useRouter } from "next/navigation";
+import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface PostAuthorProps {
+  postId: number;
+  category: string;
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;
@@ -15,6 +22,8 @@ interface PostAuthorProps {
 }
 
 export default function PostAuthor({
+  postId,
+  category,
   nickname,
   profileImage,
   liveAloneDate,
@@ -24,6 +33,11 @@ export default function PostAuthor({
   const [isFollowing, setIsFollowing] = useState(false);
   const [isCheckingFollow, setIsCheckingFollow] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   // 자취 기간 디데이 표시
   const days =
@@ -71,6 +85,38 @@ export default function PostAuthor({
     }
   };
 
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // TODO: 게시글 수정 기능 추가
+  const handleEdit = () => {};
+
+  // 게시글 삭제
+  const handleDelete = async () => {
+    try {
+      await deletePost(postId);
+      showToastMessage({
+        message: "게시글 삭제에 성공했습니다.",
+        type: "success",
+      });
+      router.replace(`/board/${category}`);
+    } catch (e) {
+      console.error("게시글 삭제 실패:", e);
+      showToastMessage({
+        message: "게시글 삭제에 실패했습니다.",
+        type: "error",
+      });
+    }
+  };
+
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
       <div className="flex items-center gap-4">
@@ -101,6 +147,42 @@ export default function PostAuthor({
           {isLoading ? "처리 중..." : isFollowing ? "팔로잉" : "팔로우"}
         </button>
       )}
+
+      {/* 메뉴 모달 */}
+      {isMine && (
+        <div className="relative" ref={menuRef}>
+          <button onClick={() => setMenuOpen((prev) => !prev)}>
+            <MoreVerticalIcon width={20} height={20} className="text-gray600" />
+          </button>
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-24 bg-white border border-gray200 rounded shadow-md z-10">
+              <button
+                className="w-full px-4 py-2 text-left text-sm hover:bg-gray100"
+                onClick={handleEdit}
+              >
+                수정
+              </button>
+              <button
+                className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsDeleteModalOpen(true);
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+      {/* 삭제 확인 모달 */}
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="게시글을 삭제할까요?"
+        description="삭제하면 이 글은 복구할 수 없습니다."
+      />
     </div>
   );
 }
