@@ -10,6 +10,7 @@ import { MoreVerticalIcon } from "lucide-react";
 import { deletePost } from "@/lib/api/posts";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface PostAuthorProps {
   postId: number;
@@ -34,6 +35,7 @@ export default function PostAuthor({
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
@@ -101,11 +103,17 @@ export default function PostAuthor({
   const handleDelete = async () => {
     try {
       await deletePost(postId);
-      alert("게시글이 삭제되었습니다.");
+      showToastMessage({
+        message: "게시글 삭제에 성공했습니다.",
+        type: "success",
+      });
       router.replace(`/board/${category}`);
     } catch (e) {
       console.error("게시글 삭제 실패:", e);
-      alert("삭제에 실패했습니다. 다시 시도해주세요.");
+      showToastMessage({
+        message: "게시글 삭제에 실패했습니다.",
+        type: "error",
+      });
     }
   };
 
