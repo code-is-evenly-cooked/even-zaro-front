@@ -12,25 +12,87 @@ interface Post{
   commentCount: number;
 }
 
-interface RankdPost extends Post {
+interface RankedPost extends Post {
+  rankChange: number | null;
+}
+
+interface PrevPostRank {
+  postId: number;
+  index: number;
   rankChange: number;
 }
 
 export default function PopularPostList() {
-  const [posts, setPosts] = useState<RankdPost[]>([]);
-  const prevPostIdRef = useRef<number[]>([]);
+  const [posts, setPosts] = useState<RankedPost[]>([]);
+  const prevPostRanksRef = useRef<PrevPostRank[]>([]);
 
   useEffect(() => {
 
-    const dummyPosts: Post[] = [
-      { id: 1, title: "빨래건조는 이렇게 해보세요오오오오오오오오오오", likeCount: 15, commentCount: 3 },
-      { id: 2, title: "나 이렇게 자취했더니 대박", likeCount: 10, commentCount: 2 },
-      { id: 3, title: "3번째 제목", likeCount: 9, commentCount: 2 },
-      { id: 4, title: "4번째 제목", likeCount: 9, commentCount: 1 },
-      { id: 5, title: "5번째 제목", likeCount: 5, commentCount: 2 },
-    ];
 
-    setPosts(dummyPosts);
+
+    async function fetchPosts(){
+      try{
+        const savedPrevPostRanks = sessionStorage.getItem("prevPopularPostRanks");
+        if (savedPrevPostRanks) {
+          prevPostRanksRef.current = JSON.parse(savedPrevPostRanks);
+        }
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/rank`);
+        const data = await response.json();
+
+        const newPosts: Post[] = data.data.posts.map((post: any) => ({
+          id: post.postId,
+          title: post.title,
+          likeCount: post.likeCount,
+          commentCount: post.commentCount,
+        }));
+
+
+        const rankedPosts: RankedPost[] = newPosts.map((post, index) => {
+          const prevRank = prevPostRanksRef.current.find(p => p.postId === post.id);
+          let rankChange: number = 1;
+
+          if (prevPostRanksRef.current.length === 0) {
+            rankChange = 1;
+          } else {
+            if (prevRank) {
+              if (prevRank.index !== index) {
+                rankChange = prevRank.index - index;
+              } else {
+                rankChange = prevRank.rankChange;
+              }
+            } else {
+              rankChange = 1;
+            }
+          }
+
+          return {
+            ...post,
+            rankChange,
+          };
+        });
+
+        setPosts(rankedPosts);
+
+        const newPrevPostRanks: PrevPostRank[] = rankedPosts.map((post, index) => ({
+          postId: post.id,
+          index,
+          rankChange: post.rankChange!,
+        }));
+
+        requestAnimationFrame(() => {
+          prevPostRanksRef.current = newPrevPostRanks;
+          sessionStorage.setItem("prevPopularPostRanks", JSON.stringify(newPrevPostRanks));
+        });
+      } catch (error) {
+        console.log("Error popular posts : ", error);
+      }
+    }
+
+    fetchPosts();
+
+    const interval = setInterval(fetchPosts, 300000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -49,9 +111,9 @@ export default function PopularPostList() {
             className="px-4 py-2 hover:bg-gray-50">
             <div className="flex items-center gap-2">
               <span className="text-sm">
-                { post.rankChange > 0 ? <RankUpIcon className="w-[14px] h-[14px]"/>
-                : post.rankChange < 0 ? <RankDownIcon className="w-[14px] h-[14px]"/>
-                : null }
+                { post.rankChange !==null && post.rankChange > 0 ? (<RankUpIcon className="w-[14px] h-[14px]" />)
+                  : post.rankChange !==null && post.rankChange < 0 ? (<RankDownIcon className="w-[14px] h-[14px]" />)
+                      : null}
               </span>
               <span className="text-base font-semibold truncate">{post.title}</span>
             </div>
