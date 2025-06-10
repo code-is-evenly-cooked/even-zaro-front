@@ -19,6 +19,7 @@ const useProfileChangePassword = () => {
     confirmPassword: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<ChangePasswordFormErrors>({});
 
   const { showToastMessage } = useToastMessageContext();
@@ -57,6 +58,8 @@ const useProfileChangePassword = () => {
     e.preventDefault();
 
     if (!validateForm()) return;
+
+    setIsLoading(true);
     try {
       await changePassword({
         currentPassword: formState.currentPassword,
@@ -72,10 +75,18 @@ const useProfileChangePassword = () => {
           ? error.message
           : "비밀번호 변경에 실패했습니다.";
       showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { formState, errors, handleFormChange, handleChangePassword };
+  return {
+    formState,
+    isLoading,
+    errors,
+    handleFormChange,
+    handleChangePassword,
+  };
 };
 
 export default useProfileChangePassword;
