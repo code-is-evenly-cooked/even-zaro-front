@@ -44,7 +44,22 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
     }
   };
 
+  const validateForm = useCallback(() => {
+    const newErrors: FormError = {};
+
+    const birthdayError = validateDateInput(userInfo.birthday);
+    if (birthdayError) newErrors.birthday = birthdayError;
+
+    const liveAloneDateError = validateDateInput(userInfo.liveAloneDate);
+    if (liveAloneDateError) newErrors.liveAloneDate = liveAloneDateError;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [userInfo.birthday, userInfo.liveAloneDate]);
+
   const handleSave = async () => {
+    console.log(userInfo);
+    if (!validateForm()) return;
     console.log(userInfo);
   };
 
