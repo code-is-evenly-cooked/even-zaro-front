@@ -4,7 +4,14 @@ import FormFieldRow from "./FormFieldRow";
 import useProfileChangePassword from "./useProfileChangePassword";
 
 const ProfileChangePassword = () => {
-  const { formState, handleFormChange, errors } = useProfileChangePassword();
+  const {
+    formState,
+    isLoading,
+    errors,
+    handleFormChange,
+
+    handleChangePassword,
+  } = useProfileChangePassword();
   return (
     <section className="flex flex-col border rounded-sm px-4 py-6 gap-6">
       <h2 className="text-lg font-bold">비밀번호 변경</h2>
@@ -47,7 +54,9 @@ const ProfileChangePassword = () => {
         size="xl"
         variant="filled"
         color="violet800"
+        isLoading={isLoading}
         className="w-6/12 items-center mx-auto"
+        onClick={handleChangePassword}
       >
         비밀번호 변경
       </BaseButton>

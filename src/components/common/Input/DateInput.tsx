@@ -15,10 +15,18 @@ export type DateInputProps = Omit<
 
 const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
   ({ value, onChange, ...props }, ref) => {
-    const [inputValue, setInputValue] = useState(formatDate(value));
+    const [inputValue, setInputValue] = useState(value);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const formatted = formatDate(e.target.value);
+      const rawValue = e.target.value;
+
+      const cleaned = rawValue.replace(/\D/g, "").slice(0, 8);
+      setInputValue(cleaned);
+      onChange(cleaned);
+    };
+
+    const handleBlur = () => {
+      const formatted = formatDate(inputValue);
       setInputValue(formatted);
       onChange(formatted);
     };
@@ -34,6 +42,7 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
         value={inputValue}
         placeholder="1990.01.01"
         onChange={handleInputChange}
+        onBlur={handleBlur}
       />
     );
   },

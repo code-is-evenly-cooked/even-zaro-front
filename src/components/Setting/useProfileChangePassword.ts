@@ -1,5 +1,7 @@
 "use client";
 
+import { changePassword } from "@/lib/api/profile";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validatePassword } from "@/utils/validate";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
@@ -17,7 +19,10 @@ const useProfileChangePassword = () => {
     confirmPassword: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<ChangePasswordFormErrors>({});
+
+  const { showToastMessage } = useToastMessageContext();
 
   const validateForm = useCallback(() => {
     const newErrors: ChangePasswordFormErrors = {};
@@ -53,9 +58,40 @@ const useProfileChangePassword = () => {
     e.preventDefault();
 
     if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      await changePassword({
+        currentPassword: formState.currentPassword,
+        newPassword: formState.newPassword,
+      });
+      showToastMessage({
+        type: "success",
+        message: "비밀번호 변경에 성공했습니다.",
+      });
+      setFormState({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "비밀번호 변경에 실패했습니다.";
+      showToastMessage({ type: "error", message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  return { formState, errors, handleFormChange, handleChangePassword };
+  return {
+    formState,
+    isLoading,
+    errors,
+    handleFormChange,
+    handleChangePassword,
+  };
 };
 
 export default useProfileChangePassword;
