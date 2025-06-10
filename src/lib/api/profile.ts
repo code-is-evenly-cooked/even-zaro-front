@@ -72,3 +72,18 @@ export const withdrawUser = async (reason: string): Promise<void> => {
     body: JSON.stringify({ reason }),
   });
 };
+
+interface ChangePasswordParams {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export const changePassword = async (
+  param: ChangePasswordParams,
+): Promise<void> => {
+  return await client("/users/me/password", {
+    method: "PATCH",
+    needAuth: true,
+    body: JSON.stringify(param),
+  });
+};
