@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 
 interface PostAuthorProps {
   postId: number;
+  category: string;
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;
@@ -20,6 +21,7 @@ interface PostAuthorProps {
 
 export default function PostAuthor({
   postId,
+  category,
   nickname,
   profileImage,
   liveAloneDate,
@@ -101,7 +103,7 @@ export default function PostAuthor({
     try {
       await deletePost(postId);
       alert("게시글이 삭제되었습니다.");
-      router.push("/board");
+      router.replace(`/board/${category}`);
     } catch (e) {
       console.error("게시글 삭제 실패:", e);
       alert("삭제에 실패했습니다. 다시 시도해주세요.");
