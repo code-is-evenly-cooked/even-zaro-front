@@ -3,9 +3,11 @@ import {
   fetchUserLikes,
   fetchUserPosts,
 } from "@/lib/api/profile";
+import { APIErrorResponse } from "@/types/api";
 import { PostDetailResponse, UserCommentedResponse } from "@/types/post";
 import { ProfileTabType } from "@/types/profile";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { getCookie } from "cookies-next";
 
 interface userProfilePostListProps {
   userId: string;
@@ -21,6 +23,15 @@ export const useProfileItemList = ({
   const queryKey = ["profile", userId, type, page];
 
   const queryFn = () => {
+    const accessToken = getCookie("access_token");
+
+    if (!accessToken) {
+      throw new APIErrorResponse({
+        code: "NO_ACCESS_TOKEN",
+        message: "access token 없음",
+        statusCode: 401,
+      });
+    }
     switch (type) {
       case "posts":
         return fetchUserPosts(userId, page);
@@ -36,5 +47,6 @@ export const useProfileItemList = ({
   return useSuspenseQuery<PostDetailResponse | UserCommentedResponse>({
     queryKey,
     queryFn,
+    retry: false,
   });
 };
