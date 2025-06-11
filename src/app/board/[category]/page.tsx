@@ -6,7 +6,7 @@ import { MainCategory } from "@/types/category";
 import { PostDetailResponse } from "@/types/post";
 import { isMainCategory } from "@/utils/category";
 import { notFound } from "next/navigation";
-import { APIErrorResponse } from "@/types/api";
+import { isAPIErrorResponse } from "@/types/api";
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -36,11 +36,11 @@ export default async function PostListPage({
       },
     });
   } catch (err) {
-    const statusCode = err instanceof APIErrorResponse ? err.statusCode : 500;
-    if (statusCode === 404) {
-      notFound();
+    if (isAPIErrorResponse(err)) {
+      if (err.statusCode === 404) return notFound();
     }
-    throw err; // error.tsx로 넘어감
+
+    throw err; // error.tsx에서 처리
   }
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto">
