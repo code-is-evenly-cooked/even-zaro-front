@@ -4,18 +4,23 @@ import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../../common/Icons";
-import { useProfile } from "@/hooks/useProfile";
 import { Stat } from "./Stat";
 import Link from "next/link";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { fetchUserProfile } from "@/lib/api/profile";
+import { ProfileResponse } from "@/types/profile";
 
 interface ProfileHeaderProps {
   userId: string;
 }
 
 export default function ProfileHeader({ userId }: ProfileHeaderProps) {
-  const { data: profile, isLoading, error } = useProfile(userId);
-  if (isLoading) return <div className="text-gray600">로딩 중...</div>;
-  if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>;
+  const { data: profile } = useSuspenseQuery<ProfileResponse>({
+    queryKey: ["profile", userId],
+    queryFn: () => fetchUserProfile(userId),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+  });
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
 

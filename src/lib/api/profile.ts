@@ -1,5 +1,12 @@
 import { PostDetailResponse } from "@/types/post";
 import { client } from "../fetch/client";
+import { ProfileResponse } from "@/types/profile";
+
+export const fetchUserProfile = async (
+  userId: string,
+): Promise<ProfileResponse> => {
+  return await client<ProfileResponse>(`/profile/${userId}`);
+};
 
 export const fetchUserPosts = async (
   userId: number,
