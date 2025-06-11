@@ -22,7 +22,6 @@ export const createPost = async (
 ): Promise<CreatePostResponse> => {
   return await client<CreatePostResponse>("/posts", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
     needAuth: true,
   });
@@ -35,7 +34,6 @@ export const updatePost = async (
 ): Promise<void> => {
   return await client(`/posts/${postId}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
     needAuth: true,
   });
