@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { CATEGORY_MAP } from "@/constants/category";
 
 interface PostHeaderProps {
@@ -13,6 +16,8 @@ export default function PostHeader({
   title,
   createdAt,
 }: PostHeaderProps) {
+  const router = useRouter();
+
   // 카테고리(mainCategory)와 태그(subCategory)
   const mainCategory = CATEGORY_MAP[category];
   const subCategory = mainCategory.options.find((opt) => opt.tag === tag);
@@ -36,19 +41,36 @@ export default function PostHeader({
     return `${datePart} ${timePart}`;
   }
 
+  // 카테고리와 태그 클릭 시 게시판 이동
+  const handleClickMainCategory = () => {
+    router.push(`/board/${category}`);
+  };
+
+  const handleClickSubCategory = () => {
+    router.push(`/board/${category}?tag=${tag}`);
+  };
+
   return (
     <header className="space-y-2">
-      <div className="text-sm text-gray-300 font-medium">
-        <span className="text-primary">{mainCategory.label}</span>
+      <div className="text-sm text-gray600 font-medium">
+        <button
+          onClick={handleClickMainCategory}
+          className="text-primary hover:underline cursor-pointer"
+        >
+          {mainCategory.label}
+        </button>
         {" > "}
-        <span className="text-secondary">
+        <button
+          onClick={handleClickSubCategory}
+          className="text-secondary hover:underline cursor-pointer"
+        >
           {subCategory
             ? `${subCategory.emoji} ${subCategory.label}`
             : "알 수 없음"}
-        </span>
+        </button>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+      <h1 className="text-2xl font-bold text-gray900">{title}</h1>
 
       <p className="text-sm text-gray-400">{formatDate(createdAt)}</p>
     </header>
