@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 import ClientSidePagination from "../common/Pagination/ClientSidePagination";
 import { useParams } from "next/navigation";
+import { CommonPostDetailItem, UserCommentedItem } from "@/types/post";
+import ProfileCommentCard from "./ProfileCommentCard";
 
 interface ProfilePostListProps {
   type: Exclude<ProfileTabType, "favorites">;
@@ -17,13 +19,13 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data: posts } = useProfileItemList({
+  const { data } = useProfileItemList({
     userId: userId,
     type,
     page: currentPage,
   });
 
-  const isEmpty = posts?.content.length === 0;
+  const isEmpty = data?.content.length === 0;
   const label = PROFILE_TAB_MAP[type];
   return isEmpty ? (
     <FallbackMessage
@@ -33,17 +35,25 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
   ) : (
     <div className="flex flex-col">
       <ul>
-        {posts.content.map((post) => (
-          <li key={post.postId}>
-            <Link href={`/board/${post.category}/${post.postId}`}>
-              <PostListCard post={post} />
-            </Link>
-          </li>
-        ))}
+        {type === "comments"
+          ? (data.content as UserCommentedItem[]).map((comment) => (
+              <li key={comment.postId}>
+                <Link href={`/board/${comment.category}/${comment.postId}`}>
+                  <ProfileCommentCard item={comment} />
+                </Link>
+              </li>
+            ))
+          : (data.content as CommonPostDetailItem[]).map((post) => (
+              <li key={post.postId}>
+                <Link href={`/board/${post.category}/${post.postId}`}>
+                  <PostListCard post={post} />
+                </Link>
+              </li>
+            ))}
       </ul>
       <ClientSidePagination
         currentPage={currentPage}
-        totalPage={posts.totalPages}
+        totalPage={data.totalPages}
         onChangePage={setCurrentPage}
       />
     </div>

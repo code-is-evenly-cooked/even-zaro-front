@@ -3,7 +3,7 @@ import {
   fetchUserLikes,
   fetchUserPosts,
 } from "@/lib/api/profile";
-import { PostDetailResponse } from "@/types/post";
+import { PostDetailResponse, UserCommentedResponse } from "@/types/post";
 import { ProfileTabType } from "@/types/profile";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -33,5 +33,8 @@ export const useProfileItemList = ({
     }
   };
 
-  return useSuspenseQuery<PostDetailResponse>({ queryKey, queryFn });
+  return useSuspenseQuery<PostDetailResponse | UserCommentedResponse>({
+    queryKey,
+    queryFn,
+  });
 };
