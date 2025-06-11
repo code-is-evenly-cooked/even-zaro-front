@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/fetch/client";
 import type { ProfileResponse } from "@/types/profile";
 
-export const useProfile = (userId: number | null) => {
+export const useProfile = (userId: string | null) => {
   return useQuery({
     queryKey: ["profile", userId],
     queryFn: () => {

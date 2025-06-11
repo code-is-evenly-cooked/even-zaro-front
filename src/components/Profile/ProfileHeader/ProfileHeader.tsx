@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../../common/Icons";
@@ -9,13 +8,12 @@ import { useProfile } from "@/hooks/useProfile";
 import { Stat } from "./Stat";
 import Link from "next/link";
 
-export default function ProfileHeader() {
-  const { user } = useAuthStore();
-  const userId = user?.userId ?? null;
-  const { data: profile, isLoading, error } = useProfile(userId);
+interface ProfileHeaderProps {
+  userId: string;
+}
 
-  if (!userId)
-    return <div className="text-red-500">유효하지 않은 사용자입니다.</div>;
+export default function ProfileHeader({ userId }: ProfileHeaderProps) {
+  const { data: profile, isLoading, error } = useProfile(userId);
   if (isLoading) return <div className="text-gray600">로딩 중...</div>;
   if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>;
 
@@ -47,7 +45,9 @@ export default function ProfileHeader() {
             className="rounded-full object-cover m-4"
           />
           <span className="font-bold text-center">{profile.nickname}</span>
-          {days != null && <span className="text-gray600 text-center">D+{days}</span>}
+          {days != null && (
+            <span className="text-gray600 text-center">D+{days}</span>
+          )}
         </div>
         <div className="flex flex-col gap-6">
           <div className="sm:flex hidden items-center gap-4 text-xl">
