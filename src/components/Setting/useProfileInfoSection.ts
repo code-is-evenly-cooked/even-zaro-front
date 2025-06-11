@@ -1,6 +1,7 @@
 "use client";
 
 import { updateProfile, UpdateProfileParams } from "@/lib/api/profile";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { Gender, MBTI, useAuthStore, UserInfo } from "@/stores/useAuthStore";
 import { convertDotToDash, validateDateInput } from "@/utils/date";
@@ -91,11 +92,10 @@ const useProfileInfoSection = ({ user }: UseProfileInfoSectionProp) => {
         message: "프로필 업데이트가 완료되었습니다.",
       });
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "프로필 업데이트가 실패하였습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "프로필 업데이트 실패"),
+      });
     } finally {
       setIsLoading(false);
     }

@@ -9,6 +9,7 @@ import { EditIcon } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 interface ProfileImageUploaderProps {
   initialImage: string;
@@ -49,10 +50,10 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
       setPreview(profileImage);
       setUser({ ...user, profileImage });
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "이미지 업로드 실패";
-      setPreview(initialImage);
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "이미지 업로드 실패"),
+      });
     } finally {
       setIsLoading(false);
     }

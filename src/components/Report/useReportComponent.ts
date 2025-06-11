@@ -1,4 +1,5 @@
 import { reportComment, reportPost } from "@/lib/api/report";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { ReportReason, ReportType } from "@/types/report";
 import { useRouter } from "next/navigation";
@@ -57,9 +58,7 @@ const useReportComponent = ({ reportId, type }: UseReportComponentProps) => {
       });
       router.back();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "오류가 발생했습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({ type: "error", message: getErrorMessage(error) });
     } finally {
       setIsLoading(false);
     }
@@ -79,9 +78,7 @@ const useReportComponent = ({ reportId, type }: UseReportComponentProps) => {
       });
       router.back();
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "오류가 발생했습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({ type: "error", message: getErrorMessage(error) });
     } finally {
       setIsLoading(false);
     }

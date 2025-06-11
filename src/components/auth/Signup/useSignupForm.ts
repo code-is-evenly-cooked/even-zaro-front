@@ -1,4 +1,5 @@
 import { userSignup } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { AgreementsState, AgreementsType } from "@/types/agreement";
 import {
@@ -108,8 +109,10 @@ const useSignupForm = () => {
 
       router.replace("/email-validation?email=" + email);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "회원가입 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(err, "회원가입 실패"),
+      });
     } finally {
       setIsLoading(false);
     }
