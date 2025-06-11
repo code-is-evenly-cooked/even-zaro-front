@@ -32,4 +32,14 @@ export function useEditorInit(
       didInit.current = true;
     }
   }, [postId, isReady, content, editorRef]);
+
+  useEffect(() => {
+    const root = editorRef.current?.getRootElement();
+    if (!root) return;
+
+    const editableAreas = root.querySelectorAll('[contenteditable="true"]');
+    editableAreas.forEach((el) => {
+      el.setAttribute("spellcheck", "false");
+    });
+  }, [editorRef]);
 }
