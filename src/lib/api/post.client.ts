@@ -1,12 +1,16 @@
 import { client } from "@/lib/fetch/client";
-import type { CreatePostPayload, CreatePostResponse, UpdatePostPayload } from "@/types/editor";
-import type { SinglePostDetailResponse } from "@/types/post";
+import type {
+  CreatePostPayload,
+  CreatePostResponse,
+  UpdatePostPayload,
+} from "@/types/editor";
+import type { PostDetailResponse } from "@/types/post";
 
 // 게시글 단건 조회 (게시글 수정 용도 CSR)
 export const fetchPostDetail = async (
-  postId: string
-): Promise<SinglePostDetailResponse> => {
-  return await client<SinglePostDetailResponse>(`/posts/${postId}`, {
+  postId: string,
+): Promise<PostDetailResponse> => {
+  return await client<PostDetailResponse>(`/posts/${postId}`, {
     method: "GET",
     needAuth: true,
   });
@@ -27,7 +31,7 @@ export const createPost = async (
 // 게시글 수정
 export const updatePost = async (
   postId: number,
-  payload: UpdatePostPayload
+  payload: UpdatePostPayload,
 ): Promise<void> => {
   return await client(`/posts/${postId}`, {
     method: "PATCH",
