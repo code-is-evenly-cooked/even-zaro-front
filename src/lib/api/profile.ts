@@ -1,8 +1,17 @@
-import { PostDetailResponse } from "@/types/post";
+import { PostDetailResponse, UserCommentedResponse } from "@/types/post";
 import { client } from "../fetch/client";
+import { ProfileResponse } from "@/types/profile";
+
+export const fetchUserProfile = async (
+  userId: string,
+): Promise<ProfileResponse> => {
+  return await client<ProfileResponse>(`/profile/${userId}`, {
+    needAuth: false,
+  });
+};
 
 export const fetchUserPosts = async (
-  userId: number,
+  userId: string,
   page: number,
 ): Promise<PostDetailResponse> => {
   return await client<PostDetailResponse>(`/profile/${userId}/posts`, {
@@ -12,17 +21,17 @@ export const fetchUserPosts = async (
 };
 
 export const fetchUserComments = async (
-  userId: number,
+  userId: string,
   page: number,
-): Promise<PostDetailResponse> => {
-  return await client<PostDetailResponse>(`/profile/${userId}/comments`, {
+): Promise<UserCommentedResponse> => {
+  return await client<UserCommentedResponse>(`/profile/${userId}/comments`, {
     needAuth: true,
     params: { page: page },
   });
 };
 
 export const fetchUserLikes = async (
-  userId: number,
+  userId: string,
   page: number,
 ): Promise<PostDetailResponse> => {
   return await client<PostDetailResponse>(`/profile/${userId}/likes`, {

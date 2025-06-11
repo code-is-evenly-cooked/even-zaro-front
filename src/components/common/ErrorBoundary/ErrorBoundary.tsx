@@ -6,6 +6,7 @@ import {
   FallbackProps,
 } from "react-error-boundary";
 import FallbackMessage from "../Fallback/FallbackMessage";
+import { APIErrorResponse } from "@/types/api";
 
 interface AppErrorBoundaryProps {
   children: React.ReactNode;
@@ -32,18 +33,41 @@ const AppErrorBoundary = ({
 }: AppErrorBoundaryProps) => {
   return (
     <ReactErrorBoundary
-      fallbackRender={({ error, resetErrorBoundary }) =>
-        fallbackMessage ? (
-          <FallbackMessage message={fallbackMessage} className="mt-10" />
-        ) : (
+      fallbackRender={({ error, resetErrorBoundary }) => {
+        const isAuthError =
+          (typeof error.message === "string" &&
+            (error.message === "access token 없음" ||
+              error.message.includes("401") ||
+              error.message.includes("로그인"))) ??
+          false;
+
+        if (isAuthError)
+          return (
+            <FallbackMessage
+              message="로그인이 필요한 서비스입니다."
+              className="mt-10"
+            />
+          );
+
+        if (fallbackMessage)
+          return (
+            <FallbackMessage message={fallbackMessage} className="mt-10" />
+          );
+
+        return (
           <DefaultFallback
             error={error}
             resetErrorBoundary={resetErrorBoundary}
           />
-        )
-      }
+        );
+      }}
       onError={(error, info) => {
-        console.error("ErrorBoundary:", error, info);
+        const isTokenMissing =
+          error instanceof APIErrorResponse && error.code === "NO_ACCESS_TOKEN";
+        const isDev = process.env.NODE_ENV === "development";
+        if (!isTokenMissing && isDev) {
+          console.error("AppErrorBoundary: ", error, info);
+        }
       }}
     >
       {children}
