@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import HeaderSkeleton from "./HeaderSkeleton";
 import { usePathname } from "next/navigation";
 
@@ -17,7 +17,7 @@ export default function HeaderShell() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
 
-  // 숨길 전체 헤더 경로
+  // 헤더 숨겨야 할 pathname
   const hideHeaderRoutes = [
     "/login",
     "/signup",
@@ -34,9 +34,7 @@ export default function HeaderShell() {
 
   return (
     <>
-      <Suspense>
-        <Header onMenuClick={() => setIsSidebarOpen(true)} />
-      </Suspense>
+      <Header onMenuClick={() => setIsSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );
