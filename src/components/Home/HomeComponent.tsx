@@ -13,7 +13,7 @@ interface HomeComponentProps {
 
 const HomeComponent = ({ posts }: HomeComponentProps) => {
   return (
-    <div className="min-h-full flex pt-20 items-start justify-center px-4">
+    <div className="min-h-full flex pt-12 items-start justify-center px-4">
       <div className="flex flex-col w-full max-w-5xl gap-10">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="w-full md:w-2/3 rounded-2xl">
