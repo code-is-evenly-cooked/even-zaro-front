@@ -5,7 +5,9 @@ import { ProfileResponse } from "@/types/profile";
 export const fetchUserProfile = async (
   userId: string,
 ): Promise<ProfileResponse> => {
-  return await client<ProfileResponse>(`/profile/${userId}`);
+  return await client<ProfileResponse>(`/profile/${userId}`, {
+    needAuth: false,
+  });
 };
 
 export const fetchUserPosts = async (
