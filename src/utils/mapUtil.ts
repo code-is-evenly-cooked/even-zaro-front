@@ -1,26 +1,26 @@
 // Kakao 객체를 전역 선언합니다.
-// declare global {
-//   interface Window {
-//     kakao: {
-//       maps: {
-//         LatLng: new (lat: number, lng: number) => void;
-//         Map: new (
-//           container: HTMLElement,
-//           options: { center: void; level: number },
-//         ) => void;
-//         load: (callback: () => void) => void;
-//       };
-//     };
-//   }
-// }
+declare global {
+  interface Window {
+    kakao: {
+      maps: {
+        LatLng: new (lat: number, lng: number) => void;
+        Map: new (
+          container: HTMLElement,
+          options: { center: void; level: number },
+        ) => void;
+        load: (callback: () => void) => void;
+      };
+    };
+  }
+}
 
 import { markerInfo, PlaceListResponse } from "@/types/map";
 
-declare global {
-  interface Window {
-    kakao: any; // kakao.maps.* 전부 포괄
-  }
-}
+// declare global {
+//   interface Window {
+//     kakao: any; // kakao.maps.* 전부 포괄
+//   }
+// }
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
 
@@ -188,8 +188,6 @@ export function placeToMarker(places: PlaceListResponse | null, map: any) {
     title: place.name,
     latlng: { lat: place.lat, lng: place.lng },
   }));
-
-  console.log("positions", positions);
 
   const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
   const imageSize = new window.kakao.maps.Size(24, 35);
