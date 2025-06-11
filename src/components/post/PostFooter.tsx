@@ -3,6 +3,7 @@
 import { MessageCircle, Heart } from "lucide-react";
 import { ShareIcon } from "../common/Icons";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useRouter } from "next/navigation";
 
 interface PostFooterProps {
   postId: number;
@@ -16,6 +17,7 @@ interface PostFooterProps {
 }
 
 export default function PostFooter({
+  postId,
   likeCount,
   commentCount,
   liked,
@@ -25,6 +27,7 @@ export default function PostFooter({
   currentUserId,
 }: PostFooterProps) {
   const { showToastMessage } = useToastMessageContext();
+  const router = useRouter();
 
   // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
@@ -43,6 +46,11 @@ export default function PostFooter({
         type: "error",
       });
     }
+  };
+
+  // 신고 하기
+  const handleReport = () => {
+    router.push(`/report/${postId}?type=POST`);
   };
 
   return (
@@ -68,7 +76,7 @@ export default function PostFooter({
       {!isMine && currentUserId && (
         <div>
           <button
-            // TODO: 신고 기능 추가하기 (onClick={handleReport})
+            onClick={handleReport}
             className="flex items-center gap-2 text-red-500 hover:text-red-600"
           >
             <span>신고</span>
