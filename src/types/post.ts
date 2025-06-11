@@ -46,3 +46,20 @@ export interface ImagePostDetailItem extends CommonPostDetailItem {
   writerNickname: string;
   writerProfileImage: string;
 }
+
+export interface UserCommentedResponse {
+  content: UserCommentedItem[];
+  totalPages: number;
+  number: number;
+}
+
+export interface UserCommentedItem {
+  postId: number;
+  title: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
+  likeCount: number;
+  commentCount: number;
+  commentContent: string;
+  commentCreatedAt: string;
+}
