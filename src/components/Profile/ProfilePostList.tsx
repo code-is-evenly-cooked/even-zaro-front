@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/useAuthStore";
 import { PROFILE_TAB_MAP, ProfileTabType } from "@/types/profile";
 import { useProfileItemList } from "../../hooks/useProfileItemList";
 import PostListCard from "../common/SectionCards/PostListCard";
@@ -6,20 +5,17 @@ import FallbackMessage from "../common/Fallback/FallbackMessage";
 import Link from "next/link";
 import { useState } from "react";
 import ClientSidePagination from "../common/Pagination/ClientSidePagination";
+import { useParams } from "next/navigation";
 
 interface ProfilePostListProps {
   type: Exclude<ProfileTabType, "favorites">;
 }
 
 const ProfilePostList = ({ type }: ProfilePostListProps) => {
-  const { user } = useAuthStore();
-  const userId = user?.userId;
+  const params = useParams();
+  const userId = params?.userId as string;
 
   const [currentPage, setCurrentPage] = useState(0);
-
-  if (userId === null || userId === undefined) {
-    throw new Error("로그인이 필요합니다");
-  }
 
   const { data: posts } = useProfileItemList({
     userId: userId,

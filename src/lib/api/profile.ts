@@ -9,7 +9,7 @@ export const fetchUserProfile = async (
 };
 
 export const fetchUserPosts = async (
-  userId: number,
+  userId: string,
   page: number,
 ): Promise<PostDetailResponse> => {
   return await client<PostDetailResponse>(`/profile/${userId}/posts`, {
@@ -19,7 +19,7 @@ export const fetchUserPosts = async (
 };
 
 export const fetchUserComments = async (
-  userId: number,
+  userId: string,
   page: number,
 ): Promise<PostDetailResponse> => {
   return await client<PostDetailResponse>(`/profile/${userId}/comments`, {
@@ -29,7 +29,7 @@ export const fetchUserComments = async (
 };
 
 export const fetchUserLikes = async (
-  userId: number,
+  userId: string,
   page: number,
 ): Promise<PostDetailResponse> => {
   return await client<PostDetailResponse>(`/profile/${userId}/likes`, {

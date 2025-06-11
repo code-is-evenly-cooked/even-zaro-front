@@ -8,7 +8,7 @@ import { ProfileTabType } from "@/types/profile";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 interface userProfilePostListProps {
-  userId: number;
+  userId: string;
   type: ProfileTabType;
   page: number;
 }
