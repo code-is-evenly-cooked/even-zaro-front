@@ -31,7 +31,7 @@ export default function PlaceModal() {
           //   type: "error",
           //   message: "장소 목록을 불러오는 데 실패했습니다.",
           // });
-          console.error("장소 목록을 불러오는 데 실패했습니다.");
+          console.warn("장소 목록을 불러오는 데 실패했습니다.", error);
         }
       })();
     }, 500); // 800ms 동안 변화가 없을 경우에만 API 호출

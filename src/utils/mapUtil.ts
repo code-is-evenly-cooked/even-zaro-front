@@ -177,38 +177,32 @@ export function updateCenterAddress(
 }
 
 
-export function placeToMarker(places: PlaceListResponse, map: any) {
-  const positions: markerInfo[] = [];
+export function placeToMarker(places: PlaceListResponse | null, map: any) {
+  if (!places || !places.placeInfos || places.placeInfos.length === 0) {
+    console.warn("placeToMarker: 유효한 장소 목록이 없습니다.");
 
-  places.placeInfos.map((place) => {
-    const position: markerInfo = {
-      title: place.name,
-      latlng: { lat: place.lat, lng: place.lng },
-    };
-    positions.push(position);
-  });
+    return;
+  }
+
+  const positions: markerInfo[] = places.placeInfos.map((place) => ({
+    title: place.name,
+    latlng: { lat: place.lat, lng: place.lng },
+  }));
 
   console.log("positions", positions);
 
-  // 마커 이미지의 이미지 주소입니다
-  const imageSrc =
-    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+  const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+  const imageSize = new window.kakao.maps.Size(24, 35);
+  const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-  for (let i = 0; i < positions.length; i++) {
-    // 마커 이미지의 이미지 크기 입니다
-    const imageSize = new window.kakao.maps.Size(24, 35);
-
-    // 마커 이미지를 생성합니다
-    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
-
-    // 마커를 생성합니다
+  positions.forEach((pos) => {
     const marker = new window.kakao.maps.Marker({
-      map: map, // 마커를 표시할 지도
-      position: positions[i].latlng, // 마커를 표시할 위치
-      title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-      image: markerImage, // 마커 이미지
+      map: map,
+      position: new window.kakao.maps.LatLng(pos.latlng.lat, pos.latlng.lng),
+      title: pos.title,
+      image: markerImage,
     });
 
     marker.setMap(map);
-  }
+  });
 }
