@@ -1,4 +1,7 @@
 /* eslint-disable */
+// 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
+//
+
 import { markerInfo, PlaceListResponse } from "@/types/map";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
