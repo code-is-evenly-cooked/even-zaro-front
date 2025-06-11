@@ -33,7 +33,9 @@ export default function FavoriteGroupList() {
   if (isLoading) return <LoadingSpinnerBoundary />;
 
   if (!groupList || groupList.length === 0)
-    return <FallbackMessage message="즐겨찾기 그룹이 없습니다." />;
+    return (
+      <FallbackMessage message="즐겨찾기 그룹이 없습니다." className="mt-10" />
+    );
 
   // 즐겨찾기 그룹 추가
   const handleCreateGroup = async (name: string) => {
