@@ -51,11 +51,13 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
               </li>
             ))}
       </ul>
-      <ClientSidePagination
-        currentPage={currentPage}
-        totalPage={data.totalPages}
-        onChangePage={setCurrentPage}
-      />
+      {data.totalPages > 1 && (
+        <ClientSidePagination
+          currentPage={currentPage}
+          totalPage={data.totalPages}
+          onChangePage={setCurrentPage}
+        />
+      )}
     </div>
   );
 };
