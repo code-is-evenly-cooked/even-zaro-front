@@ -1,4 +1,4 @@
-import { PostDetailResponse } from "@/types/post";
+import { PostDetailResponse, UserCommentedResponse } from "@/types/post";
 import { client } from "../fetch/client";
 import { ProfileResponse } from "@/types/profile";
 
@@ -21,8 +21,8 @@ export const fetchUserPosts = async (
 export const fetchUserComments = async (
   userId: string,
   page: number,
-): Promise<PostDetailResponse> => {
-  return await client<PostDetailResponse>(`/profile/${userId}/comments`, {
+): Promise<UserCommentedResponse> => {
+  return await client<UserCommentedResponse>(`/profile/${userId}/comments`, {
     needAuth: true,
     params: { page: page },
   });
