@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchUser, userLogin, userSocialLogin } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { validateEmail, validatePassword } from "@/utils/validate";
@@ -76,8 +77,7 @@ const useLoginForm = () => {
 
       router.replace("/");
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "로그인 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({ type: "error", message: getErrorMessage(err) });
     } finally {
       handleLoadingChange("email", false);
     }

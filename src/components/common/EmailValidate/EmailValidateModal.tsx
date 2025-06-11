@@ -6,6 +6,7 @@ import BaseButton from "../Button/BaseButton";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "../ToastMessage";
 import { sendEmailValidation } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 interface EmailValidateModalProps {
   isOpen: boolean;
@@ -29,9 +30,10 @@ const EmailValidateModal = ({ isOpen, onClose }: EmailValidateModalProps) => {
           message: "인증메일이 전송되었습니다.",
         });
       } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "인증 메일 전송 실패";
-        showToastMessage({ type: "error", message: errorMessage });
+        showToastMessage({
+          type: "error",
+          message: getErrorMessage(err, "인증 메일 전송 실패"),
+        });
       } finally {
         setIsLoading(false);
         onClose(email);

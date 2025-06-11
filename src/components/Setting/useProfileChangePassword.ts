@@ -1,6 +1,7 @@
 "use client";
 
 import { changePassword } from "@/lib/api/profile";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validatePassword } from "@/utils/validate";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
@@ -75,11 +76,10 @@ const useProfileChangePassword = () => {
         confirmPassword: "",
       });
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "비밀번호 변경에 실패했습니다.";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "비밀번호 변경 실패"),
+      });
     } finally {
       setIsLoading(false);
     }

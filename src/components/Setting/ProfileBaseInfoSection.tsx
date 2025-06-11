@@ -8,6 +8,7 @@ import { useState } from "react";
 import ProfileImageUploader from "./ProfileImageUploader";
 import { updateNickname } from "@/lib/api/profile";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 interface ProfileBaseInfoSectionProp {
   user: UserInfo;
@@ -36,9 +37,10 @@ const ProfileBaseInfoSection = ({ user }: ProfileBaseInfoSectionProp) => {
       showToastMessage({ type: "success", message: "닉네임이 변경되었어요." });
       setUser({ ...user, nickname: res.nickname });
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "닉네임 변경 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "닉네임 변경 실패"),
+      });
     }
   };
 

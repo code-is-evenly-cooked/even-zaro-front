@@ -1,8 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import HeaderSkeleton from "./HeaderSkeleton";
+import { usePathname } from "next/navigation";
 
 const Header = dynamic(() => import("./Header"), {
   ssr: false,
@@ -14,12 +15,27 @@ const Sidebar = dynamic(() => import("../Sidebar/Sidebar"), {
 
 export default function HeaderShell() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const pathname = usePathname();
+
+  // 헤더 숨겨야 할 pathname
+  const hideHeaderRoutes = [
+    "/login",
+    "/signup",
+    "/password",
+    "/email",
+    "/policy",
+    "/map",
+    "/withdrawal",
+  ];
+
+  const shouldHideHeader = hideHeaderRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+  if (shouldHideHeader) return null;
 
   return (
     <>
-      <Suspense>
-        <Header onMenuClick={() => setIsSidebarOpen(true)} />
-      </Suspense>
+      <Header onMenuClick={() => setIsSidebarOpen(true)} />
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
     </>
   );

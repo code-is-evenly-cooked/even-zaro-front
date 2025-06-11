@@ -1,4 +1,5 @@
 import { resetPassword } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validatePassword } from "@/utils/validate";
 import { useRouter } from "next/navigation";
@@ -57,9 +58,10 @@ const usePasswordResetForm = (token: string) => {
         router.replace("/login");
       }, 2000);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "비밀번호 변경 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(err, "비밀번호 변경 실패"),
+      });
     } finally {
       setIsLoading(false);
     }
