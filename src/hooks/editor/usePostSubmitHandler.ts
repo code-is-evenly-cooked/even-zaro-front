@@ -33,7 +33,7 @@ export function usePostSubmitHandler() {
 
       if (!mainCategory || !subCategory) {
         showToastMessage({
-          message: "카테고리와 태그를 선택해주세요.",
+          message: "태그를 선택해주세요.",
           type: "error",
         });
         return;
