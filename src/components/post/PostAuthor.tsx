@@ -96,8 +96,10 @@ export default function PostAuthor({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // TODO: 게시글 수정 기능 추가
-  const handleEdit = () => {};
+  // 게시글 수정
+  const handleEdit = () => {
+    router.push(`/editor?postId=${postId}&category=${category}`);
+  };
 
   // 게시글 삭제
   const handleDelete = async () => {

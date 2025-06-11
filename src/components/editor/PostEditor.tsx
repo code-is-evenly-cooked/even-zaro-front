@@ -4,9 +4,10 @@ import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePostStore } from "@/stores/usePostStore";
-import { MainCategory } from "@/types/category";
+import { MainCategory, SubCategoryValue } from "@/types/category";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import "@toast-ui/editor/dist/i18n/ko-kr";
+import { fetchPostDetail } from "@/lib/api/post.client";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { useEditorScrollLock } from "@/hooks/useEditorScrollLock";
@@ -45,8 +46,34 @@ export default function PostEditor() {
   const { handleSubmit } = usePostSubmitHandler();
 
   const searchParams = useSearchParams();
+  const postId = searchParams.get("postId");
   const category = searchParams.get("category") as MainCategory | null;
   const restore = useRestoreDraft(editorRef);
+
+  useEffect(() => {
+    if (!postId) return;
+  
+    const fetchAndSetPost = async () => {
+      try {
+        const post = await fetchPostDetail(postId);
+  
+        setTitle(post.title);
+        setContent(post.content);
+        setMainCategory(post.category as MainCategory);
+        if (post.tag) {
+          setSubCategory(post.tag as SubCategoryValue);
+        }
+      } catch (error) {
+        console.error("게시글 불러오기 오류:", error);
+        showToastMessage({
+          message: "게시글 정보를 불러오지 못했습니다.",
+          type: "error",
+        });
+      }
+    };
+  
+    fetchAndSetPost();
+  }, [postId, setTitle, setContent, setMainCategory, setSubCategory, showToastMessage]);
 
   useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
   useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
