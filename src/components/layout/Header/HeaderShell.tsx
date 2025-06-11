@@ -21,16 +21,17 @@ export default function HeaderShell() {
   const hideHeaderRoutes = [
     "/login",
     "/signup",
-    "/password-forget",
-    "/password-reset",
-    "/email-validation",
-    "/policy/terms",
-    "/policy/privacy",
+    "/password",
+    "/email",
+    "/policy",
     "/map",
-    "/withdrawal-complete",
+    "/withdrawal",
   ];
 
-  if (hideHeaderRoutes.includes(pathname)) return null;
+  const shouldHideHeader = hideHeaderRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+  if (shouldHideHeader) return null;
 
   return (
     <>
