@@ -66,3 +66,15 @@ export interface FavoriteListResponse {
   address: string,
   deleted: boolean
 }
+
+export interface MyLoc {
+  lat: number,
+  lng: number
+}
+
+export type markerInfos = markerInfo[];
+
+export interface markerInfo {
+  title: string;
+  latlng: MyLoc;
+}
