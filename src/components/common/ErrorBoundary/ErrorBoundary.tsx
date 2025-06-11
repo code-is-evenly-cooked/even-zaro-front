@@ -6,6 +6,7 @@ import {
   FallbackProps,
 } from "react-error-boundary";
 import FallbackMessage from "../Fallback/FallbackMessage";
+import { APIErrorResponse } from "@/types/api";
 
 interface AppErrorBoundaryProps {
   children: React.ReactNode;
@@ -61,7 +62,12 @@ const AppErrorBoundary = ({
         );
       }}
       onError={(error, info) => {
-        console.error("ErrorBoundary:", error, info);
+        const isTokenMissing =
+          error instanceof APIErrorResponse && error.code === "NO_ACCESS_TOKEN";
+        const isDev = process.env.NODE_ENV === "development";
+        if (!isTokenMissing && isDev) {
+          console.error("AppErrorBoundary: ", error, info);
+        }
       }}
     >
       {children}
