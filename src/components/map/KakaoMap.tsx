@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import {
-  addMarkers,
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation, placeToMarker,
@@ -15,15 +14,13 @@ export default function KakaoMap() {
   const { placeList, myLocation } = useMapStore((state) => state);
   const { setMyLocation, setRegionName, setPlaceList } = useMapStore();
 
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<unknown>(null);
 
   useEffect(() => {
     loadKakaoMapSdk(() => {
       if (!mapRef.current) return;
       initializeMap(mapRef.current, (map) => {
         mapInstanceRef.current = map;
-
-        addMarkers(map); // 마커 추가 테스트
         moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
         updateCenterAddress(map, setRegionName); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
       });
