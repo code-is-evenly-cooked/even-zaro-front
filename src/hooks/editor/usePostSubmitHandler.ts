@@ -4,6 +4,7 @@ import { createPost } from "@/lib/api/posts";
 import { extractImageKeys, extractThumbnailKey } from "@/utils/editorImage";
 import { usePostStore } from "@/stores/usePostStore";
 import { MainCategory } from "@/types/category";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 export function usePostSubmitHandler() {
   const router = useRouter();
@@ -58,15 +59,7 @@ export function usePostSubmitHandler() {
       resetPost();
       router.replace(`/board/${category}/${postId}`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "알 수 없는 오류가 발생했습니다";
-
-      showToastMessage({
-        message: errorMessage,
-        type: "error",
-      });
+      showToastMessage({ type: "error", message: getErrorMessage(error) });
     }
   };
 

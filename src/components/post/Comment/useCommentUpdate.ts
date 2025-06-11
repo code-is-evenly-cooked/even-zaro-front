@@ -1,4 +1,5 @@
 import { editComment } from "@/lib/api/comment";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { CommentItem } from "@/types/comment";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -43,11 +44,10 @@ const useCommentUpdate = () => {
         queryClient.setQueryData(["comments"], context.prevComments);
       }
 
-      const message =
-        err instanceof Error
-          ? err.message
-          : "댓글 삭제 중 오류가 발생했습니다.";
-      showToastMessage({ type: "error", message: message });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(err, "댓글 삭제 실패"),
+      });
     },
     // 성공 시 서버 상태 동기화
     onSuccess: () => {

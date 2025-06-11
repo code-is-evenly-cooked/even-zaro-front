@@ -1,4 +1,5 @@
 import { sendResetPassword } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validateEmail } from "@/utils/validate";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
@@ -36,9 +37,10 @@ const useForgotPasswordForm = () => {
       const message = await sendResetPassword(email);
       showToastMessage({ type: "success", message: message });
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "메일 발송 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(err, "메일 발송 실패"),
+      });
     } finally {
       setIsLoading(false);
     }

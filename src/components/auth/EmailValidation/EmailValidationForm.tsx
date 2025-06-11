@@ -1,6 +1,7 @@
 import { LogoIcon } from "@/components/common/Icons";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { sendEmailValidation } from "@/lib/api/auth";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useState } from "react";
 
@@ -20,9 +21,10 @@ const EmailValidationForm = ({ email }: EmailValidationFormProps) => {
       const message = await sendEmailValidation(email);
       showToastMessage({ type: "success", message });
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "인증 메일 전송 실패";
-      showToastMessage({ type: "error", message: errorMessage });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(err, "인증 메일 전송 실패"),
+      });
     } finally {
       setIsResending(false);
     }
