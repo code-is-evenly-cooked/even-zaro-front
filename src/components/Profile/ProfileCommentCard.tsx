@@ -21,15 +21,21 @@ const ProfileCommentCard = ({ item }: ProfileCommentCardProps) => {
           {getSimplifiedDate(item.commentCreatedAt)}
         </p>
       </div>
-      <div className="flex items-center justify-between text-sm">
-        <div>
-          <p className="flex items-center text-gray600 line-clamp-1">
+      <div className="flex items-center justify-between text-sm gap-x-2">
+        <div className="flex items-center text-gray600 min-w-0 flex-1">
+          <span className="whitespace-nowrap flex-shrink-0">
             {getSubCategoryLabel(item.tag)}
-            <ChevronRightIcon width={16} height={16} />
-            {getSubCategoryEmoji(item.tag)} {item.title}
-          </p>
+          </span>
+          <ChevronRightIcon width={16} height={16} className="flex-shrink-0" />
+          <span className="whitespace-nowrap flex-shrink-0">
+            {getSubCategoryEmoji(item.tag)}
+          </span>
+          <span className="truncate text-gray900 flex-shrink min-w-0">
+            {item.title}
+          </span>
         </div>
-        <div className="flex items-center gap-2 text-gray600">
+
+        <div className="flex items-center gap-2 text-gray600 flex-shrink-0">
           <div className="flex items-center gap-1">
             <HeartIcon width={12} height={12} />
             {item.likeCount}
