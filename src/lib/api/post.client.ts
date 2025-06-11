@@ -1,5 +1,5 @@
 import { client } from "@/lib/fetch/client";
-import type { CreatePostPayload, CreatePostResponse } from "@/types/editor";
+import type { CreatePostPayload, CreatePostResponse, UpdatePostPayload } from "@/types/editor";
 
 // 게시글 작성
 export const createPost = async (
@@ -7,6 +7,19 @@ export const createPost = async (
 ): Promise<CreatePostResponse> => {
   return await client<CreatePostResponse>("/posts", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    needAuth: true,
+  });
+};
+
+// 게시글 수정
+export const updatePost = async (
+  postId: number,
+  payload: UpdatePostPayload
+): Promise<void> => {
+  return await client(`/posts/${postId}`, {
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
     needAuth: true,

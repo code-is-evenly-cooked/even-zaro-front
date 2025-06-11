@@ -16,3 +16,11 @@ export interface CreatePostResponse {
   category: string;
   postId: number;
 }
+
+export type UpdatePostPayload = {
+  title: string;
+  content: string;
+  tag?: string;
+  postImageList?: string[];
+  thumbnailImage?: string | null;
+};
