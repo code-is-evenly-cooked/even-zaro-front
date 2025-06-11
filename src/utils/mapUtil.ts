@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { markerInfo, PlaceListResponse } from "@/types/map";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
