@@ -47,16 +47,18 @@ export default function PostEditor() {
 
   const searchParams = useSearchParams();
   const postId = searchParams.get("postId");
+  const isEditMode = Boolean(postId);
   const category = searchParams.get("category") as MainCategory | null;
-  const restore = useRestoreDraft(editorRef);
+  const restore = useRestoreDraft(editorRef, isEditMode);
 
+  // 게시글 수정 시 불러오기
   useEffect(() => {
     if (!postId) return;
-  
+
     const fetchAndSetPost = async () => {
       try {
         const post = await fetchPostDetail(postId);
-  
+
         setTitle(post.title);
         setContent(post.content);
         setMainCategory(post.category as MainCategory);
@@ -71,13 +73,20 @@ export default function PostEditor() {
         });
       }
     };
-  
+
     fetchAndSetPost();
-  }, [postId, setTitle, setContent, setMainCategory, setSubCategory, showToastMessage]);
+  }, [
+    postId,
+    setTitle,
+    setContent,
+    setMainCategory,
+    setSubCategory,
+    showToastMessage,
+  ]);
 
   useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
   useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
-  useEditorInit(editorRef, restore.isReady, content); // 에디터 초기화
+  useEditorInit(editorRef, restore?.isReady ?? true, content); // 에디터 초기화
   useEditorScrollLock(); // 외부 스크롤 차단
   useDropdownClose([subButtonRef, subDropdownRef], () => setOpenDropdown(null)); // 드롭다운 외부 클릭 감지
 
@@ -149,9 +158,9 @@ export default function PostEditor() {
 
       {/* 임시 저장 불러오기 모달 */}
       <RestoreDraftModal
-        isOpen={restore.isOpen}
-        onClose={restore.onClose}
-        onConfirm={restore.onConfirm}
+        isOpen={restore?.isOpen ?? false}
+        onClose={restore?.onClose ?? (() => {})}
+        onConfirm={restore?.onConfirm ?? (() => {})}
       />
     </div>
   );

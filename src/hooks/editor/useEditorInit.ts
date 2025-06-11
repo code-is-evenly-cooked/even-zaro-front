@@ -31,5 +31,5 @@ export function useEditorInit(
       editor.setMarkdown(content);
       didInit.current = true;
     }
-  }, [isReady, content, editorRef]);
+  }, [postId, isReady, content, editorRef]);
 }
