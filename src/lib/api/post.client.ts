@@ -30,7 +30,7 @@ export const updatePost = async (
   payload: UpdatePostPayload
 ): Promise<void> => {
   return await client(`/posts/${postId}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
     needAuth: true,
