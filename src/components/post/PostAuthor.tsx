@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
-import { deletePost } from "@/lib/api/posts";
+import { deletePost } from "@/lib/api/post.client";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";

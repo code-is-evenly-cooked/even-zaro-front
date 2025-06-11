@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { createPost } from "@/lib/api/posts";
+import { createPost } from "@/lib/api/post.client";
 import { extractImageKeys, extractThumbnailKey } from "@/utils/editorImage";
 import { usePostStore } from "@/stores/usePostStore";
 import { MainCategory } from "@/types/category";

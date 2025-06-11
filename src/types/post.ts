@@ -22,6 +22,24 @@ export interface ImagePostItem extends CommonPostItem {
 }
 
 // detail
+export interface SinglePostDetailResponse {
+  postId: number;
+  title: string;
+  content: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
+  likeCount: number;
+  commentCount: number;
+  imageUrlList: string[];
+  thumbnailUrl: string;
+  createdAt: string;
+  user: {
+    userId: number;
+    nickname: string;
+    profileImage: string;
+  };
+}
+
 export interface PostDetailResponse {
   content: CommonPostDetailItem[];
   totalPages: number;
