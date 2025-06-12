@@ -1,4 +1,4 @@
-import { fetchPostDetail } from "@/lib/api/post";
+import { fetchPostDetail } from "@/lib/api/post.server";
 import PostHeader from "@/components/post/PostHeader";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";

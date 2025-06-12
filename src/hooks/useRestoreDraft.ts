@@ -4,13 +4,27 @@ import { usePostStore } from "@/stores/usePostStore";
 import type { Editor } from "@toast-ui/react-editor";
 import type { PostDraft } from "@/types/editor";
 
-export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
+/**
+ * @param editorRef - 에디터 ref
+ * @param isEditMode - 수정 모드 여부 (true = 임시저장 무시)
+ */
+
+export const useRestoreDraft = (
+  editorRef: React.RefObject<Editor | null>,
+  isEditMode: boolean,
+) => {
   const { setTitle, setContent, resetPost } = usePostStore();
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState<PostDraft | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // 게시글 수정 모드에서는 임시 저장을 불러오지 않음
+    if (isEditMode) {
+      setIsReady(true);
+      return;
+    }
+
     loadDraft().then((saved) => {
       if (saved) {
         setDraft(saved);
@@ -19,7 +33,7 @@ export const useRestoreDraft = (editorRef: React.RefObject<Editor | null>) => {
         setIsReady(true);
       }
     });
-  }, []);
+  }, [isEditMode]);
 
   // "예" 선택 시
   const handleConfirm = () => {

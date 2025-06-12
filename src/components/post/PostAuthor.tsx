@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
-import { deletePost } from "@/lib/api/posts";
+import { deletePost } from "@/lib/api/post.client";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
@@ -96,8 +96,10 @@ export default function PostAuthor({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // TODO: 게시글 수정 기능 추가
-  const handleEdit = () => {};
+  // 게시글 수정
+  const handleEdit = () => {
+    router.push(`/editor?postId=${postId}&category=${category}`);
+  };
 
   // 게시글 삭제
   const handleDelete = async () => {

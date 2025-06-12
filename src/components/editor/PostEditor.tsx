@@ -7,6 +7,7 @@ import { usePostStore } from "@/stores/usePostStore";
 import { MainCategory } from "@/types/category";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import "@toast-ui/editor/dist/i18n/ko-kr";
+import { fetchPostDetail } from "@/lib/api/post.client";
 import { useEditorImageUpload } from "@/hooks/useEditorImageUpload";
 import { useAutoSaveDraft } from "@/hooks/useAutoSaveDraft";
 import { useEditorScrollLock } from "@/hooks/useEditorScrollLock";
@@ -45,12 +46,47 @@ export default function PostEditor() {
   const { handleSubmit } = usePostSubmitHandler();
 
   const searchParams = useSearchParams();
+  const postId = searchParams.get("postId");
+  const isEditMode = Boolean(postId);
   const category = searchParams.get("category") as MainCategory | null;
-  const restore = useRestoreDraft(editorRef);
+  const restore = useRestoreDraft(editorRef, isEditMode);
+
+  // 게시글 수정 시 불러오기
+  useEffect(() => {
+    if (!postId) return;
+
+    const fetchAndSetPost = async () => {
+      try {
+        const post = await fetchPostDetail(postId);
+
+        setTitle(post.title);
+        setContent(post.content);
+        setMainCategory(post.category);
+        if (post.tag) {
+          setSubCategory(post.tag);
+        }
+      } catch (error) {
+        console.error("게시글 불러오기 오류:", error);
+        showToastMessage({
+          message: "게시글 정보를 불러오지 못했습니다.",
+          type: "error",
+        });
+      }
+    };
+
+    fetchAndSetPost();
+  }, [
+    postId,
+    setTitle,
+    setContent,
+    setMainCategory,
+    setSubCategory,
+    showToastMessage,
+  ]);
 
   useEditorImageUpload(editorRef); // 이미지 업로드 관련 Hook
   useAutoSaveDraft(editorRef); // 자동 임시 저장 Hook
-  useEditorInit(editorRef, restore.isReady, content); // 에디터 초기화
+  useEditorInit(editorRef, restore?.isReady ?? true, content); // 에디터 초기화
   useEditorScrollLock(); // 외부 스크롤 차단
   useDropdownClose([subButtonRef, subDropdownRef], () => setOpenDropdown(null)); // 드롭다운 외부 클릭 감지
 
@@ -122,9 +158,9 @@ export default function PostEditor() {
 
       {/* 임시 저장 불러오기 모달 */}
       <RestoreDraftModal
-        isOpen={restore.isOpen}
-        onClose={restore.onClose}
-        onConfirm={restore.onConfirm}
+        isOpen={restore?.isOpen ?? false}
+        onClose={restore?.onClose ?? (() => {})}
+        onConfirm={restore?.onConfirm ?? (() => {})}
       />
     </div>
   );

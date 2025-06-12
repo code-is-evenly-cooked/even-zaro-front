@@ -1,8 +1,17 @@
-import { CATEGORY_MAP } from "@/constants/category";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { ChevronRightIcon } from "lucide-react";
+import type { MainCategory, SubCategoryValue } from "@/types/category";
+import {
+  getMainCategoryLabel,
+  getSubCategoryLabel,
+  getSubCategoryEmoji,
+} from "@/utils/category";
 
 interface PostHeaderProps {
-  category: keyof typeof CATEGORY_MAP;
-  tag: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
   title: string;
   createdAt: string;
 }
@@ -13,9 +22,7 @@ export default function PostHeader({
   title,
   createdAt,
 }: PostHeaderProps) {
-  // 카테고리(mainCategory)와 태그(subCategory)
-  const mainCategory = CATEGORY_MAP[category];
-  const subCategory = mainCategory.options.find((opt) => opt.tag === tag);
+  const router = useRouter();
 
   // 시간 형식 변환
   function formatDate(dateStr: string): string {
@@ -36,19 +43,34 @@ export default function PostHeader({
     return `${datePart} ${timePart}`;
   }
 
+  // 카테고리와 태그 클릭 시 게시판 이동
+  const handleClickMainCategory = () => {
+    router.push(`/board/${category}`);
+  };
+
+  const handleClickSubCategory = () => {
+    router.push(`/board/${category}?tag=${tag}`);
+  };
+
   return (
     <header className="space-y-2">
-      <div className="text-sm text-gray-300 font-medium">
-        <span className="text-primary">{mainCategory.label}</span>
-        {" > "}
-        <span className="text-secondary">
-          {subCategory
-            ? `${subCategory.emoji} ${subCategory.label}`
-            : "알 수 없음"}
-        </span>
+      <div className="flex text-sm text-gray600 font-medium items-center">
+        <button
+          onClick={handleClickMainCategory}
+          className="text-primary hover:underline cursor-pointer"
+        >
+          {getMainCategoryLabel(category)}
+        </button>
+        <ChevronRightIcon width={20} height={20}/>
+        <button
+          onClick={handleClickSubCategory}
+          className="text-secondary hover:underline cursor-pointer"
+        >
+          {`${getSubCategoryEmoji(tag)} ${getSubCategoryLabel(tag)}`}
+        </button>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+      <h1 className="text-2xl font-bold text-gray900">{title}</h1>
 
       <p className="text-sm text-gray-400">{formatDate(createdAt)}</p>
     </header>
