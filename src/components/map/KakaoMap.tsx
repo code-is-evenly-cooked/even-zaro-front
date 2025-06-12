@@ -20,12 +20,21 @@ export default function KakaoMap() {
   const { placeList, myLocation, map } = useMapStore((state) => state);
   const { setMyLocation, setRegionName, setMap } = useMapStore();
 
+  // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
+  type PlaceSource = "zaro" | "kakao";
+  // 상태 정의
+  const [selectedSource, setSelectedSource] = useState<PlaceSource>("zaro");
+
+  // kakaoResponse 임시 저장용
+  const [kakaoPlaces, setKakaoPlaces] = useState<KakaoMapResponse[]>([]);
+
   // Ref 객체
   const mapInstanceRef = useRef<unknown>(null);
-  const markerRefs = useRef<kakao.maps.Marker[]>([]); // 마커들 추적
+  const markerRefsByZaro = useRef<kakao.maps.Marker[]>([]); // 마커들 추적
+  const markerRefsByKakao = useRef<kakao.maps.Marker[]>([]); // 마커들 추적
+
   const overlayRefsByZaro = useRef<kakao.maps.CustomOverlay[]>([]); // SimpleInfo 추적
   const overlayRefsByKakao = useRef<kakao.maps.CustomOverlay[]>([]); // SimpleInfo 추적
-
 
   // 검색창 여닫힘 상태
   const [isExpanded, setIsExpanded] = useState(false);
@@ -42,25 +51,46 @@ export default function KakaoMap() {
     // eslint-disable-next-line
     pagination: any, // any에 대해서 eslint 타입 검증 오류 무시
   ) => {
-    clearMarkers(markerRefs, overlayRefsByKakao); // 기존의 마커 제거
+    clearMarkers(markerRefsByKakao, overlayRefsByKakao); // 기존의 마커 제거
     if (status === kakao.maps.services.Status.OK) {
       console.log("@@@@@@ data: ", data);
       setPlaces(data);
+      setKakaoPlaces(data); // 이전 검색 결과 저장
       setPagination(pagination);
       placeToMarkerFromKakao(
         data,
         mapInstanceRef.current as kakao.maps.Map,
-        markerRefs,
+        markerRefsByKakao,
         overlayRefsByKakao,
       );
     } else {
       console.log("@@@@@@ 실패실패: ");
       setPlaces([]);
       setPagination(null);
-      markerRefs.current.forEach((marker) => marker.setMap(null)); // 등록되어있는 마커들을 제거
-      markerRefs.current = [];
+      markerRefsByKakao.current.forEach((marker) => marker.setMap(null)); // 등록되어있는 마커들을 제거
+      markerRefsByKakao.current = [];
     }
   };
+
+  function onClickSelectResult() {
+    const nextSource = selectedSource === "zaro" ? "kakao" : "zaro";
+    setSelectedSource(nextSource);
+    setPagination(null);
+
+    clearMarkers(markerRefsByKakao, overlayRefsByKakao);
+
+    if (nextSource === "kakao") {
+      setPlaces(kakaoPlaces); // 검색 결과 복구
+      placeToMarkerFromKakao(
+        kakaoPlaces,
+        mapInstanceRef.current as kakao.maps.Map,
+        markerRefsByKakao,
+        overlayRefsByKakao,
+      );
+    } else {
+      setPlaces([]); // zaro 전환 시 검색결과는 안 보이게
+    }
+  }
 
   // 사용자의 위치에 따라 변하는 인근 장소 불러오기
   useEffect(() => {
@@ -80,12 +110,12 @@ export default function KakaoMap() {
     if (!map || !myLocation || places.length > 0) return; // 검색 중이면 무시
 
     if (!placeList || !placeList.placeInfos?.length) {
-      clearMarkers(markerRefs, overlayRefsByZaro);
+      clearMarkers(markerRefsByZaro, overlayRefsByZaro);
       return;
     }
 
-    clearMarkers(markerRefs, overlayRefsByZaro);
-    placeToMarker(placeList, map, markerRefs, overlayRefsByZaro);
+    clearMarkers(markerRefsByZaro, overlayRefsByZaro);
+    placeToMarker(placeList, map, markerRefsByZaro, overlayRefsByZaro);
   }, [myLocation, placeList, places]);
 
   return (
@@ -99,14 +129,35 @@ export default function KakaoMap() {
         }`}
       >
         {/* 헤더 */}
-        <div
-          className="flex justify-between items-center px-4 py-2 border-b cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
+        <div className="flex justify-between items-center px-4 py-2 border-b">
           <span className="font-bold text-gray-800 text-sm">
             {isExpanded ? "검색결과" : "장소 검색"}{" "}
           </span>
-          {isExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+
+          <div className="flex flex-row items-center gap-1">
+            <button
+              className="text-sm text-gray600 border-2 p-1 rounded"
+              onClick={onClickSelectResult}
+            >
+              {selectedSource === "zaro"
+                ? "즐겨찾기만 조회"
+                : "카카오지도 검색결과 포함"}
+            </button>
+
+            {isExpanded ? (
+              <ChevronDown
+                className="cursor-pointer"
+                onClick={() => setIsExpanded(!isExpanded)}
+                size={20}
+              />
+            ) : (
+              <ChevronUp
+                className="cursor-pointer"
+                onClick={() => setIsExpanded(!isExpanded)}
+                size={20}
+              />
+            )}
+          </div>
         </div>
 
         {isExpanded && (
