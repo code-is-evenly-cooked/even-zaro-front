@@ -9,6 +9,8 @@ import FavoriteGroupCard from "@/components/Favorite/FavoriteGroupCard";
 import LoadingSpinnerBoundary from "../common/LoadingSpinner/LoadingSpinnerBoundary";
 import AppErrorBoundary from "../common/ErrorBoundary/ErrorBoundary";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
+import AddFavoriteGroupModal from "./AddFavoriteGroupModal";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function FavoriteGroupList() {
   const { user } = useAuthStore();
@@ -16,6 +18,8 @@ export default function FavoriteGroupList() {
 
   const { data: groups, isLoading } = useFavoriteGroups(userId);
   const [groupList, setGroupList] = useState<FavoriteGroupType[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
 
   // 초기 값을 setGroupList를 통해 useState 로 저장
   useEffect(() => {
@@ -29,19 +33,21 @@ export default function FavoriteGroupList() {
   if (isLoading) return <LoadingSpinnerBoundary />;
 
   if (!groupList || groupList.length === 0)
-    return <FallbackMessage message="즐겨찾기 그룹이 없습니다." />;
+    return (
+      <FallbackMessage message="즐겨찾기 그룹이 없습니다." className="mt-10" />
+    );
 
   // 즐겨찾기 그룹 추가
-  const handleCreateGroup = async () => {
-    const name = prompt("새 그룹 이름을 입력하세요:");
-    if (!name?.trim()) return;
-
+  const handleCreateGroup = async (name: string) => {
     try {
-      const newGroup = await createFavoriteGroup(name.trim());
+      const newGroup = await createFavoriteGroup(name);
       setGroupList((prev) => [...prev, newGroup]);
     } catch (e) {
       console.error("그룹 생성 실패", e);
-      alert("그룹 생성에 실패했습니다.");
+      showToastMessage({
+        message: "그룹 생성에 실패했습니다.",
+        type: "error",
+      });
     }
   };
 
@@ -50,11 +56,8 @@ export default function FavoriteGroupList() {
       <div className="space-y-2">
         {/* 그룹 추가 버튼 */}
         <div className="flex justify-end mb-2">
-          <button
-            onClick={handleCreateGroup}
-            className="text-sm text-violet600 underline hover:text-violet800"
-          >
-            그룹 추가
+          <button onClick={() => setIsModalOpen(true)} className="text-gray900">
+            + 그룹 추가
           </button>
         </div>
 
@@ -66,6 +69,12 @@ export default function FavoriteGroupList() {
             </li>
           ))}
         </ul>
+
+        <AddFavoriteGroupModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleCreateGroup}
+        />
       </div>
     </AppErrorBoundary>
   );

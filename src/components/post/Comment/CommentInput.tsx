@@ -2,6 +2,7 @@
 
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 import { createComment } from "@/lib/api/comment";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useCommentReplyStore } from "@/stores/useCommentReply";
 import {
@@ -76,11 +77,10 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
       resetReplyTarget();
       onSuccess();
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "댓글 쓰기 중 오류가 발생했습니다.";
-      showToastMessage({ type: "error", message });
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "댓글 작성 실패"),
+      });
     } finally {
       setIsLoading(false);
     }

@@ -3,21 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import PostFooter from "./PostFooter";
 import { getPostLikeStatus, likePost, unlikePost } from "@/lib/api/post.client";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface Props {
   postId: number;
   likeCount: number;
   commentCount: number;
+  authorUserId: number;
 }
 
 export default function PostFooterWithFloating({
   postId,
   likeCount: initialLikeCount,
   commentCount,
+  authorUserId,
 }: Props) {
   const footerRef = useRef<HTMLDivElement | null>(null);
+  const currentUserId = useAuthStore((state) => state.user?.userId);
+ 
   const [showFloatingFooter, setShowFloatingFooter] = useState(true);
-
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [liked, setLiked] = useState(false);
   const isReady = liked !== null;
@@ -81,6 +85,8 @@ export default function PostFooterWithFloating({
     liked,
     isReady,
     onToggleLike: handleToggleLike,
+    authorUserId,
+    currentUserId,
   };
 
   return (

@@ -21,15 +21,22 @@ export default function FavoriteHeader({ userId }: Props) {
       {!userId || !profile ? (
         <div className="text-gray600">프로필 정보를 불러올 수 없습니다.</div>
       ) : (
-        <div className="flex items-center gap-12 justify-center my-12">
+        <div className="flex items-center sm:gap-12 gap-8 justify-center my-8">
+          <Image
+            src={getProfileImageUrl(profile.profileImage)}
+            alt="프로필 이미지"
+            width={80}
+            height={80}
+            className="sm:block hidden rounded-full object-cover"
+          />
           <Image
             src={getProfileImageUrl(profile.profileImage)}
             alt="프로필 이미지"
             width={64}
             height={64}
-            className="rounded-full object-cover"
+            className="sm:hidden block rounded-full object-cover"
           />
-          <div className="flex flex-col items-start gap-1">
+          <div className="flex flex-col items-start gap-2">
             <span className="text-xl font-bold">{profile.nickname}</span>
             <span className="text-xl text-gray600">
               D+

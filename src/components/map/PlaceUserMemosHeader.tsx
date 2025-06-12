@@ -1,35 +1,52 @@
 import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
+import { useMapStore } from "@/stores/mapStore";
+import { fetchFavoriteStatus } from "@/lib/api/map";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface PlaceUserMemosHeaderProps {
-  backPage: () => void;
   placeDetail: PlaceDetailResponse;
 }
 
 export default function PlaceUserMemosHeader({
-  backPage,
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
+  const { setPagePlaceList } = useMapStore();
+  const placeId = useMapStore((status) => status.placeId);
+  const { showToastMessage } = useToastMessageContext();
+
+
   const [favorite, setFavorite] = useState(false);
 
-  function handleClickFavorite() {
-    setFavorite((prev) => !prev);
-  }
+  useEffect(() => {
+    if (placeId !== null) {
+      (async () => {
+        try {
+          const data = await fetchFavoriteStatus(placeId);
+          setFavorite(data);
+        } catch (error) {
+          showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})
+          console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
+        }
+      })();
+    }
+  }, [placeId]);
+
 
   return (
     <div className="relative w-full px-4 py-4">
       <div className="flex flex-col items-center justify-center">
-        <button className="absolute left-4 top-4" onClick={backPage}>
+        <button className="absolute left-4 top-4" onClick={setPagePlaceList}>
           <ArrowLeftIcon />
         </button>
 
         <div className="flex items-center space-x-2">
-          <button onClick={handleClickFavorite} className="flex self-start">
+          <div className="flex self-start">
             <LucideStar
-              className={favorite ? " " : "text-yellow-400 fill-yellow-400"}
+              className={favorite ? "text-yellow-400 fill-yellow-400" : " "}
             />
-          </button>
+          </div>
 
           <div className="flex flex-col justify-center items-center text-center max-w-[200px]">
             <span className="font-bold text-gray900 text-lg leading-snug break-words">

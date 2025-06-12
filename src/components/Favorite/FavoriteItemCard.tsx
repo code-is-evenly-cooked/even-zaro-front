@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import type { FavoriteItemType } from "@/types/favorite";
 import { MoreVerticalIcon } from "lucide-react";
 import { updateFavoriteItem, deleteFavoriteItem } from "@/lib/api/favorite";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 interface Props {
   item: FavoriteItemType;
@@ -15,6 +16,7 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedMemo, setEditedMemo] = useState(item.memo);
   const [displayMemo, setDisplayMemo] = useState(item.memo);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -61,7 +63,7 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
     <li className="p-4 border rounded-md shadow-sm relative">
       <div className="flex justify-between">
         <div className="font-semibold">
-          장소 이름
+          {item.placeName}
           <span className="font-normal text-gray600 ml-4">{item.address}</span>
         </div>
 
@@ -91,7 +93,7 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
               className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray100"
               onClick={() => {
                 setIsMenuOpen(false);
-                handleDelete();
+                setIsDeleteModalOpen(true);
               }}
             >
               삭제
@@ -117,6 +119,15 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
       ) : (
         <p className="text-sm text-gray600 mt-2">{displayMemo}</p>
       )}
+
+      {/* 삭제 확인 모달 */}
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title="장소를 삭제할까요?"
+        description="삭제하면 이 장소는 더 이상 그룹에 표시되지 않습니다."
+      />
     </li>
   );
 }

@@ -22,18 +22,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const { user } = useAuthStore();
 
-  // 숨길 전체 헤더 경로
-  const hideHeaderRoutes = [
-    "/login",
-    "/signup",
-    "/password-forget",
-    "/password-reset",
-    "/email-validation",
-    "/policy/terms",
-    "/policy/privacy",
-    "/map",
-  ];
-
   // 검색창 숨김 경로 시작
   const hideSearchbarRoutes = [
     "/board",
@@ -41,6 +29,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     "/search",
     "/profile",
     "/setting",
+    "/report",
   ];
   const shouldHideSearchbar = hideSearchbarRoutes.some((route) =>
     pathname.startsWith(route),
@@ -57,8 +46,6 @@ const Header = ({ onMenuClick }: HeaderProps) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  if (hideHeaderRoutes.includes(pathname)) return null;
 
   return (
     <header className="relative h-12 min-h-12 flex items-center justify-between px-2">

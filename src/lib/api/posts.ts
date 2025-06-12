@@ -70,3 +70,11 @@ export const fetchSearchPosts = async ({
     },
   });
 };
+
+// 게시글 삭제
+export async function deletePost(postId: number): Promise<void> {
+  await client(`/posts/${postId}`, {
+    method: "DELETE",
+    needAuth: true,
+  });
+}

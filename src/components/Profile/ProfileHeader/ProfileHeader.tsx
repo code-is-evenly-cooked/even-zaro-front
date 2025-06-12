@@ -1,23 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { getProfileImageUrl } from "@/utils/image";
 import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../../common/Icons";
-import { useProfile } from "@/hooks/useProfile";
 import { Stat } from "./Stat";
 import Link from "next/link";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { fetchUserProfile } from "@/lib/api/profile";
+import { ProfileResponse } from "@/types/profile";
 
-export default function ProfileHeader() {
-  const { user } = useAuthStore();
-  const userId = user?.userId ?? null;
-  const { data: profile, isLoading, error } = useProfile(userId);
+interface ProfileHeaderProps {
+  userId: string;
+}
 
-  if (!userId)
-    return <div className="text-red-500">유효하지 않은 사용자입니다.</div>;
-  if (isLoading) return <div className="text-gray600">로딩 중...</div>;
-  if (error || !profile) return <div>프로필 정보를 불러오지 못했습니다.</div>;
+export default function ProfileHeader({ userId }: ProfileHeaderProps) {
+  const { data: profile } = useSuspenseQuery<ProfileResponse>({
+    queryKey: ["profile", userId],
+    queryFn: () => fetchUserProfile(userId),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+  });
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
 
@@ -30,16 +33,29 @@ export default function ProfileHeader() {
 
   return (
     <div className="py-4">
-      <div className="flex gap-6 items-center justify-center">
+      <div className="flex sm:gap-6 gap-12 items-center justify-center">
         <Image
           src={imageUrl}
           alt="프로필 이미지"
           width={80}
           height={80}
-          className="rounded-full object-cover m-6"
+          className="sm:block hidden rounded-full object-cover m-6"
         />
+        <div className="sm:hidden flex flex-col">
+          <Image
+            src={imageUrl}
+            alt="프로필 이미지"
+            width={64}
+            height={64}
+            className="rounded-full object-cover m-4"
+          />
+          <span className="font-bold text-center">{profile.nickname}</span>
+          {days != null && (
+            <span className="text-gray600 text-center">D+{days}</span>
+          )}
+        </div>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4 text-xl">
+          <div className="sm:flex hidden items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
             {days != null && <span className="text-gray600">D+{days}</span>}
             <Link href="/setting">

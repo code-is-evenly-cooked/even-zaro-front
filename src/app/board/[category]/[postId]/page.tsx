@@ -24,6 +24,8 @@ export default async function Page({ params }: PageProps) {
         createdAt={post.createdAt}
       />
       <PostAuthor
+        postId={post.postId}
+        category={post.category}
         nickname={post.user.nickname}
         profileImage={post.user.profileImage}
         liveAloneDate={"2024-01-01"} // 자취 시작 일 임시 고정 {post.data.user.liveAloneDate}
@@ -34,6 +36,7 @@ export default async function Page({ params }: PageProps) {
         postId={post.postId}
         likeCount={post.likeCount}
         commentCount={post.commentCount}
+        authorUserId={post.user.userId}
       />
       <CommentSection postId={post.postId} />
     </main>

@@ -10,12 +10,19 @@ interface ErrorPageProps {
 }
 
 const ErrorPage = ({ error, reset }: ErrorPageProps) => {
-  const isAuthError = error.message === "access token 없음";
   const { clearUser } = useAuthStore();
 
+  const isAuthError =
+    (typeof error.message === "string" &&
+      (error.message === "access token 없음" ||
+        error.message.includes("401") ||
+        error.message.includes("로그인"))) ??
+    false;
+
   useEffect(() => {
+    console.log(isAuthError);
     if (isAuthError) {
-      clearUser();
+      clearUser(); // 상태 초기화
     }
   }, [isAuthError, clearUser]);
 
@@ -23,9 +30,10 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
     if (isAuthError) {
       window.location.href = "/login";
     } else {
-      reset();
+      reset(); // 에러 다시 시도
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
       <h1 className="text-2xl font-bold text-gray900">

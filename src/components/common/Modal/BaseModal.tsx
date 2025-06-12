@@ -39,7 +39,7 @@ const BaseModal = ({ isOpen, onClose, children }: BaseModalProps) => {
           onClose={onClose}
           className="bg-black-750 backdrop-blur-sm"
         />
-        <div className="relative animate-modalSlideIn rounded-3xl border border-violet300  bg-white backdrop-blur-[20px] py-9 px-4 min-w-[20rem] min-h-[5rem] max-h-screen overflow-auto">
+        <div className="relative animate-modalSlideIn rounded-2xl border border-gray200 bg-white backdrop-blur-[20px] p-6 min-w-[20rem] min-h-[5rem] max-h-screen overflow-auto">
           <IconButton
             icon={<CloseIcon />}
             label="모달 닫기"

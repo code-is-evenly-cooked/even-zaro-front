@@ -15,19 +15,19 @@ export default function SideMenu() {
 
   return (
     <div
-      className={`flex flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-4 z-10  transition-colors duration-300 ${
+      className={`flex absolute flex-nowrap w-24 h-auto justify-around p-4 absolute top-0 left-0 z-10  transition-colors duration-300 ${
         openModal ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
       <ul className="flex flex-col items-center justify-center space-y-6 w-full h-full">
-        {/*  메뉴 토글 버튼 (LogoIcon) */}
+        {/*  메뉴 토글 버튼 */}
         <li onClick={() => setOpenModal(!openModal)} className="cursor-pointer">
           <LogoIcon className="w-16 h-16" />
         </li>
 
         {openModal && (
           <>
-            {/* 🔽 회색 구분선 */}
+            {/* 회색 구분선 */}
             <li className="w-3/4 border-t border-gray-300 my-2" />
 
             <Link href="/">

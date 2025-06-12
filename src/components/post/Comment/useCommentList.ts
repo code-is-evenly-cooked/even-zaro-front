@@ -8,12 +8,14 @@ import useCommentUpdate from "./useCommentUpdate";
 import useCommentDelete from "./useCommentDelete";
 import { useCommentReplyStore } from "@/stores/useCommentReply";
 import { useCommentLoadingStore } from "@/stores/useCommentLoadingStore";
+import { useRouter } from "next/navigation";
 
 interface useCommentListProps {
   onRefresh: () => void;
 }
 
 const useCommentList = ({ onRefresh }: useCommentListProps) => {
+  const router = useRouter();
   const [editingId, setEditingId] = useState<number | null>(null);
   const { mutate: updateCommentMutate } = useCommentUpdate();
   const { mutate: deleteCommentMutate } = useCommentDelete();
@@ -39,6 +41,7 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
         break;
       case "report":
         console.log("댓글 신고:", item.id);
+        router.push(`/report/${item.id}?type=COMMENT`);
         break;
       case "reply":
         setReplyTarget(item.nickname);

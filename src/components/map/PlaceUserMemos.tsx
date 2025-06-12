@@ -1,26 +1,40 @@
-import React from "react";
-import { PlaceDetailResponse } from "@/types/map";
+import React, { useEffect } from "react";
 import PlaceUserMemosHeader from "@/components/map/PlaceUserMemosHeader";
 import { BookmarkInfo } from "@/components/map/BookmarkInfo";
 import { UserMemoCards } from "@/components/map/UserMemoCards";
+import { fetchPlaceDetail } from "@/lib/api/map";
+import { useMapStore } from "@/stores/mapStore";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
-interface PlaceUserMemosProps {
-  placeDetail: PlaceDetailResponse;
-  backPage: () => void;
-}
+export default function PlaceUserMemos() {
+  const { placeId, placeDetail } = useMapStore((state) => state);
+  const { setPlaceDetail } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
 
-export default function PlaceUserMemos({
-  placeDetail,
-  backPage,
-}: PlaceUserMemosProps) {
+
+  useEffect(() => {
+    if (placeId !== null) {
+      (async () => {
+        try {
+          const data = await fetchPlaceDetail(placeId);
+          setPlaceDetail(data);
+        } catch (error) {
+          showToastMessage({type: "error", message: "장소 상세 정보를 불러오는 데 실패했습니다."})
+          console.error("장소 상세 정보를 불러오는 데 실패했습니다.", error);
+        }
+      })();
+    }
+  }, [placeId]);
+
   return (
-    <div className="flex flex-col absolute -bottom-4 left-4 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
-      {/* 헤더 */}
-      <PlaceUserMemosHeader placeDetail={placeDetail} backPage={backPage} />
-      {/* 즐겨찾기 정보 */}
-      <BookmarkInfo placeDetail={placeDetail} />
-      {/* 유저 메모 리스트 */}
-      <UserMemoCards placeDetail={placeDetail} />
+    <div className="flex flex-col absolute -bottom-4 left-0 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
+      {placeDetail && (
+        <>
+          <PlaceUserMemosHeader placeDetail={placeDetail} />
+          <BookmarkInfo placeDetail={placeDetail} />
+          <UserMemoCards placeDetail={placeDetail} />
+        </>
+      )}
     </div>
   );
 }

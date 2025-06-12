@@ -1,55 +1,47 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-// Kakao 객체를 전역 선언합니다.
-declare global {
-  interface Window {
-    kakao: {
-      maps: {
-        LatLng: new (lat: number, lng: number) => void;
-        Map: new (
-          container: HTMLElement,
-          options: { center: void; level: number },
-        ) => void;
-        load: (callback: () => void) => void;
-      };
-    };
-  }
-}
+import {
+  initializeMap,
+  loadKakaoMapSdk,
+  moveMyLocation, placeToMarker,
+  updateCenterAddress,
+} from "@/utils/mapUtil";
+import { useMapStore } from "@/stores/mapStore";
 
 export default function KakaoMap() {
-  const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID; // 카카오지도 api
-
   const mapRef = useRef<HTMLDivElement>(null);
+  const { placeList, myLocation } = useMapStore((state) => state);
+  const { setMyLocation, setRegionName, setPlaceList } = useMapStore();
+
+  const mapInstanceRef = useRef<unknown>(null);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
-    script.async = true;
-
-    script.onload = () => {
-      if (!window.kakao || !window.kakao.maps) return;
-
-      window.kakao.maps.load(() => {
-        const container = mapRef.current;
-        if (!container) return;
-
-        // ✅ LatLng도 반드시 이 안에서 선언해야 안전
-        const defaultCenter = new window.kakao.maps.LatLng(37.5665, 126.978);
-
-        new window.kakao.maps.Map(container, {
-          center: defaultCenter,
-          level: 3,
-        });
+    loadKakaoMapSdk(() => {
+      if (!mapRef.current) return;
+      initializeMap(mapRef.current, (map) => {
+        mapInstanceRef.current = map;
+        moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
+        updateCenterAddress(map, setRegionName); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
       });
-    };
-    document.head.appendChild(script);
+    });
   }, []);
+
+  // 내 위치가 바뀔 때마다 placeList가 갱신
+  // 만약 인근에 조회된 장소가 없다면 null로 초기화
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+
+    if(placeList == null) {
+      setPlaceList(null);
+    }
+
+    placeToMarker(placeList!, map);
+  }, [myLocation]);
 
   return (
     <>
-      <div ref={mapRef} className={`w-screen h-screen`} />
+      <div ref={mapRef} className="absolute w-screen h-screen left-0" />
     </>
   );
 }
