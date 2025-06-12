@@ -55,6 +55,8 @@ export default function PlaceModal() {
               key={place.placeId}
               placeId={place.placeId}
               category={place.category}
+              lat={place.lat}
+              lng={place.lng}
               placeName={place.name}
               address={place.address}
               favoriteCount={place.favoriteCount}

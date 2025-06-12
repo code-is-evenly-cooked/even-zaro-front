@@ -48,6 +48,10 @@ interface MapStore {
   regionName: string | null;
   setMyLocation: (myLocation : {lat: number, lng: number}) => void;
   setRegionName: (myRegionName : string) => void;
+
+  // 지도 객체
+  map: kakao.maps.Map | null;
+  setMap: (map: kakao.maps.Map) => void;
 }
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -64,6 +68,7 @@ export const useMapStore = create<MapStore>((set) => ({
   groupInfo: null,
   myLocation : null,
   regionName: null,
+  map: null,
 
 
   setPagePlaceList: () =>
@@ -117,4 +122,5 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       regionName: regionName,
     })),
+  setMap: (map) => set({ map }),
 }));
