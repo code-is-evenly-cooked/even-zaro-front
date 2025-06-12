@@ -146,8 +146,8 @@ export function placeToMarker(
     address: place.address,
   }));
 
-  const imageSrc =
-    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+  // 즐겨찾기 마커
+  const imageSrc = "/marker/favoriteMarker.svg";
   const imageSize = new window.kakao.maps.Size(24, 35);
   const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
