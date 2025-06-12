@@ -72,6 +72,10 @@ export default function KakaoMap() {
     }
   };
 
+  function openSearchModal() {
+    setIsExpanded((prev) => !prev)
+  }
+
   function onClickSelectResult() {
     const nextSource = selectedSource === "zaro" ? "kakao" : "zaro";
     setSelectedSource(nextSource);
@@ -147,13 +151,13 @@ export default function KakaoMap() {
             {isExpanded ? (
               <ChevronDown
                 className="cursor-pointer"
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={openSearchModal}
                 size={20}
               />
             ) : (
               <ChevronUp
                 className="cursor-pointer"
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={openSearchModal}
                 size={20}
               />
             )}
