@@ -4,7 +4,7 @@ import { useMapStore } from "@/stores/mapStore";
 import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
-import { getDdayFromDate } from "@/utils/date";
+import { getDdayLabel } from "@/utils/date";
 
 export function GroupsFavoriteList() {
   const { page, otherUserId, groupInfo } = useMapStore((state) => state);
@@ -35,7 +35,7 @@ export function GroupsFavoriteList() {
               {profile?.nickname}
             </span>
             <span className="text-sm text-gray-500">
-              {getDdayFromDate(profile?.liveAloneDate)}
+              {getDdayLabel(profile?.liveAloneDate)}
             </span>
           </div>
         </div>
