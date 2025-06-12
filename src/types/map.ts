@@ -77,4 +77,10 @@ export type markerInfos = markerInfo[];
 export interface markerInfo {
   title: string;
   latlng: MyLoc;
+  category: string;
+  name : string;
+  lat: number;
+  lng: number;
+  placeId: number;
+  address: string;
 }
