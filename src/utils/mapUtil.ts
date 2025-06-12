@@ -264,7 +264,7 @@ function displayInfoWindowFromKakao(
   `;
 
   content.innerHTML = `
-    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn">✕</div>
+    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn-search">✕</div>
     <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
     <div style="color: #555;">주소 : ${place.address_name}</div>
     <div style="color: #888; font-size: 11px;">좌표: (${place.y}, ${place.x})</div>
@@ -283,9 +283,9 @@ function displayInfoWindowFromKakao(
   // 간단한 말풍선 인포윈도우
   const simpleCustomOverlay = new kakao.maps.CustomOverlay({
     map: map,
-    content:simpleMarker,
+    content: simpleMarker,
     position: new kakao.maps.LatLng(place.y, place.x),
-    yAnchor: 2.5
+    yAnchor: 2.5,
   });
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
@@ -297,13 +297,13 @@ function displayInfoWindowFromKakao(
   });
 
   // 상세 정보 표시
-  kakao.maps.event.addListener(marker, 'click', () => {
+  kakao.maps.event.addListener(marker, "click", () => {
     detailOverlay.setMap(map);
   });
 
   // 오버레이 닫기
   setTimeout(() => {
-    const closeBtn = content.querySelector("#close-btn");
+    const closeBtn = content.querySelector("#close-btn-search");
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         detailOverlay.setMap(null);
@@ -339,7 +339,8 @@ function displayInfoWindowFromZaro(
       font-weight: 500;
       color: #333;
       white-space: nowrap;
-      max-width: 120px;
+      display: inline-block;
+      max-width: 300px;
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: center;
@@ -364,6 +365,7 @@ function displayInfoWindowFromZaro(
     overflow-wrap: break-word;
   `;
   detailMarker.innerHTML = `
+    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn-nearby">✕</div>
     <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.name}</div>
     <div style="color: #555;">주소 : ${place.address}</div>
     <div style="color: #888; font-size: 11px;">좌표: (${place.lng}, ${place.lat})</div>
@@ -381,28 +383,27 @@ function displayInfoWindowFromZaro(
 
   const simpleOverLay = new kakao.maps.CustomOverlay({
     map: map,
-    content:simpleMarker,
+    content: simpleMarker,
     position: new kakao.maps.LatLng(place.lat, place.lng),
-    yAnchor: 2.5,
-    zIndex: 1,
+    yAnchor: 2,
   });
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
     map: null,
-    position: new kakao.maps.LatLng(place.lng, place.lat),
+    position: new kakao.maps.LatLng(place.lat, place.lng),
     content: detailMarker,
     yAnchor: 1.5,
   });
 
   // 상세 정보 표시
-  kakao.maps.event.addListener(marker, 'click', () => {
+  kakao.maps.event.addListener(marker, "click", () => {
     detailOverlay.setMap(map);
   });
 
   // 오버레이 닫기
   setTimeout(() => {
-    const closeBtn = detailMarker.querySelector("#close-btn");
+    const closeBtn = detailMarker.querySelector("#close-btn-nearby");
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         detailOverlay.setMap(null);
@@ -416,7 +417,6 @@ function displayInfoWindowFromZaro(
       });
     }
   }, 0);
-
 }
 
 export function clearMarkers(
