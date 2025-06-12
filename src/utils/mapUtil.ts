@@ -2,7 +2,12 @@
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
 //
 
-import { KakaoMapResponse, markerInfos, PlaceInfo, PlaceListResponse } from "@/types/map";
+import {
+  KakaoMapResponse,
+  markerInfos,
+  PlaceInfo,
+  PlaceListResponse,
+} from "@/types/map";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
 
@@ -119,13 +124,13 @@ export function updateCenterAddress(
 export function placeToMarker(
   places: PlaceListResponse,
   map: kakao.maps.Map,
-  markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>
+  markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
   // 기존 마커 제거
   if (markerRefs) {
-    markerRefs.current.forEach(marker => marker.setMap(null));
+    markerRefs.current.forEach((marker) => marker.setMap(null));
     markerRefs.current = [];
   }
 
@@ -133,11 +138,11 @@ export function placeToMarker(
     title: place.name,
     latlng: { lat: place.lat, lng: place.lng },
     category: place.category,
-    name : place.name,
+    name: place.name,
     lat: place.lat,
     lng: place.lng,
     placeId: place.placeId,
-    address: place.address
+    address: place.address,
   }));
 
   const imageSrc =
@@ -156,7 +161,7 @@ export function placeToMarker(
     marker.setMap(map);
     markerRefs?.current.push(marker);
 
-    const infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
     // 지도에 마커 정보 모달을 표시
     // Zaro API 응답에 맞게
@@ -168,7 +173,7 @@ export function placeToMarker(
 export function searchKeyword(
   map: any,
   keyword: string,
-  callback: (data: any[], status: any, pagination: any) => void
+  callback: (data: any[], status: any, pagination: any) => void,
 ) {
   const ps = new window.kakao.maps.services.Places();
   if (!keyword.trim()) {
@@ -180,15 +185,15 @@ export function searchKeyword(
 
 // 카카오 API 응답으로 받아온 장소들을 마커로 추가
 export function placeToMarkerFromKakao(
-  places: KakaoMapResponse[] ,
+  places: KakaoMapResponse[],
   map: kakao.maps.Map,
-  markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>
+  markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
 ) {
   if (!places) return;
 
   // 기존 마커 제거
   if (markerRefs) {
-    markerRefs.current.forEach(marker => marker.setMap(null));
+    markerRefs.current.forEach((marker) => marker.setMap(null));
     markerRefs.current = [];
   }
 
@@ -205,7 +210,7 @@ export function placeToMarkerFromKakao(
       image: markerImage,
     });
 
-    const infoWindow = new kakao.maps.InfoWindow({zIndex:1});
+    const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
@@ -216,11 +221,18 @@ export function placeToMarkerFromKakao(
 }
 
 // 입력받은 장소들을 마커 객체를 이용해 map에 표시
-function displayInfoWindow(place: KakaoMapResponse, marker: any, map: kakao.maps.Map, infoWindow) {
+function displayInfoWindow(
+  place: KakaoMapResponse,
+  marker: any,
+  map: kakao.maps.Map,
+  infoWindow,
+  handleClick: () => void,
+) {
 
-  const content = `
-  <div style="
-    background: white;
+  const content = document.createElement("div");
+
+  content.style.cssText = `
+  background: white;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -230,13 +242,30 @@ function displayInfoWindow(place: KakaoMapResponse, marker: any, map: kakao.maps
     width: 220px;
     word-wrap: break-word;
     overflow-wrap: break-word;
-  ">
-    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
+  `;
+
+  content.innerHTML = `
+  <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
     <div style="color: #555;">주소 : ${place.address_name}</div>
     <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${place.y}, ${place.x})</div>
     <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category_group_name}</div>
-  </div>
-`;
+     <button id="add-btn" style="
+      margin-top: 8px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    ">⭐ 즐겨찾기 추가</button>
+  `
+  // 버튼에 클릭 이벤트 연결
+  setTimeout(() => {
+    const btn = content.querySelector("#add-btn");
+    if (btn) {
+      btn.addEventListener("click", handleClick);
+    }
+  }, 0);
 
   // 장소 정보 모달이 표시될 위치 지정
   const position = new kakao.maps.LatLng(place.y, place.x);
@@ -245,19 +274,26 @@ function displayInfoWindow(place: KakaoMapResponse, marker: any, map: kakao.maps
     map: map,
     position: position,
     content: content,
-    yAnchor: 1
+    yAnchor: 1,
   });
 
   infoWindow.setContent(content);
   infoWindow.open(map, marker);
 }
 
-function displayInfoWindowFromZaro(place: PlaceInfo, marker: any, map: kakao.maps.Map, infowindow) {
+// Zaro API로부터 받은 PlaceInfo 타입의 객체를 마커로 추가
+function displayInfoWindowFromZaro(
+  place: PlaceInfo,
+  marker: any,
+  map: kakao.maps.Map,
+  infowindow,
+  handleClick: () => void,
+) {
+  // 출력될 html
+  const container = document.createElement("div");
 
-  // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-  const content = `
-  <div style="
-    background: white;
+  container.style.cssText = `
+  background: white;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -267,13 +303,32 @@ function displayInfoWindowFromZaro(place: PlaceInfo, marker: any, map: kakao.map
     width: 220px;
     word-wrap: break-word;
     overflow-wrap: break-word;
-  ">
+  `;
+
+  container.innerHTML = `
     <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.name}</div>
     <div style="color: #555;">주소 : ${place.address}</div>
-    <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${place.lng}, ${place.lat})</div>
+    <div style="color: #888; font-size: 11px;">좌표: (${place.lng}, ${place.lat})</div>
     <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category}</div>
-  </div>
-`;
+    <button id="add-btn" style="
+      margin-top: 8px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    ">⭐ 즐겨찾기 추가</button>
+  `;
+
+
+  // 버튼에 클릭 이벤트 연결
+  setTimeout(() => {
+    const btn = container.querySelector("#add-btn");
+    if (btn) {
+      btn.addEventListener("click", handleClick);
+    }
+  }, 0);
 
   // 커스텀 오버레이가 표시될 위치입니다
   const position = new kakao.maps.LatLng(place.lng, place.lat);
@@ -282,13 +337,10 @@ function displayInfoWindowFromZaro(place: PlaceInfo, marker: any, map: kakao.map
   const customOverlay = new kakao.maps.CustomOverlay({
     map: map,
     position: position,
-    content: content,
-    yAnchor: 1
+    content: container,
+    yAnchor: 1,
   });
 
-  infowindow.setContent(content);
+  infowindow.setContent(container);
   infowindow.open(map, marker);
 }
-
-
-
