@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchUserProfile } from "@/lib/api/profile";
 import { ProfileResponse } from "@/types/profile";
+import { useState } from "react";
+import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
 
 interface ProfileHeaderProps {
   userId: string;
@@ -23,6 +25,7 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
   });
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
+  const [openType, setOpenType] = useState<FollowModalType | null>(null);
 
   // 자취 기간 디데이 표시
   const mockStartDate = profile.liveAloneDate ?? "2024-01-01"; // TODO: 작업 최종 완료 후 목업 데이터 제거 필요
@@ -64,11 +67,27 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
           </div>
           <ul className="flex justify-around gap-16">
             <Stat label="글" count={profile.postCount} />
-            <Stat label="팔로잉" count={profile.followingCount} />
-            <Stat label="팔로워" count={profile.followerCount} />
+            <Stat
+              label="팔로워"
+              count={profile.followerCount}
+              onClick={() => setOpenType("follower")}
+            />
+            <Stat
+              label="팔로잉"
+              count={profile.followingCount}
+              onClick={() => setOpenType("following")}
+            />
           </ul>
         </div>
       </div>
+      {openType && (
+        <UserFollowModal
+          userId={userId}
+          type={openType}
+          isOpen
+          onClose={() => setOpenType(null)}
+        />
+      )}
     </div>
   );
 }
