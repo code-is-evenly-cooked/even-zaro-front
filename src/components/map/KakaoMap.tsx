@@ -6,7 +6,8 @@ import {
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation,
-  placeToMarker, placeToMarkerFromKakao,
+  placeToMarker,
+  placeToMarkerFromKakao,
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
@@ -19,9 +20,12 @@ export default function KakaoMap() {
   const { placeList, myLocation, map } = useMapStore((state) => state);
   const { setMyLocation, setRegionName, setMap } = useMapStore();
 
+  // Ref 객체
   const mapInstanceRef = useRef<unknown>(null);
-  const markerRefs = useRef<kakao.maps.Marker[]>([]);
-  const overlayRefs = useRef<kakao.maps.CustomOverlay[]>([]);
+  const markerRefs = useRef<kakao.maps.Marker[]>([]); // 마커들 추적
+  const overlayRefsByZaro = useRef<kakao.maps.CustomOverlay[]>([]); // SimpleInfo 추적
+  const overlayRefsByKakao = useRef<kakao.maps.CustomOverlay[]>([]); // SimpleInfo 추적
+
 
   // 검색창 여닫힘 상태
   const [isExpanded, setIsExpanded] = useState(false);
@@ -38,7 +42,7 @@ export default function KakaoMap() {
     // eslint-disable-next-line
     pagination: any, // any에 대해서 eslint 타입 검증 오류 무시
   ) => {
-    clearMarkers(markerRefs, overlayRefs); // 기존의 마커 제거
+    clearMarkers(markerRefs, overlayRefsByKakao); // 기존의 마커 제거
     if (status === kakao.maps.services.Status.OK) {
       console.log("@@@@@@ data: ", data);
       setPlaces(data);
@@ -47,7 +51,7 @@ export default function KakaoMap() {
         data,
         mapInstanceRef.current as kakao.maps.Map,
         markerRefs,
-        overlayRefs
+        overlayRefsByKakao,
       );
     } else {
       console.log("@@@@@@ 실패실패: ");
@@ -76,14 +80,13 @@ export default function KakaoMap() {
     if (!map || !myLocation || places.length > 0) return; // 검색 중이면 무시
 
     if (!placeList || !placeList.placeInfos?.length) {
-      clearMarkers(markerRefs, overlayRefs);
+      clearMarkers(markerRefs, overlayRefsByZaro);
       return;
     }
 
-    clearMarkers(markerRefs, overlayRefs);
-    placeToMarker(placeList, map, markerRefs, overlayRefs);
+    clearMarkers(markerRefs, overlayRefsByZaro);
+    placeToMarker(placeList, map, markerRefs, overlayRefsByZaro);
   }, [myLocation, placeList, places]);
-
 
   return (
     <>
@@ -100,7 +103,9 @@ export default function KakaoMap() {
           className="flex justify-between items-center px-4 py-2 border-b cursor-pointer"
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          <span className="font-bold text-gray-800 text-sm">{isExpanded ? "검색결과" : "장소 검색"} </span>
+          <span className="font-bold text-gray-800 text-sm">
+            {isExpanded ? "검색결과" : "장소 검색"}{" "}
+          </span>
           {isExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
         </div>
 
@@ -154,9 +159,7 @@ export default function KakaoMap() {
                   <div className="font-medium text-gray-900">
                     {index + 1}. {place.place_name}
                   </div>
-                  <div className="text-gray-500">
-                    {place.address_name}
-                  </div>
+                  <div className="text-gray-500">{place.address_name}</div>
                 </li>
               ))}
             </ul>
