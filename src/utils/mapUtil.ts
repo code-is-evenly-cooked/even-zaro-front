@@ -223,7 +223,7 @@ function displayInfoWindowFromKakao(
   marker: any,
   map: kakao.maps.Map,
 ) {
-  // 🔹 간단한 라벨 스타일
+  // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
   simpleMarker.innerHTML = `
     <div style="
@@ -293,8 +293,7 @@ function displayInfoWindowFromKakao(
     map: null,
     position: new kakao.maps.LatLng(place.y, place.x),
     content: content,
-    yAnchor: 1,
-    zIndex: 2,
+    yAnchor: 1.5,
   });
 
   // 상세 정보 표시
@@ -326,10 +325,33 @@ function displayInfoWindowFromZaro(
   marker: any,
   map: kakao.maps.Map,
 ) {
-  // 출력될 html
-  const container = document.createElement("div");
+  // 간단 정보 모달
+  const simpleMarker = document.createElement("div");
+  simpleMarker.innerHTML = `
+    <div style="
+      flex-direction: row;
+      background-color: white;
+      padding: 3px 6px;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      pointer-events: none;
+    ">
+      ${place.name}
+    </div>
+  `;
 
-  container.style.cssText = `
+  // 상세 정보 모달 (즐겨찾기 추가 포함)
+  const detailMarker = document.createElement("div");
+  detailMarker.style.cssText = `
   background: white;
     padding: 10px;
     border-radius: 8px;
@@ -341,8 +363,7 @@ function displayInfoWindowFromZaro(
     word-wrap: break-word;
     overflow-wrap: break-word;
   `;
-
-  container.innerHTML = `
+  detailMarker.innerHTML = `
     <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.name}</div>
     <div style="color: #555;">주소 : ${place.address}</div>
     <div style="color: #888; font-size: 11px;">좌표: (${place.lng}, ${place.lat})</div>
@@ -357,25 +378,45 @@ function displayInfoWindowFromZaro(
       cursor: pointer;
     ">⭐ 즐겨찾기 추가</button>
   `;
-  const iwRemoveable = true;
 
-  // 커스텀 오버레이가 표시될 위치입니다
-  const position = new kakao.maps.LatLng(place.lng, place.lat);
-
-  const infoWindow = new kakao.maps.InfoWindow({
-    content: container,
-    removable: iwRemoveable,
-    zIndex: 1
+  const simpleOverLay = new kakao.maps.CustomOverlay({
+    map: map,
+    content:simpleMarker,
+    position: new kakao.maps.LatLng(place.lat, place.lng),
+    yAnchor: 2.5,
+    zIndex: 1,
   });
 
-  // 마커에 클릭이벤트를 등록합니다
-  kakao.maps.event.addListener(marker, 'click', function() {
-    // 마커 위에 인포윈도우를 표시합니다
-    infoWindow.open(map, marker);
+  // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
+  const detailOverlay = new kakao.maps.CustomOverlay({
+    map: null,
+    position: new kakao.maps.LatLng(place.lng, place.lat),
+    content: detailMarker,
+    yAnchor: 1.5,
   });
 
-  // infoWindow.setContent(container);
-  // infoWindow.open(map, marker);
+  // 상세 정보 표시
+  kakao.maps.event.addListener(marker, 'click', () => {
+    detailOverlay.setMap(map);
+  });
+
+  // 오버레이 닫기
+  setTimeout(() => {
+    const closeBtn = detailMarker.querySelector("#close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        detailOverlay.setMap(null);
+      });
+    }
+
+    const addBtn = detailMarker.querySelector("#add-btn");
+    if (addBtn) {
+      addBtn.addEventListener("click", () => {
+        alert(`'${place.name}'를 즐겨찾기에 추가합니다!`);
+      });
+    }
+  }, 0);
+
 }
 
 export function clearMarkers(
