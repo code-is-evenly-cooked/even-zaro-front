@@ -15,7 +15,7 @@ import { KakaoMapResponse } from "@/types/map";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { placeList, myLocation } = useMapStore((state) => state);
+  const { placeList, myLocation, map } = useMapStore((state) => state);
   const { setMyLocation, setRegionName, setPlaceList, setMap } = useMapStore();
 
   const mapInstanceRef = useRef<unknown>(null);
@@ -27,6 +27,7 @@ export default function KakaoMap() {
   const [pagination, setPagination] = useState<any>(null);
   const [keyword, setKeyword] = useState("이태원 맛집");
 
+  // 검색 결과 컨트롤
   const handleSearchResult = (data : KakaoMapResponse[], status, pagination) => {
     if (status === kakao.maps.services.Status.OK) {
       console.log("@@@@@@ data: ", data)
@@ -41,17 +42,18 @@ export default function KakaoMap() {
     } else {
       setPlaces([]);
       setPagination(null);
-      markerRefs.current.forEach((marker) => marker.setMap(null));
+      markerRefs.current.forEach((marker) => marker.setMap(null)); // 등록되어있는 마커들을 제거
       markerRefs.current = [];
     }
   };
 
+  // 사용자의 위치에 따라 변하는 인근 장소 불러오기
   useEffect(() => {
     loadKakaoMapSdk(() => {
       if (!mapRef.current) return;
       initializeMap(mapRef.current, (map) => {
         mapInstanceRef.current = map;
-        setMap(map);
+        setMap(map); // 맵 객체 등록
         moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
         updateCenterAddress(map, setRegionName); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
       });
@@ -59,14 +61,15 @@ export default function KakaoMap() {
   }, []);
 
   // 내 위치가 바뀔 때마다 placeList가 갱신
-  // 만약 인근에 조회된 장소가 없다면 null로 초기화
   useEffect(() => {
     const map = mapInstanceRef.current;
 
+    // 만약 인근에 조회된 장소가 없다면 null로 초기화
     if (placeList == null) {
       setPlaceList(null);
     }
 
+    // Zaro API 서버에서 받아온 응답객체로 마커 추가
     placeToMarker(placeList!, map);
   }, [myLocation]);
 
