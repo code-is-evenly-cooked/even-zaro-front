@@ -21,6 +21,7 @@ export default function KakaoMap() {
 
   const mapInstanceRef = useRef<unknown>(null);
   const markerRefs = useRef<kakao.maps.Marker[]>([]);
+  const overlayRefs = useRef<kakao.maps.CustomOverlay[]>([]);
 
   // 검색창 여닫힘 상태
   const [isExpanded, setIsExpanded] = useState(false);
@@ -37,19 +38,18 @@ export default function KakaoMap() {
     // eslint-disable-next-line
     pagination: any, // any에 대해서 eslint 타입 검증 오류 무시
   ) => {
+    clearMarkers(markerRefs, overlayRefs); // 기존의 마커 제거
     if (status === kakao.maps.services.Status.OK) {
-      clearMarkers(markerRefs); // 기존의 마커 제거
       console.log("@@@@@@ data: ", data);
       setPlaces(data);
       setPagination(pagination);
-
       placeToMarkerFromKakao(
         data,
         mapInstanceRef.current as kakao.maps.Map,
         markerRefs,
+        overlayRefs
       );
     } else {
-      clearMarkers(markerRefs); // 기존의 마커 제거
       console.log("@@@@@@ 실패실패: ");
       setPlaces([]);
       setPagination(null);
@@ -76,12 +76,12 @@ export default function KakaoMap() {
     if (!map || !myLocation || places.length > 0) return; // 검색 중이면 무시
 
     if (!placeList || !placeList.placeInfos?.length) {
-      clearMarkers(markerRefs);
+      clearMarkers(markerRefs, overlayRefs);
       return;
     }
 
-    clearMarkers(markerRefs);
-    placeToMarker(placeList, map, markerRefs);
+    clearMarkers(markerRefs, overlayRefs);
+    placeToMarker(placeList, map, markerRefs, overlayRefs);
   }, [myLocation, placeList, places]);
 
 

@@ -125,6 +125,7 @@ export function placeToMarker(
   places: PlaceListResponse,
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
+  overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
@@ -157,13 +158,14 @@ export function placeToMarker(
       title: place.name,
       image: markerImage,
       clickable: true,
+      zIndex:1,
     });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
     // 지도에 마커 정보 모달을 표시
     // Zaro API 응답에 맞게
-    displayInfoWindowFromZaro(place, marker, map);
+    displayInfoWindowFromZaro(place, marker, map, overlayRefs);
   });
 }
 
@@ -186,15 +188,9 @@ export function placeToMarkerFromKakao(
   places: KakaoMapResponse[],
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
+  overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
 ) {
   if (!places) return;
-
-  // 기존 마커 제거
-  if (markerRefs) {
-    markerRefs.current.forEach((marker) => marker.setMap(null));
-    markerRefs.current = [];
-  }
-
   const imageSrc =
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
   const imageSize = new window.kakao.maps.Size(24, 35);
@@ -207,13 +203,16 @@ export function placeToMarkerFromKakao(
       title: place.place_name,
       image: markerImage,
       clickable: true,
+      zIndex:1,
     });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
 
     // 지도에 마커 정보 모달을 표시
-    displayInfoWindowFromKakao(place, marker, map);
+    if (overlayRefs) {
+      displayInfoWindowFromKakao(place, marker, map, overlayRefs);
+    }
   });
 }
 
@@ -222,11 +221,13 @@ function displayInfoWindowFromKakao(
   place: KakaoMapResponse,
   marker: any,
   map: kakao.maps.Map,
+  overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
 ) {
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
   simpleMarker.innerHTML = `
-    <div style="
+    <div     
+    style="
       flex-direction: row;
       background-color: white;
       padding: 3px 6px;
@@ -286,7 +287,9 @@ function displayInfoWindowFromKakao(
     content: simpleMarker,
     position: new kakao.maps.LatLng(place.y, place.x),
     yAnchor: 2.5,
+    zIndex: 2
   });
+  overlayRefs?.current.push(simpleCustomOverlay);
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
@@ -324,11 +327,13 @@ function displayInfoWindowFromZaro(
   place: markerInfo,
   marker: any,
   map: kakao.maps.Map,
+  overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
   simpleMarker.innerHTML = `
-    <div style="
+    <div 
+    style="
       flex-direction: row;
       background-color: white;
       padding: 3px 6px;
@@ -387,6 +392,8 @@ function displayInfoWindowFromZaro(
     position: new kakao.maps.LatLng(place.lat, place.lng),
     yAnchor: 2,
   });
+  overlayRefs?.current.push(simpleOverLay);
+
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
@@ -421,11 +428,15 @@ function displayInfoWindowFromZaro(
 
 export function clearMarkers(
   markerRefs: React.MutableRefObject<kakao.maps.Marker[]>,
+  overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
 ) {
-  if (!markerRefs || !markerRefs.current) return;
+  if (markerRefs?.current) {
+    markerRefs.current.forEach((marker) => marker.setMap(null));
+    markerRefs.current = [];
+  }
 
-  markerRefs.current.forEach((marker) => {
-    marker.setMap(null);
-  });
-  markerRefs.current = [];
+  if (overlayRefs?.current) {
+    overlayRefs.current.forEach((overlay) => overlay.setMap(null));
+    overlayRefs.current = [];
+  }
 }
