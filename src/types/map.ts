@@ -20,11 +20,11 @@ export interface UsersInfo {
 
 export interface PlaceListResponse {
   totalCount: number;
-  placeInfos: PlaceInfos[];
+  placeInfos: PlaceInfo[];
 
 }
 
-export interface PlaceInfos {
+export interface PlaceInfo {
   placeId : number;
   name: string;
   address: string;
@@ -97,5 +97,4 @@ export interface KakaoMapResponse {
   place_url: string,
   x: number,
   y: number
-
 }
