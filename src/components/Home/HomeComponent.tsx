@@ -2,6 +2,7 @@ import React from "react";
 import HomeSectionCard from "./HomeSectionCard";
 import { CommonPostItem } from "@/types/post";
 import BannerSlider from "./BannerSlider";
+import HomeSectionMapCard from "./HomeSectionMapCard";
 
 interface HomeComponentProps {
   posts: {
@@ -30,6 +31,9 @@ const HomeComponent = ({ posts }: HomeComponentProps) => {
             className="sm:col-span-2"
           />
         </div>
+        {/* <div>
+          <HomeSectionMapCard />
+        </div> */}
       </div>
     </div>
   );
