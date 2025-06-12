@@ -1,19 +1,30 @@
 import { client } from "@/lib/fetch/client";
 
-interface FollowingUser {
+export interface FollowUser {
   userId: number;
   userName: string;
   profileImage: string | null;
 }
 
 // 팔로잉 여부 조회
+// TODO: 삭제 예정 사유: 네이밍 통일용
 export const fetchFollowings = async (
   userId: number,
-): Promise<FollowingUser[]> => {
-  return await client<FollowingUser[]>(`/profile/${userId}/followings`, {
+): Promise<FollowUser[]> => {
+  return await client<FollowUser[]>(`/profile/${userId}/followings`, {
     method: "GET",
   });
 };
+
+export const getFollowers = async (userId: string): Promise<FollowUser[]> =>
+  await client<FollowUser[]>(`/profile/${userId}/followers`, {
+    method: "GET",
+  });
+
+export const getFollowings = async (userId: string): Promise<FollowUser[]> =>
+  await client<FollowUser[]>(`/profile/${userId}/followings`, {
+    method: "GET",
+  });
 
 // 팔로우
 export const followUser = async (userId: number) => {
