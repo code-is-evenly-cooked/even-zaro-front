@@ -136,7 +136,7 @@ export default function KakaoMap() {
 
           <div className="flex flex-row items-center gap-1">
             <button
-              className="text-sm text-gray600 border-2 p-1 rounded"
+              className="bg-violet800 text-sm text-white border-2 py-1 px-2 rounded hover:bg-violet600"
               onClick={onClickSelectResult}
             >
               {selectedSource === "zaro"
@@ -181,11 +181,11 @@ export default function KakaoMap() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="장소 검색"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
+                className="flex-1 px-3 py-2 border border-gray400 rounded-md text-sm"
               />
               <button
                 type="submit"
-                className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="px-4 py-2 text-sm bg-violet800 text-white rounded-md hover:bg-violet600"
               >
                 검색
               </button>
