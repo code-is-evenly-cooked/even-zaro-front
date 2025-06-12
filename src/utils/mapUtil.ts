@@ -185,9 +185,21 @@ export function placeToMarkerFromKakao(
       image: markerImage,
     });
 
+    const infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+    // 지도에 마커 정보 모달을 표시
+    displayInfowindow(marker, marker.getTitle(), map, infowindow);
+
     marker.setMap(map);
     markerRefs?.current.push(marker);
   });
+}
+
+function displayInfowindow(marker, title: string, map: kakao.maps.Map, infowindow) {
+  const content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+  infowindow.setContent(content);
+  infowindow.open(map, marker);
 }
 
 
