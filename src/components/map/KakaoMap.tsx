@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  clearMarkers,
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation,
@@ -16,7 +17,7 @@ import { KakaoMapResponse } from "@/types/map";
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const { placeList, myLocation, map } = useMapStore((state) => state);
-  const { setMyLocation, setRegionName, setPlaceList, setMap } = useMapStore();
+  const { setMyLocation, setRegionName, setMap } = useMapStore();
 
   const mapInstanceRef = useRef<unknown>(null);
   const markerRefs = useRef<kakao.maps.Marker[]>([]);
@@ -30,6 +31,7 @@ export default function KakaoMap() {
   // 검색 결과 컨트롤
   const handleSearchResult = (data : KakaoMapResponse[], status, pagination) => {
     if (status === kakao.maps.services.Status.OK) {
+      clearMarkers(markerRefs); // 기존의 마커 제거
       console.log("@@@@@@ data: ", data)
       setPlaces(data);
       setPagination(pagination);
@@ -40,6 +42,8 @@ export default function KakaoMap() {
         markerRefs,
       );
     } else {
+      clearMarkers(markerRefs); // 기존의 마커 제거
+      console.log("@@@@@@ 실패실패: ");
       setPlaces([]);
       setPagination(null);
       markerRefs.current.forEach((marker) => marker.setMap(null)); // 등록되어있는 마커들을 제거
@@ -62,16 +66,17 @@ export default function KakaoMap() {
 
   // 내 위치가 바뀔 때마다 placeList가 갱신
   useEffect(() => {
-    const map = mapInstanceRef.current;
+    if (!map || !myLocation || places.length > 0) return; // 검색 중이면 무시
 
-    // 만약 인근에 조회된 장소가 없다면 null로 초기화
-    if (placeList == null) {
-      setPlaceList(null);
+    if (!placeList || !placeList.placeInfos?.length) {
+      clearMarkers(markerRefs);
+      return;
     }
 
-    // Zaro API 서버에서 받아온 응답객체로 마커 추가
-    placeToMarker(placeList!, map);
-  }, [myLocation]);
+    clearMarkers(markerRefs);
+    placeToMarker(placeList, map, markerRefs);
+  }, [myLocation, placeList, places]);
+
 
   return (
     <>

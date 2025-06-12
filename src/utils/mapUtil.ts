@@ -156,16 +156,14 @@ export function placeToMarker(
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
       title: place.name,
       image: markerImage,
+      clickable: true,
     });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
-
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
     // 지도에 마커 정보 모달을 표시
     // Zaro API 응답에 맞게
-    displayInfoWindowFromZaro(place, marker, map, infowindow);
+    displayInfoWindowFromZaro(place, marker, map);
   });
 }
 
@@ -208,48 +206,70 @@ export function placeToMarkerFromKakao(
       position: new window.kakao.maps.LatLng(place.y, place.x),
       title: place.place_name,
       image: markerImage,
+      clickable: true,
     });
-
-    const infoWindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
 
     // 지도에 마커 정보 모달을 표시
-    displayInfoWindow(place, marker, map, infoWindow);
+    displayInfoWindowFromKakao(place, marker, map);
   });
 }
 
 // 입력받은 장소들을 마커 객체를 이용해 map에 표시
-function displayInfoWindow(
+function displayInfoWindowFromKakao(
   place: KakaoMapResponse,
   marker: any,
   map: kakao.maps.Map,
-  infoWindow,
-  handleClick: () => void,
 ) {
+  // 🔹 간단한 라벨 스타일
+  const simpleMarker = document.createElement("div");
+  simpleMarker.innerHTML = `
+    <div style="
+      flex-direction: row;
+      background-color: white;
+      padding: 3px 6px;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      pointer-events: none;
+    ">
+      ${place.place_name}
+    </div>
+  `;
 
+  // 상세 정보 오버레이
   const content = document.createElement("div");
-
   content.style.cssText = `
-  background: white;
+    background: white;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-family: Arial, sans-serif;
     font-size: 12px;
     line-height: 1.4;
-    width: 220px;
+    width: 240px;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    position: relative;
   `;
 
   content.innerHTML = `
-  <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
+    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn">✕</div>
+    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
     <div style="color: #555;">주소 : ${place.address_name}</div>
-    <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${place.y}, ${place.x})</div>
+    <div style="color: #888; font-size: 11px;">좌표: (${place.y}, ${place.x})</div>
     <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category_group_name}</div>
-     <button id="add-btn" style="
+    <button id="add-btn" style="
       margin-top: 8px;
       padding: 5px 10px;
       background-color: #007bff;
@@ -258,27 +278,46 @@ function displayInfoWindow(
       border-radius: 4px;
       cursor: pointer;
     ">⭐ 즐겨찾기 추가</button>
-  `
-  // 버튼에 클릭 이벤트 연결
-  setTimeout(() => {
-    const btn = content.querySelector("#add-btn");
-    if (btn) {
-      btn.addEventListener("click", handleClick);
-    }
-  }, 0);
+  `;
 
-  // 장소 정보 모달이 표시될 위치 지정
-  const position = new kakao.maps.LatLng(place.y, place.x);
-
-  const customOverlay = new kakao.maps.CustomOverlay({
+  // 간단한 말풍선 인포윈도우
+  const simpleCustomOverlay = new kakao.maps.CustomOverlay({
     map: map,
-    position: position,
-    content: content,
-    yAnchor: 1,
+    content:simpleMarker,
+    position: new kakao.maps.LatLng(place.y, place.x),
+    yAnchor: 2.5
   });
 
-  infoWindow.setContent(content);
-  infoWindow.open(map, marker);
+  // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
+  const detailOverlay = new kakao.maps.CustomOverlay({
+    map: null,
+    position: new kakao.maps.LatLng(place.y, place.x),
+    content: content,
+    yAnchor: 1,
+    zIndex: 2,
+  });
+
+  // 상세 정보 표시
+  kakao.maps.event.addListener(marker, 'click', () => {
+    detailOverlay.setMap(map);
+  });
+
+  // 오버레이 닫기
+  setTimeout(() => {
+    const closeBtn = content.querySelector("#close-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        detailOverlay.setMap(null);
+      });
+    }
+
+    const addBtn = content.querySelector("#add-btn");
+    if (addBtn) {
+      addBtn.addEventListener("click", () => {
+        alert(`'${place.place_name}'를 즐겨찾기에 추가합니다!`);
+      });
+    }
+  }, 0);
 }
 
 // Zaro API로부터 받은 PlaceInfo 타입의 객체를 마커로 추가
@@ -286,8 +325,6 @@ function displayInfoWindowFromZaro(
   place: PlaceInfo,
   marker: any,
   map: kakao.maps.Map,
-  infowindow,
-  handleClick: () => void,
 ) {
   // 출력될 html
   const container = document.createElement("div");
@@ -320,27 +357,34 @@ function displayInfoWindowFromZaro(
       cursor: pointer;
     ">⭐ 즐겨찾기 추가</button>
   `;
-
-
-  // 버튼에 클릭 이벤트 연결
-  setTimeout(() => {
-    const btn = container.querySelector("#add-btn");
-    if (btn) {
-      btn.addEventListener("click", handleClick);
-    }
-  }, 0);
+  const iwRemoveable = true;
 
   // 커스텀 오버레이가 표시될 위치입니다
   const position = new kakao.maps.LatLng(place.lng, place.lat);
 
-  // 커스텀 오버레이를 생성합니다
-  const customOverlay = new kakao.maps.CustomOverlay({
-    map: map,
-    position: position,
+  const infoWindow = new kakao.maps.InfoWindow({
     content: container,
-    yAnchor: 1,
+    removable: iwRemoveable,
+    zIndex: 1
   });
 
-  infowindow.setContent(container);
-  infowindow.open(map, marker);
+  // 마커에 클릭이벤트를 등록합니다
+  kakao.maps.event.addListener(marker, 'click', function() {
+    // 마커 위에 인포윈도우를 표시합니다
+    infoWindow.open(map, marker);
+  });
+
+  // infoWindow.setContent(container);
+  // infoWindow.open(map, marker);
+}
+
+export function clearMarkers(
+  markerRefs: React.MutableRefObject<kakao.maps.Marker[]>,
+) {
+  if (!markerRefs || !markerRefs.current) return;
+
+  markerRefs.current.forEach((marker) => {
+    marker.setMap(null);
+  });
+  markerRefs.current = [];
 }
