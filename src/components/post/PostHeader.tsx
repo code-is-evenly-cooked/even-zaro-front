@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { ChevronRightIcon } from "lucide-react";
 import type { MainCategory, SubCategoryValue } from "@/types/category";
 import {
   getMainCategoryLabel,
@@ -53,14 +54,14 @@ export default function PostHeader({
 
   return (
     <header className="space-y-2">
-      <div className="text-sm text-gray600 font-medium">
+      <div className="flex text-sm text-gray600 font-medium items-center">
         <button
           onClick={handleClickMainCategory}
           className="text-primary hover:underline cursor-pointer"
         >
           {getMainCategoryLabel(category)}
         </button>
-        {" > "}
+        <ChevronRightIcon width={20} height={20}/>
         <button
           onClick={handleClickSubCategory}
           className="text-secondary hover:underline cursor-pointer"
