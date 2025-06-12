@@ -21,7 +21,8 @@ export default function KakaoMap() {
   const mapInstanceRef = useRef<unknown>(null);
   const markerRefs = useRef<kakao.maps.Marker[]>([]);
 
-  const [isExpanded, setIsExpanded] = useState(true);
+  // 검색창 여닫힘 상태
+  const [isExpanded, setIsExpanded] = useState(false);
   const [places, setPlaces] = useState<KakaoMapResponse[]>([]);
   const [pagination, setPagination] = useState<any>(null);
   const [keyword, setKeyword] = useState("이태원 맛집");
@@ -73,7 +74,7 @@ export default function KakaoMap() {
     <>
       <div ref={mapRef} className="absolute w-screen h-screen left-0" />
 
-      {/* 검색 결과 패널 */}
+      {/* 검색창 */}
       <div
         className={`absolute bottom-4 right-4 z-50 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300 flex flex-col overflow-hidden ${
           isExpanded ? "h-[50vh]" : "h-14"
@@ -84,7 +85,7 @@ export default function KakaoMap() {
           className="flex justify-between items-center px-4 py-2 border-b cursor-pointer"
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          <span className="font-bold text-gray-800 text-sm">검색 결과</span>
+          <span className="font-bold text-gray-800 text-sm">{isExpanded ? "검색결과" : "장소 검색"} </span>
           {isExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
         </div>
 
