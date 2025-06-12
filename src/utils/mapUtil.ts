@@ -166,6 +166,7 @@ export function placeToMarker(places: PlaceListResponse | null, map: any) {
     <div style="color: #555;">주소 : ${pos.address}</div>
     <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${pos.lat}, ${pos.lng})</div>
     <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${pos.category}</div>
+    <div style="margin-top: 4px; color: #333;">고유 코드 : ${pos.placeId}</div>
   </div>
 `;
 
@@ -180,5 +181,18 @@ export function placeToMarker(places: PlaceListResponse | null, map: any) {
       yAnchor: 1
     });
   });
-
 }
+
+export function searchKeyword(
+  map: any,
+  keyword: string,
+  callback: (data: any[], status: any, pagination: any) => void
+) {
+  const ps = new window.kakao.maps.services.Places();
+  if (!keyword.trim()) {
+    alert("키워드를 입력해주세요!");
+    return;
+  }
+  ps.keywordSearch(keyword, callback);
+}
+
