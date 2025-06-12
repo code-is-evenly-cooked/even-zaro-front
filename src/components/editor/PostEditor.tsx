@@ -4,7 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import { useRef, useEffect, useState, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePostStore } from "@/stores/usePostStore";
-import { MainCategory, SubCategoryValue } from "@/types/category";
+import { MainCategory } from "@/types/category";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import "@toast-ui/editor/dist/i18n/ko-kr";
 import { fetchPostDetail } from "@/lib/api/post.client";
@@ -61,9 +61,9 @@ export default function PostEditor() {
 
         setTitle(post.title);
         setContent(post.content);
-        setMainCategory(post.category as MainCategory);
+        setMainCategory(post.category);
         if (post.tag) {
-          setSubCategory(post.tag as SubCategoryValue);
+          setSubCategory(post.tag);
         }
       } catch (error) {
         console.error("게시글 불러오기 오류:", error);

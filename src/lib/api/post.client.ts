@@ -4,13 +4,13 @@ import type {
   CreatePostResponse,
   UpdatePostPayload,
 } from "@/types/editor";
-import type { PostDetailResponse } from "@/types/post";
+import type { CommonPostDetailItem } from "@/types/post";
 
 // 게시글 단건 조회 (게시글 수정 용도 CSR)
 export const fetchPostDetail = async (
   postId: string,
-): Promise<PostDetailResponse> => {
-  return await client<PostDetailResponse>(`/posts/${postId}`, {
+): Promise<CommonPostDetailItem> => {
+  return await client<CommonPostDetailItem>(`/posts/${postId}`, {
     method: "GET",
     needAuth: true,
   });
