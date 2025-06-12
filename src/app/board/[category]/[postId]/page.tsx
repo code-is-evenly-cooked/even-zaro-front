@@ -3,7 +3,6 @@ import PostHeader from "@/components/post/PostHeader";
 import PostAuthor from "@/components/post/PostAuthor";
 import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import ClientPostContent from "./PostPageClient";
-import type { MainCategory } from "@/types/category";
 import CommentSection from "@/components/post/Comment/CommentSection";
 
 interface PageProps {
@@ -13,7 +12,7 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   const { postId } = await params;
   const post = await fetchPostDetail(postId);
-  const categoryKey = post.category as MainCategory;
+  const categoryKey = post.category;
 
   return (
     <main className="w-full max-w-3xl mx-auto px-2 py-10">

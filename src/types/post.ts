@@ -40,6 +40,14 @@ export interface CommonPostDetailItem {
   commentCount: number;
   postImageList: string[];
   createdAt: string;
+  user: CommonPostUserInfo;
+}
+
+export interface CommonPostUserInfo {
+  userId: number;
+  nickname: string;
+  profileImage: string | null;
+  liveAloneDate: string | null;
 }
 
 export interface ImagePostDetailItem extends CommonPostDetailItem {
