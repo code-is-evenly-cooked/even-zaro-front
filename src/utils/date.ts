@@ -8,6 +8,8 @@ import {
   parse,
   isValid,
   isAfter,
+  parseISO,
+  differenceInCalendarDays,
 } from "date-fns";
 import { ko } from "date-fns/locale";
 import { toZonedTime, format as fnsTzFormat } from "date-fns-tz";
@@ -136,18 +138,20 @@ export const validateDateInput = (dateStr: string): string | null => {
   return null;
 };
 
-export function getDdayFromDate(dateString?: string | null): string {
-  if (!dateString) return "D+?";
+/**
+ * 오늘 포함해서 기준일로부터 며칠째인지 계산 (과거 날짜만 허용)
+ * @param dateStr 기준 날짜 (ISO 문자열 | null | undefined)
+ * @returns "D+1", "D+2" 등. 유효하지 않거나 미래면 빈 문자열 반환
+ */
+export const getDdayLabel = (dateString?: string | null): string => {
+  if (!dateString) return "";
 
-  const start = new Date(dateString);
+  const date = parseISO(dateString);
+  if (!isValid(date)) return "";
+
   const today = new Date();
+  const diff = differenceInCalendarDays(today, date);
 
-  // 시간 요소 제거 (날짜만 비교)
-  start.setHours(0, 0, 0, 0);
-  today.setHours(0, 0, 0, 0);
-
-  const diff = today.getTime() - start.getTime();
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  return `D+${days}`;
-}
+  if (diff < 0) return ""; // 미래는 제외
+  return `D+${diff + 1}`; // 오늘 포함
+};
