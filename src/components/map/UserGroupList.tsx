@@ -35,9 +35,11 @@ export function UserGroupList() {
             <span className="font-semibold text-lg mt-2">
               {profile?.nickname}
             </span>
-            <span className="text-sm text-gray-500">
-              {getDdayLabel(profile?.liveAloneDate)}
-            </span>
+            {profile?.liveAloneDate && (
+              <span className="text-sm text-gray-500">
+                {getDdayLabel(profile.liveAloneDate)}
+              </span>
+            )}
           </div>
         </div>
 
