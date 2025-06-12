@@ -2,7 +2,7 @@
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
 //
 
-import { KakaoMapResponse, markerInfos, PlaceListResponse } from "@/types/map";
+import { KakaoMapResponse, markerInfos, PlaceInfo, PlaceListResponse } from "@/types/map";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
 
@@ -115,6 +115,7 @@ export function updateCenterAddress(
   });
 }
 
+// Zaro API서버의 place테이블에서 받아온 데이터를 마커로 추가
 export function placeToMarker(
   places: PlaceListResponse,
   map: kakao.maps.Map,
@@ -139,7 +140,6 @@ export function placeToMarker(
     address: place.address
   }));
 
-
   const imageSrc =
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
   const imageSize = new window.kakao.maps.Size(24, 35);
@@ -155,9 +155,16 @@ export function placeToMarker(
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
+
+    const infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+    // 지도에 마커 정보 모달을 표시
+    // Zaro API 응답에 맞게
+    displayInfoWindowFromZaro(place, marker, map, infowindow);
   });
 }
 
+// 검색어 입력필드 컨트롤
 export function searchKeyword(
   map: any,
   keyword: string,
@@ -171,6 +178,7 @@ export function searchKeyword(
   ps.keywordSearch(keyword, callback);
 }
 
+// 카카오 API 응답으로 받아온 장소들을 마커로 추가
 export function placeToMarkerFromKakao(
   places: KakaoMapResponse[] ,
   map: kakao.maps.Map,
@@ -197,18 +205,19 @@ export function placeToMarkerFromKakao(
       image: markerImage,
     });
 
-    const infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    const infoWindow = new kakao.maps.InfoWindow({zIndex:1});
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
 
     // 지도에 마커 정보 모달을 표시
-    displayInfowindow(place, marker, map, infowindow);
+    displayInfoWindow(place, marker, map, infoWindow);
   });
 }
 
-function displayInfowindow(place: KakaoMapResponse, marker: any, map: kakao.maps.Map, infowindow) {
-  // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+// 입력받은 장소들을 마커 객체를 이용해 map에 표시
+function displayInfoWindow(place: KakaoMapResponse, marker: any, map: kakao.maps.Map, infoWindow) {
+
   const content = `
   <div style="
     background: white;
@@ -229,8 +238,45 @@ function displayInfowindow(place: KakaoMapResponse, marker: any, map: kakao.maps
   </div>
 `;
 
-  // 커스텀 오버레이가 표시될 위치입니다
+  // 장소 정보 모달이 표시될 위치 지정
   const position = new kakao.maps.LatLng(place.y, place.x);
+
+  const customOverlay = new kakao.maps.CustomOverlay({
+    map: map,
+    position: position,
+    content: content,
+    yAnchor: 1
+  });
+
+  infoWindow.setContent(content);
+  infoWindow.open(map, marker);
+}
+
+function displayInfoWindowFromZaro(place: PlaceInfo, marker: any, map: kakao.maps.Map, infowindow) {
+
+  // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+  const content = `
+  <div style="
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    width: 220px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  ">
+    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.name}</div>
+    <div style="color: #555;">주소 : ${place.address}</div>
+    <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${place.lng}, ${place.lat})</div>
+    <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category}</div>
+  </div>
+`;
+
+  // 커스텀 오버레이가 표시될 위치입니다
+  const position = new kakao.maps.LatLng(place.lng, place.lat);
 
   // 커스텀 오버레이를 생성합니다
   const customOverlay = new kakao.maps.CustomOverlay({
