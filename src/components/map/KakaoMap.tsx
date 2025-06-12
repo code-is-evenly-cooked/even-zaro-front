@@ -25,14 +25,21 @@ export default function KakaoMap() {
   // 검색창 여닫힘 상태
   const [isExpanded, setIsExpanded] = useState(false);
   const [places, setPlaces] = useState<KakaoMapResponse[]>([]);
-  const [pagination, setPagination] = useState<any>(null);
+
+  // eslint-disable-next-line
+  const [pagination, setPagination] = useState<any>(null); // any에 대해서 eslint 타입 검증 오류 무시
   const [keyword, setKeyword] = useState("이태원 맛집");
 
   // 검색 결과 컨트롤
-  const handleSearchResult = (data : KakaoMapResponse[], status, pagination) => {
+  const handleSearchResult = (
+    data: KakaoMapResponse[],
+    status: kakao.maps.services.Status,
+    // eslint-disable-next-line
+    pagination: any, // any에 대해서 eslint 타입 검증 오류 무시
+  ) => {
     if (status === kakao.maps.services.Status.OK) {
       clearMarkers(markerRefs); // 기존의 마커 제거
-      console.log("@@@@@@ data: ", data)
+      console.log("@@@@@@ data: ", data);
       setPlaces(data);
       setPagination(pagination);
 

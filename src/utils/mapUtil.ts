@@ -3,7 +3,7 @@
 //
 
 import {
-  KakaoMapResponse,
+  KakaoMapResponse, markerInfo,
   markerInfos,
   PlaceInfo,
   PlaceListResponse,
@@ -150,7 +150,7 @@ export function placeToMarker(
   const imageSize = new window.kakao.maps.Size(24, 35);
   const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-  positions.forEach((place) => {
+  positions.forEach((place: markerInfo) => {
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
@@ -290,7 +290,7 @@ function displayInfoWindowFromKakao(
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
-    map: null,
+    map: undefined,
     position: new kakao.maps.LatLng(place.y, place.x),
     content: content,
     yAnchor: 1.5,
@@ -321,7 +321,7 @@ function displayInfoWindowFromKakao(
 
 // Zaro API로부터 받은 PlaceInfo 타입의 객체를 마커로 추가
 function displayInfoWindowFromZaro(
-  place: PlaceInfo,
+  place: markerInfo,
   marker: any,
   map: kakao.maps.Map,
 ) {
@@ -390,7 +390,7 @@ function displayInfoWindowFromZaro(
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
-    map: null,
+    map: undefined,
     position: new kakao.maps.LatLng(place.lat, place.lng),
     content: detailMarker,
     yAnchor: 1.5,
