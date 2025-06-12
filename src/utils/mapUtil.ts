@@ -2,7 +2,7 @@
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
 //
 
-import { KakaoMapResponse, PlaceListResponse } from "@/types/map";
+import { KakaoMapResponse, markerInfos, PlaceListResponse } from "@/types/map";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
 
@@ -128,12 +128,24 @@ export function placeToMarker(
     markerRefs.current = [];
   }
 
+  const positions: markerInfos = places.placeInfos.map((place) => ({
+    title: place.name,
+    latlng: { lat: place.lat, lng: place.lng },
+    category: place.category,
+    name : place.name,
+    lat: place.lat,
+    lng: place.lng,
+    placeId: place.placeId,
+    address: place.address
+  }));
+
+
   const imageSrc =
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
   const imageSize = new window.kakao.maps.Size(24, 35);
   const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-  places.placeInfos.forEach((place) => {
+  positions.forEach((place) => {
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
@@ -187,16 +199,46 @@ export function placeToMarkerFromKakao(
 
     const infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-    // 지도에 마커 정보 모달을 표시
-    displayInfowindow(marker, marker.getTitle(), map, infowindow);
-
     marker.setMap(map);
     markerRefs?.current.push(marker);
+
+    // 지도에 마커 정보 모달을 표시
+    displayInfowindow(place, marker, map, infowindow);
   });
 }
 
-function displayInfowindow(marker, title: string, map: kakao.maps.Map, infowindow) {
-  const content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+function displayInfowindow(place: KakaoMapResponse, marker: any, map: kakao.maps.Map, infowindow) {
+  // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+  const content = `
+  <div style="
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    width: 220px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  ">
+    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
+    <div style="color: #555;">주소 : ${place.address_name}</div>
+    <div style="color: #888; font-size: 11px; text-wrap;">좌표: (${place.y}, ${place.x})</div>
+    <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category_group_name}</div>
+  </div>
+`;
+
+  // 커스텀 오버레이가 표시될 위치입니다
+  const position = new kakao.maps.LatLng(place.y, place.x);
+
+  // 커스텀 오버레이를 생성합니다
+  const customOverlay = new kakao.maps.CustomOverlay({
+    map: map,
+    position: position,
+    content: content,
+    yAnchor: 1
+  });
 
   infowindow.setContent(content);
   infowindow.open(map, marker);
