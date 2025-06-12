@@ -1,11 +1,16 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CATEGORY_MAP } from "@/constants/category";
+import type { MainCategory, SubCategoryValue } from "@/types/category";
+import {
+  getMainCategoryLabel,
+  getSubCategoryLabel,
+  getSubCategoryEmoji,
+} from "@/utils/category";
 
 interface PostHeaderProps {
-  category: keyof typeof CATEGORY_MAP;
-  tag: string;
+  category: MainCategory;
+  tag: SubCategoryValue;
   title: string;
   createdAt: string;
 }
@@ -17,10 +22,6 @@ export default function PostHeader({
   createdAt,
 }: PostHeaderProps) {
   const router = useRouter();
-
-  // 카테고리(mainCategory)와 태그(subCategory)
-  const mainCategory = CATEGORY_MAP[category];
-  const subCategory = mainCategory.options.find((opt) => opt.tag === tag);
 
   // 시간 형식 변환
   function formatDate(dateStr: string): string {
@@ -57,16 +58,14 @@ export default function PostHeader({
           onClick={handleClickMainCategory}
           className="text-primary hover:underline cursor-pointer"
         >
-          {mainCategory.label}
+          {getMainCategoryLabel(category)}
         </button>
         {" > "}
         <button
           onClick={handleClickSubCategory}
           className="text-secondary hover:underline cursor-pointer"
         >
-          {subCategory
-            ? `${subCategory.emoji} ${subCategory.label}`
-            : "알 수 없음"}
+          {`${getSubCategoryEmoji(tag)} ${getSubCategoryLabel(tag)}`}
         </button>
       </div>
 
