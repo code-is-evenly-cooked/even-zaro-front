@@ -4,6 +4,7 @@ export interface FollowUser {
   userId: number;
   userName: string;
   profileImage: string | null;
+  // TODO: 팔로우 여부 추가
 }
 
 // 팔로잉 여부 조회
