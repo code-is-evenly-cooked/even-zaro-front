@@ -47,6 +47,16 @@ export const fetchFavoritesByGroup = async (groupId: number): Promise<FavoriteLi
   });
 };
 
+// 그룹 추가 api
+export const postAddGroup = async (groupName: string): Promise<string> => {
+  return await client<string>(`/group`, {
+    method: "POST",
+    body: JSON.stringify({
+      groupName: groupName
+    })
+  });
+};
+
 export const postAddFavorite = async (groupId: number, {
   kakaoPlaceId,
   memo,
