@@ -6,34 +6,15 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "k.kakaocdn.net",
-        pathname: "/**",
+        pathname: "/**", // 하위 모든 경로 허용
       },
       {
         protocol: "https",
         hostname: "d1eni2d3ighqku.cloudfront.net",
-        pathname: "/**",
+        pathname: "/**", // 하위 모든 경로 허용
       },
     ],
   },
-  headers: async () => [
-    {
-      source: "/(.*)", // 모든 경로에 CSP 적용
-      headers: [
-        {
-          key: "Content-Security-Policy",
-          value: [
-            "default-src 'self';",
-            "script-src 'self' https://developers.kakao.com;",
-            "img-src 'self' data: https://k.kakaocdn.net https://d1eni2d3ighqku.cloudfront.net;",
-            "style-src 'self' 'unsafe-inline';",
-            "connect-src 'self' https://kauth.kakao.com https://kapi.kakao.com;",
-            "frame-src https://kauth.kakao.com;",
-            "object-src 'none';",
-          ].join(" "),
-        },
-      ],
-    },
-  ],
 };
 
 export default nextConfig;
