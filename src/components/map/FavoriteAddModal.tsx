@@ -51,8 +51,12 @@ export function FavoriteAddModal() {
       setGroupAddMessage("그룹 추가가 완료됐습니다.");
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
+      if(error instanceof Error) {
+        setGroupAddMessage(error.message);
+      } else {
+        setGroupAddMessage("알 수 없는 에러입니다.");
+      }
       setSuccessGroupAddState(false);
-      setGroupAddMessage(error.message);
     }
   };
 
@@ -72,7 +76,11 @@ export function FavoriteAddModal() {
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
     } catch (error) {
-      console.warn(error.message);
+      if (error instanceof Error) {
+        console.warn(error.message);
+      } else {
+        console.warn("알 수 없는 에러", error);
+      }
     }
   };
 

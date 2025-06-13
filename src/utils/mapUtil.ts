@@ -337,7 +337,9 @@ function displayInfoWindowFromKakao(
 
     const addBtn = content.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", onClickFavoriteAdd);
+      if (addBtn && onClickFavoriteAdd) {
+        addBtn.addEventListener("click", onClickFavoriteAdd);
+      }
     }
   }, 0);
 }
@@ -439,7 +441,9 @@ function displayInfoWindowFromZaro(
 
     const addBtn = detailMarker.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", onClickFavoriteAdd);
+      if (addBtn && onClickFavoriteAdd) {
+        addBtn.addEventListener("click", onClickFavoriteAdd);
+      }
     }
   }, 0);
 }
