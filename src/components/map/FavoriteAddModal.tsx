@@ -63,7 +63,13 @@ export function FavoriteAddModal() {
     }
   };
 
+  // 그룹에 즐겨찾기 추가 버튼
   const handleAddFavoriteBtn = async () => {
+    if (!selectedGroup) {
+      setfavAddSuccessAddState(false);
+      setfavAddSuccessMesaage("그룹을 선택해주세요.");
+    }
+
     if (!selectPlaceDetail || !selectGroupId) return;
 
     const favoriteAddRequest: FavoriteAddRequest = {
