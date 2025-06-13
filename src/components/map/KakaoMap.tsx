@@ -6,8 +6,8 @@ import {
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation,
-  placeToMarker,
   placeToMarkerFromKakao,
+  placeToMarkerFromZaro,
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
@@ -17,8 +17,16 @@ import { KakaoMapResponse } from "@/types/map";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { placeList, myLocation, map } = useMapStore((state) => state);
-  const { setMyLocation, setRegionName, setMap } = useMapStore();
+  const { placeList, myLocation, map, favoriteAddModal } = useMapStore(
+    (state) => state,
+  );
+  const {
+    setMyLocation,
+    setRegionName,
+    setMap,
+    setFavoriteAddModal,
+    setSelectPlaceDetail,
+  } = useMapStore();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
   type PlaceSource = "zaro" | "kakao";
@@ -44,6 +52,10 @@ export default function KakaoMap() {
   const [pagination, setPagination] = useState<any>(null); // any에 대해서 eslint 타입 검증 오류 무시
   const [keyword, setKeyword] = useState("이태원 맛집");
 
+  function onClickFavoriteAdd() {
+    setFavoriteAddModal(favoriteAddModal);
+  }
+
   // 검색 결과 컨트롤
   const handleSearchResult = (
     data: KakaoMapResponse[],
@@ -53,7 +65,6 @@ export default function KakaoMap() {
   ) => {
     clearMarkers(markerRefsByKakao, overlayRefsByKakao); // 기존의 마커 제거
     if (status === kakao.maps.services.Status.OK) {
-      console.log("@@@@@@ data: ", data);
       setPlaces(data);
       setKakaoPlaces(data); // 이전 검색 결과 저장
       setPagination(pagination);
@@ -62,9 +73,10 @@ export default function KakaoMap() {
         mapInstanceRef.current as kakao.maps.Map,
         markerRefsByKakao,
         overlayRefsByKakao,
+        onClickFavoriteAdd,
+        setSelectPlaceDetail,
       );
     } else {
-      console.log("@@@@@@ 실패실패: ");
       setPlaces([]);
       setPagination(null);
       markerRefsByKakao.current.forEach((marker) => marker.setMap(null)); // 등록되어있는 마커들을 제거
@@ -73,7 +85,7 @@ export default function KakaoMap() {
   };
 
   function openSearchModal() {
-    setIsExpanded((prev) => !prev)
+    setIsExpanded((prev) => !prev);
   }
 
   function onClickSelectResult() {
@@ -90,6 +102,8 @@ export default function KakaoMap() {
         mapInstanceRef.current as kakao.maps.Map,
         markerRefsByKakao,
         overlayRefsByKakao,
+        onClickFavoriteAdd,
+        setSelectPlaceDetail,
       );
     } else {
       setPlaces([]); // zaro 전환 시 검색결과는 안 보이게
@@ -117,9 +131,14 @@ export default function KakaoMap() {
       clearMarkers(markerRefsByZaro, overlayRefsByZaro);
       return;
     }
-
     clearMarkers(markerRefsByZaro, overlayRefsByZaro);
-    placeToMarker(placeList, map, markerRefsByZaro, overlayRefsByZaro);
+    placeToMarkerFromZaro(
+      placeList,
+      map,
+      markerRefsByZaro,
+      overlayRefsByZaro,
+      onClickFavoriteAdd,
+    );
   }, [myLocation, placeList, places]);
 
   return (

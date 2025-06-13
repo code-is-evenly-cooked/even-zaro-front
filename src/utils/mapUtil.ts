@@ -3,9 +3,9 @@
 //
 
 import {
-  KakaoMapResponse, markerInfo,
+  KakaoMapResponse,
+  markerInfo,
   markerInfos,
-  PlaceInfo,
   PlaceListResponse,
 } from "@/types/map";
 
@@ -121,11 +121,12 @@ export function updateCenterAddress(
 }
 
 // Zaro API서버의 place테이블에서 받아온 데이터를 마커로 추가
-export function placeToMarker(
+export function placeToMarkerFromZaro(
   places: PlaceListResponse,
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
@@ -158,14 +159,20 @@ export function placeToMarker(
       title: place.name,
       image: markerImage,
       clickable: true,
-      zIndex:1,
+      zIndex: 1,
     });
 
     marker.setMap(map);
     markerRefs?.current.push(marker);
     // 지도에 마커 정보 모달을 표시
     // Zaro API 응답에 맞게
-    displayInfoWindowFromZaro(place, marker, map, overlayRefs);
+    displayInfoWindowFromZaro(
+      place,
+      marker,
+      map,
+      overlayRefs,
+      onClickFavoriteAdd,
+    );
   });
 }
 
@@ -189,21 +196,23 @@ export function placeToMarkerFromKakao(
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   if (!places) return;
-  const imageSrc =
-    "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-  const imageSize = new window.kakao.maps.Size(24, 35);
-  const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
   places.forEach((place) => {
+    let imageSrc = getMarkerIconByCategoryCode(place.category_group_code);
+    const imageSize = new window.kakao.maps.Size(24, 35);
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.y, place.x),
       title: place.place_name,
       image: markerImage,
       clickable: true,
-      zIndex:1,
+      zIndex: 1,
     });
 
     marker.setMap(map);
@@ -211,7 +220,14 @@ export function placeToMarkerFromKakao(
 
     // 지도에 마커 정보 모달을 표시
     if (overlayRefs) {
-      displayInfoWindowFromKakao(place, marker, map, overlayRefs);
+      displayInfoWindowFromKakao(
+        place,
+        marker,
+        map,
+        overlayRefs,
+        onClickFavoriteAdd,
+        setSelectPlaceDetail,
+      );
     }
   });
 }
@@ -222,6 +238,8 @@ function displayInfoWindowFromKakao(
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
@@ -287,7 +305,7 @@ function displayInfoWindowFromKakao(
     content: simpleMarker,
     position: new kakao.maps.LatLng(place.y, place.x),
     yAnchor: 2.5,
-    zIndex: 2
+    zIndex: 2,
   });
   overlayRefs?.current.push(simpleCustomOverlay);
 
@@ -302,6 +320,8 @@ function displayInfoWindowFromKakao(
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
     detailOverlay.setMap(map);
+
+    setSelectPlaceDetail?.(place);
   });
 
   // 오버레이 닫기
@@ -315,9 +335,9 @@ function displayInfoWindowFromKakao(
 
     const addBtn = content.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        alert(`'${place.place_name}'를 즐겨찾기에 추가합니다!`);
-      });
+      if (addBtn && onClickFavoriteAdd) {
+        addBtn.addEventListener("click", onClickFavoriteAdd);
+      }
     }
   }, 0);
 }
@@ -328,6 +348,7 @@ function displayInfoWindowFromZaro(
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
@@ -394,7 +415,6 @@ function displayInfoWindowFromZaro(
   });
   overlayRefs?.current.push(simpleOverLay);
 
-
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
     map: undefined,
@@ -419,9 +439,9 @@ function displayInfoWindowFromZaro(
 
     const addBtn = detailMarker.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        alert(`'${place.name}'를 즐겨찾기에 추가합니다!`);
-      });
+      if (addBtn && onClickFavoriteAdd) {
+        addBtn.addEventListener("click", onClickFavoriteAdd);
+      }
     }
   }, 0);
 }
@@ -438,5 +458,20 @@ export function clearMarkers(
   if (overlayRefs?.current) {
     overlayRefs.current.forEach((overlay) => overlay.setMap(null));
     overlayRefs.current = [];
+  }
+}
+
+// 카테고리 코드에 따라 마커 아이콘 지정
+export function getMarkerIconByCategoryCode(code: string): string {
+  switch (code) {
+    case "FD6": // 식당
+      return "/marker/restaurant.svg";
+    case "CE7": // 카페
+      return "/marker/cafe.svg";
+    case "MT1": // 대형마트
+    case "CS2": // 편의점
+      return "/marker/shop.svg";
+    default: // 그 외
+      return "/marker/others.svg";
   }
 }

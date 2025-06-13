@@ -67,6 +67,27 @@ export interface FavoriteListResponse {
   deleted: boolean
 }
 
+export interface FavoriteAddRequest {
+  kakaoPlaceId: number,
+  memo: string,
+  placeName: string,
+  address: string,
+  lat: number,
+  lng: number,
+  category: string
+}
+
+
+export interface FavroiteAddResponse {
+  placeName: string,
+  placeId: number,
+  memo: string,
+  lat: number,
+  lng: number,
+  address: string
+}
+
+
 export interface MyLoc {
   lat: number,
   lng: number
