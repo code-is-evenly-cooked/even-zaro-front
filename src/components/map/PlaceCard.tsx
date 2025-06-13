@@ -13,6 +13,8 @@ interface PlaceCardProps {
   placeName: string;
   address: string;
   category: string;
+  lat: number;
+  lng: number;
   favoriteCount: number;
   onClick?: () => void;
 }
@@ -30,14 +32,24 @@ export default function PlaceCard({
   placeName,
   address,
   category,
+  lat,
+  lng,
   favoriteCount,
 }: PlaceCardProps) {
-  const { setPagePlaceDetail } = useMapStore();
+  const { setPagePlaceDetail, map } = useMapStore();
 
   return (
     <li
       className="flex items-center hover:bg-gray-100 transition p-1"
-      onClick={() => setPagePlaceDetail(placeId)}
+      onClick={() => {
+        setPagePlaceDetail(placeId);
+
+        // 지도 중심 이동
+        if (map) {
+          const latlng = new window.kakao.maps.LatLng(lat, lng);
+          map.setCenter(latlng);
+        }
+      }}
       key={placeId}
     >
       {/* 이미지 영역 */}
