@@ -6,8 +6,8 @@ import {
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation,
-  placeToMarkerFromZaro,
   placeToMarkerFromKakao,
+  placeToMarkerFromZaro,
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
@@ -17,8 +17,16 @@ import { KakaoMapResponse } from "@/types/map";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { placeList, myLocation, map, favoriteAddModal } = useMapStore((state) => state);
-  const { setMyLocation, setRegionName, setMap, setFavoriteAddModal, setSelectPlaceDetail} = useMapStore();
+  const { placeList, myLocation, map, favoriteAddModal } = useMapStore(
+    (state) => state,
+  );
+  const {
+    setMyLocation,
+    setRegionName,
+    setMap,
+    setFavoriteAddModal,
+    setSelectPlaceDetail,
+  } = useMapStore();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
   type PlaceSource = "zaro" | "kakao";
@@ -44,12 +52,9 @@ export default function KakaoMap() {
   const [pagination, setPagination] = useState<any>(null); // any에 대해서 eslint 타입 검증 오류 무시
   const [keyword, setKeyword] = useState("이태원 맛집");
 
-  function onClickFavoriteAdd () {
+  function onClickFavoriteAdd() {
     setFavoriteAddModal(favoriteAddModal);
   }
-
-
-
 
   // 검색 결과 컨트롤
   const handleSearchResult = (
@@ -69,7 +74,7 @@ export default function KakaoMap() {
         markerRefsByKakao,
         overlayRefsByKakao,
         onClickFavoriteAdd,
-        setSelectPlaceDetail
+        setSelectPlaceDetail,
       );
     } else {
       setPlaces([]);
@@ -80,7 +85,7 @@ export default function KakaoMap() {
   };
 
   function openSearchModal() {
-    setIsExpanded((prev) => !prev)
+    setIsExpanded((prev) => !prev);
   }
 
   function onClickSelectResult() {
@@ -98,7 +103,7 @@ export default function KakaoMap() {
         markerRefsByKakao,
         overlayRefsByKakao,
         onClickFavoriteAdd,
-        setSelectPlaceDetail
+        setSelectPlaceDetail,
       );
     } else {
       setPlaces([]); // zaro 전환 시 검색결과는 안 보이게
@@ -127,7 +132,13 @@ export default function KakaoMap() {
       return;
     }
     clearMarkers(markerRefsByZaro, overlayRefsByZaro);
-    placeToMarkerFromZaro(placeList, map, markerRefsByZaro, overlayRefsByZaro, onClickFavoriteAdd);
+    placeToMarkerFromZaro(
+      placeList,
+      map,
+      markerRefsByZaro,
+      overlayRefsByZaro,
+      onClickFavoriteAdd,
+    );
   }, [myLocation, placeList, places]);
 
   return (

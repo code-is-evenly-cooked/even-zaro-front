@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import {
   FavoriteListResponse,
-  GroupListResponse, KakaoMapResponse,
+  GroupListResponse,
+  KakaoMapResponse,
   MyLoc,
   PAGE,
   PageType,

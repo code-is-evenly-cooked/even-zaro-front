@@ -8,7 +8,6 @@ import {
   markerInfos,
   PlaceListResponse,
 } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
 
 const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
 
@@ -198,7 +197,7 @@ export function placeToMarkerFromKakao(
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
-  setSelectPlaceDetail?: (place: KakaoMapResponse) => void
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   if (!places) return;
 
@@ -227,7 +226,7 @@ export function placeToMarkerFromKakao(
         map,
         overlayRefs,
         onClickFavoriteAdd,
-        setSelectPlaceDetail
+        setSelectPlaceDetail,
       );
     }
   });
@@ -240,9 +239,8 @@ function displayInfoWindowFromKakao(
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
-  setSelectPlaceDetail?: (place: KakaoMapResponse) => void
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
-
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
   simpleMarker.innerHTML = `
@@ -473,7 +471,7 @@ export function getMarkerIconByCategoryCode(code: string): string {
     case "MT1": // 대형마트
     case "CS2": // 편의점
       return "/marker/shop.svg";
-    default:    // 그 외
+    default: // 그 외
       return "/marker/others.svg";
   }
 }
