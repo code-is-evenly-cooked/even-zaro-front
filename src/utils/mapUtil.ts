@@ -198,6 +198,7 @@ export function placeToMarkerFromKakao(
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void
 ) {
   if (!places) return;
   const imageSrc =
@@ -226,6 +227,7 @@ export function placeToMarkerFromKakao(
         map,
         overlayRefs,
         onClickFavoriteAdd,
+        setSelectPlaceDetail
       );
     }
   });
@@ -238,8 +240,8 @@ function displayInfoWindowFromKakao(
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void
 ) {
-  const { setSelectPlaceDetail } = useMapStore();
 
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
@@ -321,21 +323,7 @@ function displayInfoWindowFromKakao(
   kakao.maps.event.addListener(marker, "click", () => {
     detailOverlay.setMap(map);
 
-    // 상세 정보 모달 열 때 그 장소의 상태를 전역으로 저장
-    const placeInfo: KakaoMapResponse = {
-      id: place.id,
-      address_name: place.address_name,
-      category_group_code: place.category_group_code,
-      category_group_name: place.category_name,
-      category_name: place.category_name,
-      distance: place.distance,
-      phone: place.phone,
-      place_name: place.place_name,
-      place_url: place.place_url,
-      x: place.x,
-      y: place.y
-    }
-    setSelectPlaceDetail(placeInfo);
+    setSelectPlaceDetail?.(place);
   });
 
   // 오버레이 닫기

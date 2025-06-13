@@ -56,7 +56,7 @@ interface MapStore {
 
   // 선택한 장소의 상세 정보
   selectPlaceDetail: KakaoMapResponse | null;
-  setSelectPlaceDetail: (selectPlaceInfo: KakaoMapResponse) => void;
+  setSelectPlaceDetail: (selectPlaceInfo: KakaoMapResponse | null) => void;
 }
 
 export const useMapStore = create<MapStore>((set) => ({
@@ -128,7 +128,7 @@ export const useMapStore = create<MapStore>((set) => ({
       regionName: regionName,
     })),
   setMap: (map) => set({ map }),
-  setSelectPlaceDetail: (selectPlaceDetail: KakaoMapResponse) =>
+  setSelectPlaceDetail: (selectPlaceDetail: KakaoMapResponse | null) =>
     set(() => ({
       selectPlaceDetail: selectPlaceDetail,
     })),
