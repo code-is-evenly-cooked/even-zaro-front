@@ -13,8 +13,9 @@ export function FavoriteAddModal() {
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
+  const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
 
-
+  // 로그인한 사용자의 그룹 리스트를 불러오고 Form에 세팅
   useEffect(() => {
     (async () => {
       try {
@@ -29,12 +30,28 @@ export function FavoriteAddModal() {
     })();
   }, [myUserId]);
 
-
-
-
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGroup(e.target.value);
   };
+
+  // const handleSumbit = async () => {
+  //   if (!myUserId || !selectedGroup || (!newGroupName && selectedGroup === "__new__")) {
+  //     alert("필수 정보를 입력해주세요.");
+  //
+  //     // 추가할 그룹 선택
+  //     const groupNameToSend = (selectedGroup === "__new__") ? newGroupName : selectedGroup;
+  //
+  //     try {
+  //       await postAddFavorite({
+  //         groupId:
+  //       })
+  //
+  //
+  //     }
+  //
+  //     return;
+  //   }
+  // }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -60,9 +77,7 @@ export function FavoriteAddModal() {
             </option>
             <option value="__new__">그룹 추가</option>
             {myGroup?.map((group) => (
-              <option key={group.groupId}>
-                {group.name}
-              </option>
+              <option key={group.groupId}>{group.name}</option>
             ))}
           </select>
 
@@ -78,6 +93,14 @@ export function FavoriteAddModal() {
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="새 그룹 이름을 입력하세요"
               />
+              <div className="flex justify-end py-2">
+                <button
+                  onClick={}
+                  className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
+                >
+                  그룹 추가
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -90,6 +113,8 @@ export function FavoriteAddModal() {
             type="text"
             placeholder="메모를 작성해주세요."
             className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
           />
         </div>
 
