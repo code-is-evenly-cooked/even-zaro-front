@@ -463,9 +463,9 @@ export function clearMarkers(
 export function getMarkerIconByCategoryCode(code: string): string {
   switch (code) {
     case "FD6": // 식당
-      return "/marker/restaurant.svg"; //ok
+      return "/marker/restaurant.svg";
     case "CE7": // 카페
-      return "/marker/cafe.svg"; // ok
+      return "/marker/cafe.svg";
     case "MT1": // 대형마트
     case "CS2": // 편의점
       return "/marker/shop.svg";
