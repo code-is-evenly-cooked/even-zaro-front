@@ -14,9 +14,12 @@ export function FavoriteAddModal() {
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
   const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
-  const [groupAddMessage, setGroupAddMessage] = useState<string>("");
+  const [groupAddMessage, setGroupAddMessage] = useState<string>(""); // 그룹 추가 후 성공/실패 메시지
+  const [favAddSuccessMesaage, setfavAddSuccessMesaage] = useState<string>(""); // 그룹 추가 후 성공/실패 메시지
+  const [favAddSuccessAddState, setfavAddSuccessAddState] =
+    useState<boolean>(false); // 즐겨찾기 추가 성공 여부 true/false
   const [successGroupAddState, setSuccessGroupAddState] =
-    useState<boolean>(false);
+    useState<boolean>(false); // 그룹 추가 성공 여부 true/false
   const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
 
   const loadGroupList = async () => {
@@ -51,7 +54,7 @@ export function FavoriteAddModal() {
       setGroupAddMessage("그룹 추가가 완료됐습니다.");
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
-      if(error instanceof Error) {
+      if (error instanceof Error) {
         setGroupAddMessage(error.message);
       } else {
         setGroupAddMessage("알 수 없는 에러입니다.");
@@ -75,12 +78,15 @@ export function FavoriteAddModal() {
 
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
+      setfavAddSuccessMesaage("즐겨찾기 추가 성공");
+      setfavAddSuccessAddState(true);
     } catch (error) {
       if (error instanceof Error) {
-        console.warn(error.message);
+        setfavAddSuccessMesaage(error.message);
       } else {
-        console.warn("알 수 없는 에러", error);
+        setfavAddSuccessMesaage("알 수 없는 에러입니다.");
       }
+      setfavAddSuccessAddState(false);
     }
   };
 
@@ -154,6 +160,11 @@ export function FavoriteAddModal() {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
           />
+          <span
+            className={`${favAddSuccessAddState ? "text-green-400" : "text-red-500"}`}
+          >
+            {favAddSuccessMesaage}
+          </span>
         </div>
 
         <div className="flex justify-end space-x-2">
