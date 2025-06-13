@@ -186,3 +186,28 @@ export const ShareIcon = ({ className }: IconProps) => {
   );
 };
 
+export const RankUpIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/popularup.svg"
+      alt="인기 게시글"
+      width={14}
+      height={14}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const RankDownIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/populardown.svg"
+      alt="인기 게시글"
+      width={14}
+      height={14}
+      className={className}
+      priority
+    />
+  );
+};
