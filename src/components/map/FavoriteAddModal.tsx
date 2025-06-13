@@ -64,8 +64,8 @@ export function FavoriteAddModal() {
       memo: memo,
       placeName: selectPlaceDetail.place_name,
       address: selectPlaceDetail.address_name,
-      lat: selectPlaceDetail.x,
-      lng: selectPlaceDetail.y,
+      lat: selectPlaceDetail.y,
+      lng: selectPlaceDetail.x,
       category: selectPlaceDetail.category_group_code,
     };
 
