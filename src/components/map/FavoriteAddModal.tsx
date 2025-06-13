@@ -14,14 +14,17 @@ export function FavoriteAddModal() {
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
   const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
-  const [groupAddMessage, setGroupAddMessage] = useState<string>(""); // 그룹 추가 후 성공/실패 메시지
-  const [favAddSuccessMesaage, setfavAddSuccessMesaage] = useState<string>(""); // 그룹 추가 후 성공/실패 메시지
-  const [favAddSuccessAddState, setfavAddSuccessAddState] =
-    useState<boolean>(false); // 즐겨찾기 추가 성공 여부 true/false
-  const [successGroupAddState, setSuccessGroupAddState] =
-    useState<boolean>(false); // 그룹 추가 성공 여부 true/false
-  const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
 
+  const [favState, setFavState] = useState<{
+    message: string;
+    success: boolean;
+  }>({ message: "", success: false });
+  const [groupState, setGroupState] = useState<{
+    message: string;
+    success: boolean;
+  }>({ message: "", success: false });
+
+  const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
   const loadGroupList = async () => {
     if (myUserId != null) {
       const data: GroupListResponse[] = await fetchGroupList(myUserId);
@@ -50,24 +53,21 @@ export function FavoriteAddModal() {
     try {
       await postAddGroup(newGroupName); // 그룹 추가 비동기 통신
       setNewGroupName(""); // 입력 값 초기화
-      setSuccessGroupAddState(true);
-      setGroupAddMessage("그룹 추가가 완료됐습니다.");
+      setGroupState({ message: "그룹 추가가 완료되었습니다.", success: true });
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
       if (error instanceof Error) {
-        setGroupAddMessage(error.message);
+        setGroupState({ message: error.message, success: false });
       } else {
-        setGroupAddMessage("알 수 없는 에러입니다.");
+        setGroupState({ message: "알 수 없는 에러입니다.", success: false });
       }
-      setSuccessGroupAddState(false);
     }
   };
 
   // 그룹에 즐겨찾기 추가 버튼
   const handleAddFavoriteBtn = async () => {
     if (!selectedGroup) {
-      setfavAddSuccessAddState(false);
-      setfavAddSuccessMesaage("그룹을 선택해주세요.");
+      setFavState({ message: "그룹을 선택해주세요.", success: false });
     }
 
     if (!selectPlaceDetail || !selectGroupId) return;
@@ -84,15 +84,13 @@ export function FavoriteAddModal() {
 
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
-      setfavAddSuccessMesaage("즐겨찾기 추가 성공");
-      setfavAddSuccessAddState(true);
+      setFavState({ message: "즐겨찾기 추가 성공", success: true });
     } catch (error) {
       if (error instanceof Error) {
-        setfavAddSuccessMesaage(error.message);
+        setFavState({ message: error.message, success: false });
       } else {
-        setfavAddSuccessMesaage("알 수 없는 에러입니다.");
+        setFavState({ message: "알 수 없는 에러입니다.", success: false });
       }
-      setfavAddSuccessAddState(false);
     }
   };
 
@@ -138,9 +136,9 @@ export function FavoriteAddModal() {
               />
               <div className="flex flex-row justify-between items-center">
                 <span
-                  className={`${successGroupAddState ? "text-green-400" : "text-red-500"}`}
+                  className={`${groupState.success ? "text-green-400" : "text-red-500"}`}
                 >
-                  {groupAddMessage}
+                  {groupState.message}
                 </span>
                 <span className="py-2">
                   <button
@@ -167,9 +165,9 @@ export function FavoriteAddModal() {
             onChange={(e) => setMemo(e.target.value)}
           />
           <span
-            className={`${favAddSuccessAddState ? "text-green-400" : "text-red-500"}`}
+            className={`${favState.success ? "text-green-400" : "text-red-500"}`}
           >
-            {favAddSuccessMesaage}
+            {favState.message}
           </span>
         </div>
 
