@@ -3,64 +3,20 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { HeartIcon, MessageCircle } from "lucide-react";
-
-interface RankedPost {
-  id: number;
-  title: string;
-  likeCount: number;
-  commentCount: number;
-  baselineRankIndex: number;
-  currentRankIndex: number;
-  rankChange: number;
-  displayedRankChange: number;
-  category?: string;
-}
-
-async function fetchPopularPosts(): Promise<RankedPost[]> {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/posts/rank`);
-    const data = await response.json();
-
-    return data.data.posts.map((post: any) => ({
-      id: post.postId,
-      title: post.title,
-      likeCount: post.likeCount,
-      commentCount: post.commentCount,
-      baselineRankIndex: post.baselineRankIndex,
-      currentRankIndex: post.currentRankIndex,
-      rankChange: post.rankChange,
-      displayedRankChange: post.rankChange,
-      category: post.category,
-    }));
-  } catch (error) {
-    console.log("Error fetching popular posts: ", error);
-    return [];
-  }
-}
+import { fetchPopularPosts, RankedPostResponseItem } from "@/lib/api/popular";
 
 export default function PopularPostList() {
-  const [posts, setPosts] = useState<RankedPost[]>([]);
+  const [posts, setPosts] = useState<RankedPostResponseItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | null = null;
-
     async function updatePosts() {
       const serverPosts = await fetchPopularPosts();
       setPosts(serverPosts);
       setIsLoading(false);
     }
-
     updatePosts();
-
-    interval = setInterval(updatePosts, 300000);
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
   }, []);
 
   if (isLoading) return null;
@@ -76,12 +32,12 @@ export default function PopularPostList() {
 
       <div className="flex flex-col justify-between h-full">
         {posts
-          .filter(post => post.id !== undefined && post.id !== null)
+          .filter(post => post.postId !== undefined && post.postId !== null)
           .slice(0, 5)
           .map((post) => (
             <div
-              key={post.id}
-              onClick={() => router.push(`/board/${post.category}/${post.id}`)}
+              key={post.postId}
+              onClick={() => router.push(`/board/${post.category}/${post.postId}`)}
               className="py-2 hover:bg-gray-50 rounded-md cursor-pointer transition-all duration-500 ease-in-out px-1"
             >
               <div className="flex items-center">
