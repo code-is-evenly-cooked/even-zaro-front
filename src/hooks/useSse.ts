@@ -21,8 +21,8 @@ const useSse = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        heartbeatTimeout: 30000, // 옵션: 5분
-        withCredentials: false, // polyfill 사용 시 false
+        withCredentials: true, // 쿠키 인증 유지
+        heartbeatTimeout: 65000, // 서버가 30초마다 ping 보낼 경우, 여유롭게 65초 설정
       },
     );
 
@@ -38,17 +38,15 @@ const useSse = () => {
       addNotification(data);
     });
 
+    eventSource.addEventListener("ping", () => {
+      console.log("💓 서버 ping 수신 (keep-alive)");
+    });
+
     eventSource.onerror = (error) => {
-      const message = (error as ErrorEvent)?.message ?? "";
-
-      if (message.includes("No activity within")) {
-        console.warn("⚠️ 타임아웃 감지, SSE 재연결 시도 중...");
-      } else {
-        console.error("❌ SSE 오류", error);
-      }
-
+      console.error("❌ SSE 오류 발생", error);
       eventSource.close();
 
+      // 재연결 시도
       if (reconnectTimer.current) clearTimeout(reconnectTimer.current);
       reconnectTimer.current = setTimeout(() => {
         console.log("🔁 SSE 재연결 시도 중...");
