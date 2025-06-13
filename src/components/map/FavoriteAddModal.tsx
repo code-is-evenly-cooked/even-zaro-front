@@ -15,7 +15,9 @@ export function FavoriteAddModal() {
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
   const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
   const [groupAddMessage, setGroupAddMessage] = useState<string>("");
-  const [successGroupAddState, setSuccessGroupAddState] = useState<boolean>(false);
+  const [successGroupAddState, setSuccessGroupAddState] =
+    useState<boolean>(false);
+  const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
 
   const loadGroupList = async () => {
     if (myUserId != null) {
@@ -29,22 +31,32 @@ export function FavoriteAddModal() {
   }, [myUserId]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGroup(e.target.value);
+    const selectedName = e.target.value;
+    setSelectedGroup(selectedName);
+
+    const selected = myGroup?.find((group) => group.name === selectedName);
+    if (selected) {
+      setSelectGroupId(selected.groupId);
+    } else {
+      setSelectGroupId(null);
+    }
   };
 
   // 그룹 추가 핸들러
   const handleAddGroupBtn = async () => {
     try {
-      const data = await postAddGroup(newGroupName);
+      await postAddGroup(newGroupName); // 그룹 추가 비동기 통신
       setNewGroupName(""); // 입력 값 초기화
       setSuccessGroupAddState(true);
-      setGroupAddMessage("그룹 추가가 완료됐습니다.")
+      setGroupAddMessage("그룹 추가가 완료됐습니다.");
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
       setSuccessGroupAddState(false);
       setGroupAddMessage(error.message);
     }
   };
+
+  const handleAddFavoriteBtn = () => {};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -87,7 +99,11 @@ export function FavoriteAddModal() {
                 placeholder="새 그룹 이름을 입력하세요"
               />
               <div className="flex flex-row justify-between items-center">
-                <span className={`${successGroupAddState ? "text-green-400" : "text-red-500"}`}>{groupAddMessage}</span>
+                <span
+                  className={`${successGroupAddState ? "text-green-400" : "text-red-500"}`}
+                >
+                  {groupAddMessage}
+                </span>
                 <span className="py-2">
                   <button
                     onClick={handleAddGroupBtn}
@@ -121,7 +137,10 @@ export function FavoriteAddModal() {
           >
             Close
           </button>
-          <button className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600">
+          <button
+            onClick={handleAddFavoriteBtn}
+            className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
+          >
             Apply
           </button>
         </div>
