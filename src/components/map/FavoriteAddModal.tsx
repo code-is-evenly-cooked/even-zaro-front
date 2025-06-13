@@ -1,13 +1,36 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
+import { GroupListResponse } from "@/types/map";
+import { fetchGroupList } from "@/lib/api/map";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
+  const myUserId = useAuthStore((state) => state.user?.userId);
   const { setFavoriteAddModal } = useMapStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
+  const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (myUserId != null) {
+          const data: GroupListResponse[] = await fetchGroupList(myUserId);
+          setMyGroup(data);
+        }
+      } catch (error) {
+        // showToastMessage({ type: "error", message: "유저의 그룹 리스트를 불러오는 데 실패했습니다" });
+        console.error(".", error);
+      }
+    })();
+  }, [myUserId]);
+
+
+
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGroup(e.target.value);
@@ -36,8 +59,11 @@ export function FavoriteAddModal() {
               그룹을 선택해주세요.
             </option>
             <option value="__new__">그룹 추가</option>
-            <option value="group1">그룹 1</option>
-            <option value="group2">그룹 2</option>
+            {myGroup?.map((group) => (
+              <option key={group.groupId}>
+                {group.name}
+              </option>
+            ))}
           </select>
 
           {selectedGroup === "__new__" && (
