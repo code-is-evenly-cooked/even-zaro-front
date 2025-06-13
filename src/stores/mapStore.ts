@@ -101,9 +101,9 @@ export const useMapStore = create<MapStore>((set) => ({
     set(() => ({
       favoriteAddModal: !favoriteAddModal,
     })),
-  setPageFavoriteList: (grouId: number) =>
+  setPageFavoriteList: (groupId: number) =>
     set(() => ({
-      groupId: grouId,
+      groupId: groupId,
       page: PAGE.FAVORITELIST,
     })),
   setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
