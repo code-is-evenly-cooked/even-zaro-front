@@ -114,7 +114,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
               />
             </div>
           )}
-          <NotificationButton />
+          {user?.userId && <NotificationButton />}
           {user?.userId ? (
             <Link href={`/profile/${user.userId}`}>
               <Image
