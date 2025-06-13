@@ -1,14 +1,14 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
-import { GroupListResponse } from "@/types/map";
-import { fetchGroupList, postAddGroup } from "@/lib/api/map";
+import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
+import { fetchGroupList, postAddFavorite, postAddGroup } from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
-  const { setFavoriteAddModal } = useMapStore();
+  const { setFavoriteAddModal, selectPlaceDetail } = useMapStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
@@ -56,7 +56,25 @@ export function FavoriteAddModal() {
     }
   };
 
-  const handleAddFavoriteBtn = () => {};
+  const handleAddFavoriteBtn = async () => {
+    if (!selectPlaceDetail || !selectGroupId) return;
+
+    const favoriteAddRequest: FavoriteAddRequest = {
+      kakaoPlaceId: selectPlaceDetail.id,
+      memo: memo,
+      placeName: selectPlaceDetail.place_name,
+      address: selectPlaceDetail.address_name,
+      lat: selectPlaceDetail.x,
+      lng: selectPlaceDetail.y,
+      category: selectPlaceDetail.category_group_code,
+    };
+
+    try {
+      await postAddFavorite(selectGroupId, favoriteAddRequest);
+    } catch (error) {
+      console.warn(error.message);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
