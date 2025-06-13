@@ -31,9 +31,9 @@ const HomeComponent = ({ posts }: HomeComponentProps) => {
             className="sm:col-span-2"
           />
         </div>
-        {/* <div>
+        <div>
           <HomeSectionMapCard />
-        </div> */}
+        </div>
       </div>
     </div>
   );
