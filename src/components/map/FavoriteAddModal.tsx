@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
 import { GroupListResponse } from "@/types/map";
-import { fetchGroupList } from "@/lib/api/map";
+import { fetchGroupList, postAddGroup } from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 export function FavoriteAddModal() {
@@ -14,44 +14,37 @@ export function FavoriteAddModal() {
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
   const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
+  const [groupAddMessage, setGroupAddMessage] = useState<string>("");
+  const [successGroupAddState, setSuccessGroupAddState] = useState<boolean>(false);
 
-  // 로그인한 사용자의 그룹 리스트를 불러오고 Form에 세팅
+  const loadGroupList = async () => {
+    if (myUserId != null) {
+      const data: GroupListResponse[] = await fetchGroupList(myUserId);
+      setMyGroup(data);
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        if (myUserId != null) {
-          const data: GroupListResponse[] = await fetchGroupList(myUserId);
-          setMyGroup(data);
-        }
-      } catch (error) {
-        // showToastMessage({ type: "error", message: "유저의 그룹 리스트를 불러오는 데 실패했습니다" });
-        console.error(".", error);
-      }
-    })();
+    loadGroupList();
   }, [myUserId]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGroup(e.target.value);
   };
 
-  // const handleSumbit = async () => {
-  //   if (!myUserId || !selectedGroup || (!newGroupName && selectedGroup === "__new__")) {
-  //     alert("필수 정보를 입력해주세요.");
-  //
-  //     // 추가할 그룹 선택
-  //     const groupNameToSend = (selectedGroup === "__new__") ? newGroupName : selectedGroup;
-  //
-  //     try {
-  //       await postAddFavorite({
-  //         groupId:
-  //       })
-  //
-  //
-  //     }
-  //
-  //     return;
-  //   }
-  // }
+  // 그룹 추가 핸들러
+  const handleAddGroupBtn = async () => {
+    try {
+      const data = await postAddGroup(newGroupName);
+      setNewGroupName(""); // 입력 값 초기화
+      setSuccessGroupAddState(true);
+      setGroupAddMessage("그룹 추가가 완료됐습니다.")
+      await loadGroupList(); // 그룹 다시 불러오기
+    } catch (error) {
+      setSuccessGroupAddState(false);
+      setGroupAddMessage(error.message);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -93,13 +86,16 @@ export function FavoriteAddModal() {
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="새 그룹 이름을 입력하세요"
               />
-              <div className="flex justify-end py-2">
-                <button
-                  onClick={}
-                  className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
-                >
-                  그룹 추가
-                </button>
+              <div className="flex flex-row justify-between items-center">
+                <span className={`${successGroupAddState ? "text-green-400" : "text-red-500"}`}>{groupAddMessage}</span>
+                <span className="py-2">
+                  <button
+                    onClick={handleAddGroupBtn}
+                    className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
+                  >
+                    그룹 추가
+                  </button>
+                </span>
               </div>
             </div>
           )}
