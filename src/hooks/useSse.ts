@@ -1,30 +1,41 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNotificationStore } from "@/stores/useNotificationStore";
 import type { Notification } from "@/types/notification";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 const useSse = () => {
-  const { user } = useAuthStore();
+  const { user, accessToken } = useAuthStore();
   const { addNotification } = useNotificationStore();
   const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    if (!user?.userId) return;
+    if (!user?.userId || !accessToken) return;
 
-    // 이전 연결 종료 (로그인 완료 감지 시 재연결)
+    // 이전 연결 종료
     if (eventSourceRef.current) {
       eventSourceRef.current.close();
     }
 
-    const eventSource = new EventSource(
+    const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/notifications/subscribe`,
-      { withCredentials: true },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        heartbeatTimeout: 300000, // 옵션: 5분
+        withCredentials: false, // polyfill 사용 시 false
+      },
     );
+
+    eventSourceRef.current = eventSource;
 
     eventSource.addEventListener("notification", (event) => {
       const data: Notification = JSON.parse(event.data);
       console.log("📢 알림 도착!", data);
-      addNotification(data); // 🟢 상태 업데이트
+      addNotification(data);
     });
 
     eventSource.addEventListener("connect", () => {
@@ -40,7 +51,7 @@ const useSse = () => {
       console.log("🛑 SSE 연결 종료");
       eventSource.close();
     };
-  }, [user?.userId, addNotification]);
+  }, [user?.userId, accessToken, addNotification]);
 };
 
 export default useSse;
