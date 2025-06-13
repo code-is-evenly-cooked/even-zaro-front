@@ -6,7 +6,7 @@ import {
   initializeMap,
   loadKakaoMapSdk,
   moveMyLocation,
-  placeToMarker,
+  placeToMarkerFromZaro,
   placeToMarkerFromKakao,
   searchKeyword,
   updateCenterAddress,
@@ -126,9 +126,8 @@ export default function KakaoMap() {
       clearMarkers(markerRefsByZaro, overlayRefsByZaro);
       return;
     }
-
     clearMarkers(markerRefsByZaro, overlayRefsByZaro);
-    placeToMarker(placeList, map, markerRefsByZaro, overlayRefsByZaro, onClickFavoriteAdd);
+    placeToMarkerFromZaro(placeList, map, markerRefsByZaro, overlayRefsByZaro, onClickFavoriteAdd);
   }, [myLocation, placeList, places]);
 
   return (

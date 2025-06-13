@@ -122,7 +122,7 @@ export function updateCenterAddress(
 }
 
 // Zaro API서버의 place테이블에서 받아온 데이터를 마커로 추가
-export function placeToMarker(
+export function placeToMarkerFromZaro(
   places: PlaceListResponse,
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
