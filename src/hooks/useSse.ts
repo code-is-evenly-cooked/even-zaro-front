@@ -6,11 +6,15 @@ import { useNotificationStore } from "@/stores/useNotificationStore";
 import type { Notification } from "@/types/notification";
 import { EventSourcePolyfill } from "event-source-polyfill";
 
+const MAX_RETRIES = 5;
+
 const useSse = () => {
   const { user, accessToken } = useAuthStore();
   const { addNotification } = useNotificationStore();
+
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
   const reconnectTimer = useRef<NodeJS.Timeout | null>(null);
+  const retryCountRef = useRef(0);
 
   const connectSse = useCallback(() => {
     if (!accessToken) return;
@@ -30,6 +34,7 @@ const useSse = () => {
 
     eventSource.addEventListener("connect", () => {
       console.log("✅ SSE 연결 성공");
+      retryCountRef.current = 0;
     });
 
     eventSource.addEventListener("notification", (event) => {
@@ -46,12 +51,25 @@ const useSse = () => {
       console.error("❌ SSE 오류 발생", error);
       eventSource.close();
 
-      // 재연결 시도
+      retryCountRef.current += 1;
+
+      if (retryCountRef.current > MAX_RETRIES) {
+        console.warn("🚫 SSE 재연결 최대 횟수 초과. 중단합니다.");
+        return;
+      }
+
+      const retryDelay = Math.min(
+        3000 * 2 ** (retryCountRef.current - 1),
+        60000,
+      );
+      console.log(
+        `🔁 SSE 재연결 시도 중... (지연: ${retryDelay}ms, ${retryCountRef.current}/${MAX_RETRIES})`,
+      );
+
       if (reconnectTimer.current) clearTimeout(reconnectTimer.current);
       reconnectTimer.current = setTimeout(() => {
-        console.log("🔁 SSE 재연결 시도 중...");
         connectSse();
-      }, 3000);
+      }, retryDelay);
     };
   }, [accessToken, addNotification]);
 
