@@ -126,6 +126,7 @@ export function placeToMarker(
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
@@ -165,7 +166,7 @@ export function placeToMarker(
     markerRefs?.current.push(marker);
     // 지도에 마커 정보 모달을 표시
     // Zaro API 응답에 맞게
-    displayInfoWindowFromZaro(place, marker, map, overlayRefs);
+    displayInfoWindowFromZaro(place, marker, map, overlayRefs, onClickFavoriteAdd);
   });
 }
 
@@ -189,6 +190,7 @@ export function placeToMarkerFromKakao(
   map: kakao.maps.Map,
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   if (!places) return;
   const imageSrc =
@@ -211,7 +213,7 @@ export function placeToMarkerFromKakao(
 
     // 지도에 마커 정보 모달을 표시
     if (overlayRefs) {
-      displayInfoWindowFromKakao(place, marker, map, overlayRefs);
+      displayInfoWindowFromKakao(place, marker, map, overlayRefs, onClickFavoriteAdd);
     }
   });
 }
@@ -222,6 +224,7 @@ function displayInfoWindowFromKakao(
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
@@ -315,9 +318,7 @@ function displayInfoWindowFromKakao(
 
     const addBtn = content.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        alert(`'${place.place_name}'를 즐겨찾기에 추가합니다!`);
-      });
+      addBtn.addEventListener("click", onClickFavoriteAdd);
     }
   }, 0);
 }
@@ -328,6 +329,7 @@ function displayInfoWindowFromZaro(
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
+  onClickFavoriteAdd?: () => void,
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
@@ -419,9 +421,7 @@ function displayInfoWindowFromZaro(
 
     const addBtn = detailMarker.querySelector("#add-btn");
     if (addBtn) {
-      addBtn.addEventListener("click", () => {
-        alert(`'${place.name}'를 즐겨찾기에 추가합니다!`);
-      });
+      addBtn.addEventListener("click", onClickFavoriteAdd);
     }
   }, 0);
 }
