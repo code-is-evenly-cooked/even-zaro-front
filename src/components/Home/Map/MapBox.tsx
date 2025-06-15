@@ -16,7 +16,8 @@ export default function MapBox() {
 
   // 현재 위치 중심 지도
   useEffect(() => {
-    loadKakaoMapSdk(() => { // 카카오 sdk 불러오기
+    loadKakaoMapSdk(() => {
+      // 카카오 sdk 불러오기
       if (!window.kakao || !window.kakao.maps) return;
 
       navigator.geolocation.getCurrentPosition((position) => {
@@ -43,9 +44,11 @@ export default function MapBox() {
 
   // placeList가 바뀔 때마다 마커 다시 그림
   useEffect(() => {
-    if (!map || !placeList?.placeInfos?.length) return;
+    if (!map) return;
 
-    clearMarkers(markerRefsByZaro, overlayRefsByZaro);
+    clearMarkers(markerRefsByZaro, overlayRefsByZaro); // 탭 변경 시 항상 마커 제거
+
+    if (!placeList?.placeInfos?.length) return;
 
     placeToMarkerFromZaro(
       placeList,
