@@ -22,7 +22,7 @@ export default function HotPlaceList() {
         const data: PlaceListResponse = await fetchPlaceList(
           latitude,
           longitude,
-          10,
+          10, // 반경 km
         );
         if (!data || !data.placeInfos) return;
 
@@ -40,7 +40,7 @@ export default function HotPlaceList() {
         }
 
         // 리스트 설정
-        const sliced = sorted.slice(0, 5);
+        const sliced = sorted.slice(0, 20); // 리스트 장소 표시 개수
         setPlaces(sliced);
         setPlaceList({ placeInfos: sliced, totalCount: sliced.length });
       } catch (error) {
