@@ -7,7 +7,8 @@ import PlaceCard from "@/components/map/PlaceCard";
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceInfo[]>([]);
-  const [activeCategory, setActiveCategory] = useState<"MT1" | "Food" | "Etc">("MT1");
+  const [activeCategory, setActiveCategory] = useState<"All" | "MT1" | "Food" | "Etc">("All");
+  const [sortType, setSortType] = useState<"favorite" | "name">("favorite");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
@@ -16,37 +17,59 @@ export default function HotPlaceList() {
         const data: PlaceListResponse = await fetchPlaceList(latitude, longitude, 10);
         if (!data || !data.placeInfos) return;
 
-        const filtered = data.placeInfos.filter((p) => p.category === activeCategory);
+        const filtered =
+          activeCategory === "All"
+            ? data.placeInfos
+            : data.placeInfos.filter((p) => p.category === activeCategory);
+
         const hotPlaces = filtered.filter((p) => p.favoriteCount > 0);
         const otherPlaces = filtered.filter((p) => p.favoriteCount === 0);
+        let sorted = [...hotPlaces, ...otherPlaces];
 
-        const sorted = [...hotPlaces, ...otherPlaces].slice(0, 5);
-        setPlaces(sorted);
+        if (sortType === "name") {
+          sorted = sorted.sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        setPlaces(sorted.slice(0, 5));
       } catch (error) {
         console.error("핫플레이스 데이터를 불러오는 데 실패했습니다", error);
       }
     });
-  }, [activeCategory]);
+  }, [activeCategory, sortType]);
 
   return (
     <div className="flex flex-col gap-2">
-      {/* 카테고리 탭 */}
-      <div className="flex gap-2 px-2">
-        {[
-          { label: "카페", value: "MT1" },
-          { label: "음식점", value: "Food" },
-          { label: "기타", value: "Etc" },
-        ].map((tab) => (
-          <button
-            key={tab.value}
-            onClick={() => setActiveCategory(tab.value as "MT1" | "Food" | "Etc")}
-            className={`px-3 py-1 rounded-full border text-sm ${
-              activeCategory === tab.value ? "bg-violet800 text-white" : "bg-white text-gray700"
-            }`}
+      {/* 탭 + 정렬 선택 */}
+      <div className="flex justify-between items-center px-2">
+        <div className="flex gap-2">
+          {[
+            { label: "전체", value: "All" },
+            { label: "카페", value: "MT1" },
+            { label: "음식점", value: "Food" },
+            { label: "기타", value: "Etc" },
+          ].map((tab) => (
+            <button
+              key={tab.value}
+              onClick={() => setActiveCategory(tab.value as "All" | "MT1" | "Food" | "Etc")}
+              className={`px-3 py-1 rounded-full border text-sm ${
+                activeCategory === tab.value ? "bg-violet800 text-white" : "bg-white text-gray700"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex gap-1">
+          <select
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value as "favorite" | "name")}
+            className="text-sm px-3 py-1 border rounded-md bg-white"
           >
-            {tab.label}
-          </button>
-        ))}
+            <option value="favorite">즐겨찾기 순</option>
+            <option value="name">이름 순</option>
+          </select>
+        </div>
       </div>
 
       {/* 장소 리스트 */}
