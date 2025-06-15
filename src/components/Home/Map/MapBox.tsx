@@ -62,7 +62,7 @@ export default function MapBox() {
   return (
     <div
       ref={mapRef}
-      className="w-full md:w-[600px] h-[400px] bg-gray200 rounded-2xl"
+      className="w-full lg:w-[600px] h-[400px] bg-gray200 rounded-2xl"
     />
   );
 }

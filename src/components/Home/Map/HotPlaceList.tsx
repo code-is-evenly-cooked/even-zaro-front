@@ -74,7 +74,7 @@ export default function HotPlaceList() {
           />
         ))}
         {places.length === 0 && (
-          <div className="text-sm text-gray-400 px-4 py-2">
+          <div className="text-sm text-gray600 px-4 py-2">
             근처에 장소가 없습니다.
           </div>
         )}
