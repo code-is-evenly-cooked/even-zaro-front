@@ -3,18 +3,25 @@
 import { useEffect, useState } from "react";
 import { fetchPlaceList } from "@/lib/api/map";
 import { PlaceListResponse, PlaceInfo } from "@/types/map";
+import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceInfo[]>([]);
-  const [activeCategory, setActiveCategory] = useState<"All" | "MT1" | "Food" | "Etc">("All");
+  const [activeCategory, setActiveCategory] = useState<
+    "All" | "Cafe" | "Food" | "Etc"
+  >("All");
   const [sortType, setSortType] = useState<"favorite" | "name">("favorite");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
       try {
-        const data: PlaceListResponse = await fetchPlaceList(latitude, longitude, 10);
+        const data: PlaceListResponse = await fetchPlaceList(
+          latitude,
+          longitude,
+          10,
+        );
         if (!data || !data.placeInfos) return;
 
         const filtered =
@@ -40,40 +47,15 @@ export default function HotPlaceList() {
   return (
     <div className="flex flex-col gap-2">
       {/* 탭 + 정렬 선택 */}
-      <div className="flex justify-between items-center px-2">
-        <div className="flex gap-2">
-          {[
-            { label: "전체", value: "All" },
-            { label: "카페", value: "MT1" },
-            { label: "음식점", value: "Food" },
-            { label: "기타", value: "Etc" },
-          ].map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => setActiveCategory(tab.value as "All" | "MT1" | "Food" | "Etc")}
-              className={`px-3 py-1 rounded-full border text-sm ${
-                activeCategory === tab.value ? "bg-violet800 text-white" : "bg-white text-gray700"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="flex gap-1">
-          <select
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value as "favorite" | "name")}
-            className="text-sm px-3 py-1 border rounded-md bg-white"
-          >
-            <option value="favorite">즐겨찾기 순</option>
-            <option value="name">이름 순</option>
-          </select>
-        </div>
-      </div>
+      <HotPlaceHeader
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        sortType={sortType}
+        setSortType={setSortType}
+      />
 
       {/* 장소 리스트 */}
-      <ul className="flex flex-col min-w-[400px] max-h-[280px] overflow-y-auto px-2">
+      <ul className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
         {places.map((place) => (
           <PlaceCard
             key={place.placeId}
@@ -87,7 +69,9 @@ export default function HotPlaceList() {
           />
         ))}
         {places.length === 0 && (
-          <div className="text-sm text-gray-400 px-4 py-2">근처에 장소가 없습니다.</div>
+          <div className="text-sm text-gray-400 px-4 py-2">
+            근처에 장소가 없습니다.
+          </div>
         )}
       </ul>
     </div>
