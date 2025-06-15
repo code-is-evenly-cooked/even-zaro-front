@@ -5,6 +5,7 @@ import { fetchPlaceList } from "@/lib/api/map";
 import { PlaceListResponse, PlaceInfo } from "@/types/map";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
+import { useMapStore } from "@/stores/mapStore";
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceInfo[]>([]);
@@ -12,6 +13,7 @@ export default function HotPlaceList() {
     "All" | "Cafe" | "Food" | "Etc"
   >("All");
   const [sortType, setSortType] = useState<"favorite" | "name">("favorite");
+  const { setPlaceList } = useMapStore();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
@@ -37,12 +39,15 @@ export default function HotPlaceList() {
           sorted = sorted.sort((a, b) => a.name.localeCompare(b.name));
         }
 
-        setPlaces(sorted.slice(0, 5));
+        // 리스트 설정
+        const sliced = sorted.slice(0, 5);
+        setPlaces(sliced);
+        setPlaceList({ placeInfos: sliced, totalCount: sliced.length });
       } catch (error) {
         console.error("핫플레이스 데이터를 불러오는 데 실패했습니다", error);
       }
     });
-  }, [activeCategory, sortType]);
+  }, [activeCategory, sortType, setPlaceList]);
 
   return (
     <div className="flex flex-col gap-2">
