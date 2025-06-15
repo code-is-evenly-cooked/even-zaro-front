@@ -8,7 +8,7 @@ export default function HomeSectionMapCard() {
       <div className="flex h-10 items-center text-xl font-bold">
         🔥 주변 핫한 장소
       </div>
-      <div className="flex">
+      <div className="flex md:flex-row flex-col">
         <MapBox />
         <div className="flex flex-col">
           <HotPlaceList />
