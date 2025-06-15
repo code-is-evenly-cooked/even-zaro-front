@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
-import { differenceInDays } from "date-fns";
 import { SettingIcon } from "../../common/Icons";
 import { Stat } from "./Stat";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import { fetchUserProfile } from "@/lib/api/profile";
 import { ProfileResponse } from "@/types/profile";
 import { useState } from "react";
 import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
+import { getDdayLabel } from "@/utils/date";
 
 interface ProfileHeaderProps {
   userId: string;
@@ -26,13 +26,6 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
-
-  // 자취 기간 디데이 표시
-  const mockStartDate = profile.liveAloneDate ?? "2024-01-01"; // TODO: 작업 최종 완료 후 목업 데이터 제거 필요
-  const days =
-    mockStartDate != null
-      ? differenceInDays(new Date(), new Date(mockStartDate))
-      : null;
 
   return (
     <div className="py-4">
@@ -53,14 +46,18 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
             className="rounded-full object-cover m-4"
           />
           <span className="font-bold text-center">{profile.nickname}</span>
-          {days != null && (
-            <span className="text-gray600 text-center">D+{days}</span>
-          )}
+          <span className="text-gray600 text-center">
+            {getDdayLabel(profile.liveAloneDate)}
+          </span>
         </div>
         <div className="flex flex-col gap-6">
           <div className="sm:flex hidden items-center gap-4 text-xl">
             <span className="font-bold">{profile.nickname}</span>
-            {days != null && <span className="text-gray600">D+{days}</span>}
+            {profile.liveAloneDate != null && (
+              <span className="text-gray600">
+                {getDdayLabel(profile.liveAloneDate)}
+              </span>
+            )}
             <Link href="/setting">
               <SettingIcon />
             </Link>

@@ -8,6 +8,7 @@ import { validateEmail, validatePassword } from "@/utils/validate";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { getCookie } from "cookies-next";
 
 type FormType = "email" | "password";
 
@@ -62,7 +63,6 @@ const useLoginForm = () => {
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     handleLoadingChange("email", true);
@@ -74,6 +74,14 @@ const useLoginForm = () => {
 
       const user = await fetchUser();
       setUser(user);
+
+      const accessToken = getCookie("access_token"); // 쿠키에서 꺼내서
+      if (accessToken && typeof accessToken === "string") {
+        useAuthStore.getState().setAccessToken(accessToken); // 전역 저장
+        console.log("accessToken 저장됨:", accessToken);
+      } else {
+        console.warn("accessToken이 쿠키에 없음");
+      }
 
       router.replace("/");
     } catch (err) {
@@ -111,6 +119,11 @@ const useLoginForm = () => {
       const user = await fetchUser();
 
       setUser(user);
+
+      // Zustand에 accessToken 저장
+      useAuthStore.getState().setAccessToken(kakaoAccessToken);
+      console.log("카카오 accessToken 저장됨:", kakaoAccessToken);
+
       router.replace("/");
     } catch (error) {
       console.error("카카오 로그인 중 에러", error);

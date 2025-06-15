@@ -1,16 +1,97 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
+import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
+import { fetchGroupList, postAddFavorite, postAddGroup } from "@/lib/api/map";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
-  const { setFavoriteAddModal } = useMapStore();
+  const myUserId = useAuthStore((state) => state.user?.userId);
+  const { setFavoriteAddModal, selectPlaceDetail } = useMapStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
+  const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
+  const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
+
+  const [favState, setFavState] = useState<{
+    message: string;
+    success: boolean;
+  }>({ message: "", success: false });
+  const [groupState, setGroupState] = useState<{
+    message: string;
+    success: boolean;
+  }>({ message: "", success: false });
+
+  const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
+  const loadGroupList = async () => {
+    if (myUserId != null) {
+      const data: GroupListResponse[] = await fetchGroupList(myUserId);
+      setMyGroup(data);
+    }
+  };
+
+  useEffect(() => {
+    loadGroupList();
+  }, [myUserId]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedGroup(e.target.value);
+    const selectedName = e.target.value;
+    setSelectedGroup(selectedName);
+
+    const selected = myGroup?.find((group) => group.name === selectedName);
+    if (selected) {
+      setSelectGroupId(selected.groupId);
+    } else {
+      setSelectGroupId(null);
+    }
+  };
+
+  // 그룹 추가 핸들러
+  const handleAddGroupBtn = async () => {
+    try {
+      await postAddGroup(newGroupName); // 그룹 추가 비동기 통신
+      setNewGroupName(""); // 입력 값 초기화
+      setGroupState({ message: "그룹 추가가 완료되었습니다.", success: true });
+      await loadGroupList(); // 그룹 다시 불러오기
+    } catch (error) {
+      if (error instanceof Error) {
+        setGroupState({ message: error.message, success: false });
+      } else {
+        setGroupState({ message: "알 수 없는 에러입니다.", success: false });
+      }
+    }
+  };
+
+  // 그룹에 즐겨찾기 추가 버튼
+  const handleAddFavoriteBtn = async () => {
+    if (!selectedGroup) {
+      setFavState({ message: "그룹을 선택해주세요.", success: false });
+    }
+
+    if (!selectPlaceDetail || !selectGroupId) return;
+
+    const favoriteAddRequest: FavoriteAddRequest = {
+      kakaoPlaceId: selectPlaceDetail.id,
+      memo: memo,
+      placeName: selectPlaceDetail.place_name,
+      address: selectPlaceDetail.address_name,
+      lat: selectPlaceDetail.y,
+      lng: selectPlaceDetail.x,
+      category: selectPlaceDetail.category_group_code,
+    };
+
+    try {
+      await postAddFavorite(selectGroupId, favoriteAddRequest);
+      setFavState({ message: "즐겨찾기 추가 성공", success: true });
+    } catch (error) {
+      if (error instanceof Error) {
+        setFavState({ message: error.message, success: false });
+      } else {
+        setFavState({ message: "알 수 없는 에러입니다.", success: false });
+      }
+    }
   };
 
   return (
@@ -36,8 +117,9 @@ export function FavoriteAddModal() {
               그룹을 선택해주세요.
             </option>
             <option value="__new__">그룹 추가</option>
-            <option value="group1">그룹 1</option>
-            <option value="group2">그룹 2</option>
+            {myGroup?.map((group) => (
+              <option key={group.groupId}>{group.name}</option>
+            ))}
           </select>
 
           {selectedGroup === "__new__" && (
@@ -52,6 +134,21 @@ export function FavoriteAddModal() {
                 className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
                 placeholder="새 그룹 이름을 입력하세요"
               />
+              <div className="flex flex-row justify-between items-center">
+                <span
+                  className={`${groupState.success ? "text-green-400" : "text-red-500"}`}
+                >
+                  {groupState.message}
+                </span>
+                <span className="py-2">
+                  <button
+                    onClick={handleAddGroupBtn}
+                    className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
+                  >
+                    그룹 추가
+                  </button>
+                </span>
+              </div>
             </div>
           )}
         </div>
@@ -64,7 +161,14 @@ export function FavoriteAddModal() {
             type="text"
             placeholder="메모를 작성해주세요."
             className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
           />
+          <span
+            className={`${favState.success ? "text-green-400" : "text-red-500"}`}
+          >
+            {favState.message}
+          </span>
         </div>
 
         <div className="flex justify-end space-x-2">
@@ -74,7 +178,10 @@ export function FavoriteAddModal() {
           >
             Close
           </button>
-          <button className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600">
+          <button
+            onClick={handleAddFavoriteBtn}
+            className="px-4 py-2 text-sm rounded-md bg-violet800 text-white hover:bg-violet600"
+          >
             Apply
           </button>
         </div>

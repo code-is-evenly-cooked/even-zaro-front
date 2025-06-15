@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
-import { differenceInDays } from "date-fns";
 import { useProfile } from "@/hooks/useProfile";
 import AppErrorBoundary from "@/components/common/ErrorBoundary/ErrorBoundary";
 import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSpinnerBoundary";
+import { getDdayLabel } from "@/utils/date";
 
 interface Props {
   userId: number;
@@ -38,13 +38,11 @@ export default function FavoriteHeader({ userId }: Props) {
           />
           <div className="flex flex-col items-start gap-2">
             <span className="text-xl font-bold">{profile.nickname}</span>
-            <span className="text-xl text-gray600">
-              D+
-              {differenceInDays(
-                new Date(),
-                new Date(profile.liveAloneDate ?? "2024-01-01"), // TODO: 작업 최종 완료 후 목업 데이터 제거 필요
-              )}
-            </span>
+            {profile.liveAloneDate && (
+              <span className="text-xl text-gray600">
+                {getDdayLabel(profile.liveAloneDate)}
+              </span>
+            )}
           </div>
         </div>
       )}

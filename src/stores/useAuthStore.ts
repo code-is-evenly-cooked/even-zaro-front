@@ -38,8 +38,10 @@ export interface UserInfo {
 
 interface AuthState {
   user: UserInfo | null;
+  accessToken: string | null;
   isInitialized: boolean;
   setUser: (user: UserInfo | null) => void;
+  setAccessToken: (token: string | null) => void;
   clearUser: () => void;
   setInitialized: () => void;
 }
@@ -48,15 +50,21 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      accessToken: null,
       isInitialized: false,
 
       setUser: (user) => set({ user }),
-      clearUser: () => set({ user: null }),
+      clearUser: () => set({ user: null, accessToken: null }),
+      setAccessToken: (token) => set({ accessToken: token }),
       setInitialized: () => set({ isInitialized: true }),
     }),
     {
       name: "auth-storage",
-      partialize: (state) => ({ user: state.user }), // 저장할 필드만 지정
+      partialize: (state) => ({
+        // 저장할 필드만 지정
+        user: state.user,
+        accessToken: state.accessToken,
+      }),
     },
   ),
 );

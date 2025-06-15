@@ -119,8 +119,8 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
               {getRelativeTimeAgo(createdAt)}
             </span>
           </div>
-          {/* 게시물 썸네일 img (게시물 좋아요일때만) */}
-          {type === "LIKE" && (
+          {/* 게시물 썸네일 img (게시물 좋아요일 때만 + 썸네일이 존재할 때만) */}
+          {type === "LIKE" && thumbnailImage && (
             <Image
               src={getImageUrl(thumbnailImage)}
               alt="썸네일 이미지"

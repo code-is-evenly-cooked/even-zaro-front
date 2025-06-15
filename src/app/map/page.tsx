@@ -12,7 +12,6 @@ import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
 
 const MapPage = () => {
   const { page, favoriteAddModal } = useMapStore((state) => state);
-  const { setFavoriteAddModal } = useMapStore();
 
   return (
     <div className="w-full h-full">
@@ -25,11 +24,6 @@ const MapPage = () => {
       {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
 
       {favoriteAddModal && <FavoriteAddModal /> }
-      <button className="absolute left-10 bg-amber-500 w-40 h-15 z-50"
-        onClick={() => setFavoriteAddModal(favoriteAddModal)}>
-        테스트용 즐겨찾기 모달 추가 버튼
-      </button>
-
     </div>
   );
 };

@@ -20,11 +20,11 @@ export interface UsersInfo {
 
 export interface PlaceListResponse {
   totalCount: number;
-  placeInfos: PlaceInfos[];
+  placeInfos: PlaceInfo[];
 
 }
 
-export interface PlaceInfos {
+export interface PlaceInfo {
   placeId : number;
   name: string;
   address: string;
@@ -67,6 +67,27 @@ export interface FavoriteListResponse {
   deleted: boolean
 }
 
+export interface FavoriteAddRequest {
+  kakaoPlaceId: number,
+  memo: string,
+  placeName: string,
+  address: string,
+  lat: number,
+  lng: number,
+  category: string
+}
+
+
+export interface FavroiteAddResponse {
+  placeName: string,
+  placeId: number,
+  memo: string,
+  lat: number,
+  lng: number,
+  address: string
+}
+
+
 export interface MyLoc {
   lat: number,
   lng: number
@@ -77,4 +98,24 @@ export type markerInfos = markerInfo[];
 export interface markerInfo {
   title: string;
   latlng: MyLoc;
+  category: string;
+  name : string;
+  lat: number;
+  lng: number;
+  placeId: number;
+  address: string;
+}
+
+export interface KakaoMapResponse {
+  address_name: string,
+  category_group_code: string,
+  category_group_name: string,
+  category_name: string,
+  distance: string,
+  id: number,
+  phone: string,
+  place_name: string,
+  place_url: string,
+  x: number,
+  y: number
 }
