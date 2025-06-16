@@ -36,6 +36,7 @@ const CommentSection = ({
   }, [data?.totalComments, onCommentCountChange]);
 
   const comments = data?.content ?? [];
+  const totalPages = data?.totalPages ?? 1;
 
   if (isLoading) return <LoadingSpinnerBoundary />;
 
@@ -46,11 +47,14 @@ const CommentSection = ({
         refresh={refetch}
         onCommentCountChange={onCommentCountChange}
       />
-      <ClientSidePagination
-        currentPage={page}
-        totalPage={data?.totalPages ?? 1}
-        onChangePage={setPage}
-      />
+      {totalPages > 1 && (
+        <ClientSidePagination
+          currentPage={page}
+          totalPage={totalPages}
+          onChangePage={setPage}
+        />
+      )}
+
       <CommentInput postId={postId} onSuccess={refetchComments} />
     </section>
   );
