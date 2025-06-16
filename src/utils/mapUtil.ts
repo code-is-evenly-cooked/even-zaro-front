@@ -361,7 +361,6 @@ function displayInfoWindowFromKakao(
     yAnchor: 2.5,
     zIndex: 2,
   });
-  overlayRefs?.current.push(simpleCustomOverlay);
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
@@ -371,6 +370,10 @@ function displayInfoWindowFromKakao(
     yAnchor: 1.5,
     zIndex: 9999,
   });
+
+  // 추적
+  overlayRefs?.current.push(simpleCustomOverlay);
+  overlayRefs?.current.push(detailOverlay);
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
@@ -507,7 +510,6 @@ function displayInfoWindowFromZaro(
     position: new kakao.maps.LatLng(place.lat, place.lng),
     yAnchor: 2,
   });
-  overlayRefs?.current.push(simpleOverLay);
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
@@ -517,6 +519,10 @@ function displayInfoWindowFromZaro(
     yAnchor: 1.5,
     zIndex: 9999,
   });
+  // 추적
+  overlayRefs?.current.push(simpleOverLay);
+  overlayRefs?.current.push(detailOverlay);
+
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
