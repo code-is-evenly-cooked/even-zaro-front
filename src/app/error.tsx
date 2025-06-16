@@ -9,15 +9,10 @@ interface ErrorPageProps {
   reset: () => void;
 }
 
-const ErrorPage = ({ error, reset }: ErrorPageProps) => {
-  const { clearUser } = useAuthStore();
+const ErrorPage = ({ reset }: ErrorPageProps) => {
+  const { accessToken, clearUser } = useAuthStore();
 
-  const isAuthError =
-    (typeof error.message === "string" &&
-      (error.message === "access token 없음" ||
-        error.message.includes("401") ||
-        error.message.includes("로그인"))) ??
-    false;
+  const isAuthError = accessToken === null;
 
   useEffect(() => {
     console.log(isAuthError);
