@@ -2,19 +2,20 @@
 import React, { useState } from "react";
 import CommentList from "./CommentList";
 import CommentInput from "./CommentInput";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchComment } from "@/lib/api/comment";
 import ClientSidePagination from "@/components/common/Pagination/ClientSidePagination";
 import { CommentResponse } from "@/types/comment";
 
 interface CommentSectionProps {
   postId: number;
+  onCommentCountChange?: (count: number) => void;
 }
 
 const CommentSection = ({ postId }: CommentSectionProps) => {
   const [page, setPage] = useState(0);
 
-  const { data, refetch } = useQuery<CommentResponse>({
+  const { data, refetch } = useSuspenseQuery<CommentResponse>({
     queryKey: ["comments", postId, page],
     queryFn: () => fetchComment({ postId, page }),
   });
