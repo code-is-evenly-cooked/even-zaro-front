@@ -119,13 +119,3 @@ export interface KakaoMapResponse {
   x: number,
   y: number
 }
-
-// 카테고리 타입
-export enum Category {
-  All = "All", // 전체
-  CE7 = "CE7", // 카페
-  CS2 = "CS2", // 편의점
-  FD6 = "FD6", // 식당
-  MT1 = "MT1", // 마트
-  Etc = "Etc", // 기타
-}
