@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import webpack from "webpack";
 
 const nextConfig: NextConfig = {
   images: {
@@ -45,6 +46,13 @@ const nextConfig: NextConfig = {
     if (dev) {
       config.devtool = "cheap-module-source-map";
     }
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        KAKAO_API_KEY_HERE: JSON.stringify(
+          process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
+        ),
+      }),
+    );
     return config;
   },
 };
