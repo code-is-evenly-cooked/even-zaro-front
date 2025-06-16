@@ -1,5 +1,5 @@
 import { FavoriteListResponse } from "@/types/map";
-import { MoreVertical } from "lucide-react";
+import { useMapStore } from "@/stores/mapStore";
 
 interface FavoriteCardProps {
   favorite: FavoriteListResponse;
@@ -7,12 +7,25 @@ interface FavoriteCardProps {
 
 export function FavoriteCard({ favorite }: FavoriteCardProps) {
 
+  const { map } = useMapStore();
+
+  function onClickFavorite() {
+    if (!map) return;
+
+    const latlng = new kakao.maps.LatLng(
+      Number(favorite.lat),
+      Number(favorite.lng),
+    );
+    map.setCenter(latlng);
+  }
+
+
   return (
     <>
       <li
-        className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-        // onClick={() => setPageGroupList(otherUserId!)}
+        className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-pointer"
         key={favorite.id}
+        onClick={onClickFavorite}
       >
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
