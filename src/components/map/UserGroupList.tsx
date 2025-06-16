@@ -1,5 +1,4 @@
 import { ArrowLeft } from "lucide-react";
-import { DefaultProfileIcon } from "@/components/common/Icons";
 import { PAGE } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
 import { useProfile } from "@/hooks/useProfile";
@@ -39,8 +38,8 @@ export function UserGroupList() {
             <Image
               src={getProfileImageUrl(profile?.profileImage || null)}
               alt="프로필 이미지"
-              width="40"
-              height="40"
+              width={40}
+              height={40}
               className="rounded-full border-1 border-gray200 flex-shrink-0"
             />
           </Link>
