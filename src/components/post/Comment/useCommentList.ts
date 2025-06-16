@@ -12,9 +12,13 @@ import { useRouter } from "next/navigation";
 
 interface useCommentListProps {
   onRefresh: () => void;
+  onCommentCountChange?: (updater: (prev: number) => number) => void;
 }
 
-const useCommentList = ({ onRefresh }: useCommentListProps) => {
+const useCommentList = ({
+  onRefresh,
+  onCommentCountChange,
+}: useCommentListProps) => {
   const router = useRouter();
   const [editingId, setEditingId] = useState<number | null>(null);
   const { mutate: updateCommentMutate } = useCommentUpdate();
@@ -36,6 +40,9 @@ const useCommentList = ({ onRefresh }: useCommentListProps) => {
       case "delete":
         setDeletingId(item.id);
         deleteCommentMutate(item.id, {
+          onSuccess: () => {
+            onCommentCountChange?.((prev) => Math.max(prev - 1, 0));
+          },
           onSettled: () => setDeletingId(null),
         });
         break;

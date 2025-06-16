@@ -2,6 +2,7 @@ export interface CommentResponse {
   content: CommentItem[];
   totalPages: number;
   number: number;
+  totalComments: number;
 }
 
 export interface CommentItem {
