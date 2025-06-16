@@ -6,6 +6,7 @@ import {
   KakaoMapResponse, MarkerInfo,
   PlaceListResponse,
 } from "@/types/map";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 // 지도 초기화
 export const initializeMap = (
@@ -111,9 +112,11 @@ export function searchKeyword(
   keyword: string,
   callback: (data: any[], status: any, pagination: any) => void,
 ) {
+  const { showToastMessage } = useToastMessageContext();
+
   const ps = new window.kakao.maps.services.Places();
   if (!keyword.trim()) {
-    alert("키워드를 입력해주세요!");
+    showToastMessage({type: "error", message: "검색어를 입력해주세요!"});
     return;
   }
   ps.keywordSearch(keyword, callback);
