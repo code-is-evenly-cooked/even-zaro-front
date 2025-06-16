@@ -2,13 +2,13 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
-import { fetchGroupList, postAddFavorite, postAddGroup } from "@/lib/api/map";
+import { fetchGroupList, fetchPlaceList, postAddFavorite, postAddGroup } from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
-  const { setFavoriteAddModal, selectPlaceDetail } = useMapStore();
+  const { setFavoriteAddModal, selectPlaceDetail, myLocation, setPlaceList } = useMapStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
@@ -90,6 +90,15 @@ export function FavoriteAddModal() {
         setFavState({ message: error.message, success: false });
       } else {
         setFavState({ message: "알 수 없는 에러입니다.", success: false });
+      }
+    } finally {
+      // 즐겨찾기 후 다시 현재 위치 기준으로 즐겨찾기 검색하여 지도 최신화
+      if(myLocation) {
+        const lat = myLocation.lat;
+        const lng = myLocation.lng;
+        const distanceKm = 3;
+        const response = await fetchPlaceList(lat, lng, distanceKm);
+        setPlaceList(response);
       }
     }
   };
