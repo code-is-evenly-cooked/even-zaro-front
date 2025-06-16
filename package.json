@@ -19,6 +19,7 @@
     "cookies-next": "5.1.0",
     "date-fns": "4.1.0",
     "date-fns-tz": "3.2.0",
+    "event-source-polyfill": "^1.0.31",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.508.0",
     "next": "15.3.1",
