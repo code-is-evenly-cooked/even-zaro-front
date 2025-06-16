@@ -6,6 +6,7 @@ import { PlaceListResponse, PlaceInfo } from "@/types/map";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
 import { useMapStore } from "@/stores/mapStore";
+import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceInfo[]>([]);
@@ -59,26 +60,25 @@ export default function HotPlaceList() {
         setSortType={setSortType}
       />
 
-      {/* 장소 리스트 */}
-      <ul className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
-        {places.map((place) => (
-          <PlaceCard
-            key={place.placeId}
-            placeId={place.placeId}
-            category={place.category}
-            lat={place.lat}
-            lng={place.lng}
-            placeName={place.name}
-            address={place.address}
-            favoriteCount={place.favoriteCount}
-          />
-        ))}
-        {places.length === 0 && (
-          <div className="text-sm text-gray600 px-4 py-2">
-            근처에 장소가 없습니다.
-          </div>
-        )}
-      </ul>
+      {/* 장소 리스트*/}
+      {places.length > 0 ? (
+        <ul className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
+          {places.map((place) => (
+            <PlaceCard
+              key={place.placeId}
+              placeId={place.placeId}
+              category={place.category}
+              lat={place.lat}
+              lng={place.lng}
+              placeName={place.name}
+              address={place.address}
+              favoriteCount={place.favoriteCount}
+            />
+          ))}
+        </ul>
+      ) : (
+        <FallbackMessage message="근처에 장소가 없습니다." />
+      )}
     </div>
   );
 }
