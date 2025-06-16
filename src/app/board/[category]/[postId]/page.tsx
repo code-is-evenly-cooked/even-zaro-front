@@ -1,9 +1,8 @@
 import { fetchPostDetail } from "@/lib/api/post.server";
 import PostHeader from "@/components/post/PostHeader";
 import PostAuthor from "@/components/post/PostAuthor";
-import PostFooterWithFloating from "@/components/post/PostFooterWithFloating";
 import ClientPostContent from "./PostPageClient";
-import CommentSection from "@/components/post/Comment/CommentSection";
+import PostFooterInteraction from "@/components/post/PostFooterInteraction";
 
 interface PageProps {
   params: Promise<{ postId: string; category: string }>;
@@ -31,13 +30,12 @@ export default async function Page({ params }: PageProps) {
         authorUserId={post.user.userId}
       />
       <ClientPostContent content={post.content} />
-      <PostFooterWithFloating
+      <PostFooterInteraction
         postId={post.postId}
-        likeCount={post.likeCount}
-        commentCount={post.commentCount}
+        initialLikeCount={post.likeCount}
+        initialCommentCount={post.commentCount}
         authorUserId={post.user.userId}
       />
-      <CommentSection postId={post.postId} />
     </main>
   );
 }

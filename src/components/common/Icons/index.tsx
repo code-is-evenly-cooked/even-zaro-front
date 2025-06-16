@@ -147,6 +147,19 @@ export const ShoppingBagIcon = ({ className }: IconProps) => {
   );
 };
 
+export const LocationIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/map.svg"
+      alt="동네 탐방"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
+
 export const DefaultProfileIcon = ({ className }: IconProps) => {
   return (
     <Image
