@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  loadKakaoMapSdk,
-  clearMarkers,
-  placeToMarkerFromZaro,
-} from "@/utils/mapUtil";
+import { clearMarkers, placeToMarkerFromZaro } from "@/utils/mapUtil";
 import { useMapStore } from "@/stores/mapStore";
 
 export default function MapBox() {
@@ -16,29 +12,27 @@ export default function MapBox() {
 
   // 현재 위치 중심 지도
   useEffect(() => {
-    loadKakaoMapSdk(() => {
-      // 카카오 sdk 불러오기
-      if (!window.kakao || !window.kakao.maps) return;
+    // 카카오 sdk 불러오기
+    if (!window.kakao || !window.kakao.maps) return;
 
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        const container = mapRef.current;
-        if (!container) return;
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      const container = mapRef.current;
+      if (!container) return;
 
-        const kakaoMap = new window.kakao.maps.Map(container, {
-          center: new window.kakao.maps.LatLng(latitude, longitude),
-          level: 3,
-        });
-
-        // 현재 위치 마커
-        new window.kakao.maps.Marker({
-          map: kakaoMap,
-          position: new window.kakao.maps.LatLng(latitude, longitude),
-        });
-
-        // Zustand에 지도 객체 저장
-        setMap(kakaoMap);
+      const kakaoMap = new window.kakao.maps.Map(container, {
+        center: new window.kakao.maps.LatLng(latitude, longitude),
+        level: 3,
       });
+
+      // 현재 위치 마커
+      new window.kakao.maps.Marker({
+        map: kakaoMap,
+        position: new window.kakao.maps.LatLng(latitude, longitude),
+      });
+
+      // Zustand에 지도 객체 저장
+      setMap(kakaoMap);
     });
   }, [setMap]);
 

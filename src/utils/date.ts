@@ -4,7 +4,6 @@ import {
   differenceInDays,
   differenceInWeeks,
   formatDistanceToNow,
-  format,
   parse,
   isValid,
   isAfter,
@@ -18,8 +17,10 @@ import { toZonedTime, format as fnsTzFormat } from "date-fns-tz";
  * 하루 이내면 "x분 전", 하루 이상이면 "yyyy.MM.dd"로 표기
  */
 export const getFormattedTimeAgo = (isoDateString: string): string => {
-  const date = new Date(isoDateString);
-  const hoursDiff = differenceInHours(new Date(), date);
+  const timeZone = "Asia/Seoul";
+  const date = toZonedTime(new Date(isoDateString), timeZone);
+  const now = toZonedTime(new Date(), timeZone);
+  const hoursDiff = differenceInHours(now, date);
 
   if (hoursDiff < 24) {
     return formatDistanceToNow(date, { addSuffix: true, locale: ko }).replace(
@@ -27,7 +28,7 @@ export const getFormattedTimeAgo = (isoDateString: string): string => {
       "",
     );
   } else {
-    return format(date, "yyyy.MM.dd");
+    return fnsTzFormat(date, "yyyy.MM.dd", { timeZone });
   }
 };
 
@@ -40,8 +41,9 @@ export const getFormattedTimeAgo = (isoDateString: string): string => {
  * - 7일 이상: "x주"
  */
 export const getRelativeTimeAgo = (isoDateString: string): string => {
-  const now = new Date();
-  const date = new Date(isoDateString);
+  const timeZone = "Asia/Seoul";
+  const now = toZonedTime(new Date(), timeZone);
+  const date = toZonedTime(new Date(isoDateString), timeZone);
 
   const minutes = differenceInMinutes(now, date);
   const hours = differenceInHours(now, date);
