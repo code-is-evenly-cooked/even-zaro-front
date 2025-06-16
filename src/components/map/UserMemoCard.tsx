@@ -26,9 +26,9 @@ export default function UserMemoCard({
           <Image
             src={getProfileImageUrl(profileImage)}
             alt="프로필 이미지"
-            width="40"
-            height="40"
-            className="rounded-full border-1 border-gray200 flex-shrink-0"
+            width={40}
+            height={40}
+            className="rounded-full border border-gray200 flex-shrink-0 h-auto"
           />
         </Link>
       </button>
