@@ -14,6 +14,7 @@ import { useMapStore } from "@/stores/mapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { fetchPlaceList } from "@/lib/api/map";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export default function KakaoMap() {
     setMap,
     setFavoriteAddModal,
     setSelectPlaceDetail,
+    setPlaceList
   } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
 
@@ -133,6 +135,7 @@ export default function KakaoMap() {
       clearMarkers(markerRefsByZaro, overlayRefsByZaro);
       return;
     }
+    setPlaceList(placeList); // placeList 갱신
     clearMarkers(markerRefsByZaro, overlayRefsByZaro);
     placeToMarkerFromZaro(
       placeList,
@@ -143,6 +146,27 @@ export default function KakaoMap() {
       setSelectPlaceDetail,
     );
   }, [myLocation, placeList, places]);
+
+  // 전역으로 위치 이동 시 placeList 갱신
+  useEffect(() => {
+    if (!myLocation?.lat || !myLocation?.lng) return;
+
+    const timer = setTimeout(() => {
+      const lat = myLocation.lat;
+      const lng = myLocation.lng;
+      const distanceKm = 10;
+
+      fetchPlaceList(lat, lng, distanceKm)
+        .then((data) => {
+          setPlaceList(data);
+        })
+        .catch(() => {
+          setPlaceList(null);
+        })
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [myLocation]);
 
   return (
     <>
