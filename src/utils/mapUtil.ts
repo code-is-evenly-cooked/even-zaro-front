@@ -3,9 +3,7 @@
 //
 
 import {
-  KakaoMapResponse,
-  markerInfo,
-  markerInfos,
+  KakaoMapResponse, MarkerInfo,
   PlaceListResponse,
 } from "@/types/map";
 
@@ -107,6 +105,20 @@ export function updateCenterAddress(
   });
 }
 
+// 검색어 입력필드 컨트롤
+export function searchKeyword(
+  map: any,
+  keyword: string,
+  callback: (data: any[], status: any, pagination: any) => void,
+) {
+  const ps = new window.kakao.maps.services.Places();
+  if (!keyword.trim()) {
+    alert("키워드를 입력해주세요!");
+    return;
+  }
+  ps.keywordSearch(keyword, callback);
+}
+
 // Zaro API서버의 place테이블에서 받아온 데이터를 마커로 추가
 export function placeToMarkerFromZaro(
   places: PlaceListResponse,
@@ -114,6 +126,7 @@ export function placeToMarkerFromZaro(
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
@@ -123,7 +136,7 @@ export function placeToMarkerFromZaro(
     markerRefs.current = [];
   }
 
-  const positions: markerInfos = places.placeInfos.map((place) => ({
+  const positions: MarkerInfo[] = places.placeInfos.map((place) => ({
     title: place.name,
     latlng: { lat: place.lat, lng: place.lng },
     category: place.category,
@@ -131,6 +144,7 @@ export function placeToMarkerFromZaro(
     lat: place.lat,
     lng: place.lng,
     placeId: place.placeId,
+    kakaoPlaceId: place.kakaoPlaceId,
     address: place.address,
   }));
 
@@ -139,7 +153,7 @@ export function placeToMarkerFromZaro(
   const imageSize = new window.kakao.maps.Size(24, 35);
   const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-  positions.forEach((place: markerInfo) => {
+  positions.forEach((place: MarkerInfo) => {
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
@@ -159,22 +173,9 @@ export function placeToMarkerFromZaro(
       map,
       overlayRefs,
       onClickFavoriteAdd,
+      setSelectPlaceDetail
     );
   });
-}
-
-// 검색어 입력필드 컨트롤
-export function searchKeyword(
-  map: any,
-  keyword: string,
-  callback: (data: any[], status: any, pagination: any) => void,
-) {
-  const ps = new window.kakao.maps.services.Places();
-  if (!keyword.trim()) {
-    alert("키워드를 입력해주세요!");
-    return;
-  }
-  ps.keywordSearch(keyword, callback);
 }
 
 // 카카오 API 응답으로 받아온 장소들을 마커로 추가
@@ -393,11 +394,12 @@ function displayInfoWindowFromKakao(
 
 // Zaro API로부터 받은 PlaceInfo 타입의 객체를 마커로 추가
 function displayInfoWindowFromZaro(
-  place: markerInfo,
+  place: MarkerInfo,
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
@@ -509,6 +511,11 @@ function displayInfoWindowFromZaro(
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
     detailOverlay.setMap(map);
+
+    // 카카오맵 응답 객체로 변환
+    const kakaoMapResponse = convertMarkerInfoToKakaoMapResponse(place);
+
+    setSelectPlaceDetail?.(kakaoMapResponse);
   });
 
   // 오버레이 닫기
@@ -557,4 +564,20 @@ export function getMarkerIconByCategoryCode(code: string): string {
     default: // 그 외
       return "/marker/others.svg";
   }
+}
+
+function convertMarkerInfoToKakaoMapResponse(place: MarkerInfo): KakaoMapResponse {
+  return {
+    id: place.kakaoPlaceId,
+    place_name: place.name,
+    address_name: place.address,
+    place_url: "", // Zaro 데이터에 없다면 빈값 또는 추후에 보완
+    distance: "",
+    x: place.lng,
+    y: place.lat,
+    phone: "",
+    category_group_code: "",
+    category_group_name: "",
+    category_name: "",
+  };
 }

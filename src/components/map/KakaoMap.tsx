@@ -138,6 +138,7 @@ export default function KakaoMap() {
       markerRefsByZaro,
       overlayRefsByZaro,
       onClickFavoriteAdd,
+      setSelectPlaceDetail
     );
   }, [myLocation, placeList, places]);
 
