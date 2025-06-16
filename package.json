@@ -19,6 +19,7 @@
     "cookies-next": "5.1.0",
     "date-fns": "4.1.0",
     "date-fns-tz": "3.2.0",
+    "event-source-polyfill": "^1.0.31",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.508.0",
     "next": "15.3.1",
@@ -33,6 +34,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
     "autoprefixer": "^10.4.21",
@@ -45,6 +47,7 @@
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "tailwindcss": "3.4.1",
-    "typescript": "5.4.4"
+    "typescript": "5.4.4",
+    "webpack": "^5.99.9"
   }
 }
