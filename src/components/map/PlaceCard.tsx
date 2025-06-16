@@ -38,18 +38,20 @@ export default function PlaceCard({
 }: PlaceCardProps) {
   const { setPagePlaceDetail, map } = useMapStore();
 
+  function onClickPlace () {
+    setPagePlaceDetail(placeId);
+
+    // 지도 중심 이동
+    if (map) {
+      const latlng = new window.kakao.maps.LatLng(lat, lng);
+      map.setCenter(latlng);
+    }
+  }
+
   return (
     <li
       className="flex items-center hover:bg-gray-100 transition p-1 cursor-pointer"
-      onClick={() => {
-        setPagePlaceDetail(placeId);
-
-        // 지도 중심 이동
-        if (map) {
-          const latlng = new window.kakao.maps.LatLng(lat, lng);
-          map.setCenter(latlng);
-        }
-      }}
+      onClick={onClickPlace}
       key={placeId}
     >
       {/* 이미지 영역 */}
