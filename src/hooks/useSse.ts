@@ -26,7 +26,7 @@ const useSse = () => {
           Authorization: `Bearer ${accessToken}`,
         },
         withCredentials: true, // 쿠키 인증 유지
-        heartbeatTimeout: 65000, // 서버가 30초마다 ping 보낼 경우, 여유롭게 65초 설정
+        heartbeatTimeout: 10800000, // 3시간 // 서버는 30초마다 ping 보냄
       },
     );
 
