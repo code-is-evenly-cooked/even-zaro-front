@@ -152,12 +152,14 @@ export function placeToMarkerFromZaro(
     address: place.address,
   }));
 
-  // 즐겨찾기 마커
-  const imageSrc = "/marker/favoriteMarker.svg";
-  const imageSize = new window.kakao.maps.Size(24, 35);
-  const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
 
   positions.forEach((place: MarkerInfo) => {
+    // 즐겨찾기 마커
+    let imageSrc = getFavMarkerIconByCategoryCode(place.category);
+    const imageSize = new window.kakao.maps.Size(24, 35);
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
@@ -581,6 +583,21 @@ export function getMarkerIconByCategoryCode(code: string): string {
       return "/marker/shop.svg";
     default: // 그 외
       return "/marker/others.svg";
+  }
+}
+
+// *즐겨찾기 전용* / 카테고리 코드에 따라 마커 아이콘 지정
+export function getFavMarkerIconByCategoryCode(code: string): string {
+  switch (code) {
+    case "FD6": // 식당
+      return "/marker/restaurant_star.svg";
+    case "CE7": // 카페
+      return "/marker/cafe_star.svg";
+    case "MT1": // 대형마트
+    case "CS2": // 편의점
+      return "/marker/shop_star.svg";
+    default: // 그 외
+      return "/marker/others_star.svg";
   }
 }
 
