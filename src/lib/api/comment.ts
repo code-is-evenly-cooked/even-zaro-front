@@ -19,6 +19,7 @@ interface CreateCommentParams {
   content: string;
   mentionedNickname: string;
 }
+
 export const createComment = async ({
   postId,
   content,

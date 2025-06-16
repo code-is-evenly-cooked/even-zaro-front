@@ -11,12 +11,16 @@ import { ProfileResponse } from "@/types/profile";
 import { useState } from "react";
 import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
 import { getDdayLabel } from "@/utils/date";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface ProfileHeaderProps {
   userId: string;
 }
 
 export default function ProfileHeader({ userId }: ProfileHeaderProps) {
+  const { user } = useAuthStore();
+  const { showToastMessage } = useToastMessageContext();
   const { data: profile } = useSuspenseQuery<ProfileResponse>({
     queryKey: ["profile", userId],
     queryFn: () => fetchUserProfile(userId),
@@ -26,6 +30,14 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
+
+  const handleClickStat = (type: FollowModalType) => {
+    if (user === null) {
+      showToastMessage({ type: "info", message: "로그인이 필요합니다." });
+    } else {
+      setOpenType(type);
+    }
+  };
 
   return (
     <div className="py-4">
@@ -67,12 +79,12 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
             <Stat
               label="팔로워"
               count={profile.followerCount}
-              onClick={() => setOpenType("follower")}
+              onClick={() => handleClickStat("follower")}
             />
             <Stat
               label="팔로잉"
               count={profile.followingCount}
-              onClick={() => setOpenType("following")}
+              onClick={() => handleClickStat("following")}
             />
           </ul>
         </div>

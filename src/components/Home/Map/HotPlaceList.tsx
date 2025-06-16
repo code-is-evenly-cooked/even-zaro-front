@@ -7,13 +7,18 @@ import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
 import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
+import { getDistanceFromLatLonInKm } from "@/utils/mapUtil";
+
+type PlaceWithDistance = PlaceInfo & { distanceKm: number };
 
 export default function HotPlaceList() {
-  const [places, setPlaces] = useState<PlaceInfo[]>([]);
+  const [places, setPlaces] = useState<PlaceWithDistance[]>([]);
   const [activeCategory, setActiveCategory] = useState<
     "All" | "Cafe" | "Food" | "Etc"
   >("All");
-  const [sortType, setSortType] = useState<"favorite" | "name">("favorite");
+  const [sortType, setSortType] = useState<"favorite" | "distance" | "name">(
+    "favorite",
+  );
   const { setPlaceList } = useMapStore();
 
   useEffect(() => {
@@ -34,14 +39,27 @@ export default function HotPlaceList() {
 
         const hotPlaces = filtered.filter((p) => p.favoriteCount > 0);
         const otherPlaces = filtered.filter((p) => p.favoriteCount === 0);
-        let sorted = [...hotPlaces, ...otherPlaces];
+        const sorted = [...hotPlaces, ...otherPlaces];
 
-        if (sortType === "name") {
-          sorted = sorted.sort((a, b) => a.name.localeCompare(b.name));
+        const withDistance: PlaceWithDistance[] = sorted.map((place) => ({
+          ...place,
+          distanceKm: getDistanceFromLatLonInKm(
+            latitude,
+            longitude,
+            place.lat,
+            place.lng,
+          ),
+        }));
+
+        // 정렬
+        if (sortType === "distance") {
+          withDistance.sort((a, b) => a.distanceKm - b.distanceKm);
+        } else if (sortType === "name") {
+          withDistance.sort((a, b) => a.name.localeCompare(b.name));
         }
 
         // 리스트 설정
-        const sliced = sorted.slice(0, 20); // 리스트 장소 표시 개수
+        const sliced = withDistance.slice(0, 20); // 리스트 장소 표시 개수
         setPlaces(sliced);
         setPlaceList({ placeInfos: sliced, totalCount: sliced.length });
       } catch (error) {
@@ -64,20 +82,28 @@ export default function HotPlaceList() {
       {places.length > 0 ? (
         <ul className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
           {places.map((place) => (
-            <PlaceCard
-              key={place.placeId}
-              placeId={place.placeId}
-              category={place.category}
-              lat={place.lat}
-              lng={place.lng}
-              placeName={place.name}
-              address={place.address}
-              favoriteCount={place.favoriteCount}
-            />
+            <li key={place.placeId} className="relative">
+              <PlaceCard
+                key={place.placeId}
+                placeId={place.placeId}
+                category={place.category}
+                lat={place.lat}
+                lng={place.lng}
+                placeName={place.name}
+                address={place.address}
+                favoriteCount={place.favoriteCount}
+              />
+              {/* 거리 표시 km 단위 */}
+              <div className="absolute top-5 right-4 text-xs text-gray-500">
+                {place.distanceKm.toFixed(1)} km
+              </div>
+            </li>
           ))}
         </ul>
       ) : (
-        <FallbackMessage message="근처에 장소가 없습니다." />
+        <li className="flex min-w-[400px] h-[280px] justify-center items-center">
+          <FallbackMessage message="근처에 장소가 없습니다." />
+        </li>
       )}
     </div>
   );
