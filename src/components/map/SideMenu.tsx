@@ -9,9 +9,12 @@ import {
 } from "../common/Icons";
 import Link from "next/link";
 import { useState } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function SideMenu() {
   const [openModal, setOpenModal] = useState(false);
+  const { user } = useAuthStore();
+  const userId = user?.userId ?? null;
 
   return (
     <div
@@ -40,38 +43,47 @@ export default function SideMenu() {
                 </button>
               </li>
             </Link>
-            <li className="relative group">
-              <button>
-                <TogetherIcon className="w-10 h-10" />
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  같이 쓰자
-                </div>
-              </button>
-            </li>
-            <li className="relative group">
-              <button>
-                <TipIcon className="w-10 h-10" />
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  자취 꿀팁
-                </div>
-              </button>
-            </li>
-            <li className="relative group">
-              <button>
-                <ShoppingBagIcon className="w-10 h-10" />
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  텅장 일기
-                </div>
-              </button>
-            </li>
-            <li className="relative group">
-              <button>
-                <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  내 프로필
-                </div>
-              </button>
-            </li>
+            <Link href="/board/TOGETHER">
+              <li className="relative group">
+                <button>
+                  <TogetherIcon className="w-10 h-10" />
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                    같이 쓰자
+                  </div>
+                </button>
+              </li>
+            </Link>
+
+            <Link href="/board/DAILY_LIFE">
+              <li className="relative group">
+                <button>
+                  <TipIcon className="w-10 h-10" />
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                    자취 일상
+                  </div>
+                </button>
+              </li>
+            </Link>
+            <Link href="/board/RANDOM_BUY">
+              <li className="relative group">
+                <button>
+                  <ShoppingBagIcon className="w-10 h-10" />
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                    텅장 일기
+                  </div>
+                </button>
+              </li>
+            </Link>
+            <Link href={`/profile/${userId}`}>
+              <li className="relative group">
+                <button>
+                  <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
+                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                    내 프로필
+                  </div>
+                </button>
+              </li>
+            </Link>
           </>
         )}
       </ul>
