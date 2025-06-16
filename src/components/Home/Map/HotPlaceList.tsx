@@ -77,7 +77,9 @@ export default function HotPlaceList() {
           ))}
         </ul>
       ) : (
-        <FallbackMessage message="근처에 장소가 없습니다." />
+        <li className="flex min-w-[400px] h-[280px] justify-center items-center">
+          <FallbackMessage message="근처에 장소가 없습니다." />
+        </li>
       )}
     </div>
   );
