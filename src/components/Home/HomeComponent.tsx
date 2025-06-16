@@ -2,7 +2,9 @@ import React from "react";
 import HomeSectionCard from "./HomeSectionCard";
 import { CommonPostItem } from "@/types/post";
 import BannerSlider from "./BannerSlider";
-import PopularPostList from './PopularPostList';
+import PopularPostList from "./PopularPostList";
+import HomeSectionMapCard from "./HomeSectionMapCard";
+import { Suspense } from "react";
 
 interface HomeComponentProps {
   posts: {
@@ -32,6 +34,17 @@ const HomeComponent = ({ posts }: HomeComponentProps) => {
             items={posts.randomBuy}
             className="sm:col-span-2"
           />
+        </div>
+        <div>
+          <Suspense
+            fallback={
+              <div className="p-4 text-gray600">
+                지도를 불러오는 중입니다...
+              </div>
+            }
+          >
+            <HomeSectionMapCard />
+          </Suspense>
         </div>
       </div>
     </div>
