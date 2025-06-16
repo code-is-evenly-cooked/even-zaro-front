@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
+import { ArrowLeftIcon, LucideStar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";

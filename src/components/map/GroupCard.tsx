@@ -1,4 +1,4 @@
-import { MoreVertical, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { GroupListResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
 

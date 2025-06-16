@@ -1,7 +1,6 @@
 import {
   Cafe,
   Etc,
-  Favorite,
   Food,
   Market,
 } from "@/components/common/Icons/category";
