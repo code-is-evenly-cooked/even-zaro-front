@@ -281,15 +281,40 @@ function displayInfoWindowFromKakao(
   closeBtn.textContent = "✕";
   content.appendChild(closeBtn);
 
-  // Name
-  const nameDiv = document.createElement("div");
-  nameDiv.style.cssText = `
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 4px;
-  `;
-  nameDiv.textContent = `이름 : ${place.place_name}`;
-  content.appendChild(nameDiv);
+  // 이름 + 링크 아이콘 wrapper
+  const nameWrapper = document.createElement("div");
+  nameWrapper.style.cssText = `
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
+  // 이름 텍스트 링크
+  const nameLink = document.createElement("a");
+  nameLink.href = place.place_url;
+  nameLink.textContent = place.place_name;
+  nameLink.target = "_blank";
+  nameLink.style.cssText = `
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+  // 링크 아이콘
+  const iconImg = document.createElement("img");
+  iconImg.src = "/icons/link.svg";
+  iconImg.alt = "링크 아이콘";
+  iconImg.style.cssText = `
+  width: 14px;
+  height: 14px;
+`;
+
+  nameWrapper.appendChild(nameLink);
+  nameWrapper.appendChild(iconImg);
+  content.appendChild(nameWrapper);
 
   // Address
   const addressDiv = document.createElement("div");
@@ -299,23 +324,11 @@ function displayInfoWindowFromKakao(
   addressDiv.textContent = `주소 : ${place.address_name}`;
   content.appendChild(addressDiv);
 
-  // Coordinates
-  const coordDiv = document.createElement("div");
-  coordDiv.style.cssText = `
-    color: #888;
-    font-size: 11px;
-  `;
-  coordDiv.textContent = `좌표: (${place.y}, ${place.x})`;
-  content.appendChild(coordDiv);
 
-  // Category code
-  const categoryDiv = document.createElement("div");
-  categoryDiv.style.cssText = `
-    margin-top: 4px;
-    color: #333;
-  `;
-  categoryDiv.textContent = `카테고리 코드 : ${place.category_group_name}`;
-  content.appendChild(categoryDiv);
+  const phoneNumDiv = document.createElement("div");
+  phoneNumDiv.style.cssText = `color: green`
+  phoneNumDiv.textContent = `전화번호 : ${place.phone}`;
+  content.appendChild(phoneNumDiv);
 
   // Add button
   const addBtn = document.createElement("button");
@@ -444,7 +457,7 @@ function displayInfoWindowFromZaro(
     font-size: 14px;
     margin-bottom: 4px;
   `;
-  nameDiv.textContent = `이름 : ${place.name}`;
+  nameDiv.textContent = `${place.name}`;
   detailMarker.appendChild(nameDiv);
 
   // Address
@@ -454,24 +467,6 @@ function displayInfoWindowFromZaro(
   `;
   addressDiv.textContent = `주소 : ${place.address}`;
   detailMarker.appendChild(addressDiv);
-
-  // Coordinates
-  const coordDiv = document.createElement("div");
-  coordDiv.style.cssText = `
-    color: #888;
-    font-size: 11px;
-  `;
-  coordDiv.textContent = `좌표: (${place.lng}, ${place.lat})`;
-  detailMarker.appendChild(coordDiv);
-
-  // Category code
-  const categoryDiv = document.createElement("div");
-  categoryDiv.style.cssText = `
-    margin-top: 4px;
-    color: #333;
-  `;
-  categoryDiv.textContent = `카테고리 코드 : ${place.category}`;
-  detailMarker.appendChild(categoryDiv);
 
   // Add button
   const addBtn = document.createElement("button");
