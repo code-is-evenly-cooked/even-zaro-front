@@ -330,7 +330,7 @@ function displayInfoWindowFromKakao(
 
   const phoneNumDiv = document.createElement("div");
   phoneNumDiv.style.cssText = `color: green`;
-  phoneNumDiv.textContent = `전화번호 : ${place.phone}`;
+  phoneNumDiv.textContent = `전화번호 : ${place.phone || "전화번호가 등록되지 않은 장소입니다."}`;
   content.appendChild(phoneNumDiv);
 
   // Add button
