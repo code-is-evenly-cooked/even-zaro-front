@@ -122,7 +122,6 @@ const useLoginForm = () => {
 
       // Zustand에 accessToken 저장
       useAuthStore.getState().setAccessToken(kakaoAccessToken);
-      console.log("카카오 accessToken 저장됨:", kakaoAccessToken);
 
       router.replace("/");
     } catch (error) {
