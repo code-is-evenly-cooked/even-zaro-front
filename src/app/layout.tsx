@@ -21,13 +21,13 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <head>
-        <script nonce={nonce} src="/init-kakao.js" />
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `window.__NEXT_PUBLIC_KAKAO_CLIENT_ID__ = "${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}";`,
           }}
         />
+        <script nonce={nonce} src="/init-kakao.js" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
