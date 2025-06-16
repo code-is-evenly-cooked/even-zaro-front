@@ -373,7 +373,6 @@ function displayInfoWindowFromKakao(
 
   // 추적
   overlayRefs?.current.push(simpleCustomOverlay);
-  overlayRefs?.current.push(detailOverlay);
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
@@ -521,7 +520,6 @@ function displayInfoWindowFromZaro(
   });
   // 추적
   overlayRefs?.current.push(simpleOverLay);
-  overlayRefs?.current.push(detailOverlay);
 
 
   // 상세 정보 표시
