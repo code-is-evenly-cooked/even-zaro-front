@@ -8,6 +8,7 @@ import CommentAction, { CommentActionType } from "../CommentAction";
 import { renderWithMentions } from "@/utils/comment";
 import CommentEditForm from "./CommentEditForm";
 import { getDdayLabel, getSimplifiedDate } from "@/utils/date";
+import Link from "next/link";
 
 interface CommentItemProps {
   item: CommentItem;
@@ -41,7 +42,10 @@ const CommentListItem = ({
       className={`flex flex-col gap-2 px-1 py-3 ${isLast ? "" : "border-b"}`}
     >
       <div className="flex justify-between">
-        <div className="flex items-center gap-2">
+        <Link
+          href={`/profile/${item.userId}`}
+          className="flex items-center gap-2"
+        >
           <Image
             src={getProfileImageUrl(item.profileImage)}
             alt={item.nickname}
@@ -53,7 +57,7 @@ const CommentListItem = ({
           <p className="text-sm text-gray600">
             {getDdayLabel(item.liveAloneDate)}
           </p>
-        </div>
+        </Link>
         <CommentAction isMine={item.isMine} onAction={handleAction} />
       </div>
       <p className="text-md text-gray900 px-2">

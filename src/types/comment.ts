@@ -7,6 +7,7 @@ export interface CommentResponse {
 export interface CommentItem {
   id: number;
   content: string;
+  userId: number;
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;

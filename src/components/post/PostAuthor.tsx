@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getDdayLabel } from "@/utils/date";
+import Link from "next/link";
 
 interface PostAuthorProps {
   postId: number;
@@ -115,7 +116,10 @@ export default function PostAuthor({
 
   return (
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
-      <div className="flex items-center gap-4">
+      <Link
+        href={`/profile/${authorUserId}`}
+        className="flex items-center gap-4"
+      >
         <Image
           src={getProfileImageUrl(profileImage)}
           alt="프로필 이미지"
@@ -128,7 +132,7 @@ export default function PostAuthor({
         <div className="text-sm text-gray600">
           {getDdayLabel(liveAloneDate)}
         </div>
-      </div>
+      </Link>
 
       {/* 팔로우 버튼 */}
       {!isMine && !isCheckingFollow && (
