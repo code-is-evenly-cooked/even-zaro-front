@@ -33,9 +33,9 @@ export function GroupCard({ group }: GroupCardProps) {
             </div>
           </div>
         </div>
-        <button className="hover:bg-gray-200 rounded-full p-1">
-          <MoreVertical size={20} className="text-gray-400" />
-        </button>
+        {/*<button className="hover:bg-gray-200 rounded-full p-1">*/}
+        {/*  <MoreVertical size={20} className="text-gray-400" />*/}
+        {/*</button>*/}
       </li>
   );
 }

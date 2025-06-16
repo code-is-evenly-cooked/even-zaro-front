@@ -55,9 +55,9 @@ export default function PlaceUserMemosHeader({
               {placeDetail?.address}
             </span>
           </div>
-          <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
-            <MoreVerticalIcon />
-          </button>
+          {/*<button className="absolute top-4 right-4 w-5 h-5 mt-0.5">*/}
+          {/*  <MoreVerticalIcon />*/}
+          {/*</button>*/}
         </div>
       </div>
     </div>
