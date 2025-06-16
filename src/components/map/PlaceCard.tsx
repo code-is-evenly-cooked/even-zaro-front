@@ -40,7 +40,7 @@ export default function PlaceCard({
 
   return (
     <li
-      className="flex items-center hover:bg-gray-100 transition p-1"
+      className="flex items-center hover:bg-gray-100 transition p-1 cursor-pointer"
       onClick={() => {
         setPagePlaceDetail(placeId);
 
