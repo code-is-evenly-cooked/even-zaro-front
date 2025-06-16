@@ -80,9 +80,9 @@ export default function HotPlaceList() {
 
       {/* 장소 리스트*/}
       {places.length > 0 ? (
-        <ul className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
+        <div className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
           {places.map((place) => (
-            <li key={place.placeId} className="relative">
+            <div key={place.placeId} className="relative">
               <PlaceCard
                 key={place.placeId}
                 placeId={place.placeId}
@@ -97,13 +97,13 @@ export default function HotPlaceList() {
               <div className="absolute top-5 right-4 text-xs text-gray-500">
                 {place.distanceKm.toFixed(1)} km
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <li className="flex min-w-[400px] h-[280px] justify-center items-center">
+        <div className="flex min-w-[400px] h-[280px] justify-center items-center">
           <FallbackMessage message="근처에 장소가 없습니다." />
-        </li>
+        </div>
       )}
     </div>
   );
