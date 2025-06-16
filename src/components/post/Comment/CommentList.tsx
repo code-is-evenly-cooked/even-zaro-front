@@ -8,16 +8,16 @@ import useCommentList from "./useCommentList";
 interface CommentListProps {
   comments: CommentItem[];
   refresh: () => void;
+  onCommentCountChange?: (updater: (prev: number) => number) => void;
 }
 
-const CommentList = ({ comments, refresh }: CommentListProps) => {
-  const {
-    editingId,
-    handleRefresh,
-    handleAction,
-    handleCancelEdit,
-    handleSubmitEdit,
-  } = useCommentList({ onRefresh: refresh });
+const CommentList = ({
+  comments,
+  refresh,
+  onCommentCountChange,
+}: CommentListProps) => {
+  const { editingId, handleAction, handleCancelEdit, handleSubmitEdit } =
+    useCommentList({ onCommentCountChange });
 
   return (
     <div className="flex flex-col mt-4 pt-4 border-t">
@@ -27,7 +27,7 @@ const CommentList = ({ comments, refresh }: CommentListProps) => {
           icon={<RefreshCwIcon className="w-5 h-5" />}
           label="refresh"
           isTransparent
-          onClick={handleRefresh}
+          onClick={refresh}
         />
       </div>
       <ul className="flex flex-col mx-2 py-2">

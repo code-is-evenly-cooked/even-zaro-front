@@ -11,14 +11,10 @@ import { useCommentLoadingStore } from "@/stores/useCommentLoadingStore";
 import { useRouter } from "next/navigation";
 
 interface useCommentListProps {
-  onRefresh: () => void;
   onCommentCountChange?: (updater: (prev: number) => number) => void;
 }
 
-const useCommentList = ({
-  onRefresh,
-  onCommentCountChange,
-}: useCommentListProps) => {
+const useCommentList = ({ onCommentCountChange }: useCommentListProps) => {
   const router = useRouter();
   const [editingId, setEditingId] = useState<number | null>(null);
   const { mutate: updateCommentMutate } = useCommentUpdate();
@@ -27,10 +23,6 @@ const useCommentList = ({
 
   const { setEditingId: setLoadingEditingId, setDeletingId } =
     useCommentLoadingStore();
-
-  const handleRefresh = () => {
-    onRefresh();
-  };
 
   const handleAction = async (action: CommentActionType, item: CommentItem) => {
     switch (action) {
@@ -80,7 +72,6 @@ const useCommentList = ({
 
   return {
     editingId,
-    handleRefresh,
     handleAction,
     handleCancelEdit,
     handleSubmitEdit,
