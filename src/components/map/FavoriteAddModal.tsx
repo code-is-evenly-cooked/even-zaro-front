@@ -87,11 +87,8 @@ export function FavoriteAddModal() {
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
       showToastMessage({ type: "success", message: "즐겨찾기 추가 성공" });
+      setFavoriteAddModal(favoriteAddModal);
     } catch (error) {
-      showToastMessage({
-        type: "error",
-        message: getErrorMessage(error, "알 수 없는 에러입니다"),
-      });
       showToastMessage({
         type: "error",
         message: getErrorMessage(error, "알 수 없는 에러입니다"),
