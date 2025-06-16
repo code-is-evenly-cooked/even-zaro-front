@@ -146,7 +146,7 @@ export function placeToMarkerFromZaro(
       title: place.name,
       image: markerImage,
       clickable: true,
-      zIndex: 1,
+      zIndex: 10, // Kakao 마커보다는 높게
     });
 
     marker.setMap(map);
@@ -199,7 +199,7 @@ export function placeToMarkerFromKakao(
       title: place.place_name,
       image: markerImage,
       clickable: true,
-      zIndex: 1,
+      zIndex: 8, // Zaro 마커보다는 낮게
     });
 
     marker.setMap(map);
