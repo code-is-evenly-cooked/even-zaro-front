@@ -265,6 +265,7 @@ function displayInfoWindowFromKakao(
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
+    z-index: 50;
   `;
 
   // Close button
@@ -326,9 +327,8 @@ function displayInfoWindowFromKakao(
   addressDiv.textContent = `주소 : ${place.address_name}`;
   content.appendChild(addressDiv);
 
-
   const phoneNumDiv = document.createElement("div");
-  phoneNumDiv.style.cssText = `color: green`
+  phoneNumDiv.style.cssText = `color: green`;
   phoneNumDiv.textContent = `전화번호 : ${place.phone}`;
   content.appendChild(phoneNumDiv);
 
@@ -363,6 +363,7 @@ function displayInfoWindowFromKakao(
     position: new kakao.maps.LatLng(place.y, place.x),
     content: content,
     yAnchor: 1.5,
+    zIndex: 9999,
   });
 
   // 상세 정보 표시
@@ -436,6 +437,7 @@ function displayInfoWindowFromZaro(
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
+    z-index: 50;
   `;
 
   // Close button
@@ -501,6 +503,7 @@ function displayInfoWindowFromZaro(
     position: new kakao.maps.LatLng(place.lat, place.lng),
     content: detailMarker,
     yAnchor: 1.5,
+    zIndex: 9999,
   });
 
   // 상세 정보 표시
