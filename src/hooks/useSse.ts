@@ -6,7 +6,8 @@ import { useNotificationStore } from "@/stores/useNotificationStore";
 import type { Notification } from "@/types/notification";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { getCookie } from "cookies-next";
-import { refreshToken } from "@/lib/fetch/refresh/client";
+import { fetchNotifications } from "@/lib/api/notification";
+
 const MAX_RETRIES = 5;
 
 const useSse = () => {
@@ -54,14 +55,17 @@ const useSse = () => {
 
       retryCountRef.current += 1;
 
-      const refreshed = await refreshToken();
-      if (refreshed) {
+      try {
+        await fetchNotifications(); // 알림 목록 조회 (토큰 갱신 유도)
+
         const newAccessToken = getCookie("access_token");
         if (newAccessToken && typeof newAccessToken === "string") {
           setAccessToken(newAccessToken);
           console.log("accessToken 갱신 후 SSE 재연결");
           return;
         }
+      } catch (err) {
+        console.warn("accessToken 갱신 실패 or 로그인 필요", err);
       }
 
       if (retryCountRef.current > MAX_RETRIES) {
