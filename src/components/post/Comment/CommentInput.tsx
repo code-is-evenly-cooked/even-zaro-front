@@ -36,12 +36,14 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
   const mention = useMemo(() => (replyTo ? `@${replyTo} ` : ""), [replyTo]);
 
   useEffect(() => {
-    if (replyTo) setComment(mention);
-    setTimeout(() => {
-      const length = mention.length;
-      textareaRef.current?.focus();
-      textareaRef.current?.setSelectionRange(length, length);
-    }, 0);
+    if (replyTo) {
+      setComment(mention);
+      setTimeout(() => {
+        const length = mention.length;
+        textareaRef.current?.focus();
+        textareaRef.current?.setSelectionRange(length, length);
+      }, 0);
+    }
   }, [replyTo]);
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
