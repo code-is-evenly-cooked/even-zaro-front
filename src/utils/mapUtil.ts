@@ -106,13 +106,18 @@ export function updateCenterAddress(
   });
 }
 
+type ToastPayload = {
+  type: "success" | "error";
+  message: string;
+};
+
 // 검색어 입력필드 컨트롤
 export function searchKeyword(
   map: any,
   keyword: string,
+  showToastMessage: (payload: ToastPayload) => void,
   callback: (data: any[], status: any, pagination: any) => void,
 ) {
-  const { showToastMessage } = useToastMessageContext();
 
   const ps = new window.kakao.maps.services.Places();
   if (!keyword.trim()) {

@@ -13,6 +13,7 @@ import {
 import { useMapStore } from "@/stores/mapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export default function KakaoMap() {
     setFavoriteAddModal,
     setSelectPlaceDetail,
   } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
   type PlaceSource = "zaro" | "kakao";
@@ -194,6 +196,7 @@ export default function KakaoMap() {
                   searchKeyword(
                     mapInstanceRef.current,
                     keyword,
+                    showToastMessage,
                     handleSearchResult,
                   );
                 }
