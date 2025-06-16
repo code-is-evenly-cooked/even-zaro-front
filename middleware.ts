@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
+import { nanoid } from "nanoid";
 
 export function middleware() {
-  const nonce = crypto.randomBytes(16).toString("base64");
+  const nonce = nanoid();
   const response = NextResponse.next();
 
   response.headers.set("x-nonce", nonce);
