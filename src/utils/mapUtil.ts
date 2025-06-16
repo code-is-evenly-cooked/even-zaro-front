@@ -320,6 +320,8 @@ function displayInfoWindowFromKakao(
   const addressDiv = document.createElement("div");
   addressDiv.style.cssText = `
     color: #555;
+    word-break: break-word;
+    white-space: normal;
   `;
   addressDiv.textContent = `주소 : ${place.address_name}`;
   content.appendChild(addressDiv);
@@ -464,6 +466,8 @@ function displayInfoWindowFromZaro(
   const addressDiv = document.createElement("div");
   addressDiv.style.cssText = `
     color: #555;
+    word-break: break-word;
+    white-space: normal;
   `;
   addressDiv.textContent = `주소 : ${place.address}`;
   detailMarker.appendChild(addressDiv);
