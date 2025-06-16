@@ -58,7 +58,7 @@ export default function HotPlaceHeader({
             onClick={() =>
               setActiveCategory(tab.value as "All" | "Cafe" | "Food" | "Etc")
             }
-            className={`px-3 py-1 rounded-full border text-sm ${
+            className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
               activeCategory === tab.value
                 ? "bg-violet800 text-white"
                 : "bg-white text-gray700"

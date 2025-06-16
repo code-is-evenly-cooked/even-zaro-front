@@ -9,19 +9,6 @@ import {
   PlaceListResponse,
 } from "@/types/map";
 
-const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
-
-// Kakao SDK 로드 함수
-export const loadKakaoMapSdk = (callback: () => void) => {
-  const script = document.createElement("script");
-  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
-  script.async = true;
-  script.onload = () => {
-    window.kakao.maps.load(callback);
-  };
-  document.head.appendChild(script);
-};
-
 // 지도 초기화
 export const initializeMap = (
   container: HTMLDivElement,
@@ -243,28 +230,26 @@ function displayInfoWindowFromKakao(
 ) {
   // 간단한 라벨 스타일
   const simpleMarker = document.createElement("div");
-  simpleMarker.innerHTML = `
-    <div     
-    style="
-      flex-direction: row;
-      background-color: white;
-      padding: 3px 6px;
-      border: 1px solid #ccc;
-      border-radius: 16px;
-      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
-      font-size: 12px;
-      font-weight: 500;
-      color: #333;
-      white-space: nowrap;
-      max-width: 120px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-      pointer-events: none;
-    ">
-      ${place.place_name}
-    </div>
+  const labelEl = document.createElement("div");
+  labelEl.style.cssText = `
+    flex-direction: row;
+    background-color: white;
+    padding: 3px 6px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    pointer-events: none;
   `;
+  labelEl.textContent = place.place_name;
+  simpleMarker.appendChild(labelEl);
 
   // 상세 정보 오버레이
   const content = document.createElement("div");
@@ -282,22 +267,70 @@ function displayInfoWindowFromKakao(
     position: relative;
   `;
 
-  content.innerHTML = `
-    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn-search">✕</div>
-    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.place_name}</div>
-    <div style="color: #555;">주소 : ${place.address_name}</div>
-    <div style="color: #888; font-size: 11px;">좌표: (${place.y}, ${place.x})</div>
-    <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category_group_name}</div>
-    <button id="add-btn" style="
-      margin-top: 8px;
-      padding: 5px 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    ">⭐ 즐겨찾기 추가</button>
+  // Close button
+  const closeBtn = document.createElement("div");
+  closeBtn.style.cssText = `
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #999;
   `;
+  closeBtn.id = "close-btn-search";
+  closeBtn.textContent = "✕";
+  content.appendChild(closeBtn);
+
+  // Name
+  const nameDiv = document.createElement("div");
+  nameDiv.style.cssText = `
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+  `;
+  nameDiv.textContent = `이름 : ${place.place_name}`;
+  content.appendChild(nameDiv);
+
+  // Address
+  const addressDiv = document.createElement("div");
+  addressDiv.style.cssText = `
+    color: #555;
+  `;
+  addressDiv.textContent = `주소 : ${place.address_name}`;
+  content.appendChild(addressDiv);
+
+  // Coordinates
+  const coordDiv = document.createElement("div");
+  coordDiv.style.cssText = `
+    color: #888;
+    font-size: 11px;
+  `;
+  coordDiv.textContent = `좌표: (${place.y}, ${place.x})`;
+  content.appendChild(coordDiv);
+
+  // Category code
+  const categoryDiv = document.createElement("div");
+  categoryDiv.style.cssText = `
+    margin-top: 4px;
+    color: #333;
+  `;
+  categoryDiv.textContent = `카테고리 코드 : ${place.category_group_name}`;
+  content.appendChild(categoryDiv);
+
+  // Add button
+  const addBtn = document.createElement("button");
+  addBtn.id = "add-btn";
+  addBtn.style.cssText = `
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  `;
+  addBtn.textContent = "⭐ 즐겨찾기 추가";
+  content.appendChild(addBtn);
 
   // 간단한 말풍선 인포윈도우
   const simpleCustomOverlay = new kakao.maps.CustomOverlay({
@@ -352,29 +385,27 @@ function displayInfoWindowFromZaro(
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
-  simpleMarker.innerHTML = `
-    <div 
-    style="
-      flex-direction: row;
-      background-color: white;
-      padding: 3px 6px;
-      border: 1px solid #ccc;
-      border-radius: 16px;
-      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
-      font-size: 12px;
-      font-weight: 500;
-      color: #333;
-      white-space: nowrap;
-      display: inline-block;
-      max-width: 300px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: center;
-      pointer-events: none;
-    ">
-      ${place.name}
-    </div>
+  const labelEl = document.createElement("div");
+  labelEl.style.cssText = `
+    flex-direction: row;
+    background-color: white;
+    padding: 3px 6px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    pointer-events: none;
   `;
+  labelEl.textContent = place.name;
+  simpleMarker.appendChild(labelEl);
 
   // 상세 정보 모달 (즐겨찾기 추가 포함)
   const detailMarker = document.createElement("div");
@@ -389,23 +420,73 @@ function displayInfoWindowFromZaro(
     width: 220px;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    position: relative;
   `;
-  detailMarker.innerHTML = `
-    <div style="position: absolute; top: 6px; right: 8px; cursor: pointer; font-weight: bold; color: #999;" id="close-btn-nearby">✕</div>
-    <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">이름 : ${place.name}</div>
-    <div style="color: #555;">주소 : ${place.address}</div>
-    <div style="color: #888; font-size: 11px;">좌표: (${place.lng}, ${place.lat})</div>
-    <div style="margin-top: 4px; color: #333;">카테고리 코드 : ${place.category}</div>
-    <button id="add-btn" style="
-      margin-top: 8px;
-      padding: 5px 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    ">⭐ 즐겨찾기 추가</button>
+
+  // Close button
+  const closeBtn = document.createElement("div");
+  closeBtn.style.cssText = `
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #999;
   `;
+  closeBtn.id = "close-btn-nearby";
+  closeBtn.textContent = "✕";
+  detailMarker.appendChild(closeBtn);
+
+  // Name
+  const nameDiv = document.createElement("div");
+  nameDiv.style.cssText = `
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+  `;
+  nameDiv.textContent = `이름 : ${place.name}`;
+  detailMarker.appendChild(nameDiv);
+
+  // Address
+  const addressDiv = document.createElement("div");
+  addressDiv.style.cssText = `
+    color: #555;
+  `;
+  addressDiv.textContent = `주소 : ${place.address}`;
+  detailMarker.appendChild(addressDiv);
+
+  // Coordinates
+  const coordDiv = document.createElement("div");
+  coordDiv.style.cssText = `
+    color: #888;
+    font-size: 11px;
+  `;
+  coordDiv.textContent = `좌표: (${place.lng}, ${place.lat})`;
+  detailMarker.appendChild(coordDiv);
+
+  // Category code
+  const categoryDiv = document.createElement("div");
+  categoryDiv.style.cssText = `
+    margin-top: 4px;
+    color: #333;
+  `;
+  categoryDiv.textContent = `카테고리 코드 : ${place.category}`;
+  detailMarker.appendChild(categoryDiv);
+
+  // Add button
+  const addBtn = document.createElement("button");
+  addBtn.id = "add-btn";
+  addBtn.style.cssText = `
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  `;
+  addBtn.textContent = "⭐ 즐겨찾기 추가";
+  detailMarker.appendChild(addBtn);
 
   const simpleOverLay = new kakao.maps.CustomOverlay({
     map: map,
