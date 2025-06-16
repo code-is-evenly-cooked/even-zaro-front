@@ -9,19 +9,6 @@ import {
   PlaceListResponse,
 } from "@/types/map";
 
-const KAKAO_MAP_API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!;
-
-// Kakao SDK 로드 함수
-export const loadKakaoMapSdk = (callback: () => void) => {
-  const script = document.createElement("script");
-  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
-  script.async = true;
-  script.onload = () => {
-    window.kakao.maps.load(callback);
-  };
-  document.head.appendChild(script);
-};
-
 // 지도 초기화
 export const initializeMap = (
   container: HTMLDivElement,
