@@ -20,11 +20,11 @@ interface PlaceCardProps {
 }
 
 const categoryIcons: Record<string, JSX.Element> = {
-  Food: <Food />,
-  Cafe: <Cafe />,
-  Market: <Market />,
-  Etc: <Etc />,
-  Favorite: <Favorite />,
+  FD6: <Food />, // 식당
+  CE7: <Cafe />, // 카페
+  MT1: <Market />, // 마트
+  CS2: <Market />, // 편의점
+  Etc: <Etc />, // 그외
 };
 
 export default function PlaceCard({
@@ -54,7 +54,6 @@ export default function PlaceCard({
       onClick={onClickPlace}
       key={placeId}
     >
-      {/* 이미지 영역 */}
       <div className="flex w-14 h-14 items-center justify-center mr-4 border border-gray-300 rounded-full">
         {categoryIcons[category] || <Etc />}
       </div>
