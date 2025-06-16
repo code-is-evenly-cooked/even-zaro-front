@@ -6,19 +6,17 @@ interface FavoriteCardProps {
 }
 
 export function FavoriteCard({ favorite }: FavoriteCardProps) {
-
-  const { map } = useMapStore();
+  const { map, myLocation, setMyLocation } = useMapStore();
 
   function onClickFavorite() {
-    if (!map) return;
+    if (!map || !myLocation) return;
+    const lat = favorite.lat;
+    const lng = favorite.lng;
 
-    const latlng = new kakao.maps.LatLng(
-      Number(favorite.lat),
-      Number(favorite.lng),
-    );
+    const latlng = new kakao.maps.LatLng(Number(lat), Number(lng));
+    setMyLocation({ lat, lng }); // 클릭 시 내 위치 이동
     map.setCenter(latlng);
   }
-
 
   return (
     <>
