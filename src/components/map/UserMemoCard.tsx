@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import { useMapStore } from "@/stores/mapStore";
+import Link from "next/link";
 
 interface UserMemoProps {
   userId: number;
@@ -21,13 +22,15 @@ export default function UserMemoCard({
     <li className="flex items-center hover:bg-gray100 transition p-1">
       {/* 이미지 영역 */}
       <button className="flex items-center justify-center rounded-full w-11 h-11 border-2 border-gray200">
-        <Image
-          src={getProfileImageUrl(profileImage)}
-          alt="프로필 이미지"
-          width="40"
-          height="40"
-          className="rounded-full border-1 border-gray200 flex-shrink-0"
-        />
+        <Link href={`/profile/${userId}`} className="flex items-center gap-2">
+          <Image
+            src={getProfileImageUrl(profileImage)}
+            alt="프로필 이미지"
+            width="40"
+            height="40"
+            className="rounded-full border-1 border-gray200 flex-shrink-0"
+          />
+        </Link>
       </button>
       <div className="items-center flex p-3 shadow-sm space-x-3">
         <button

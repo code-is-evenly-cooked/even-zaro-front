@@ -5,6 +5,9 @@ import { useMapStore } from "@/stores/mapStore";
 import { useProfile } from "@/hooks/useProfile";
 import { GroupCardList } from "@/components/map/GroupCardList";
 import { getDdayLabel } from "@/utils/date";
+import Link from "next/link";
+import { getProfileImageUrl } from "@/utils/image";
+import Image from "next/image";
 
 export function UserGroupList() {
   const { placeId, page, otherUserId } = useMapStore((state) => state);
@@ -29,8 +32,18 @@ export function UserGroupList() {
         </div>
 
         <div className="flex justify-center gap-4 items-center py-4 border-b">
-          <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
-
+          <Link
+            href={`/profile/${otherUserId}`}
+            className="flex items-center gap-2"
+          >
+            <Image
+              src={getProfileImageUrl(profile?.profileImage || null)}
+              alt="프로필 이미지"
+              width="40"
+              height="40"
+              className="rounded-full border-1 border-gray200 flex-shrink-0"
+            />
+          </Link>
           <div className="flex flex-col">
             <span className="font-semibold text-lg mt-2">
               {profile?.nickname}

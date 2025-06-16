@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import React from "react";
 import { PlaceDetailResponse } from "@/types/map";
+import Link from "next/link";
 
 interface BookmarkInfoProps {
   placeDetail: PlaceDetailResponse;
@@ -23,13 +24,18 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
                 key={idx}
               >
                 <button>
-                  <Image
-                    src={getProfileImageUrl(user.profileImage)}
-                    alt="유저 이미지"
-                    className="rounded-full border-1 border-gray200 flex-shrink-0"
-                    width="40"
-                    height="40"
-                  />
+                  <Link
+                    href={`/profile/${user.userId}`}
+                    className="flex items-center gap-2"
+                  >
+                    <Image
+                      src={getProfileImageUrl(user.profileImage)}
+                      alt="유저 이미지"
+                      className="rounded-full border-1 border-gray200 flex-shrink-0"
+                      width="40"
+                      height="40"
+                    />
+                  </Link>
                 </button>
               </li>
             ))}
@@ -40,7 +46,8 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
             </button>
             <span>
               {" "}
-              님 외 {placeDetail?.favoriteCount - 1} 명이 즐겨찾기에 추가했습니다.
+              님 외 <strong>{placeDetail?.favoriteCount - 1}</strong> 명이
+              즐겨찾기에 추가했습니다.
             </span>
           </div>
         </>
