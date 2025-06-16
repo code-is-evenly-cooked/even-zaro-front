@@ -5,11 +5,12 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useNotificationStore } from "@/stores/useNotificationStore";
 import type { Notification } from "@/types/notification";
 import { EventSourcePolyfill } from "event-source-polyfill";
-
+import { getCookie } from "cookies-next";
+import { refreshToken } from "@/lib/fetch/refresh/client";
 const MAX_RETRIES = 5;
 
 const useSse = () => {
-  const { user, accessToken } = useAuthStore();
+  const { user, accessToken, setAccessToken } = useAuthStore();
   const { addNotification } = useNotificationStore();
 
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
@@ -47,11 +48,21 @@ const useSse = () => {
       console.log("💓 서버 ping 수신 (keep-alive)");
     });
 
-    eventSource.onerror = (error) => {
+    eventSource.onerror = async (error) => {
       console.error("❌ SSE 오류 발생", error);
       eventSource.close();
 
       retryCountRef.current += 1;
+
+      const refreshed = await refreshToken();
+      if (refreshed) {
+        const newAccessToken = getCookie("access_token");
+        if (newAccessToken && typeof newAccessToken === "string") {
+          setAccessToken(newAccessToken);
+          console.log("accessToken 갱신 후 SSE 재연결");
+          return;
+        }
+      }
 
       if (retryCountRef.current > MAX_RETRIES) {
         console.warn("🚫 SSE 재연결 최대 횟수 초과. 중단합니다.");
@@ -71,7 +82,7 @@ const useSse = () => {
         connectSse();
       }, retryDelay);
     };
-  }, [accessToken, addNotification]);
+  }, [accessToken, addNotification, setAccessToken]);
 
   useEffect(() => {
     if (!user?.userId || !accessToken) return;
