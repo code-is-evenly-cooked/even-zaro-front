@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import CommentList from "./CommentList";
 import CommentInput from "./CommentInput";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchComment } from "@/lib/api/comment";
 import ClientSidePagination from "@/components/common/Pagination/ClientSidePagination";
 import { CommentResponse } from "@/types/comment";
+import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSpinnerBoundary";
 
 interface CommentSectionProps {
   postId: number;
@@ -18,7 +19,7 @@ const CommentSection = ({
 }: CommentSectionProps) => {
   const [page, setPage] = useState(0);
 
-  const { data, refetch } = useSuspenseQuery<CommentResponse>({
+  const { data, isLoading, refetch } = useQuery<CommentResponse>({
     queryKey: ["comments", postId, page],
     queryFn: () => fetchComment({ postId, page }),
   });
@@ -35,6 +36,8 @@ const CommentSection = ({
   }, [data?.totalComments, onCommentCountChange]);
 
   const comments = data?.content ?? [];
+
+  if (isLoading) return <LoadingSpinnerBoundary />;
 
   return (
     <section className="flex flex-col gap-2">
