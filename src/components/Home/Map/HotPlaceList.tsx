@@ -7,13 +7,16 @@ import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
 import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
+import { getDistanceFromLatLonInKm } from "@/utils/mapUtil";
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceInfo[]>([]);
   const [activeCategory, setActiveCategory] = useState<
     "All" | "Cafe" | "Food" | "Etc"
   >("All");
-  const [sortType, setSortType] = useState<"favorite" | "name">("favorite");
+  const [sortType, setSortType] = useState<"favorite" | "distance" | "name">(
+    "favorite",
+  );
   const { setPlaceList } = useMapStore();
 
   useEffect(() => {
@@ -35,6 +38,14 @@ export default function HotPlaceList() {
         const hotPlaces = filtered.filter((p) => p.favoriteCount > 0);
         const otherPlaces = filtered.filter((p) => p.favoriteCount === 0);
         let sorted = [...hotPlaces, ...otherPlaces];
+
+        if (sortType === "distance") {
+          sorted = sorted.sort(
+            (a, b) =>
+              getDistanceFromLatLonInKm(latitude, longitude, a.lat, a.lng) -
+              getDistanceFromLatLonInKm(latitude, longitude, b.lat, b.lng),
+          );
+        }
 
         if (sortType === "name") {
           sorted = sorted.sort((a, b) => a.name.localeCompare(b.name));

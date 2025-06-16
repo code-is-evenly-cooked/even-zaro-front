@@ -1,8 +1,8 @@
 interface HotPlaceHeaderProps {
   activeCategory: "All" | "Cafe" | "Food" | "Etc";
   setActiveCategory: (category: "All" | "Cafe" | "Food" | "Etc") => void;
-  sortType: "favorite" | "name";
-  setSortType: (type: "favorite" | "name") => void;
+  sortType: "favorite" | "distance" | "name";
+  setSortType: (type: "favorite" | "distance" | "name") => void;
 }
 
 export default function HotPlaceHeader({
@@ -38,10 +38,13 @@ export default function HotPlaceHeader({
 
       <select
         value={sortType}
-        onChange={(e) => setSortType(e.target.value as "favorite" | "name")}
+        onChange={(e) =>
+          setSortType(e.target.value as "favorite" | "distance" | "name")
+        }
         className="text-sm px-3 py-1 border rounded-md bg-white"
       >
         <option value="favorite">즐겨찾기 순</option>
+        <option value="distance">거리 순</option>
         <option value="name">이름 순</option>
       </select>
     </div>
