@@ -5,6 +5,7 @@ import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
 import { fetchGroupList, fetchPlaceList, postAddFavorite, postAddGroup } from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
@@ -53,8 +54,7 @@ export function FavoriteAddModal() {
         showToastMessage({ type : "error", message: error.message})
 
       } else {
-        showToastMessage({ type : "error", message: "알 수 없는 에러입니다."})
-
+        showToastMessage({ type : "error", message: getErrorMessage(error, "알 수 없는 오류가 발생했습니다.")});
       }
     }
   };
@@ -84,7 +84,7 @@ export function FavoriteAddModal() {
       if (error instanceof Error) {
         showToastMessage({ type : "error", message: error.message})
       } else {
-        showToastMessage({ type : "error", message: "알 수 없는 에러입니다."})
+        showToastMessage({ type : "error", message: getErrorMessage(error, "알 수 없는 오류가 발생했습니다.")});
       }
     } finally {
       // 즐겨찾기 후 다시 현재 위치 기준으로 즐겨찾기 검색하여 지도 최신화
