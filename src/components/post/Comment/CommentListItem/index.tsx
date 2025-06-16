@@ -7,7 +7,7 @@ import Image from "next/image";
 import CommentAction, { CommentActionType } from "../CommentAction";
 import { renderWithMentions } from "@/utils/comment";
 import CommentEditForm from "./CommentEditForm";
-import { getSimplifiedDate } from "@/utils/date";
+import { getDdayLabel, getSimplifiedDate } from "@/utils/date";
 
 interface CommentItemProps {
   item: CommentItem;
@@ -50,8 +50,9 @@ const CommentListItem = ({
             className="w-7 h-7 rounded-full"
           />
           <p className="text-md text-gray900">{item.nickname}</p>
-
-          {/* TODO: livealonedate */}
+          <p className="text-sm text-gray600">
+            {getDdayLabel(item.liveAloneDate)}
+          </p>
         </div>
         <CommentAction isMine={item.isMine} onAction={handleAction} />
       </div>

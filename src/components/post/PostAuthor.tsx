@@ -1,6 +1,5 @@
 "use client";
 
-import { differenceInDays } from "date-fns";
 import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
@@ -11,6 +10,7 @@ import { deletePost } from "@/lib/api/post.client";
 import { useRouter } from "next/navigation";
 import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { getDdayLabel } from "@/utils/date";
 
 interface PostAuthorProps {
   postId: number;
@@ -38,12 +38,6 @@ export default function PostAuthor({
   const { showToastMessage } = useToastMessageContext();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-
-  // 자취 기간 디데이 표시
-  const days =
-    liveAloneDate != null
-      ? differenceInDays(new Date(), new Date(liveAloneDate))
-      : null;
 
   // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
@@ -130,9 +124,10 @@ export default function PostAuthor({
           className="rounded-full object-cover"
         />
         <span className="font-medium text-gray900">{nickname}</span>
-        {days !== null && (
-          <div className="text-sm text-gray-500">( D +{days} )</div>
-        )}
+
+        <div className="text-sm text-gray600">
+          {getDdayLabel(liveAloneDate)}
+        </div>
       </div>
 
       {/* 팔로우 버튼 */}
