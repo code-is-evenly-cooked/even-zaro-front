@@ -17,4 +17,5 @@ export interface CommentItem {
   isEdited: boolean;
   isMine: boolean;
   mentionedUser: string | null;
+  commentLocatedPage: number | null;
 }

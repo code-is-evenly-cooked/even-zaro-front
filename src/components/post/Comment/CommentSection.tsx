@@ -23,6 +23,11 @@ const CommentSection = ({
     queryFn: () => fetchComment({ postId, page }),
   });
 
+  const refetchComments = async (commentLocatedPage: number) => {
+    setPage(commentLocatedPage - 1);
+    await refetch();
+  };
+
   useEffect(() => {
     if (data?.totalComments !== undefined) {
       onCommentCountChange?.(() => data.totalComments);
@@ -43,7 +48,7 @@ const CommentSection = ({
         totalPage={data?.totalPages ?? 1}
         onChangePage={setPage}
       />
-      <CommentInput postId={postId} onSuccess={refetch} />
+      <CommentInput postId={postId} onSuccess={refetchComments} />
     </section>
   );
 };

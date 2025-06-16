@@ -22,7 +22,7 @@ import {
 
 interface CommentInputProps {
   postId: number;
-  onSuccess: () => void;
+  onSuccess: (commentLocatedPage: number) => void;
 }
 
 const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
@@ -70,14 +70,14 @@ const CommentInput = ({ postId, onSuccess }: CommentInputProps) => {
     const replyNickname = extractMentionedNickname(comment);
     setIsLoading(true);
     try {
-      await createComment({
+      const respsonse = await createComment({
         postId,
         content: comment,
         mentionedNickname: replyNickname,
       });
       setComment("");
       resetReplyTarget();
-      onSuccess();
+      onSuccess(respsonse.commentLocatedPage ?? 0);
     } catch (error) {
       showToastMessage({
         type: "error",
