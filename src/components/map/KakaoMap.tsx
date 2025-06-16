@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   clearMarkers,
   initializeMap,
-  loadKakaoMapSdk,
   moveMyLocation,
   placeToMarkerFromKakao,
   placeToMarkerFromZaro,
@@ -112,14 +111,15 @@ export default function KakaoMap() {
 
   // 사용자의 위치에 따라 변하는 인근 장소 불러오기
   useEffect(() => {
-    loadKakaoMapSdk(() => {
-      if (!mapRef.current) return;
-      initializeMap(mapRef.current, (map) => {
-        mapInstanceRef.current = map;
-        setMap(map); // 맵 객체 등록
-        moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
-        updateCenterAddress(map, setRegionName); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
-      });
+    if (typeof window === "undefined") return;
+    if (!window.kakao || !window.kakao.maps) return;
+
+    if (!mapRef.current) return;
+    initializeMap(mapRef.current, (map) => {
+      mapInstanceRef.current = map;
+      setMap(map); // 맵 객체 등록
+      moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
+      updateCenterAddress(map, setRegionName); // 지도 중심 주소 업데이트 및 내 위치 행정동 저장
     });
   }, []);
 
