@@ -115,7 +115,7 @@ export default function KakaoMap() {
     if (!window.kakao || !window.kakao.maps) return;
 
     if (!mapRef.current) return;
-    initializeMap(mapRef.current, (map) => {
+    initializeMap(mapRef.current, setMyLocation, (map) => {
       mapInstanceRef.current = map;
       setMap(map); // 맵 객체 등록
       moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
@@ -138,7 +138,7 @@ export default function KakaoMap() {
       markerRefsByZaro,
       overlayRefsByZaro,
       onClickFavoriteAdd,
-      setSelectPlaceDetail
+      setSelectPlaceDetail,
     );
   }, [myLocation, placeList, places]);
 

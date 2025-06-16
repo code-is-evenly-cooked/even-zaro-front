@@ -1,24 +1,24 @@
 /* eslint-disable */
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
-//
 
-import {
-  KakaoMapResponse, MarkerInfo,
-  PlaceListResponse,
-} from "@/types/map";
+import { KakaoMapResponse, MarkerInfo, PlaceListResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useMapStore } from "@/stores/mapStore";
 
 // 지도 초기화
 export const initializeMap = (
   container: HTMLDivElement,
+  setMyLocation: (myLocation: { lat: number; lng: number }) => void,
   callback: (map: any) => void,
 ) => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      const center = new window.kakao.maps.LatLng(
-        position.coords.latitude,
-        position.coords.longitude,
-      );
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setMyLocation({lat, lng});
+
+      const center = new window.kakao.maps.LatLng(lat, lng);
 
       const map = new window.kakao.maps.Map(container, {
         center,
@@ -116,7 +116,7 @@ export function searchKeyword(
 
   const ps = new window.kakao.maps.services.Places();
   if (!keyword.trim()) {
-    showToastMessage({type: "error", message: "검색어를 입력해주세요!"});
+    showToastMessage({ type: "error", message: "검색어를 입력해주세요!" });
     return;
   }
   ps.keywordSearch(keyword, callback);
@@ -176,7 +176,7 @@ export function placeToMarkerFromZaro(
       map,
       overlayRefs,
       onClickFavoriteAdd,
-      setSelectPlaceDetail
+      setSelectPlaceDetail,
     );
   });
 }
@@ -569,7 +569,9 @@ export function getMarkerIconByCategoryCode(code: string): string {
   }
 }
 
-function convertMarkerInfoToKakaoMapResponse(place: MarkerInfo): KakaoMapResponse {
+function convertMarkerInfoToKakaoMapResponse(
+  place: MarkerInfo,
+): KakaoMapResponse {
   return {
     id: place.kakaoPlaceId,
     place_name: place.name,
