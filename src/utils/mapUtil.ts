@@ -2,8 +2,6 @@
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
 
 import { KakaoMapResponse, MarkerInfo, PlaceListResponse } from "@/types/map";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useMapStore } from "@/stores/mapStore";
 
 // 지도 초기화
 export const initializeMap = (
@@ -13,10 +11,9 @@ export const initializeMap = (
 ) => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
-
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
-      setMyLocation({lat, lng});
+      setMyLocation({ lat, lng });
 
       const center = new window.kakao.maps.LatLng(lat, lng);
 
@@ -118,7 +115,6 @@ export function searchKeyword(
   showToastMessage: (payload: ToastPayload) => void,
   callback: (data: any[], status: any, pagination: any) => void,
 ) {
-
   const ps = new window.kakao.maps.services.Places();
   if (!keyword.trim()) {
     showToastMessage({ type: "error", message: "검색어를 입력해주세요!" });
@@ -261,8 +257,9 @@ function displayInfoWindowFromKakao(
   simpleMarker.appendChild(labelEl);
 
   // 상세 정보 오버레이
-  const content = document.createElement("div");
-  content.style.cssText = `
+  const detailMarker = document.createElement("div");
+  detailMarker.id = `detail-marker-${place.id}`; // 고유 id 추가
+  detailMarker.style.cssText = `
     background: white;
     padding: 10px;
     border-radius: 8px;
@@ -289,7 +286,7 @@ function displayInfoWindowFromKakao(
   `;
   closeBtn.id = "close-btn-search";
   closeBtn.textContent = "✕";
-  content.appendChild(closeBtn);
+  detailMarker.appendChild(closeBtn);
 
   // 이름 + 링크 아이콘 wrapper
   const nameWrapper = document.createElement("div");
@@ -324,7 +321,7 @@ function displayInfoWindowFromKakao(
 
   nameWrapper.appendChild(nameLink);
   nameWrapper.appendChild(iconImg);
-  content.appendChild(nameWrapper);
+  detailMarker.appendChild(nameWrapper);
 
   // Address
   const addressDiv = document.createElement("div");
@@ -334,12 +331,12 @@ function displayInfoWindowFromKakao(
     white-space: normal;
   `;
   addressDiv.textContent = `주소 : ${place.address_name}`;
-  content.appendChild(addressDiv);
+  detailMarker.appendChild(addressDiv);
 
   const phoneNumDiv = document.createElement("div");
   phoneNumDiv.style.cssText = `color: green`;
   phoneNumDiv.textContent = `전화번호 : ${place.phone || "전화번호가 등록되지 않은 장소입니다."}`;
-  content.appendChild(phoneNumDiv);
+  detailMarker.appendChild(phoneNumDiv);
 
   // Add button
   const addBtn = document.createElement("button");
@@ -354,7 +351,7 @@ function displayInfoWindowFromKakao(
     cursor: pointer;
   `;
   addBtn.textContent = "⭐ 즐겨찾기 추가";
-  content.appendChild(addBtn);
+  detailMarker.appendChild(addBtn);
 
   // 간단한 말풍선 인포윈도우
   const simpleCustomOverlay = new kakao.maps.CustomOverlay({
@@ -370,13 +367,17 @@ function displayInfoWindowFromKakao(
   const detailOverlay = new kakao.maps.CustomOverlay({
     map: undefined,
     position: new kakao.maps.LatLng(place.y, place.x),
-    content: content,
+    content: detailMarker,
     yAnchor: 1.5,
     zIndex: 9999,
   });
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
+    // 이전 상세 정보 오버레이 제거
+    document.querySelectorAll("[id*='detail-marker-']").forEach((el) => {
+      el.remove();
+    });
     detailOverlay.setMap(map);
 
     setSelectPlaceDetail?.(place);
@@ -384,14 +385,14 @@ function displayInfoWindowFromKakao(
 
   // 오버레이 닫기
   setTimeout(() => {
-    const closeBtn = content.querySelector("#close-btn-search");
+    const closeBtn = detailMarker.querySelector("#close-btn-search");
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         detailOverlay.setMap(null);
       });
     }
 
-    const addBtn = content.querySelector("#add-btn");
+    const addBtn = detailMarker.querySelector("#add-btn");
     if (addBtn) {
       if (addBtn && onClickFavoriteAdd) {
         addBtn.addEventListener("click", onClickFavoriteAdd);
@@ -435,6 +436,7 @@ function displayInfoWindowFromZaro(
 
   // 상세 정보 모달 (즐겨찾기 추가 포함)
   const detailMarker = document.createElement("div");
+  detailMarker.id = `detail-marker-${place.placeId}`; // 고유 id 추가
   detailMarker.style.cssText = `
   background: white;
     padding: 10px;
@@ -518,6 +520,10 @@ function displayInfoWindowFromZaro(
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
+    // 이전 상세 정보 오버레이 제거
+    document.querySelectorAll("[id*='detail-marker-']").forEach((el) => {
+      el.remove();
+    });
     detailOverlay.setMap(map);
 
     // 카카오맵 응답 객체로 변환
