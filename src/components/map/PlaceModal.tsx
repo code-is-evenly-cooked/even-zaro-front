@@ -17,19 +17,13 @@ export default function PlaceModal() {
       const lng = myLocation.lng;
       const distanceKm = 3;
 
-      (async () => {
-        try {
-          const data: PlaceListResponse = await fetchPlaceList(
-            lat,
-            lng,
-            distanceKm
-          );
+      fetchPlaceList(lat, lng, distanceKm)
+        .then((data) => {
           setPlaceList(data);
-        } catch (error) {
+        })
+        .catch(() => {
           setPlaceList(null);
-          console.warn("장소 목록을 불러오는 데 실패했습니다.", error);
-        }
-      })();
+        })
     }, 500);
 
     return () => clearTimeout(timer);
