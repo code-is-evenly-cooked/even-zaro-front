@@ -2,27 +2,21 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
-import { fetchGroupList, postAddFavorite, postAddGroup } from "@/lib/api/map";
+import { fetchGroupList, fetchPlaceList, postAddFavorite, postAddGroup } from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
-  const { setFavoriteAddModal, selectPlaceDetail } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
+  const { setFavoriteAddModal, selectPlaceDetail, myLocation, setPlaceList } = useMapStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
   const [myGroup, setMyGroup] = useState<GroupListResponse[] | null>(null);
   const [memo, setMemo] = useState<string>(""); // 사용자가 입력한 메모 내용 관리
-
-  const [favState, setFavState] = useState<{
-    message: string;
-    success: boolean;
-  }>({ message: "", success: false });
-  const [groupState, setGroupState] = useState<{
-    message: string;
-    success: boolean;
-  }>({ message: "", success: false });
 
   const [selectGroupId, setSelectGroupId] = useState<number | null>(null);
   const loadGroupList = async () => {
@@ -53,13 +47,14 @@ export function FavoriteAddModal() {
     try {
       await postAddGroup(newGroupName); // 그룹 추가 비동기 통신
       setNewGroupName(""); // 입력 값 초기화
-      setGroupState({ message: "그룹 추가가 완료되었습니다.", success: true });
+      showToastMessage({ type: "success", message: "그룹 추가가 완료되었습니다."});
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
       if (error instanceof Error) {
-        setGroupState({ message: error.message, success: false });
+        showToastMessage({ type : "error", message: error.message})
+
       } else {
-        setGroupState({ message: "알 수 없는 에러입니다.", success: false });
+        showToastMessage({ type : "error", message: getErrorMessage(error, "알 수 없는 오류가 발생했습니다.")});
       }
     }
   };
@@ -67,7 +62,7 @@ export function FavoriteAddModal() {
   // 그룹에 즐겨찾기 추가 버튼
   const handleAddFavoriteBtn = async () => {
     if (!selectedGroup) {
-      setFavState({ message: "그룹을 선택해주세요.", success: false });
+      showToastMessage({ type: "error", message: "그룹을 선택해주세요."});
     }
 
     if (!selectPlaceDetail || !selectGroupId) return;
@@ -84,12 +79,21 @@ export function FavoriteAddModal() {
 
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
-      setFavState({ message: "즐겨찾기 추가 성공", success: true });
+      showToastMessage({ type : "success", message: "즐겨찾기 추가 성공"})
     } catch (error) {
       if (error instanceof Error) {
-        setFavState({ message: error.message, success: false });
+        showToastMessage({ type : "error", message: error.message})
       } else {
-        setFavState({ message: "알 수 없는 에러입니다.", success: false });
+        showToastMessage({ type : "error", message: getErrorMessage(error, "알 수 없는 오류가 발생했습니다.")});
+      }
+    } finally {
+      // 즐겨찾기 후 다시 현재 위치 기준으로 즐겨찾기 검색하여 지도 최신화
+      if(myLocation) {
+        const lat = myLocation.lat;
+        const lng = myLocation.lng;
+        const distanceKm = 3;
+        const response = await fetchPlaceList(lat, lng, distanceKm);
+        setPlaceList(response);
       }
     }
   };
@@ -135,11 +139,13 @@ export function FavoriteAddModal() {
                 placeholder="새 그룹 이름을 입력하세요"
               />
               <div className="flex flex-row justify-between items-center">
-                <span
-                  className={`${groupState.success ? "text-green-400" : "text-red-500"}`}
-                >
-                  {groupState.message}
-                </span>
+                {/*showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})*/}
+
+                {/*<span*/}
+                {/*  className={`${groupState.success ? "text-green-400" : "text-red-500"}`}*/}
+                {/*>*/}
+                {/*  {groupState.message}*/}
+                {/*</span>*/}
                 <span className="py-2">
                   <button
                     onClick={handleAddGroupBtn}
@@ -164,11 +170,11 @@ export function FavoriteAddModal() {
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
           />
-          <span
-            className={`${favState.success ? "text-green-400" : "text-red-500"}`}
-          >
-            {favState.message}
-          </span>
+          {/*<span*/}
+          {/*  className={`${favState.success ? "text-green-400" : "text-red-500"}`}*/}
+          {/*>*/}
+          {/*  {favState.message}*/}
+          {/*</span>*/}
         </div>
 
         <div className="flex justify-end space-x-2">

@@ -26,6 +26,7 @@ export interface PlaceListResponse {
 
 export interface PlaceInfo {
   placeId : number;
+  kakaoPlaceId: number;
   name: string;
   address: string;
   category: string;
@@ -93,9 +94,7 @@ export interface MyLoc {
   lng: number
 }
 
-export type markerInfos = markerInfo[];
-
-export interface markerInfo {
+export interface MarkerInfo {
   title: string;
   latlng: MyLoc;
   category: string;
@@ -103,16 +102,17 @@ export interface markerInfo {
   lat: number;
   lng: number;
   placeId: number;
+  kakaoPlaceId: number;
   address: string;
 }
 
 export interface KakaoMapResponse {
+  id: number,
   address_name: string,
   category_group_code: string,
   category_group_name: string,
   category_name: string,
   distance: string,
-  id: number,
   phone: string,
   place_name: string,
   place_url: string,

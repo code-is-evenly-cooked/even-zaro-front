@@ -125,7 +125,7 @@ export default function KakaoMap() {
 
   // 내 위치가 바뀔 때마다 placeList가 갱신
   useEffect(() => {
-    if (!map || !myLocation || places.length > 0) return; // 검색 중이면 무시
+    if (!map || !myLocation) return; // 검색 중이면 무시
 
     if (!placeList || !placeList.placeInfos?.length) {
       clearMarkers(markerRefsByZaro, overlayRefsByZaro);
@@ -138,6 +138,7 @@ export default function KakaoMap() {
       markerRefsByZaro,
       overlayRefsByZaro,
       onClickFavoriteAdd,
+      setSelectPlaceDetail
     );
   }, [myLocation, placeList, places]);
 

@@ -16,7 +16,6 @@ export default function PlaceUserMemosHeader({
   const placeId = useMapStore((status) => status.placeId);
   const { showToastMessage } = useToastMessageContext();
 
-
   const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
