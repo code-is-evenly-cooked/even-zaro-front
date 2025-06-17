@@ -51,7 +51,7 @@ const PostImageCard = ({
         </div>
         {/* 컨텐츠 */}
         <div className="flex flex-col gap-0">
-          <h3 className="text-base font-semibold text-gray900 line-clamp-2">
+          <h3 className="text-base font-semibold text-gray900 line-clamp-2 hover:underline">
             {title}
           </h3>
           <h4 className=" text-sm text-gray600 line-clamp-1">

@@ -3,6 +3,8 @@ import PostHeader from "@/components/post/PostHeader";
 import PostAuthor from "@/components/post/PostAuthor";
 import ClientPostContent from "./PostPageClient";
 import PostFooterInteraction from "@/components/post/PostFooterInteraction";
+import { isAPIErrorResponse } from "@/types/api";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ postId: string; category: string }>;
@@ -10,7 +12,15 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { postId } = await params;
-  const post = await fetchPostDetail(postId);
+  let post;
+  try {
+    post = await fetchPostDetail(postId);
+  } catch (error) {
+    if (isAPIErrorResponse(error)) {
+      if (error.statusCode === 404) return notFound();
+    }
+    throw error;
+  }
   const categoryKey = post.category;
 
   return (
