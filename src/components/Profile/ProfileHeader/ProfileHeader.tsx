@@ -21,6 +21,7 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   const { user } = useAuthStore();
   const { showToastMessage } = useToastMessageContext();
+  const [followerCount, setFollowerCount] = useState(profile.followerCount);
   const [isFollowing, setIsFollowing] = useState(profile.isFollowing);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,12 +43,14 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
     const prev = isFollowing;
 
     setIsFollowing(!prev);
+    setFollowerCount((count) => count + (prev ? -1 : 1));
 
     setIsLoading(true);
     try {
       await (prev ? unfollowUser(profile.userId) : followUser(profile.userId));
     } catch {
       setIsFollowing(prev); // 실패 시 롤백
+      setFollowerCount((count) => count + (prev ? 1 : -1));
     } finally {
       setIsLoading(false);
     }
@@ -94,7 +97,7 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
             <Stat label="글" count={profile.postCount} />
             <Stat
               label="팔로워"
-              count={profile.followerCount}
+              count={followerCount}
               onClick={() => handleClickStat("follower")}
             />
             <Stat
