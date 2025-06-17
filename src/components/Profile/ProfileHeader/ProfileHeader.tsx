@@ -106,17 +106,25 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
               onClick={() => handleClickStat("following")}
             />
           </ul>
-          <button
-            onClick={handleToggleFollow}
-            disabled={isLoading}
-            className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl font-semibold ${
-              isFollowing
-                ? "bg-gray200 text-gray900 hover:bg-opacity-70"
-                : "bg-violet300 text-gray900 hover:bg-opacity-70"
-            }`}
-          >
-            {isLoading ? <LoadingSpinner /> : isFollowing ? "팔로잉" : "팔로우"}
-          </button>
+          {!profile.isMine && (
+            <button
+              onClick={handleToggleFollow}
+              disabled={isLoading}
+              className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl font-semibold ${
+                isFollowing
+                  ? "bg-gray200 text-gray900 hover:bg-opacity-70"
+                  : "bg-violet300 text-gray900 hover:bg-opacity-70"
+              }`}
+            >
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : isFollowing ? (
+                "팔로잉"
+              ) : (
+                "팔로우"
+              )}
+            </button>
+          )}
         </div>
       </div>
       {openType && (
