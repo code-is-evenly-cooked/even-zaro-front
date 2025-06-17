@@ -8,7 +8,7 @@ import {
 interface useMapPlaceStore {
   // 장소 리스트
   placeList: PlaceListResponse | null;
-  setPlaceList: (placeList: PlaceListResponse) => void;
+  setPlaceList: (placeList: PlaceListResponse | null) => void;
 
   // 장소 상세
   placeDetail: PlaceDetailResponse | null;
@@ -25,7 +25,7 @@ export const useMapPlaceStore = create<useMapPlaceStore>((set) => ({
   placeDetail: null,
   selectPlaceDetail: null,
 
-  setPlaceList: (placeList: PlaceListResponse) =>
+  setPlaceList: (placeList: PlaceListResponse | null) =>
     set(() => ({
       placeList: placeList,
     })),
