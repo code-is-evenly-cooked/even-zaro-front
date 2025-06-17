@@ -119,3 +119,32 @@ export interface KakaoMapResponse {
   x: number,
   y: number
 }
+
+// types/map.ts 등
+export type Category = "All" | "FD6" | "CE7" | "CS2" | "MT1" | "Etc";
+
+export type CategoryGroupCode =
+  | "MT1"
+  | "CS2"
+  | "PS3"
+  | "SC4"
+  | "AC5"
+  | "PK6"
+  | "OL7"
+  | "SW8"
+  | "BK9"
+  | "CT1"
+  | "AG2"
+  | "PO3"
+  | "AT4"
+  | "AD5"
+  | "FD6"
+  | "CE7"
+  | "HP8"
+  | "PM9";
+
+// 분류 유틸
+export const mapToCategory = (code: CategoryGroupCode): Category =>
+  ["FD6", "CE7", "CS2", "MT1"].includes(code)
+    ? (code as Category)
+    : "Etc";
