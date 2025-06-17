@@ -7,10 +7,17 @@ import Link from "next/link";
 import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapGroupStore } from "@/stores/map/useMapGroupStore";
 
 export function UserGroupList() {
   const { placeId, page, otherUserId, setPagePlaceDetail } = useMapPageStore();
+  const { setGroupList } = useMapGroupStore();
   const { data: profile } = useProfile(otherUserId);
+
+  function onClickBackBtn() {
+    setPagePlaceDetail(placeId!);
+    setGroupList([]); // 이전 버튼 클릭 시 저장되어있던 데이터 초기화
+  }
 
   if (page === PAGE.USERGROUPLIST)
     return (
@@ -20,7 +27,7 @@ export function UserGroupList() {
         <div className="flex items-center justify-between px-4 py-2 border-b">
           {/* 뒤로 가기*/}
           <button
-            onClick={() => setPagePlaceDetail(placeId!)}
+            onClick={onClickBackBtn}
             className="p-1 rounded-full hover:bg-gray-100"
           >
             <ArrowLeft size={20} className="text-gray-700" />
