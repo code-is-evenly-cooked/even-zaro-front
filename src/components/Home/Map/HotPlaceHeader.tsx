@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Category } from "@/types/map";
 
 interface HotPlaceHeaderProps {
-  activeCategory: "All" | "Cafe" | "Food" | "Etc";
-  setActiveCategory: (category: "All" | "Cafe" | "Food" | "Etc") => void;
+  activeCategory: Category;
+  setActiveCategory: (category: Category) => void;
   sortType: "favorite" | "distance" | "name";
   setSortType: (type: "favorite" | "distance" | "name") => void;
 }
@@ -49,14 +50,16 @@ export default function HotPlaceHeader({
       <div className="flex gap-2">
         {[
           { label: "전체", value: "All" },
-          { label: "카페", value: "Cafe" },
-          { label: "음식점", value: "Food" },
+          { label: "카페", value: "CE7" },
+          { label: "음식점", value: "FD6" },
+          { label: "편의점", value: "CS2"},
+          { label: "마트", value: "MT1"},
           { label: "기타", value: "Etc" },
         ].map((tab) => (
           <button
             key={tab.value}
             onClick={() =>
-              setActiveCategory(tab.value as "All" | "Cafe" | "Food" | "Etc")
+              setActiveCategory(tab.value as Category)
             }
             className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
               activeCategory === tab.value
