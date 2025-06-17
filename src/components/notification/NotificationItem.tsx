@@ -66,9 +66,9 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
         showToastMessage({
           type: "error",
           message:
-            type === "COMMENT"
-              ? "삭제 처리된 댓글입니다."
-              : "삭제 처리된 게시글입니다.",
+            type === "FOLLOW"
+              ? "존재하지 않는 유저입니다."
+              : "존재하지 않는 게시글입니다.",
         });
       }
     }
