@@ -78,7 +78,6 @@ const useLoginForm = () => {
       const accessToken = getCookie("access_token"); // 쿠키에서 꺼내서
       if (accessToken && typeof accessToken === "string") {
         useAuthStore.getState().setAccessToken(accessToken); // 전역 저장
-        console.log("accessToken 저장됨:", accessToken);
       } else {
         console.warn("accessToken이 쿠키에 없음");
       }
@@ -122,7 +121,6 @@ const useLoginForm = () => {
 
       // Zustand에 accessToken 저장
       useAuthStore.getState().setAccessToken(kakaoAccessToken);
-      console.log("카카오 accessToken 저장됨:", kakaoAccessToken);
 
       router.replace("/");
     } catch (error) {
