@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import type { CategoryType, SortType } from "@/types/hotplace";
 
 interface HotPlaceHeaderProps {
-  activeCategory: "All" | "Cafe" | "Food" | "Etc";
-  setActiveCategory: (category: "All" | "Cafe" | "Food" | "Etc") => void;
-  sortType: "favorite" | "distance" | "name";
-  setSortType: (type: "favorite" | "distance" | "name") => void;
+  activeCategory: CategoryType;
+  setActiveCategory: (category: CategoryType) => void;
+  sortType: SortType;
+  setSortType: (type: SortType) => void;
 }
 
 export default function HotPlaceHeader({
@@ -17,11 +18,18 @@ export default function HotPlaceHeader({
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const sortOptions = [
+  const categoryTabs: { label: string; value: CategoryType }[] = [
+    { label: "전체", value: "All" },
+    { label: "카페", value: "Cafe" },
+    { label: "음식점", value: "Food" },
+    { label: "기타", value: "Etc" },
+  ];
+
+  const sortOptions: { label: string; value: SortType }[] = [
     { label: "즐겨찾기 순", value: "favorite" },
     { label: "거리 순", value: "distance" },
     { label: "이름 순", value: "name" },
-  ] as const;
+  ];
 
   // 드롭 다운 닫기 외부 감지
   useEffect(() => {
@@ -47,17 +55,10 @@ export default function HotPlaceHeader({
     <div className="flex justify-between items-center px-2">
       {/* 카테고리 탭 */}
       <div className="flex gap-2">
-        {[
-          { label: "전체", value: "All" },
-          { label: "카페", value: "Cafe" },
-          { label: "음식점", value: "Food" },
-          { label: "기타", value: "Etc" },
-        ].map((tab) => (
+        {categoryTabs.map((tab) => (
           <button
             key={tab.value}
-            onClick={() =>
-              setActiveCategory(tab.value as "All" | "Cafe" | "Food" | "Etc")
-            }
+            onClick={() => setActiveCategory(tab.value as CategoryType)}
             className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
               activeCategory === tab.value
                 ? "bg-violet800 text-white"
