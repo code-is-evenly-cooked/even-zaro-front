@@ -14,9 +14,10 @@ export function UserGroupList() {
   const { setGroupList } = useMapGroupStore();
   const { data: profile } = useProfile(otherUserId);
 
+  // 이전 버튼 클릭시 이전 데이터 초기화
   function onClickBackBtn() {
     setPagePlaceDetail(placeId!);
-    setGroupList([]); // 이전 버튼 클릭 시 저장되어있던 데이터 초기화
+    setGroupList([]); // 데이터 초기화
   }
 
   if (page === PAGE.USERGROUPLIST)

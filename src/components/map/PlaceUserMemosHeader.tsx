@@ -19,9 +19,10 @@ export default function PlaceUserMemosHeader({
 
   const [favorite, setFavorite] = useState(false);
 
+  // 이전 버튼 클릭 시 이전 데이터 초기화
   function onClickBackBtn() {
     setPagePlaceList();
-    setPlaceDetail(null);
+    setPlaceDetail(null); // 데이터 초기화
   }
 
   useEffect(() => {

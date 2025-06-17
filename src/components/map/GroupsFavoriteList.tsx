@@ -16,9 +16,10 @@ export function GroupsFavoriteList() {
   const { setFavoriteList } = useMapFavoriteStore();
   const { data: profile } = useProfile(otherUserId);
 
+  // 이전 버튼 클릭 시 이전 데이터 초기화 및 페이지 전환
   function onClickBackBtn() {
     setPageGroupList(otherUserId!);
-    setFavoriteList([]);
+    setFavoriteList([]); // 데이터 초기화
   }
 
   if (page === PAGE.FAVORITELIST)
