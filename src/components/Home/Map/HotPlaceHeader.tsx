@@ -19,23 +19,25 @@ export default function HotPlaceHeader({
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // 라벨 매핑 및 상수 분리
+  // 카테고리 탭 라벨 매핑 및 상수 분리
   const categoryTabs: { label: string; value: CategoryType }[] = [
     { label: "전체", value: "All" },
     { label: "카페", value: "CE7" },
     { label: "음식점", value: "FD6" },
+    // TODO: 탭 확장 고민
     // { label: "편의점", value: "CS2" },
     // { label: "마트", value: "MT1" },
     { label: "기타", value: "Etc" },
   ];
 
+  // 정렬 옵션 라벨 매핑 및 상수 분리
   const sortOptions: { label: string; value: SortType }[] = [
     { label: "즐겨찾기 순", value: "favorite" },
     { label: "거리 순", value: "distance" },
     { label: "이름 순", value: "name" },
   ];
 
-  // 드롭 다운 외부 클릭 시 닫기
+  // 외부 클릭이나 ESC 키 입력 시 드롭다운 닫기
   useClickOutside(dropdownRef, () => setOpenDropdown(false), {
     enableEscape: true,
   });
@@ -47,7 +49,7 @@ export default function HotPlaceHeader({
         {categoryTabs.map((tab) => (
           <button
             key={tab.value}
-            onClick={() => setActiveCategory(tab.value as CategoryType)}
+            onClick={() => setActiveCategory(tab.value)}
             className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
               activeCategory === tab.value
                 ? "bg-violet800 text-white"
