@@ -12,7 +12,7 @@ interface useMapPlaceStore {
 
   // 장소 상세
   placeDetail: PlaceDetailResponse | null;
-  setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
+  setPlaceDetail: (placeDetail: PlaceDetailResponse | null) => void;
 
   // 선택한 장소의 상세 정보
   selectPlaceDetail: KakaoMapResponse | null;
@@ -29,7 +29,7 @@ export const useMapPlaceStore = create<useMapPlaceStore>((set) => ({
     set(() => ({
       placeList: placeList,
     })),
-  setPlaceDetail: (placeDetail: PlaceDetailResponse) =>
+  setPlaceDetail: (placeDetail: PlaceDetailResponse | null) =>
     set(() => ({
       placeDetail: placeDetail,
     })),

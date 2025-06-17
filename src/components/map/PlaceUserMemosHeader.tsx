@@ -4,6 +4,7 @@ import { PlaceDetailResponse } from "@/types/map";
 import { fetchFavoriteStatus } from "@/lib/api/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
@@ -13,9 +14,16 @@ export default function PlaceUserMemosHeader({
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
   const { placeId, setPagePlaceList } = useMapPageStore();
+  const { setPlaceDetail } = useMapPlaceStore();
   const { showToastMessage } = useToastMessageContext();
 
   const [favorite, setFavorite] = useState(false);
+
+  // 이전 버튼 클릭 시 이전 데이터 초기화
+  function onClickBackBtn() {
+    setPagePlaceList();
+    setPlaceDetail(null); // 데이터 초기화
+  }
 
   useEffect(() => {
     if (placeId !== null) {
@@ -40,7 +48,7 @@ export default function PlaceUserMemosHeader({
   return (
     <div className="relative w-full px-4 py-4">
       <div className="flex flex-col items-center justify-center">
-        <button className="absolute left-4 top-4" onClick={setPagePlaceList}>
+        <button className="absolute left-4 top-4" onClick={onClickBackBtn}>
           <ArrowLeftIcon />
         </button>
 
