@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { getCookie } from "cookies-next";
 
 export type AuthProvider = "LOCAL" | "KAKAO";
 export type Gender = "MALE" | "FEMALE" | "UNKNOWN";
@@ -50,7 +51,10 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      accessToken: null,
+      accessToken:
+        typeof window !== "undefined"
+          ? (getCookie("access_token")?.toString() ?? null)
+          : null,
       isInitialized: false,
 
       setUser: (user) => set({ user }),

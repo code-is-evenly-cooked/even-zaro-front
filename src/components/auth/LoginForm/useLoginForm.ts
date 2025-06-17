@@ -8,7 +8,6 @@ import { validateEmail, validatePassword } from "@/utils/validate";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
-import { getCookie } from "cookies-next";
 
 type FormType = "email" | "password";
 
@@ -19,6 +18,7 @@ interface LoginFormErrors {
 
 const useLoginForm = () => {
   const router = useRouter();
+  const { setUser } = useAuthStore();
 
   const [formState, setFormState] = useState({
     email: "",
@@ -30,7 +30,6 @@ const useLoginForm = () => {
     kakao: false,
   });
   const { showToastMessage } = useToastMessageContext();
-  const { setUser } = useAuthStore();
 
   const validateForm = useCallback(() => {
     const newErrors: LoginFormErrors = {};
@@ -74,14 +73,6 @@ const useLoginForm = () => {
 
       const user = await fetchUser();
       setUser(user);
-
-      const accessToken = getCookie("access_token"); // 쿠키에서 꺼내서
-      if (accessToken && typeof accessToken === "string") {
-        useAuthStore.getState().setAccessToken(accessToken); // 전역 저장
-        console.log("accessToken 저장됨:", accessToken);
-      } else {
-        console.warn("accessToken이 쿠키에 없음");
-      }
 
       router.replace("/");
     } catch (err) {
