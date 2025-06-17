@@ -26,10 +26,16 @@ export const useRestoreDraft = (
     }
 
     loadDraft().then((saved) => {
-      if (saved) {
+      // 임시 저장 값이 비어있는 지 확인
+      const isValidDraft =
+        saved &&
+        (saved.title?.trim().length > 0 || saved.content?.trim().length > 0);
+
+      if (isValidDraft) {
         setDraft(saved);
         setIsOpen(true); // 모달 열기
       } else {
+        clearDraft();
         setIsReady(true);
       }
     });
