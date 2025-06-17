@@ -1,3 +1,5 @@
+"use client";
+
 import {
   fetchUserComments,
   fetchUserLikes,
@@ -6,7 +8,7 @@ import {
 import { APIErrorResponse } from "@/types/api";
 import { PostDetailResponse, UserCommentedResponse } from "@/types/post";
 import { ProfileTabType } from "@/types/profile";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 
 interface userProfilePostListProps {
@@ -44,7 +46,7 @@ export const useProfileItemList = ({
     }
   };
 
-  return useSuspenseQuery<PostDetailResponse | UserCommentedResponse>({
+  return useQuery<PostDetailResponse | UserCommentedResponse>({
     queryKey,
     queryFn,
     retry: false,

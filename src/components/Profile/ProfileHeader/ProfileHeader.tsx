@@ -5,39 +5,56 @@ import { getProfileImageUrl } from "@/utils/image";
 import { SettingIcon } from "../../common/Icons";
 import { Stat } from "./Stat";
 import Link from "next/link";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchUserProfile } from "@/lib/api/profile";
 import { ProfileResponse } from "@/types/profile";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
 import { getDdayLabel } from "@/utils/date";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { followUser, unfollowUser } from "@/lib/api/follow";
 
 interface ProfileHeaderProps {
-  userId: string;
+  profile: ProfileResponse;
 }
 
-export default function ProfileHeader({ userId }: ProfileHeaderProps) {
+export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   const { user } = useAuthStore();
   const { showToastMessage } = useToastMessageContext();
-  const { data: profile } = useSuspenseQuery<ProfileResponse>({
-    queryKey: ["profile", userId],
-    queryFn: () => fetchUserProfile(userId),
-    retry: false,
-    staleTime: 1000 * 60 * 5,
-  });
+  const [followerCount, setFollowerCount] = useState(profile.followerCount);
+  const [isFollowing, setIsFollowing] = useState(profile.isFollowing);
+  const [isLoading, setIsLoading] = useState(false);
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
 
-  const handleClickStat = (type: FollowModalType) => {
-    if (user === null) {
-      showToastMessage({ type: "info", message: "로그인이 필요합니다." });
-    } else {
-      setOpenType(type);
+  const handleClickStat = useCallback(
+    (type: FollowModalType) => {
+      if (user === null) {
+        showToastMessage({ type: "info", message: "로그인이 필요합니다." });
+      } else {
+        setOpenType(type);
+      }
+    },
+    [user, showToastMessage],
+  );
+
+  const handleToggleFollow = useCallback(async () => {
+    const prev = isFollowing;
+
+    setIsFollowing(!prev);
+    setFollowerCount((count) => count + (prev ? -1 : 1));
+
+    setIsLoading(true);
+    try {
+      await (prev ? unfollowUser(profile.userId) : followUser(profile.userId));
+    } catch {
+      setIsFollowing(prev); // 실패 시 롤백
+      setFollowerCount((count) => count + (prev ? 1 : -1));
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [isFollowing, profile.userId]);
 
   return (
     <div className="py-4">
@@ -70,15 +87,17 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
                 {getDdayLabel(profile.liveAloneDate)}
               </span>
             )}
-            <Link href="/setting">
-              <SettingIcon />
-            </Link>
+            {profile.isMine && (
+              <Link href="/setting">
+                <SettingIcon />
+              </Link>
+            )}
           </div>
           <ul className="flex justify-around gap-16">
             <Stat label="글" count={profile.postCount} />
             <Stat
               label="팔로워"
-              count={profile.followerCount}
+              count={followerCount}
               onClick={() => handleClickStat("follower")}
             />
             <Stat
@@ -87,11 +106,30 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
               onClick={() => handleClickStat("following")}
             />
           </ul>
+          {!profile.isMine && (
+            <button
+              onClick={handleToggleFollow}
+              disabled={isLoading}
+              className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl font-semibold ${
+                isFollowing
+                  ? "bg-gray200 text-gray900 hover:bg-opacity-70"
+                  : "bg-violet300 text-gray900 hover:bg-opacity-70"
+              }`}
+            >
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : isFollowing ? (
+                "팔로잉"
+              ) : (
+                "팔로우"
+              )}
+            </button>
+          )}
         </div>
       </div>
       {openType && (
         <UserFollowModal
-          userId={userId}
+          userId={`${profile.userId}`}
           type={openType}
           isOpen
           onClose={() => setOpenType(null)}
