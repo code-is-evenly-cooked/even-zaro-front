@@ -1,14 +1,14 @@
 import { Star } from "lucide-react";
 import { GroupListResponse } from "@/types/map";
-import { useMapStore } from "@/stores/map/mapStore";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapGroupStore } from "@/stores/map/useMapGroupStore";
 
 interface GroupCardProps {
   group: GroupListResponse;
 }
 
 export function GroupCard({ group }: GroupCardProps) {
-  const { setGroupInfo } = useMapStore();
+  const { setGroupInfo } = useMapGroupStore();
   const { setPageFavoriteList } = useMapPageStore();
 
   const handleClick = () => {
