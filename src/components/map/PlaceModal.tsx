@@ -22,7 +22,7 @@ export default function PlaceModal() {
 
       {/* 장소 카드 리스트 */}
       <ul className="flex flex-col gap-3 px-4 py-4 overflow-y-auto">
-        {placeList && placeList.placeInfos.length > 0 ?(
+        {placeList && placeList.placeInfos.length > 0 ? (
           placeList.placeInfos.map((place) => (
             <PlaceCard
               key={place.placeId}
@@ -36,7 +36,7 @@ export default function PlaceModal() {
             />
           ))
         ) : (
-          <FallbackMessage message="인근에 조회된 장소가 없습니다."/>
+          <FallbackMessage message="인근에 조회된 장소가 없습니다." />
         )}
       </ul>
     </div>

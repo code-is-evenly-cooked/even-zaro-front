@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import {
-  FavoriteListResponse,
-} from "@/types/map";
+import { FavoriteListResponse } from "@/types/map";
 
 interface useMapFavoriteStore {
   // 즐겨찾기 리스트
@@ -24,6 +22,6 @@ export const useMapFavoriteStore = create<useMapFavoriteStore>((set) => ({
     })),
   setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
     set(() => ({
-      favoriteList: favoriteList
+      favoriteList: favoriteList,
     })),
 }));

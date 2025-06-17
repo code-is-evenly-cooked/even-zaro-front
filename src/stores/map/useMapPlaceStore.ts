@@ -25,7 +25,6 @@ export const useMapPlaceStore = create<useMapPlaceStore>((set) => ({
   placeDetail: null,
   selectPlaceDetail: null,
 
-
   setPlaceList: (placeList: PlaceListResponse | null) =>
     set(() => ({
       placeList: placeList,

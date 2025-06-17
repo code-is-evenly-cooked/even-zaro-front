@@ -8,7 +8,7 @@ import { useMapPageStore } from "@/stores/map/useMapPageStore";
 import { useMapGroupStore } from "@/stores/map/useMapGroupStore";
 
 export function GroupCardList() {
-  const { groupList, setGroupList } = useMapGroupStore()
+  const { groupList, setGroupList } = useMapGroupStore();
   const { showToastMessage } = useToastMessageContext();
   const { otherUserId } = useMapPageStore();
 

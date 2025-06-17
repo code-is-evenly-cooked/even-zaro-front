@@ -12,7 +12,7 @@ interface PlaceUserMemosHeaderProps {
 export default function PlaceUserMemosHeader({
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
-  const {placeId, setPagePlaceList} = useMapPageStore();
+  const { placeId, setPagePlaceList } = useMapPageStore();
   const { showToastMessage } = useToastMessageContext();
 
   const [favorite, setFavorite] = useState(false);
@@ -24,13 +24,18 @@ export default function PlaceUserMemosHeader({
           const data = await fetchFavoriteStatus(placeId);
           setFavorite(data);
         } catch (error) {
-          showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})
-          console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
+          showToastMessage({
+            type: "error",
+            message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다.",
+          });
+          console.error(
+            "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다",
+            error,
+          );
         }
       })();
     }
   }, [placeId]);
-
 
   return (
     <div className="relative w-full px-4 py-4">

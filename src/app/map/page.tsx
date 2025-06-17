@@ -25,7 +25,7 @@ const MapPage = () => {
       {page === PAGE.USERGROUPLIST && <UserGroupList />}
       {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
 
-      {favoriteAddModal && <FavoriteAddModal /> }
+      {favoriteAddModal && <FavoriteAddModal />}
     </div>
   );
 };

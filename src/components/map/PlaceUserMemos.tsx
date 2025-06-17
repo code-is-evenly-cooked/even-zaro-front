@@ -12,7 +12,6 @@ export default function PlaceUserMemos() {
   const { showToastMessage } = useToastMessageContext();
   const { placeId } = useMapPageStore();
 
-
   useEffect(() => {
     if (placeId !== null) {
       (async () => {
@@ -20,7 +19,10 @@ export default function PlaceUserMemos() {
           const data = await fetchPlaceDetail(placeId);
           setPlaceDetail(data);
         } catch (error) {
-          showToastMessage({type: "error", message: "장소 상세 정보를 불러오는 데 실패했습니다."})
+          showToastMessage({
+            type: "error",
+            message: "장소 상세 정보를 불러오는 데 실패했습니다.",
+          });
           console.error("장소 상세 정보를 불러오는 데 실패했습니다.", error);
         }
       })();
