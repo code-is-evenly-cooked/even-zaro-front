@@ -3,7 +3,7 @@ import { FavoriteListResponse } from "@/types/map";
 
 interface useMapFavoriteStore {
   // 즐겨찾기 리스트
-  favoriteList: FavoriteListResponse[] | null;
+  favoriteList: FavoriteListResponse[] | [];
   setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
 
   // 즐겨찾기 추가 모달
@@ -14,7 +14,7 @@ interface useMapFavoriteStore {
 export const useMapFavoriteStore = create<useMapFavoriteStore>((set) => ({
   // 초기값
   favoriteAddModal: false,
-  favoriteList: null,
+  favoriteList: [],
 
   setFavoriteAddModal: (favoriteAddModal: boolean) =>
     set(() => ({

@@ -3,7 +3,7 @@ import { GroupListResponse } from "@/types/map";
 
 interface useMapGroupStore {
   // 유저 그룹 리스트
-  groupList: GroupListResponse[] | null;
+  groupList: GroupListResponse[] | [];
   setGroupList: (groupList: GroupListResponse[]) => void;
 
   groupInfo: GroupListResponse | null;

@@ -7,7 +7,7 @@ interface useMapStore {
   setMap: (map: kakao.maps.Map) => void;
   // 내 위치
   myLocation: MyLoc | null;
-  regionName: string | null;
+  regionName: string | "";
   setMyLocation: (myLocation: { lat: number; lng: number }) => void;
   setRegionName: (myRegionName: string) => void;
 }
@@ -15,7 +15,7 @@ interface useMapStore {
 export const useMapStore = create<useMapStore>((set) => ({
   // 초기값
   myLocation: null,
-  regionName: null,
+  regionName: "",
   map: null,
 
   setMyLocation: (myLocation: MyLoc) =>
