@@ -1,11 +1,11 @@
 "use client";
 
-import { fetchUser, userLogin, userSocialLogin } from "@/lib/api/auth";
+import { fetchUser, userLogin } from "@/lib/api/auth";
 import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { validateEmail, validatePassword } from "@/utils/validate";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { getCookie } from "cookies-next";
@@ -96,35 +96,11 @@ const useLoginForm = () => {
   };
 
   const handleKakaoLogin = async () => {
-    console.log("kakao Login");
     try {
-      const res = await signIn("kakao", {
-        redirect: false,
+      await signIn("kakao", {
+        redirect: true,
         callbackUrl: "/",
       });
-      if (res?.error) {
-        console.error("카카오 로그인 실패", res.error);
-        return;
-      }
-
-      const session = await getSession();
-      const kakaoAccessToken = session?.user?.accessToken;
-
-      if (!kakaoAccessToken) {
-        showToastMessage({ type: "error", message: "카카오 accessToken 누락" });
-        return;
-      }
-
-      await userSocialLogin(kakaoAccessToken);
-      const user = await fetchUser();
-
-      setUser(user);
-
-      // Zustand에 accessToken 저장
-      useAuthStore.getState().setAccessToken(kakaoAccessToken);
-      console.log("카카오 accessToken 저장됨:", kakaoAccessToken);
-
-      router.replace("/");
     } catch (error) {
       console.error("카카오 로그인 중 에러", error);
       showToastMessage({

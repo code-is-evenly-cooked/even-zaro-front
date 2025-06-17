@@ -2,16 +2,30 @@
 
 import { useUser } from "@/hooks/useUser";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  const pathName = usePathname();
   const { setUser, clearUser } = useAuthStore();
-  const { data, error } = useUser();
+  const { status, data: session } = useSession();
+  const { data, error, refetch } = useUser({ enabled: false });
+
+  useEffect(() => {
+    if (pathName.includes("login") || pathName.includes("signup")) return;
+
+    if (status === "authenticated" && session?.user?.accessToken) {
+      refetch(); // 세션 존재 시 유저 정보 요청
+    } else if (status === "unauthenticated") {
+      clearUser(); // 비로그인 시 상태 초기화
+    }
+  }, [status, refetch, clearUser]);
 
   useEffect(() => {
     if (data) setUser(data);
     if (error) clearUser();
-  }, [data, error]);
+  }, [data, error, setUser, clearUser]);
 
   return <>{children}</>;
 };

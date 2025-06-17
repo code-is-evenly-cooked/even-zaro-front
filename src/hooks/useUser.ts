@@ -3,7 +3,7 @@ import { fetchUser } from "@/lib/api/auth";
 import { APIErrorResponse } from "@/types/api";
 import { UserInfo } from "@/stores/useAuthStore";
 
-export const useUser = () => {
+export const useUser = (options?: { enabled?: boolean }) => {
   return useQuery<UserInfo, APIErrorResponse>({
     queryKey: ["user"],
     queryFn: fetchUser,
@@ -15,5 +15,6 @@ export const useUser = () => {
       return failureCount < 1;
     },
     refetchOnWindowFocus: false,
+    enabled: options?.enabled ?? true, // 기본 자동 실행
   });
 };
