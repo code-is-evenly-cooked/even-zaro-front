@@ -9,12 +9,12 @@ export default function MapBox() {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRefsByZaro = useRef<kakao.maps.Marker[]>([]);
   const overlayRefsByZaro = useRef<kakao.maps.CustomOverlay[]>([]);
+
   const { map, setMap } = useMapStore();
   const { placeList } = useMapPlaceStore();
 
   // 현재 위치 중심 지도
   useEffect(() => {
-    // 카카오 sdk 불러오기
     if (!window.kakao || !window.kakao.maps) return;
 
     navigator.geolocation.getCurrentPosition((position) => {
@@ -32,8 +32,7 @@ export default function MapBox() {
         map: kakaoMap,
         position: new window.kakao.maps.LatLng(latitude, longitude),
       });
-
-      // Zustand에 지도 객체 저장
+      
       setMap(kakaoMap);
     });
   }, [setMap]);

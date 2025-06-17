@@ -31,7 +31,7 @@ export default function HotPlaceList() {
 
       {/* 장소 리스트*/}
       {places.length > 0 ? (
-        <div className="flex flex-col min-w-[400px] h-[280px] overflow-y-auto px-2">
+        <div className="flex flex-col sm:min-w-[400px] h-[280px] overflow-y-auto px-2">
           {places.map((place) => (
             <div key={place.placeId} className="relative">
               <PlaceCard

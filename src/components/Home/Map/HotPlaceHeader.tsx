@@ -43,7 +43,7 @@ export default function HotPlaceHeader({
   });
 
   return (
-    <div className="flex justify-between items-center px-2">
+    <div className="flex flex-col sm:flex-row gap-4 justify-between items-center px-2">
       {/* 카테고리 탭 */}
       <div className="flex gap-2">
         {categoryTabs.map((tab) => (
