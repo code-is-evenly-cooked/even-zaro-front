@@ -9,9 +9,11 @@ import { UserGroupList } from "@/components/map/UserGroupList";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteAddModal } from "@/components/map/FavoriteAddModal";
 import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
+import { useMapPageStore } from "@/stores/useMapPageStore";
 
 const MapPage = () => {
-  const { page, favoriteAddModal } = useMapStore((state) => state);
+  const { favoriteAddModal } = useMapStore((state) => state);
+  const { page } = useMapPageStore();
 
   return (
     <div className="w-full h-full">

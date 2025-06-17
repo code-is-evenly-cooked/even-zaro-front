@@ -5,9 +5,11 @@ import { fetchFavoritesByGroup } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { FavoriteCard } from "@/components/map/FavoriteCard";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useMapPageStore } from "@/stores/useMapPageStore";
 
 export function FavoriteList() {
-  const { groupId, favoriteList } = useMapStore((state) => state);
+  const { favoriteList } = useMapStore((state) => state);
+  const { groupId } = useMapPageStore();
   const { setFavoriteList } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
 

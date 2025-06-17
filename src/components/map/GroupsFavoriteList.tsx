@@ -7,11 +7,14 @@ import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
+import { useMapPageStore } from "@/stores/useMapPageStore";
 
 export function GroupsFavoriteList() {
-  const { page, otherUserId, groupInfo } = useMapStore((state) => state);
-  const { setPageGroupList } = useMapStore();
+  const { groupInfo } = useMapStore((state) => state);
+  const {page, otherUserId, setPageGroupList} = useMapPageStore();
   const { data: profile } = useProfile(otherUserId);
+
+
 
   if (page === PAGE.FAVORITELIST)
     return (

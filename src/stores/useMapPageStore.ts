@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { PAGE, PageType } from "@/types/map";
 
-interface UseMapPageStore {
+interface useMapPageStore {
   placeId: number | null;
   otherUserId: number | null;
   groupId: number | null;
@@ -14,7 +14,7 @@ interface UseMapPageStore {
   setPageFavoriteList: (groupId: number) => void;
 }
 
-export const useMapStore = create<UseMapPageStore>((set) => ({
+export const useMapPageStore = create<useMapPageStore>((set) => ({
   // 초기값
   page: PAGE.PLACELIST,
   otherUserId: null,

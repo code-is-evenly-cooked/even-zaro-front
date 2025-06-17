@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import { useMapStore } from "@/stores/mapStore";
 import Link from "next/link";
+import { useMapPageStore } from "@/stores/useMapPageStore";
 
 interface UserMemoProps {
   userId: number;
@@ -16,7 +17,7 @@ export default function UserMemoCard({
   nickName,
   memo,
 }: UserMemoProps) {
-  const { setPageGroupList } = useMapStore();
+  const { setPageGroupList } = useMapPageStore();
 
   return (
     <li className="flex items-center hover:bg-gray100 transition p-1">

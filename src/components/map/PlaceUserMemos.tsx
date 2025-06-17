@@ -5,11 +5,13 @@ import { UserMemoCards } from "@/components/map/UserMemoCards";
 import { fetchPlaceDetail } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useMapPageStore } from "@/stores/useMapPageStore";
 
 export default function PlaceUserMemos() {
-  const { placeId, placeDetail } = useMapStore((state) => state);
+  const { placeDetail } = useMapStore((state) => state);
   const { setPlaceDetail } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
+  const { placeId } = useMapPageStore();
 
 
   useEffect(() => {
