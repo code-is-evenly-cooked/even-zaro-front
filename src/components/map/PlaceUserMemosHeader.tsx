@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
+import { ArrowLeftIcon, LucideStar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
@@ -15,7 +15,6 @@ export default function PlaceUserMemosHeader({
   const { setPagePlaceList } = useMapStore();
   const placeId = useMapStore((status) => status.placeId);
   const { showToastMessage } = useToastMessageContext();
-
 
   const [favorite, setFavorite] = useState(false);
 
@@ -56,9 +55,9 @@ export default function PlaceUserMemosHeader({
               {placeDetail?.address}
             </span>
           </div>
-          <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
-            <MoreVerticalIcon />
-          </button>
+          {/*<button className="absolute top-4 right-4 w-5 h-5 mt-0.5">*/}
+          {/*  <MoreVerticalIcon />*/}
+          {/*</button>*/}
         </div>
       </div>
     </div>

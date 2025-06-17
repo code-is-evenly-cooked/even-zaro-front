@@ -1,25 +1,21 @@
 /* eslint-disable */
 // 해당 파일의 빌드 시 타입 추론 에러를 임시방편으로 막기 위해 추가한 주석입니다.
-//
 
-import {
-  KakaoMapResponse,
-  markerInfo,
-  markerInfos,
-  PlaceListResponse,
-} from "@/types/map";
+import { KakaoMapResponse, MarkerInfo, PlaceListResponse } from "@/types/map";
 
 // 지도 초기화
 export const initializeMap = (
   container: HTMLDivElement,
+  setMyLocation: (myLocation: { lat: number; lng: number }) => void,
   callback: (map: any) => void,
 ) => {
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      const center = new window.kakao.maps.LatLng(
-        position.coords.latitude,
-        position.coords.longitude,
-      );
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setMyLocation({ lat, lng });
+
+      const center = new window.kakao.maps.LatLng(lat, lng);
 
       const map = new window.kakao.maps.Map(container, {
         center,
@@ -107,6 +103,26 @@ export function updateCenterAddress(
   });
 }
 
+type ToastPayload = {
+  type: "success" | "error";
+  message: string;
+};
+
+// 검색어 입력필드 컨트롤
+export function searchKeyword(
+  map: any,
+  keyword: string,
+  showToastMessage: (payload: ToastPayload) => void,
+  callback: (data: any[], status: any, pagination: any) => void,
+) {
+  const ps = new window.kakao.maps.services.Places();
+  if (!keyword.trim()) {
+    showToastMessage({ type: "error", message: "검색어를 입력해주세요!" });
+    return;
+  }
+  ps.keywordSearch(keyword, callback);
+}
+
 // Zaro API서버의 place테이블에서 받아온 데이터를 마커로 추가
 export function placeToMarkerFromZaro(
   places: PlaceListResponse,
@@ -114,6 +130,7 @@ export function placeToMarkerFromZaro(
   markerRefs?: React.MutableRefObject<kakao.maps.Marker[]>,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   if (!places || !places.placeInfos || places.placeInfos.length === 0) return;
 
@@ -123,7 +140,7 @@ export function placeToMarkerFromZaro(
     markerRefs.current = [];
   }
 
-  const positions: markerInfos = places.placeInfos.map((place) => ({
+  const positions: MarkerInfo[] = places.placeInfos.map((place) => ({
     title: place.name,
     latlng: { lat: place.lat, lng: place.lng },
     category: place.category,
@@ -131,22 +148,25 @@ export function placeToMarkerFromZaro(
     lat: place.lat,
     lng: place.lng,
     placeId: place.placeId,
+    kakaoPlaceId: place.kakaoPlaceId,
     address: place.address,
   }));
 
-  // 즐겨찾기 마커
-  const imageSrc = "/marker/favoriteMarker.svg";
-  const imageSize = new window.kakao.maps.Size(24, 35);
-  const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
-  positions.forEach((place: markerInfo) => {
+
+  positions.forEach((place: MarkerInfo) => {
+    // 즐겨찾기 마커
+    let imageSrc = getFavMarkerIconByCategoryCode(place.category);
+    const imageSize = new window.kakao.maps.Size(24, 35);
+    const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
     const marker = new window.kakao.maps.Marker({
       map,
       position: new window.kakao.maps.LatLng(place.lat, place.lng),
       title: place.name,
       image: markerImage,
       clickable: true,
-      zIndex: 1,
+      zIndex: 10, // Kakao 마커보다는 높게
     });
 
     marker.setMap(map);
@@ -159,22 +179,9 @@ export function placeToMarkerFromZaro(
       map,
       overlayRefs,
       onClickFavoriteAdd,
+      setSelectPlaceDetail,
     );
   });
-}
-
-// 검색어 입력필드 컨트롤
-export function searchKeyword(
-  map: any,
-  keyword: string,
-  callback: (data: any[], status: any, pagination: any) => void,
-) {
-  const ps = new window.kakao.maps.services.Places();
-  if (!keyword.trim()) {
-    alert("키워드를 입력해주세요!");
-    return;
-  }
-  ps.keywordSearch(keyword, callback);
 }
 
 // 카카오 API 응답으로 받아온 장소들을 마커로 추가
@@ -199,7 +206,7 @@ export function placeToMarkerFromKakao(
       title: place.place_name,
       image: markerImage,
       clickable: true,
-      zIndex: 1,
+      zIndex: 8, // Zaro 마커보다는 낮게
     });
 
     marker.setMap(map);
@@ -252,8 +259,9 @@ function displayInfoWindowFromKakao(
   simpleMarker.appendChild(labelEl);
 
   // 상세 정보 오버레이
-  const content = document.createElement("div");
-  content.style.cssText = `
+  const detailMarker = document.createElement("div");
+  detailMarker.id = `detail-marker-${place.id}`; // 고유 id 추가
+  detailMarker.style.cssText = `
     background: white;
     padding: 10px;
     border-radius: 8px;
@@ -265,6 +273,7 @@ function displayInfoWindowFromKakao(
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
+    z-index: 50;
   `;
 
   // Close button
@@ -279,43 +288,57 @@ function displayInfoWindowFromKakao(
   `;
   closeBtn.id = "close-btn-search";
   closeBtn.textContent = "✕";
-  content.appendChild(closeBtn);
+  detailMarker.appendChild(closeBtn);
 
-  // Name
-  const nameDiv = document.createElement("div");
-  nameDiv.style.cssText = `
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 4px;
-  `;
-  nameDiv.textContent = `이름 : ${place.place_name}`;
-  content.appendChild(nameDiv);
+  // 이름 + 링크 아이콘 wrapper
+  const nameWrapper = document.createElement("div");
+  nameWrapper.style.cssText = `
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 4px;
+`;
+
+  // 이름 텍스트 링크
+  const nameLink = document.createElement("a");
+  nameLink.href = place.place_url;
+  nameLink.textContent = place.place_name;
+  nameLink.target = "_blank";
+  nameLink.style.cssText = `
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+  // 링크 아이콘
+  const iconImg = document.createElement("img");
+  iconImg.src = "/icons/link.svg";
+  iconImg.alt = "링크 아이콘";
+  iconImg.style.cssText = `
+  width: 14px;
+  height: 14px;
+`;
+
+  nameWrapper.appendChild(nameLink);
+  nameWrapper.appendChild(iconImg);
+  detailMarker.appendChild(nameWrapper);
 
   // Address
   const addressDiv = document.createElement("div");
   addressDiv.style.cssText = `
     color: #555;
+    word-break: break-word;
+    white-space: normal;
   `;
-  addressDiv.textContent = `주소 : ${place.address_name}`;
-  content.appendChild(addressDiv);
+  addressDiv.textContent = `${place.address_name}`;
+  detailMarker.appendChild(addressDiv);
 
-  // Coordinates
-  const coordDiv = document.createElement("div");
-  coordDiv.style.cssText = `
-    color: #888;
-    font-size: 11px;
-  `;
-  coordDiv.textContent = `좌표: (${place.y}, ${place.x})`;
-  content.appendChild(coordDiv);
-
-  // Category code
-  const categoryDiv = document.createElement("div");
-  categoryDiv.style.cssText = `
-    margin-top: 4px;
-    color: #333;
-  `;
-  categoryDiv.textContent = `카테고리 코드 : ${place.category_group_name}`;
-  content.appendChild(categoryDiv);
+  const phoneNumDiv = document.createElement("div");
+  phoneNumDiv.style.cssText = `color: green`;
+  phoneNumDiv.textContent = `${place.phone || " "}`;
+  detailMarker.appendChild(phoneNumDiv);
 
   // Add button
   const addBtn = document.createElement("button");
@@ -330,7 +353,7 @@ function displayInfoWindowFromKakao(
     cursor: pointer;
   `;
   addBtn.textContent = "⭐ 즐겨찾기 추가";
-  content.appendChild(addBtn);
+  detailMarker.appendChild(addBtn);
 
   // 간단한 말풍선 인포윈도우
   const simpleCustomOverlay = new kakao.maps.CustomOverlay({
@@ -340,18 +363,25 @@ function displayInfoWindowFromKakao(
     yAnchor: 2.5,
     zIndex: 2,
   });
-  overlayRefs?.current.push(simpleCustomOverlay);
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
     map: undefined,
     position: new kakao.maps.LatLng(place.y, place.x),
-    content: content,
+    content: detailMarker,
     yAnchor: 1.5,
+    zIndex: 9999,
   });
+
+  // 추적
+  overlayRefs?.current.push(simpleCustomOverlay);
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
+    // 이전 상세 정보 오버레이 제거
+    document.querySelectorAll("[id*='detail-marker-']").forEach((el) => {
+      el.remove();
+    });
     detailOverlay.setMap(map);
 
     setSelectPlaceDetail?.(place);
@@ -359,14 +389,14 @@ function displayInfoWindowFromKakao(
 
   // 오버레이 닫기
   setTimeout(() => {
-    const closeBtn = content.querySelector("#close-btn-search");
+    const closeBtn = detailMarker.querySelector("#close-btn-search");
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         detailOverlay.setMap(null);
       });
     }
 
-    const addBtn = content.querySelector("#add-btn");
+    const addBtn = detailMarker.querySelector("#add-btn");
     if (addBtn) {
       if (addBtn && onClickFavoriteAdd) {
         addBtn.addEventListener("click", onClickFavoriteAdd);
@@ -377,11 +407,12 @@ function displayInfoWindowFromKakao(
 
 // Zaro API로부터 받은 PlaceInfo 타입의 객체를 마커로 추가
 function displayInfoWindowFromZaro(
-  place: markerInfo,
+  place: MarkerInfo,
   marker: any,
   map: kakao.maps.Map,
   overlayRefs?: React.RefObject<kakao.maps.CustomOverlay[]>,
   onClickFavoriteAdd?: () => void,
+  setSelectPlaceDetail?: (place: KakaoMapResponse) => void,
 ) {
   // 간단 정보 모달
   const simpleMarker = document.createElement("div");
@@ -409,6 +440,7 @@ function displayInfoWindowFromZaro(
 
   // 상세 정보 모달 (즐겨찾기 추가 포함)
   const detailMarker = document.createElement("div");
+  detailMarker.id = `detail-marker-${place.placeId}`; // 고유 id 추가
   detailMarker.style.cssText = `
   background: white;
     padding: 10px;
@@ -421,6 +453,7 @@ function displayInfoWindowFromZaro(
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
+    z-index: 50;
   `;
 
   // Close button
@@ -444,34 +477,18 @@ function displayInfoWindowFromZaro(
     font-size: 14px;
     margin-bottom: 4px;
   `;
-  nameDiv.textContent = `이름 : ${place.name}`;
+  nameDiv.textContent = `${place.name}`;
   detailMarker.appendChild(nameDiv);
 
   // Address
   const addressDiv = document.createElement("div");
   addressDiv.style.cssText = `
     color: #555;
+    word-break: break-word;
+    white-space: normal;
   `;
-  addressDiv.textContent = `주소 : ${place.address}`;
+  addressDiv.textContent = `${place.address}`;
   detailMarker.appendChild(addressDiv);
-
-  // Coordinates
-  const coordDiv = document.createElement("div");
-  coordDiv.style.cssText = `
-    color: #888;
-    font-size: 11px;
-  `;
-  coordDiv.textContent = `좌표: (${place.lng}, ${place.lat})`;
-  detailMarker.appendChild(coordDiv);
-
-  // Category code
-  const categoryDiv = document.createElement("div");
-  categoryDiv.style.cssText = `
-    margin-top: 4px;
-    color: #333;
-  `;
-  categoryDiv.textContent = `카테고리 코드 : ${place.category}`;
-  detailMarker.appendChild(categoryDiv);
 
   // Add button
   const addBtn = document.createElement("button");
@@ -494,7 +511,6 @@ function displayInfoWindowFromZaro(
     position: new kakao.maps.LatLng(place.lat, place.lng),
     yAnchor: 2,
   });
-  overlayRefs?.current.push(simpleOverLay);
 
   // 상세 정보 커스텀 오버레이 (초기엔 닫힘)
   const detailOverlay = new kakao.maps.CustomOverlay({
@@ -502,11 +518,24 @@ function displayInfoWindowFromZaro(
     position: new kakao.maps.LatLng(place.lat, place.lng),
     content: detailMarker,
     yAnchor: 1.5,
+    zIndex: 9999,
   });
+  // 추적
+  overlayRefs?.current.push(simpleOverLay);
+
 
   // 상세 정보 표시
   kakao.maps.event.addListener(marker, "click", () => {
+    // 이전 상세 정보 오버레이 제거
+    document.querySelectorAll("[id*='detail-marker-']").forEach((el) => {
+      el.remove();
+    });
     detailOverlay.setMap(map);
+
+    // 카카오맵 응답 객체로 변환
+    const kakaoMapResponse = convertMarkerInfoToKakaoMapResponse(place);
+
+    setSelectPlaceDetail?.(kakaoMapResponse);
   });
 
   // 오버레이 닫기
@@ -555,6 +584,39 @@ export function getMarkerIconByCategoryCode(code: string): string {
     default: // 그 외
       return "/marker/others.svg";
   }
+}
+
+// *즐겨찾기 전용* / 카테고리 코드에 따라 마커 아이콘 지정
+export function getFavMarkerIconByCategoryCode(code: string): string {
+  switch (code) {
+    case "FD6": // 식당
+      return "/marker/restaurant_star.svg";
+    case "CE7": // 카페
+      return "/marker/cafe_star.svg";
+    case "MT1": // 대형마트
+    case "CS2": // 편의점
+      return "/marker/shop_star.svg";
+    default: // 그 외
+      return "/marker/others_star.svg";
+  }
+}
+
+function convertMarkerInfoToKakaoMapResponse(
+  place: MarkerInfo,
+): KakaoMapResponse {
+  return {
+    id: place.kakaoPlaceId,
+    place_name: place.name,
+    address_name: place.address,
+    place_url: "", // Zaro 데이터에 없다면 빈값 또는 추후에 보완
+    distance: "",
+    x: place.lng,
+    y: place.lat,
+    phone: "",
+    category_group_code: "",
+    category_group_name: "",
+    category_name: "",
+  };
 }
 
 // 거리 계산 함수

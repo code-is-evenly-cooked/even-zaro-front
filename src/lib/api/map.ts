@@ -66,7 +66,6 @@ export const postAddFavorite = async (groupId: number, {
   lng,
   category,
 }: FavoriteAddRequest): Promise<FavroiteAddResponse> => {
-  console.log("api 호출 완료");
   return await client<FavroiteAddResponse>(`/favorite/groups/${groupId}/favorites`, {
     method: "POST",
     body: JSON.stringify({
