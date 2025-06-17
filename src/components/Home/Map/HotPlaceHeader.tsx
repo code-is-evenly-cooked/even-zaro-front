@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import type { CategoryType, SortType } from "@/types/hotplace";
 
 interface HotPlaceHeaderProps {
@@ -18,6 +19,7 @@ export default function HotPlaceHeader({
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // 라벨 매핑 및 상수 분리
   const categoryTabs: { label: string; value: CategoryType }[] = [
     { label: "전체", value: "All" },
     { label: "카페", value: "Cafe" },
@@ -31,25 +33,10 @@ export default function HotPlaceHeader({
     { label: "이름 순", value: "name" },
   ];
 
-  // 드롭 다운 닫기 외부 감지
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpenDropdown(false);
-      }
-    };
-
-    if (openDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openDropdown]);
+  // 드롭 다운 외부 클릭 시 닫기
+  useClickOutside(dropdownRef, () => setOpenDropdown(false), {
+    enableEscape: true,
+  });
 
   return (
     <div className="flex justify-between items-center px-2">
