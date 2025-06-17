@@ -6,12 +6,14 @@ import PlaceModal from "@/components/map/PlaceModal";
 import PlaceUserMemos from "@/components/map/PlaceUserMemos";
 import { PAGE } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
-import { useMapStore } from "@/stores/mapStore";
 import { FavoriteAddModal } from "@/components/map/FavoriteAddModal";
 import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 const MapPage = () => {
-  const { page, favoriteAddModal } = useMapStore((state) => state);
+  const { favoriteAddModal } = useMapFavoriteStore();
+  const { page } = useMapPageStore();
 
   return (
     <div className="w-full h-full">
@@ -23,7 +25,7 @@ const MapPage = () => {
       {page === PAGE.USERGROUPLIST && <UserGroupList />}
       {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
 
-      {favoriteAddModal && <FavoriteAddModal /> }
+      {favoriteAddModal && <FavoriteAddModal />}
     </div>
   );
 };

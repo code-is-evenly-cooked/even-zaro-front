@@ -1,5 +1,5 @@
 import { FavoriteListResponse } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 
 interface FavoriteCardProps {
   favorite: FavoriteListResponse;

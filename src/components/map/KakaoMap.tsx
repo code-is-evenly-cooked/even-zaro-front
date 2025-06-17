@@ -10,25 +10,22 @@ import {
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { fetchPlaceList } from "@/lib/api/map";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { placeList, myLocation, map, favoriteAddModal } = useMapStore(
-    (state) => state,
-  );
-  const {
-    setMyLocation,
-    setRegionName,
-    setMap,
-    setFavoriteAddModal,
-    setSelectPlaceDetail,
-    setPlaceList
-  } = useMapStore();
+  const { myLocation, map } = useMapStore((state) => state);
+  const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
+
+  const { placeList, setSelectPlaceDetail, setPlaceList } = useMapPlaceStore();
+
+  const { setMyLocation, setRegionName, setMap } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
@@ -162,7 +159,7 @@ export default function KakaoMap() {
         })
         .catch(() => {
           setPlaceList(null);
-        })
+        });
     }, 500);
 
     return () => clearTimeout(timer);

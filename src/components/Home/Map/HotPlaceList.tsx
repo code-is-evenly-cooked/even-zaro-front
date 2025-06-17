@@ -5,9 +5,9 @@ import { fetchPlaceList } from "@/lib/api/map";
 import { PlaceListResponse, PlaceInfo, Category } from "@/types/map";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
-import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { getDistanceFromLatLonInKm } from "@/utils/mapUtil";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 type PlaceWithDistance = PlaceInfo & { distanceKm: number };
 
@@ -17,7 +17,7 @@ export default function HotPlaceList() {
   const [sortType, setSortType] = useState<"favorite" | "distance" | "name">(
     "favorite",
   );
-  const { setPlaceList } = useMapStore();
+  const { setPlaceList } = useMapPlaceStore();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {

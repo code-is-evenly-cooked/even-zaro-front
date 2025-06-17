@@ -1,5 +1,4 @@
 import { ArrowLeft } from "lucide-react";
-import { useMapStore } from "@/stores/mapStore";
 import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
@@ -7,10 +6,12 @@ import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapGroupStore } from "@/stores/map/useMapGroupStore";
 
 export function GroupsFavoriteList() {
-  const { page, otherUserId, groupInfo } = useMapStore((state) => state);
-  const { setPageGroupList } = useMapStore();
+  const { groupInfo } = useMapGroupStore();
+  const { page, otherUserId, setPageGroupList } = useMapPageStore();
   const { data: profile } = useProfile(otherUserId);
 
   if (page === PAGE.FAVORITELIST)

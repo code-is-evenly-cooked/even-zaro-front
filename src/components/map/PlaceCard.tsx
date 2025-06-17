@@ -1,11 +1,7 @@
-import {
-  Cafe,
-  Etc,
-  Food,
-  Market,
-} from "@/components/common/Icons/category";
+import { Cafe, Etc, Food, Market } from "@/components/common/Icons/category";
 import { JSX } from "react";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface PlaceCardProps {
   placeId: number;
@@ -35,9 +31,10 @@ export default function PlaceCard({
   lng,
   favoriteCount,
 }: PlaceCardProps) {
-  const { setPagePlaceDetail, map } = useMapStore();
+  const { map } = useMapStore();
+  const { setPagePlaceDetail } = useMapPageStore();
 
-  function onClickPlace () {
+  function onClickPlace() {
     setPagePlaceDetail(placeId);
 
     // 지도 중심 이동

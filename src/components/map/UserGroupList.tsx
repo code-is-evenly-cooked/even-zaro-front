@@ -1,16 +1,15 @@
 import { ArrowLeft } from "lucide-react";
 import { PAGE } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
 import { useProfile } from "@/hooks/useProfile";
 import { GroupCardList } from "@/components/map/GroupCardList";
 import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
 import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 export function UserGroupList() {
-  const { placeId, page, otherUserId } = useMapStore((state) => state);
-  const { setPagePlaceDetail } = useMapStore();
+  const { placeId, page, otherUserId, setPagePlaceDetail } = useMapPageStore();
   const { data: profile } = useProfile(otherUserId);
 
   if (page === PAGE.USERGROUPLIST)

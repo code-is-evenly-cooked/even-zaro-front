@@ -35,10 +35,10 @@ export default function SideMenu() {
 
             <li className="relative group">
               <Link href="/">
-                  <HomeIcon className="w-10 h-10" />
-                  <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                    홈
-                  </div>
+                <HomeIcon className="w-10 h-10" />
+                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                  홈
+                </div>
               </Link>
             </li>
             <li className="relative group">

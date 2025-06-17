@@ -1,9 +1,9 @@
 import { ArrowLeftIcon, LucideStar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
 import { fetchFavoriteStatus } from "@/lib/api/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
@@ -12,8 +12,7 @@ interface PlaceUserMemosHeaderProps {
 export default function PlaceUserMemosHeader({
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
-  const { setPagePlaceList } = useMapStore();
-  const placeId = useMapStore((status) => status.placeId);
+  const { placeId, setPagePlaceList } = useMapPageStore();
   const { showToastMessage } = useToastMessageContext();
 
   const [favorite, setFavorite] = useState(false);
@@ -25,13 +24,18 @@ export default function PlaceUserMemosHeader({
           const data = await fetchFavoriteStatus(placeId);
           setFavorite(data);
         } catch (error) {
-          showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})
-          console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
+          showToastMessage({
+            type: "error",
+            message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다.",
+          });
+          console.error(
+            "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다",
+            error,
+          );
         }
       })();
     }
   }, [placeId]);
-
 
   return (
     <div className="relative w-full px-4 py-4">

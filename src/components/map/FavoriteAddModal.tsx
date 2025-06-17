@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
 import {
   fetchGroupList,
@@ -11,13 +11,15 @@ import {
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getErrorMessage } from "@/lib/error/getErrorMessage";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 export function FavoriteAddModal() {
-  const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
   const { showToastMessage } = useToastMessageContext();
-  const { setFavoriteAddModal, selectPlaceDetail, myLocation, setPlaceList } =
-    useMapStore();
+  const { myLocation } = useMapStore();
+  const { selectPlaceDetail, setPlaceList } = useMapPlaceStore();
+  const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
