@@ -23,7 +23,6 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
                 className="flex items-center justify-center rounded-full w-11 h-11 border-2 border-gray200"
                 key={idx}
               >
-                <button>
                   <Link
                     href={`/profile/${user.userId}`}
                     className="flex items-center gap-2"
@@ -36,7 +35,6 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
                       className="rounded-full border border-gray200 flex-shrink-0 h-auto"
                     />
                   </Link>
-                </button>
               </li>
             ))}
           </ul>
