@@ -1,32 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PlaceCard from "@/components/map/PlaceCard";
-import { fetchPlaceList } from "@/lib/api/map";
 import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 
 export default function PlaceModal() {
-  const { placeList, myLocation } = useMapStore((state) => state);
-  const { setPlaceList, regionName } = useMapStore();
-
-  useEffect(() => {
-    if (!myLocation?.lat || !myLocation?.lng) return;
-
-    const timer = setTimeout(() => {
-      const lat = myLocation.lat;
-      const lng = myLocation.lng;
-      const distanceKm = 3;
-
-      fetchPlaceList(lat, lng, distanceKm)
-        .then((data) => {
-          setPlaceList(data);
-        })
-        .catch(() => {
-          setPlaceList(null);
-        })
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [myLocation]);
+  const { placeList } = useMapStore((state) => state);
+  const { regionName } = useMapStore();
 
   return (
     <div className="flex flex-col absolute -bottom-4 left-0 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">

@@ -13,6 +13,8 @@ import {
 import { useMapStore } from "@/stores/mapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { fetchPlaceList } from "@/lib/api/map";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,9 @@ export default function KakaoMap() {
     setMap,
     setFavoriteAddModal,
     setSelectPlaceDetail,
+    setPlaceList
   } = useMapStore();
+  const { showToastMessage } = useToastMessageContext();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
   type PlaceSource = "zaro" | "kakao";
@@ -115,7 +119,7 @@ export default function KakaoMap() {
     if (!window.kakao || !window.kakao.maps) return;
 
     if (!mapRef.current) return;
-    initializeMap(mapRef.current, (map) => {
+    initializeMap(mapRef.current, setMyLocation, (map) => {
       mapInstanceRef.current = map;
       setMap(map); // 맵 객체 등록
       moveMyLocation(map, setMyLocation); // 내 위치 추적하여 전역상태변수에 위도경도 저장
@@ -131,6 +135,7 @@ export default function KakaoMap() {
       clearMarkers(markerRefsByZaro, overlayRefsByZaro);
       return;
     }
+    setPlaceList(placeList); // placeList 갱신
     clearMarkers(markerRefsByZaro, overlayRefsByZaro);
     placeToMarkerFromZaro(
       placeList,
@@ -138,9 +143,30 @@ export default function KakaoMap() {
       markerRefsByZaro,
       overlayRefsByZaro,
       onClickFavoriteAdd,
-      setSelectPlaceDetail
+      setSelectPlaceDetail,
     );
   }, [myLocation, placeList, places]);
+
+  // 전역으로 위치 이동 시 placeList 갱신
+  useEffect(() => {
+    if (!myLocation?.lat || !myLocation?.lng) return;
+
+    const timer = setTimeout(() => {
+      const lat = myLocation.lat;
+      const lng = myLocation.lng;
+      const distanceKm = 10;
+
+      fetchPlaceList(lat, lng, distanceKm)
+        .then((data) => {
+          setPlaceList(data);
+        })
+        .catch(() => {
+          setPlaceList(null);
+        })
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [myLocation]);
 
   return (
     <>
@@ -194,6 +220,7 @@ export default function KakaoMap() {
                   searchKeyword(
                     mapInstanceRef.current,
                     keyword,
+                    showToastMessage,
                     handleSearchResult,
                   );
                 }

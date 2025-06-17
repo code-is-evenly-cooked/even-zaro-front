@@ -1,4 +1,4 @@
-import { MoreVertical, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { GroupListResponse } from "@/types/map";
 import { useMapStore } from "@/stores/mapStore";
 
@@ -33,9 +33,9 @@ export function GroupCard({ group }: GroupCardProps) {
             </div>
           </div>
         </div>
-        <button className="hover:bg-gray-200 rounded-full p-1">
-          <MoreVertical size={20} className="text-gray-400" />
-        </button>
+        {/*<button className="hover:bg-gray-200 rounded-full p-1">*/}
+        {/*  <MoreVertical size={20} className="text-gray-400" />*/}
+        {/*</button>*/}
       </li>
   );
 }

@@ -1,7 +1,6 @@
 import {
   Cafe,
   Etc,
-  Favorite,
   Food,
   Market,
 } from "@/components/common/Icons/category";
@@ -20,11 +19,11 @@ interface PlaceCardProps {
 }
 
 const categoryIcons: Record<string, JSX.Element> = {
-  Food: <Food />,
-  Cafe: <Cafe />,
-  Market: <Market />,
-  Etc: <Etc />,
-  Favorite: <Favorite />,
+  FD6: <Food />, // 식당
+  CE7: <Cafe />, // 카페
+  MT1: <Market />, // 마트
+  CS2: <Market />, // 편의점
+  Etc: <Etc />, // 그외
 };
 
 export default function PlaceCard({
@@ -38,21 +37,22 @@ export default function PlaceCard({
 }: PlaceCardProps) {
   const { setPagePlaceDetail, map } = useMapStore();
 
+  function onClickPlace () {
+    setPagePlaceDetail(placeId);
+
+    // 지도 중심 이동
+    if (map) {
+      const latlng = new window.kakao.maps.LatLng(lat, lng);
+      map.setCenter(latlng);
+    }
+  }
+
   return (
     <li
-      className="flex items-center hover:bg-gray-100 transition p-1"
-      onClick={() => {
-        setPagePlaceDetail(placeId);
-
-        // 지도 중심 이동
-        if (map) {
-          const latlng = new window.kakao.maps.LatLng(lat, lng);
-          map.setCenter(latlng);
-        }
-      }}
+      className="flex items-center hover:bg-gray-100 transition p-1 cursor-pointer"
+      onClick={onClickPlace}
       key={placeId}
     >
-      {/* 이미지 영역 */}
       <div className="flex w-14 h-14 items-center justify-center mr-4 border border-gray-300 rounded-full">
         {categoryIcons[category] || <Etc />}
       </div>
