@@ -16,4 +16,6 @@ export interface ProfileResponse {
   postCount: number;
   followingCount: number;
   followerCount: number;
+  isMine: boolean;
+  isFollowing: boolean;
 }
