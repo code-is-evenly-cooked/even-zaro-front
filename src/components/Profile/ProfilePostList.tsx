@@ -1,3 +1,4 @@
+"use client";
 import { PROFILE_TAB_MAP, ProfileTabType } from "@/types/profile";
 import { useProfileItemList } from "../../hooks/useProfileItemList";
 import PostListCard from "../common/SectionCards/PostListCard";
@@ -8,6 +9,7 @@ import ClientSidePagination from "../common/Pagination/ClientSidePagination";
 import { useParams } from "next/navigation";
 import { CommonPostDetailItem, UserCommentedItem } from "@/types/post";
 import ProfileCommentCard from "./ProfileCommentCard";
+import LoadingSpinnerBoundary from "../common/LoadingSpinner/LoadingSpinnerBoundary";
 
 interface ProfilePostListProps {
   type: Exclude<ProfileTabType, "favorites">;
@@ -19,14 +21,21 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { data } = useProfileItemList({
+  const { data, isLoading, error } = useProfileItemList({
     userId: userId,
     type,
     page: currentPage,
   });
 
-  const isEmpty = data?.content.length === 0;
+  const isEmpty = !data || data?.content.length === 0;
   const label = PROFILE_TAB_MAP[type];
+
+  if (isLoading) return <LoadingSpinnerBoundary />;
+  if (error)
+    return (
+      <FallbackMessage message="프로필 정보를 불러오는 중 오류가 발생했습니다." />
+    );
+
   return isEmpty ? (
     <FallbackMessage
       message={`${label} 게시글이 없습니다.`}
@@ -37,7 +46,7 @@ const ProfilePostList = ({ type }: ProfilePostListProps) => {
       <ul>
         {type === "comments"
           ? (data.content as UserCommentedItem[]).map((comment) => (
-              <li key={comment.postId}>
+              <li key={`${comment.postId}-${comment.commentCreatedAt}`}>
                 <Link href={`/board/${comment.category}/${comment.postId}`}>
                   <ProfileCommentCard item={comment} />
                 </Link>
