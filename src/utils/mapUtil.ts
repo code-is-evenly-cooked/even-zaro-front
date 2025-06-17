@@ -332,12 +332,12 @@ function displayInfoWindowFromKakao(
     word-break: break-word;
     white-space: normal;
   `;
-  addressDiv.textContent = `주소 : ${place.address_name}`;
+  addressDiv.textContent = `${place.address_name}`;
   detailMarker.appendChild(addressDiv);
 
   const phoneNumDiv = document.createElement("div");
   phoneNumDiv.style.cssText = `color: green`;
-  phoneNumDiv.textContent = `전화번호 : ${place.phone || "전화번호가 등록되지 않은 장소입니다."}`;
+  phoneNumDiv.textContent = `${place.phone || " "}`;
   detailMarker.appendChild(phoneNumDiv);
 
   // Add button
@@ -487,7 +487,7 @@ function displayInfoWindowFromZaro(
     word-break: break-word;
     white-space: normal;
   `;
-  addressDiv.textContent = `주소 : ${place.address}`;
+  addressDiv.textContent = `${place.address}`;
   detailMarker.appendChild(addressDiv);
 
   // Add button
