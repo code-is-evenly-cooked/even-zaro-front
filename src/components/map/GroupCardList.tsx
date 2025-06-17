@@ -2,10 +2,10 @@ import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { useEffect } from "react";
 import { GroupListResponse } from "@/types/map";
 import { fetchGroupList } from "@/lib/api/map";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import { GroupCard } from "@/components/map/GroupCard";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 export function GroupCardList() {
   const { groupList } = useMapStore((state) => state);

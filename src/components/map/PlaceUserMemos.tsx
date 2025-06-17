@@ -4,8 +4,8 @@ import { BookmarkInfo } from "@/components/map/BookmarkInfo";
 import { UserMemoCards } from "@/components/map/UserMemoCards";
 import { fetchPlaceDetail } from "@/lib/api/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useMapPageStore } from "@/stores/useMapPageStore";
-import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 export default function PlaceUserMemos() {
   const { placeDetail, setPlaceDetail } = useMapPlaceStore();

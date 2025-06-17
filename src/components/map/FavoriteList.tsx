@@ -2,10 +2,10 @@ import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { useEffect } from "react";
 import { FavoriteListResponse } from "@/types/map";
 import { fetchFavoritesByGroup } from "@/lib/api/map";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import { FavoriteCard } from "@/components/map/FavoriteCard";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 export function FavoriteList() {
   const { favoriteList } = useMapStore((state) => state);

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { clearMarkers, placeToMarkerFromZaro } from "@/utils/mapUtil";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 
 export default function MapBox() {
   const mapRef = useRef<HTMLDivElement>(null);

@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { GroupListResponse } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapStore } from "@/stores/map/mapStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface GroupCardProps {
   group: GroupListResponse;

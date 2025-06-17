@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
@@ -7,7 +7,7 @@ import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 export function GroupsFavoriteList() {
   const { groupInfo } = useMapStore((state) => state);

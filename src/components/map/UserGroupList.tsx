@@ -6,7 +6,7 @@ import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
 import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 export function UserGroupList() {
   const { placeId, page, otherUserId, setPagePlaceDetail } = useMapPageStore();

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
 import Link from "next/link";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface UserMemoProps {
   userId: number;

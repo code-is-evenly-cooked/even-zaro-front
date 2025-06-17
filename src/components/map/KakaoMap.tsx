@@ -10,12 +10,12 @@ import {
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { fetchPlaceList } from "@/lib/api/map";
-import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);

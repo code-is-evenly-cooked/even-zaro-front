@@ -5,7 +5,7 @@ import { fetchPlaceList } from "@/lib/api/map";
 import { PlaceListResponse, PlaceInfo, Category } from "@/types/map";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { getDistanceFromLatLonInKm } from "@/utils/mapUtil";
 

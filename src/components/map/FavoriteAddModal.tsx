@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/mapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
 import {
   fetchGroupList,
@@ -11,7 +11,7 @@ import {
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getErrorMessage } from "@/lib/error/getErrorMessage";
-import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
 import { fetchFavoriteStatus } from "@/lib/api/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
-import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
