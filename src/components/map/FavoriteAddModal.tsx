@@ -1,16 +1,25 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMapStore } from "@/stores/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
-import { fetchGroupList, fetchPlaceList, postAddFavorite, postAddGroup } from "@/lib/api/map";
+import {
+  fetchGroupList,
+  fetchPlaceList,
+  postAddFavorite,
+  postAddGroup,
+} from "@/lib/api/map";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { getErrorMessage } from "@/lib/error/getErrorMessage";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 export function FavoriteAddModal() {
-  const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
   const { showToastMessage } = useToastMessageContext();
-  const { setFavoriteAddModal, selectPlaceDetail, myLocation, setPlaceList } = useMapStore();
+  const { myLocation } = useMapStore();
+  const { selectPlaceDetail, setPlaceList } = useMapPlaceStore();
+  const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");
@@ -46,23 +55,23 @@ export function FavoriteAddModal() {
     try {
       await postAddGroup(newGroupName); // 그룹 추가 비동기 통신
       setNewGroupName(""); // 입력 값 초기화
-      showToastMessage({ type: "success", message: "그룹 추가가 완료되었습니다."});
+      showToastMessage({
+        type: "success",
+        message: "그룹 추가가 완료되었습니다.",
+      });
       await loadGroupList(); // 그룹 다시 불러오기
     } catch (error) {
-      if (error instanceof Error) {
-        showToastMessage({ type : "error", message: error.message})
-
-      } else {
-        showToastMessage({ type : "error", message: "알 수 없는 에러입니다."})
-
-      }
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "알 수 없는 에러입니다"),
+      });
     }
   };
 
   // 그룹에 즐겨찾기 추가 버튼
   const handleAddFavoriteBtn = async () => {
     if (!selectedGroup) {
-      showToastMessage({ type: "error", message: "그룹을 선택해주세요."});
+      showToastMessage({ type: "error", message: "그룹을 선택해주세요." });
     }
 
     if (!selectPlaceDetail || !selectGroupId) return;
@@ -79,16 +88,16 @@ export function FavoriteAddModal() {
 
     try {
       await postAddFavorite(selectGroupId, favoriteAddRequest);
-      showToastMessage({ type : "success", message: "즐겨찾기 추가 성공"})
+      showToastMessage({ type: "success", message: "즐겨찾기 추가 성공" });
+      setFavoriteAddModal(favoriteAddModal);
     } catch (error) {
-      if (error instanceof Error) {
-        showToastMessage({ type : "error", message: error.message})
-      } else {
-        showToastMessage({ type : "error", message: "알 수 없는 에러입니다."})
-      }
+      showToastMessage({
+        type: "error",
+        message: getErrorMessage(error, "알 수 없는 에러입니다"),
+      });
     } finally {
       // 즐겨찾기 후 다시 현재 위치 기준으로 즐겨찾기 검색하여 지도 최신화
-      if(myLocation) {
+      if (myLocation) {
         const lat = myLocation.lat;
         const lng = myLocation.lng;
         const distanceKm = 3;

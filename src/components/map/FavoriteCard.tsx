@@ -1,18 +1,29 @@
 import { FavoriteListResponse } from "@/types/map";
-import { MoreVertical } from "lucide-react";
+import { useMapStore } from "@/stores/map/useMapStore";
 
 interface FavoriteCardProps {
   favorite: FavoriteListResponse;
 }
 
 export function FavoriteCard({ favorite }: FavoriteCardProps) {
+  const { map, myLocation, setMyLocation } = useMapStore();
+
+  function onClickFavorite() {
+    if (!map || !myLocation) return;
+    const lat = favorite.lat;
+    const lng = favorite.lng;
+
+    const latlng = new kakao.maps.LatLng(Number(lat), Number(lng));
+    setMyLocation({ lat, lng }); // 클릭 시 내 위치 이동
+    map.setCenter(latlng);
+  }
 
   return (
     <>
       <li
-        className="flex items-center justify-between px-4 py-3 hover:bg-gray-50"
-        // onClick={() => setPageGroupList(otherUserId!)}
+        className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 cursor-pointer"
         key={favorite.id}
+        onClick={onClickFavorite}
       >
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
@@ -25,9 +36,9 @@ export function FavoriteCard({ favorite }: FavoriteCardProps) {
             <div className="text-xs text-gray-600"></div>
           </div>
         </div>
-        <button className="hover:bg-gray-200 rounded-full p-1">
-          <MoreVertical size={20} className="text-gray-400" />
-        </button>
+        {/*<button className="hover:bg-gray-200 rounded-full p-1">*/}
+        {/*  <MoreVertical size={20} className="text-gray-400" />*/}
+        {/*</button>*/}
       </li>
     </>
   );

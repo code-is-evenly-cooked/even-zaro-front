@@ -1,9 +1,10 @@
-import { ArrowLeftIcon, LucideStar, MoreVerticalIcon } from "lucide-react";
+import { ArrowLeftIcon, LucideStar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { PlaceDetailResponse } from "@/types/map";
-import { useMapStore } from "@/stores/mapStore";
 import { fetchFavoriteStatus } from "@/lib/api/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 interface PlaceUserMemosHeaderProps {
   placeDetail: PlaceDetailResponse;
@@ -12,11 +13,17 @@ interface PlaceUserMemosHeaderProps {
 export default function PlaceUserMemosHeader({
   placeDetail,
 }: PlaceUserMemosHeaderProps) {
-  const { setPagePlaceList } = useMapStore();
-  const placeId = useMapStore((status) => status.placeId);
+  const { placeId, setPagePlaceList } = useMapPageStore();
+  const { setPlaceDetail } = useMapPlaceStore();
   const { showToastMessage } = useToastMessageContext();
 
   const [favorite, setFavorite] = useState(false);
+
+  // 이전 버튼 클릭 시 이전 데이터 초기화
+  function onClickBackBtn() {
+    setPagePlaceList();
+    setPlaceDetail(null); // 데이터 초기화
+  }
 
   useEffect(() => {
     if (placeId !== null) {
@@ -25,18 +32,23 @@ export default function PlaceUserMemosHeader({
           const data = await fetchFavoriteStatus(placeId);
           setFavorite(data);
         } catch (error) {
-          showToastMessage({ type : "error", message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다."})
-          console.error("장소의 즐겨찾기 상태를 불러오는 데 실패했습니다", error);
+          showToastMessage({
+            type: "error",
+            message: "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다.",
+          });
+          console.error(
+            "장소의 즐겨찾기 상태를 불러오는 데 실패했습니다",
+            error,
+          );
         }
       })();
     }
   }, [placeId]);
 
-
   return (
     <div className="relative w-full px-4 py-4">
       <div className="flex flex-col items-center justify-center">
-        <button className="absolute left-4 top-4" onClick={setPagePlaceList}>
+        <button className="absolute left-4 top-4" onClick={onClickBackBtn}>
           <ArrowLeftIcon />
         </button>
 
@@ -55,9 +67,9 @@ export default function PlaceUserMemosHeader({
               {placeDetail?.address}
             </span>
           </div>
-          <button className="absolute top-4 right-4 w-5 h-5 mt-0.5">
-            <MoreVerticalIcon />
-          </button>
+          {/*<button className="absolute top-4 right-4 w-5 h-5 mt-0.5">*/}
+          {/*  <MoreVerticalIcon />*/}
+          {/*</button>*/}
         </div>
       </div>
     </div>

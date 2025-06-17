@@ -2,24 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { fetchPlaceList } from "@/lib/api/map";
-import { PlaceListResponse, PlaceInfo } from "@/types/map";
+import { PlaceListResponse, PlaceInfo, Category } from "@/types/map";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
-import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { getDistanceFromLatLonInKm } from "@/utils/mapUtil";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 type PlaceWithDistance = PlaceInfo & { distanceKm: number };
 
 export default function HotPlaceList() {
   const [places, setPlaces] = useState<PlaceWithDistance[]>([]);
-  const [activeCategory, setActiveCategory] = useState<
-    "All" | "Cafe" | "Food" | "Etc"
-  >("All");
+  const [activeCategory, setActiveCategory] = useState<Category>("All");
   const [sortType, setSortType] = useState<"favorite" | "distance" | "name">(
     "favorite",
   );
-  const { setPlaceList } = useMapStore();
+  const { setPlaceList } = useMapPlaceStore();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async (position) => {
@@ -32,10 +30,16 @@ export default function HotPlaceList() {
         );
         if (!data || !data.placeInfos) return;
 
+        // ✨ 여기가 핵심
+        const knownCategories: Category[] = ["FD6", "CE7", "CS2", "MT1"];
         const filtered =
           activeCategory === "All"
             ? data.placeInfos
-            : data.placeInfos.filter((p) => p.category === activeCategory);
+            : activeCategory === "Etc"
+              ? data.placeInfos.filter(
+                (p) => !knownCategories.includes(p.category as Category),
+              )
+              : data.placeInfos.filter((p) => p.category === activeCategory);
 
         const hotPlaces = filtered.filter((p) => p.favoriteCount > 0);
         const otherPlaces = filtered.filter((p) => p.favoriteCount === 0);

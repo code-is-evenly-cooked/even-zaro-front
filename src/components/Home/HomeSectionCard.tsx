@@ -47,7 +47,7 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
           ))}
         </ul>
       ) : (
-        <ul className="flex flex-col pt-3 gap-3 pl-4 pr-2">
+        <ul className="flex flex-col">
           {items.map((item) => (
             <li key={item.postId}>
               <Link

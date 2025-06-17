@@ -20,7 +20,7 @@ interface HeaderProps {
 const Header = ({ onMenuClick }: HeaderProps) => {
   const pathname = usePathname();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   // 검색창 숨김 경로 시작
   const hideSearchbarRoutes = [

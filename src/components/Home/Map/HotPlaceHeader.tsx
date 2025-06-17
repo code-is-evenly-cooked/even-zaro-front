@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import type { CategoryType, SortType } from "@/types/hotplace";
+import type { CategoryType, SortType } from "@/types/map";
 
 interface HotPlaceHeaderProps {
   activeCategory: CategoryType;
@@ -22,8 +22,10 @@ export default function HotPlaceHeader({
   // 라벨 매핑 및 상수 분리
   const categoryTabs: { label: string; value: CategoryType }[] = [
     { label: "전체", value: "All" },
-    { label: "카페", value: "Cafe" },
-    { label: "음식점", value: "Food" },
+    { label: "카페", value: "CE7" },
+    { label: "음식점", value: "FD6" },
+    // { label: "편의점", value: "CS2" },
+    // { label: "마트", value: "MT1" },
     { label: "기타", value: "Etc" },
   ];
 

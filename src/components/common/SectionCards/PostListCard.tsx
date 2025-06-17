@@ -11,10 +11,10 @@ interface PostListCardProps {
 
 const PostListCard = ({ post }: PostListCardProps) => {
   return (
-    <div className="flex justify-between w-full pt-3 pb-2 gap-2 border-b">
+    <div className="flex justify-between w-full pt-3 pb-2 gap-2 border-b hover:bg-gray200/40">
       {isSubCategoryValue(post.tag) ? getSubCategoryEmoji(post.tag) : "❓"}
       <div className="flex flex-col justify-between gap-1.5 flex-1">
-        <h3 className="font-semibold">{post.title}</h3>
+        <h3 className="font-semibold hover:underline">{post.title}</h3>
         <p className="text-sm text-gray600 line-clamp-2">
           {removeMarkdownImages(post.content)}
         </p>

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { getProfileImageUrl, getImageUrl } from "@/utils/image";
 import { markNotificationAsRead } from "@/lib/api/notification";
 import { useNotificationStore } from "@/stores/useNotificationStore";
+import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 export type MainCategory = keyof typeof CATEGORY_MAP;
 
@@ -20,6 +21,7 @@ type NotificationItemProps = {
 const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
   const router = useRouter();
   const { markAsRead } = useNotificationStore();
+  const { showToastMessage } = useToastMessageContext();
 
   const {
     id,
@@ -53,8 +55,22 @@ const NotificationItem = ({ notification, onClose }: NotificationItemProps) => {
     }
 
     if (href) {
-      router.push(href);
-      onClose();
+      try {
+        const res = await fetch(href, { method: "HEAD" });
+
+        if (!res.ok) throw new Error("not found");
+
+        router.push(href);
+        onClose();
+      } catch {
+        showToastMessage({
+          type: "error",
+          message:
+            type === "FOLLOW"
+              ? "존재하지 않는 유저입니다."
+              : "존재하지 않는 게시글입니다.",
+        });
+      }
     }
   };
 

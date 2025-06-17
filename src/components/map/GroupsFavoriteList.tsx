@@ -1,15 +1,26 @@
 import { ArrowLeft } from "lucide-react";
-import { DefaultProfileIcon } from "@/components/common/Icons";
-import { useMapStore } from "@/stores/mapStore";
 import { PAGE } from "@/types/map";
 import { useProfile } from "@/hooks/useProfile";
 import { FavoriteList } from "@/components/map/FavoriteList";
 import { getDdayLabel } from "@/utils/date";
+import Link from "next/link";
+import Image from "next/image";
+import { getProfileImageUrl } from "@/utils/image";
+import { useMapPageStore } from "@/stores/map/useMapPageStore";
+import { useMapGroupStore } from "@/stores/map/useMapGroupStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 export function GroupsFavoriteList() {
-  const { page, otherUserId, groupInfo } = useMapStore((state) => state);
-  const { setPageGroupList } = useMapStore();
+  const { groupInfo } = useMapGroupStore();
+  const { page, otherUserId, setPageGroupList } = useMapPageStore();
+  const { setFavoriteList } = useMapFavoriteStore();
   const { data: profile } = useProfile(otherUserId);
+
+  // 이전 버튼 클릭 시 이전 데이터 초기화 및 페이지 전환
+  function onClickBackBtn() {
+    setPageGroupList(otherUserId!);
+    setFavoriteList([]); // 데이터 초기화
+  }
 
   if (page === PAGE.FAVORITELIST)
     return (
@@ -19,7 +30,7 @@ export function GroupsFavoriteList() {
         <div className="flex items-center justify-between px-4 py-2 border-b">
           {/* 뒤로 가기*/}
           <button
-            onClick={() => setPageGroupList(otherUserId!)}
+            onClick={onClickBackBtn}
             className="p-1 rounded-full hover:bg-gray-100"
           >
             <ArrowLeft size={20} className="text-gray-700" />
@@ -29,7 +40,18 @@ export function GroupsFavoriteList() {
         </div>
 
         <div className="flex gap-4 justify-center items-center py-4 border-b">
-          <DefaultProfileIcon className="w-10 h-10 rounded-full object-cover" />
+          <Link
+            href={`/profile/${otherUserId}`}
+            className="flex items-center gap-2"
+          >
+            <Image
+              src={getProfileImageUrl(profile?.profileImage || null)}
+              alt="프로필 이미지"
+              width="40"
+              height="40"
+              className="rounded-full border-1 border-gray200 flex-shrink-0 bg-red-600"
+            />
+          </Link>
           <div className="flex flex-col">
             <span className="font-semibold text-lg mt-2">
               {profile?.nickname}
