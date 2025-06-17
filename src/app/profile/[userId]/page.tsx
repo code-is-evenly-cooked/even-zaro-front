@@ -3,6 +3,7 @@ import ProfileHeader from "@/components/Profile/ProfileHeader/ProfileHeader";
 import ProfileTabClient from "@/components/Profile/ProfileTab/ProfileTabClient";
 import { server } from "@/lib/fetch/server";
 import { ProfileResponse } from "@/types/profile";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 interface ProfilePageProps {
@@ -15,10 +16,11 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   if (!userId) return notFound();
 
   let profile: ProfileResponse | null = null;
+  const hasAccessToken = (await cookies()).has("access_token");
 
   try {
     profile = await server<ProfileResponse>(`/profile/${userId}`, {
-      needAuth: false,
+      needAuth: hasAccessToken,
     });
   } catch (error) {
     console.log(error);
