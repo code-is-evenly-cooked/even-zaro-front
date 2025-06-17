@@ -1,9 +1,7 @@
 import { create } from "zustand";
 import {
   FavoriteListResponse,
-  GroupListResponse, KakaoMapResponse, MyLoc,
-  PlaceDetailResponse,
-  PlaceListResponse,
+  GroupListResponse, MyLoc,
 } from "@/types/map";
 
 interface MapStore {
