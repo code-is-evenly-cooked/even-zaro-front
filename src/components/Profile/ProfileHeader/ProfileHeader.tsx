@@ -109,7 +109,7 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
           <button
             onClick={handleToggleFollow}
             disabled={isLoading}
-            className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl ${
+            className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl font-semibold ${
               isFollowing
                 ? "bg-gray200 text-gray900 hover:bg-opacity-70"
                 : "bg-violet300 text-gray900 hover:bg-opacity-70"
