@@ -5,12 +5,16 @@ import { useFavoriteItems } from "@/hooks/useFavorite";
 import FavoriteItemCard from "@/components/Favorite/FavoriteItemCard";
 import { fetchFavoriteGroups } from "@/lib/api/favorite";
 import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
+import type { FavoriteItemType } from "@/types/favorite";
 
 export default function FavoritePage({ groupId }: { groupId: number }) {
   const { data: items, isLoading, error } = useFavoriteItems(groupId);
-
-  const displayItems = items ?? [];
+  const [localItems, setLocalItems] = useState<FavoriteItemType[]>([]);
   const [groupName, setGroupName] = useState<string>("");
+
+  useEffect(() => {
+    if (items) setLocalItems(items); // 초기화
+  }, [items]);
 
   // 해당 groupId 그룹 이름 가져오기
   useEffect(() => {
@@ -30,6 +34,10 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
     fetchGroupName();
   }, [groupId, items]);
 
+  const handleDeleteItem = (id: number) => {
+    setLocalItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다: {(error as Error).message}</div>;
   if (!items || items.length === 0) return <div>즐겨찾기 항목이 없습니다.</div>;
@@ -39,12 +47,12 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
       {items?.[0]?.userId && <FavoriteHeader userId={items[0].userId} />}
       <div className="flex flex-col items-center gap-2 mb-8">
         <h2 className="text-xl font-bold">{groupName}</h2>
-        <p className="text-gray600">장소 {displayItems.length}</p>
+        <p className="text-gray600">장소 {localItems.length}</p>
       </div>
       <ul className="space-y-2">
-        {displayItems.map((item) => (
+        {localItems.map((item) => (
           <li key={item.id}>
-            <FavoriteItemCard item={item} />
+            <FavoriteItemCard item={item} onDelete={handleDeleteItem} />
           </li>
         ))}
       </ul>
