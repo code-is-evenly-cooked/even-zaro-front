@@ -3,12 +3,14 @@
 import { useEffect, useRef } from "react";
 import { clearMarkers, placeToMarkerFromZaro } from "@/utils/mapUtil";
 import { useMapStore } from "@/stores/map/useMapStore";
+import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 
 export default function MapBox() {
   const mapRef = useRef<HTMLDivElement>(null);
   const markerRefsByZaro = useRef<kakao.maps.Marker[]>([]);
   const overlayRefsByZaro = useRef<kakao.maps.CustomOverlay[]>([]);
-  const { placeList, map, setMap } = useMapStore();
+  const { map, setMap } = useMapStore();
+  const { placeList } = useMapPlaceStore();
 
   // 현재 위치 중심 지도
   useEffect(() => {
