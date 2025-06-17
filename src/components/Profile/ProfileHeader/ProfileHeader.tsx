@@ -5,8 +5,6 @@ import { getProfileImageUrl } from "@/utils/image";
 import { SettingIcon } from "../../common/Icons";
 import { Stat } from "./Stat";
 import Link from "next/link";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchUserProfile } from "@/lib/api/profile";
 import { ProfileResponse } from "@/types/profile";
 import { useState } from "react";
 import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
@@ -15,18 +13,12 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
 interface ProfileHeaderProps {
-  userId: string;
+  profile: ProfileResponse;
 }
 
-export default function ProfileHeader({ userId }: ProfileHeaderProps) {
+export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   const { user } = useAuthStore();
   const { showToastMessage } = useToastMessageContext();
-  const { data: profile } = useSuspenseQuery<ProfileResponse>({
-    queryKey: ["profile", userId],
-    queryFn: () => fetchUserProfile(userId),
-    retry: false,
-    staleTime: 1000 * 60 * 5,
-  });
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
@@ -91,7 +83,7 @@ export default function ProfileHeader({ userId }: ProfileHeaderProps) {
       </div>
       {openType && (
         <UserFollowModal
-          userId={userId}
+          userId={`${profile.userId}`}
           type={openType}
           isOpen
           onClose={() => setOpenType(null)}

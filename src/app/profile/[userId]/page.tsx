@@ -1,6 +1,8 @@
 import AppErrorBoundary from "@/components/common/ErrorBoundary/ErrorBoundary";
 import ProfileHeader from "@/components/Profile/ProfileHeader/ProfileHeader";
 import ProfileTabClient from "@/components/Profile/ProfileTab/ProfileTabClient";
+import { server } from "@/lib/fetch/server";
+import { ProfileResponse } from "@/types/profile";
 import { notFound } from "next/navigation";
 
 interface ProfilePageProps {
@@ -11,6 +13,17 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
   const { userId } = await params;
 
   if (!userId) return notFound();
+
+  let profile: ProfileResponse | null = null;
+
+  try {
+    profile = await server<ProfileResponse>(`/profile/${userId}`, {
+      needAuth: false,
+    });
+  } catch (error) {
+    console.log(error);
+    return notFound();
+  }
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
