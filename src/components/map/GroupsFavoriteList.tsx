@@ -11,10 +11,8 @@ import { useMapPageStore } from "@/stores/useMapPageStore";
 
 export function GroupsFavoriteList() {
   const { groupInfo } = useMapStore((state) => state);
-  const {page, otherUserId, setPageGroupList} = useMapPageStore();
+  const { page, otherUserId, setPageGroupList } = useMapPageStore();
   const { data: profile } = useProfile(otherUserId);
-
-
 
   if (page === PAGE.FAVORITELIST)
     return (

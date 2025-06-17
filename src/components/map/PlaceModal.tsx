@@ -2,9 +2,10 @@ import React from "react";
 import PlaceCard from "@/components/map/PlaceCard";
 import { useMapStore } from "@/stores/mapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
+import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
 
 export default function PlaceModal() {
-  const { placeList } = useMapStore((state) => state);
+  const { placeList } = useMapPlaceStore();
   const { regionName } = useMapStore();
 
   return (

@@ -11,13 +11,14 @@ import {
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getErrorMessage } from "@/lib/error/getErrorMessage";
+import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
 
 export function FavoriteAddModal() {
   const favoriteAddModal = useMapStore((status) => status.favoriteAddModal);
   const myUserId = useAuthStore((state) => state.user?.userId);
   const { showToastMessage } = useToastMessageContext();
-  const { setFavoriteAddModal, selectPlaceDetail, myLocation, setPlaceList } =
-    useMapStore();
+  const { setFavoriteAddModal, myLocation } = useMapStore();
+  const { selectPlaceDetail, setPlaceList } = useMapPlaceStore();
 
   const [selectedGroup, setSelectedGroup] = useState<string>("");
   const [newGroupName, setNewGroupName] = useState<string>("");

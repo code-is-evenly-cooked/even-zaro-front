@@ -7,14 +7,6 @@ import {
 } from "@/types/map";
 
 interface MapStore {
-  // 장소 리스트
-  placeList: PlaceListResponse | null;
-  setPlaceList: (placeList: PlaceListResponse | null) => void;
-
-  // 장소 상세
-  placeDetail: PlaceDetailResponse | null;
-  setPlaceDetail: (placeDetail: PlaceDetailResponse) => void;
-
   // 유저 그룹 리스트
   groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
@@ -38,16 +30,10 @@ interface MapStore {
   // 지도 객체
   map: kakao.maps.Map | null;
   setMap: (map: kakao.maps.Map) => void;
-
-  // 선택한 장소의 상세 정보
-  selectPlaceDetail: KakaoMapResponse | null;
-  setSelectPlaceDetail: (selectPlaceInfo: KakaoMapResponse | null) => void;
 }
 
 export const useMapStore = create<MapStore>((set) => ({
   // 초기값
-  placeList: null,
-  placeDetail: null,
   groupList: [],
   favoriteAddModal: false,
   favoriteList: null,
@@ -55,17 +41,7 @@ export const useMapStore = create<MapStore>((set) => ({
   myLocation : null,
   regionName: null,
   map: null,
-  selectPlaceDetail: null,
 
-
-  setPlaceList: (placeList: PlaceListResponse | null) =>
-    set(() => ({
-      placeList: placeList,
-    })),
-  setPlaceDetail: (placeDetail: PlaceDetailResponse) =>
-    set(() => ({
-      placeDetail: placeDetail,
-    })),
   setGroupList: (groupList: GroupListResponse[]) =>
     set(() => ({
       groupList: groupList,
@@ -91,8 +67,4 @@ export const useMapStore = create<MapStore>((set) => ({
       regionName: regionName,
     })),
   setMap: (map) => set({ map }),
-  setSelectPlaceDetail: (selectPlaceDetail: KakaoMapResponse | null) =>
-    set(() => ({
-      selectPlaceDetail: selectPlaceDetail,
-    })),
 }));

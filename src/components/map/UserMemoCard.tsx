@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { getProfileImageUrl } from "@/utils/image";
-import { useMapStore } from "@/stores/mapStore";
 import Link from "next/link";
 import { useMapPageStore } from "@/stores/useMapPageStore";
 

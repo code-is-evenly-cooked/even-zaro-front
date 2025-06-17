@@ -3,13 +3,12 @@ import PlaceUserMemosHeader from "@/components/map/PlaceUserMemosHeader";
 import { BookmarkInfo } from "@/components/map/BookmarkInfo";
 import { UserMemoCards } from "@/components/map/UserMemoCards";
 import { fetchPlaceDetail } from "@/lib/api/map";
-import { useMapStore } from "@/stores/mapStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useMapPageStore } from "@/stores/useMapPageStore";
+import { useMapPlaceStore } from "@/stores/useMapPlaceStore";
 
 export default function PlaceUserMemos() {
-  const { placeDetail } = useMapStore((state) => state);
-  const { setPlaceDetail } = useMapStore();
+  const { placeDetail, setPlaceDetail } = useMapPlaceStore();
   const { showToastMessage } = useToastMessageContext();
   const { placeId } = useMapPageStore();
 
