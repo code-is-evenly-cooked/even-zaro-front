@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import {
-  FavoriteListResponse,
   GroupListResponse, MyLoc,
 } from "@/types/map";
 
@@ -9,15 +8,8 @@ interface MapStore {
   groupList: GroupListResponse[] | null;
   setGroupList: (groupList: GroupListResponse[]) => void;
 
-  // 즐겨찾기 리스트
-  favoriteList: FavoriteListResponse[] | null;
-  setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
   groupInfo: GroupListResponse | null;
   setGroupInfo: (groupInfo : GroupListResponse) => void;
-
-  // 즐겨찾기 추가 모달
-  favoriteAddModal: boolean;
-  setFavoriteAddModal: (favoriteAddModal: boolean) => void;
 
   // 내 위치
   myLocation : MyLoc | null;
@@ -33,8 +25,6 @@ interface MapStore {
 export const useMapStore = create<MapStore>((set) => ({
   // 초기값
   groupList: [],
-  favoriteAddModal: false,
-  favoriteList: null,
   groupInfo: null,
   myLocation : null,
   regionName: null,
@@ -43,14 +33,6 @@ export const useMapStore = create<MapStore>((set) => ({
   setGroupList: (groupList: GroupListResponse[]) =>
     set(() => ({
       groupList: groupList,
-    })),
-  setFavoriteAddModal: (favoriteAddModal: boolean) =>
-    set(() => ({
-      favoriteAddModal: !favoriteAddModal,
-    })),
-  setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
-    set(() => ({
-      favoriteList: favoriteList
     })),
   setGroupInfo: (groupInfo: GroupListResponse) =>
     set(() => ({

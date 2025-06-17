@@ -1,0 +1,29 @@
+import { create } from "zustand";
+import {
+  FavoriteListResponse,
+} from "@/types/map";
+
+interface useFavoriteStore {
+  // 즐겨찾기 리스트
+  favoriteList: FavoriteListResponse[] | null;
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) => void;
+
+  // 즐겨찾기 추가 모달
+  favoriteAddModal: boolean;
+  setFavoriteAddModal: (favoriteAddModal: boolean) => void;
+}
+
+export const useFavoriteStore = create<useFavoriteStore>((set) => ({
+  // 초기값
+  favoriteAddModal: false,
+  favoriteList: null,
+
+  setFavoriteAddModal: (favoriteAddModal: boolean) =>
+    set(() => ({
+      favoriteAddModal: !favoriteAddModal,
+    })),
+  setFavoriteList: (favoriteList: FavoriteListResponse[]) =>
+    set(() => ({
+      favoriteList: favoriteList
+    })),
+}));
