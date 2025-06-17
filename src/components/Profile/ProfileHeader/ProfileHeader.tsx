@@ -62,9 +62,11 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
                 {getDdayLabel(profile.liveAloneDate)}
               </span>
             )}
-            <Link href="/setting">
-              <SettingIcon />
-            </Link>
+            {profile.isMine && (
+              <Link href="/setting">
+                <SettingIcon />
+              </Link>
+            )}
           </div>
           <ul className="flex justify-around gap-16">
             <Stat label="글" count={profile.postCount} />
