@@ -6,12 +6,13 @@ import { SettingIcon } from "../../common/Icons";
 import { Stat } from "./Stat";
 import Link from "next/link";
 import { ProfileResponse } from "@/types/profile";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
 import { getDdayLabel } from "@/utils/date";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
+import { followUser, unfollowUser } from "@/lib/api/follow";
 
 interface ProfileHeaderProps {
   profile: ProfileResponse;
@@ -20,18 +21,37 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   const { user } = useAuthStore();
   const { showToastMessage } = useToastMessageContext();
+  const [isFollowing, setIsFollowing] = useState(profile.isFollowing);
   const [isLoading, setIsLoading] = useState(false);
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
 
-  const handleClickStat = (type: FollowModalType) => {
-    if (user === null) {
-      showToastMessage({ type: "info", message: "로그인이 필요합니다." });
-    } else {
-      setOpenType(type);
+  const handleClickStat = useCallback(
+    (type: FollowModalType) => {
+      if (user === null) {
+        showToastMessage({ type: "info", message: "로그인이 필요합니다." });
+      } else {
+        setOpenType(type);
+      }
+    },
+    [user, showToastMessage],
+  );
+
+  const handleToggleFollow = useCallback(async () => {
+    const prev = isFollowing;
+
+    setIsFollowing(!prev);
+
+    setIsLoading(true);
+    try {
+      await (prev ? unfollowUser(profile.userId) : followUser(profile.userId));
+    } catch {
+      setIsFollowing(prev); // 실패 시 롤백
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [isFollowing, profile.userId]);
 
   return (
     <div className="py-4">
@@ -84,6 +104,7 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
             />
           </ul>
           <button
+            onClick={handleToggleFollow}
             disabled={isLoading}
             className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl ${
               isFollowing
