@@ -11,6 +11,7 @@ import UserFollowModal, { FollowModalType } from "../Modal/UserFollowModal";
 import { getDdayLabel } from "@/utils/date";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import LoadingSpinner from "@/components/common/LoadingSpinner/LoadingSpinner";
 
 interface ProfileHeaderProps {
   profile: ProfileResponse;
@@ -19,6 +20,7 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ profile }: ProfileHeaderProps) {
   const { user } = useAuthStore();
   const { showToastMessage } = useToastMessageContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const imageUrl = getProfileImageUrl(profile.profileImage);
   const [openType, setOpenType] = useState<FollowModalType | null>(null);
@@ -81,6 +83,16 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
               onClick={() => handleClickStat("following")}
             />
           </ul>
+          <button
+            disabled={isLoading}
+            className={`flex items-center justify-center text-sm px-8 py-2 rounded-xl ${
+              isFollowing
+                ? "bg-gray200 text-gray900 hover:bg-opacity-70"
+                : "bg-violet300 text-gray900 hover:bg-opacity-70"
+            }`}
+          >
+            {isLoading ? <LoadingSpinner /> : isFollowing ? "팔로잉" : "팔로우"}
+          </button>
         </div>
       </div>
       {openType && (
