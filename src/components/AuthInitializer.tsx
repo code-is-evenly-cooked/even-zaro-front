@@ -17,10 +17,8 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 
     if (status === "authenticated" && session?.user?.accessToken) {
       refetch(); // 세션 존재 시 유저 정보 요청
-    } else if (status === "unauthenticated") {
-      clearUser(); // 비로그인 시 상태 초기화
     }
-  }, [status, refetch, clearUser]);
+  }, [status, refetch, pathName, session?.user?.accessToken]);
 
   useEffect(() => {
     if (data) setUser(data);
