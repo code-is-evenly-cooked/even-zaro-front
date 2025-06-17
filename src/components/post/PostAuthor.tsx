@@ -12,6 +12,7 @@ import ConfirmDeleteModal from "@/components/Favorite/ConfirmDeleteModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getDdayLabel } from "@/utils/date";
 import Link from "next/link";
+import LoadingSpinner from "../common/LoadingSpinner/LoadingSpinner";
 
 interface PostAuthorProps {
   postId: number;
@@ -145,7 +146,7 @@ export default function PostAuthor({
               : "bg-violet300 text-gray900 hover:bg-opacity-70"
           }`}
         >
-          {isLoading ? "처리 중..." : isFollowing ? "팔로잉" : "팔로우"}
+          {isLoading ? <LoadingSpinner /> : isFollowing ? "팔로잉" : "팔로우"}
         </button>
       )}
 
