@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { MyLoc } from "@/types/map";
 
-interface MapStore {
+interface useMapStore {
   // 지도 객체
   map: kakao.maps.Map | null;
   setMap: (map: kakao.maps.Map) => void;
@@ -12,7 +12,7 @@ interface MapStore {
   setRegionName: (myRegionName: string) => void;
 }
 
-export const useMapStore = create<MapStore>((set) => ({
+export const useMapStore = create<useMapStore>((set) => ({
   // 초기값
   myLocation: null,
   regionName: null,

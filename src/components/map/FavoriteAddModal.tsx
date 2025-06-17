@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useMapStore } from "@/stores/map/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { FavoriteAddRequest, GroupListResponse } from "@/types/map";
 import {
   fetchGroupList,

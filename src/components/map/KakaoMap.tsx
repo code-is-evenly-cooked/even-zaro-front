@@ -10,7 +10,7 @@ import {
   searchKeyword,
   updateCenterAddress,
 } from "@/utils/mapUtil";
-import { useMapStore } from "@/stores/map/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";

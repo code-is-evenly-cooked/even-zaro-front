@@ -1,6 +1,6 @@
 import React from "react";
 import PlaceCard from "@/components/map/PlaceCard";
-import { useMapStore } from "@/stores/map/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 

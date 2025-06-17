@@ -1,6 +1,6 @@
 import { Cafe, Etc, Food, Market } from "@/components/common/Icons/category";
 import { JSX } from "react";
-import { useMapStore } from "@/stores/map/mapStore";
+import { useMapStore } from "@/stores/map/useMapStore";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
 
 interface PlaceCardProps {
