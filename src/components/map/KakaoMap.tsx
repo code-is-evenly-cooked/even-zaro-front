@@ -16,14 +16,16 @@ import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { fetchPlaceList } from "@/lib/api/map";
 import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
+import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
 export default function KakaoMap() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { myLocation, map, favoriteAddModal } = useMapStore((state) => state);
+  const { myLocation, map } = useMapStore((state) => state);
+  const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
   const { placeList, setSelectPlaceDetail, setPlaceList } = useMapPlaceStore();
 
-  const { setMyLocation, setRegionName, setMap, setFavoriteAddModal } = useMapStore();
+  const { setMyLocation, setRegionName, setMap } = useMapStore();
   const { showToastMessage } = useToastMessageContext();
 
   // 즐겨찾기만 볼지, 카카오검색 기록만 볼지
