@@ -41,6 +41,15 @@ export default function FavoriteGroupList() {
   const handleCreateGroup = async (name: string) => {
     try {
       const newGroup = await createFavoriteGroup(name);
+
+      if (!newGroup) {
+        showToastMessage({
+          message: "그룹 생성에 성공했습니다.",
+          type: "success",
+        });
+        return;
+      }
+
       setGroupList((prev) => [...prev, newGroup]);
     } catch (e) {
       console.error("그룹 생성 실패", e);
