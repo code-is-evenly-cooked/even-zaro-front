@@ -57,6 +57,7 @@ export default function PopularPostList() {
             <motion.li
               key={post.postId}
               layout
+              layoutId={`post-${post.postId}`}
               animate={{
                 backgroundColor: isChanged ? "#EADFFF" : "#FFFFFF",
                 boxShadow: isChanged ? "0 0 10px #744CEB" : "none",
@@ -66,7 +67,7 @@ export default function PopularPostList() {
                 transition: { duration: 0 },
               }}
               transition={{
-                backgroundColor: { duration: 0.2 },
+                backgroundColor: { duration: 0.2, ease: "easeInOut" },
                 boxShadow: { duration: 0.2 },
               }}
               onClick={() =>
