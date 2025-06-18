@@ -20,10 +20,14 @@ const MapPage = () => {
       <KakaoMap />
       <SideMenu />
 
-      {page === PAGE.PLACELIST && <PlaceModal />}
-      {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
-      {page === PAGE.USERGROUPLIST && <UserGroupList />}
-      {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
+      <div className="flex flex-col absolute -bottom-4 left-0 z-10 w-96 h-96 bg-white rounded-t-2xl">
+        {page === PAGE.PLACELIST && <PlaceModal />}
+        {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
+        {page === PAGE.USERGROUPLIST && <UserGroupList />}
+        {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
+      </div>
+
+
 
       {favoriteAddModal && <FavoriteAddModal />}
     </div>

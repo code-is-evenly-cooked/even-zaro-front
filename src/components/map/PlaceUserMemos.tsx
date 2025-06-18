@@ -30,8 +30,8 @@ export default function PlaceUserMemos() {
   }, [placeId]);
 
   return (
-    <div className="flex flex-col absolute -bottom-4 left-0 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
-      {placeDetail && (
+    <div className="flex flex-col overflow-hidden">
+    {placeDetail && (
         <>
           <PlaceUserMemosHeader placeDetail={placeDetail} />
           <BookmarkInfo placeDetail={placeDetail} />

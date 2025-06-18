@@ -9,7 +9,7 @@ export default function PlaceModal() {
   const { regionName } = useMapStore();
 
   return (
-    <div className="flex flex-col absolute -bottom-4 left-0 z-10 w-96 h-96 bg-white rounded-t-2xl shadow-lg overflow-hidden">
+    <div className="flex flex-col overflow-hidden">
       {/* 헤더 */}
       <div className="px-4 pt-4">
         <span className="text-2xl font-extrabold block text-gray900">
