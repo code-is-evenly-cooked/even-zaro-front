@@ -22,7 +22,8 @@ const HomeSectionImageItem = ({
           src={getImageUrl(thumbnailImage)}
           alt={title}
           fill
-          sizes="100%"
+          priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover"
         />
       </div>

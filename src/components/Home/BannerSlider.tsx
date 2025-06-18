@@ -2,6 +2,7 @@
 
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -73,10 +74,13 @@ export default function BannerSlider() {
             className="keen-slider__slide min-w-full h-full list-none"
           >
             <Link href={banner.href}>
-              <img
+              <Image
                 src={banner.src}
                 alt={`배너 ${idx + 1}`}
+                width={1600}
+                height={382}
                 className="w-full h-full max-h-[382px] object-cover cursor-pointer rounded-2xl"
+                priority={idx === 0}
               />
             </Link>
           </li>
