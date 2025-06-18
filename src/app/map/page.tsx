@@ -87,7 +87,7 @@ const MapPage = () => {
       {/* 내 위치 이동 버튼 */}
       <button
         onClick={onClickMyLocationIcon}
-        className={`${openModal ? "bottom-[400px]" : "bottom-3"} fixed z-50 bottom-[400px] left-3 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md flex items-center justify-center hover:bg-gray-100 transition`}
+        className={`${openModal ? "bottom-[400px]" : "bottom-3"} fixed z-50 left-3 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md flex items-center justify-center hover:bg-gray-100 transition`}
         aria-label="내 위치로 이동"
       >
         <MyLocationIcon className="w-6 h-6" />
