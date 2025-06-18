@@ -174,7 +174,7 @@ export default function KakaoMap({mapRef} : KakaoMapProps) {
 
       {/* 검색창 */}
       <div
-        className={`absolute bottom-4 right-4 z-50 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300 flex flex-col overflow-hidden ${
+        className={`absolute bottom-0 right-0 z-50 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300 flex flex-col overflow-hidden ${
           isExpanded ? "h-[50vh]" : "h-14"
         }`}
       >
