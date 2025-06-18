@@ -47,7 +47,7 @@ export default function EditorActions({
       </BaseButton>
       <BaseButton
         type="button"
-        color="skyblue300"
+        color="violet800"
         onClick={onSubmit}
         className="h-[44px] w-[120px] text-nowrap mt-4"
       >
