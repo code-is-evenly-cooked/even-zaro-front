@@ -4,6 +4,7 @@ import { getErrorMessage } from "@/lib/error/getErrorMessage";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { getProfileImageUrl } from "@/utils/image";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const UserFollowItem = ({ item }: { item: FollowUser }) => {
@@ -28,8 +29,11 @@ const UserFollowItem = ({ item }: { item: FollowUser }) => {
   };
 
   return (
-    <li className="flex items-center justify-between gap-2">
-      <div className="flex items-center gap-2">
+    <li className="flex items-center justify-between gap-4">
+      <Link
+        className="flex items-center gap-2 min-w-0"
+        href={`/profile/${item.userId}`}
+      >
         <Image
           src={getProfileImageUrl(item.profileImage)}
           alt={item.userName}
