@@ -23,7 +23,7 @@ export async function generateMetadata({
     const categoryTitle = getMainCategoryTitle(post.category);
 
     return {
-      title: `ZARO -${post.title} | ${categoryTitle}`,
+      title: `ZARO | ${post.title} | ${categoryTitle}`,
       description: `${post.user.nickname}님의 ${categoryTitle} 게시글: "${post.title}"`,
       openGraph: {
         title: post.title,
