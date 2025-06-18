@@ -1,7 +1,6 @@
 import { HomeIcon } from "lucide-react";
 
 import {
-  DefaultProfileIcon,
   LogoIcon,
   ShoppingBagIcon,
   TipIcon,
