@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useFavoriteGroups } from "@/hooks/useFavorite";
 import type { FavoriteGroupType } from "@/types/favorite";
 import { createFavoriteGroup } from "@/lib/api/favorite";
@@ -12,10 +11,7 @@ import FallbackMessage from "../common/Fallback/FallbackMessage";
 import AddFavoriteGroupModal from "./AddFavoriteGroupModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 
-export default function FavoriteGroupList() {
-  const { user } = useAuthStore();
-  const userId = user?.userId ?? null;
-
+export default function FavoriteGroupList({ userId }: { userId: string }) {
   const { data: groups, isLoading } = useFavoriteGroups(userId);
   const [groupList, setGroupList] = useState<FavoriteGroupType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
