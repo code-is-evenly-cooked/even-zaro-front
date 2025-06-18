@@ -44,7 +44,7 @@ interface AuthState {
   setUser: (user: UserInfo | null) => void;
   setAccessToken: (token: string | null) => void;
   clearUser: () => void;
-  setInitialized: () => void;
+  setInitialized: (state: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null, accessToken: null }),
       setAccessToken: (token) => set({ accessToken: token }),
-      setInitialized: () => set({ isInitialized: true }),
+      setInitialized: (state) => set({ isInitialized: state }),
     }),
     {
       name: "auth-storage",
@@ -68,6 +68,7 @@ export const useAuthStore = create<AuthState>()(
         // 저장할 필드만 지정
         user: state.user,
         accessToken: state.accessToken,
+        isInitialized: state.isInitialized,
       }),
     },
   ),

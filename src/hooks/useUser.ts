@@ -22,7 +22,7 @@ export const useUser = (options?: { enabled?: boolean }) => {
 };
 
 export const useLogout = () => {
-  const { clearUser } = useAuthStore();
+  const { clearUser, setInitialized } = useAuthStore();
 
   const logout = async (callbackUrl: string = "/") => {
     clearUser(); // 상태 초기화
@@ -45,6 +45,7 @@ export const useLogout = () => {
 
     deleteCookie("access_token");
     deleteCookie("refresh_token");
+    setInitialized(false);
     await signOut({ callbackUrl });
   };
 
