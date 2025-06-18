@@ -39,7 +39,7 @@ const MapPage = () => {
       },
       (error) => {
         console.error("GPS 위치를 가져오지 못했습니다", error);
-      }
+      },
     );
   }
 
@@ -48,26 +48,25 @@ const MapPage = () => {
       <KakaoMap mapRef={mapRef} />
       <SideMenu />
 
-      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit  rounded-t-2xl">
-        <div className="flex flex-col relative">
-          <div className="flex flex-row justify-between p-2 items-center border-b-2">
-            <button
-              onClick={onClickMyLocationIcon}
-              className="fixed z-50 bottom-[400px] left-3 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md flex items-center justify-center hover:bg-gray-100 transition"
-              aria-label="내 위치로 이동"
-            >
-              <MyLocationIcon className="w-6 h-6" />
-            </button>
-          </div>
-
-          <div className="flex flex-col h-96 bg-white rounded-2xl">
-            {page === PAGE.PLACELIST && <PlaceModal />}
-            {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
-            {page === PAGE.USERGROUPLIST && <UserGroupList />}
-            {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
-          </div>
+      {/* 모달의 위치와 크기 지정 */}
+      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit">
+        {/* 모달들 페이징*/}
+        <div className="flex flex-col h-96 bg-white rounded-2xl">
+          {page === PAGE.PLACELIST && <PlaceModal />}
+          {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
+          {page === PAGE.USERGROUPLIST && <UserGroupList />}
+          {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
         </div>
       </div>
+
+      {/* 내 위치 이동 버튼 */}
+      <button
+        onClick={onClickMyLocationIcon}
+        className="fixed z-50 bottom-[400px] left-3 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+        aria-label="내 위치로 이동"
+      >
+        <MyLocationIcon className="w-6 h-6" />
+      </button>
 
       {favoriteAddModal && <FavoriteAddModal />}
     </div>
