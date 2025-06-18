@@ -48,6 +48,7 @@ export interface CommonPostUserInfo {
   nickname: string;
   profileImage: string | null;
   liveAloneDate: string | null;
+  following: boolean;
 }
 
 export interface ImagePostDetailItem extends CommonPostDetailItem {

@@ -5,9 +5,43 @@ import ClientPostContent from "./PostPageClient";
 import PostFooterInteraction from "@/components/post/PostFooterInteraction";
 import { isAPIErrorResponse } from "@/types/api";
 import { notFound } from "next/navigation";
+import { getMainCategoryTitle } from "@/utils/category";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ postId: string; category: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { postId } = await params;
+
+  try {
+    const post = await fetchPostDetail(postId);
+
+    const categoryTitle = getMainCategoryTitle(post.category);
+
+    return {
+      title: `ZARO | ${post.title} | ${categoryTitle}`,
+      description: `${post.user.nickname}님의 ${categoryTitle} 게시글: "${post.title}"`,
+      openGraph: {
+        title: post.title,
+        description: post.content.slice(0, 100),
+        url: `https://zaro.vercel.app/board/${post.category}/${postId}`,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: post.content.slice(0, 100),
+      },
+    };
+  } catch (error) {
+    if (isAPIErrorResponse(error) && error.statusCode === 404) {
+      notFound();
+    }
+    throw error;
+  }
 }
 
 export default async function Page({ params }: PageProps) {
@@ -38,6 +72,7 @@ export default async function Page({ params }: PageProps) {
         profileImage={post.user.profileImage}
         liveAloneDate={post.user.liveAloneDate}
         authorUserId={post.user.userId}
+        following={post.user.following}
       />
       <ClientPostContent content={post.content} />
       <PostFooterInteraction

@@ -2,6 +2,7 @@
 
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -63,9 +64,7 @@ export default function BannerSlider() {
 
       <ul
         ref={sliderRef}
-        className={`keen-slider rounded-2xl absolute top-0 left-0 w-full transition-opacity duration-300 ${
-          isReady ? "opacity-100" : "opacity-0"
-        }`}
+        className={`keen-slider rounded-2xl absolute top-0 left-0 w-full transition-opacity duration-300`}
       >
         {banners.map((banner, idx) => (
           <li
@@ -73,10 +72,13 @@ export default function BannerSlider() {
             className="keen-slider__slide min-w-full h-full list-none"
           >
             <Link href={banner.href}>
-              <img
+              <Image
                 src={banner.src}
                 alt={`배너 ${idx + 1}`}
+                width={1600}
+                height={382}
                 className="w-full h-full max-h-[382px] object-cover cursor-pointer rounded-2xl"
+                priority={idx === 0}
               />
             </Link>
           </li>

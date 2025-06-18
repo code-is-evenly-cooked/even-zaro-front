@@ -4,7 +4,7 @@ import { getProfileImageUrl } from "@/utils/image";
 import { useAuthStore } from "@/stores/useAuthStore";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { fetchFollowings, followUser, unfollowUser } from "@/lib/api/follow";
+import { followUser, unfollowUser } from "@/lib/api/follow";
 import { MoreVerticalIcon } from "lucide-react";
 import { deletePost } from "@/lib/api/post.client";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ interface PostAuthorProps {
   profileImage: string | null;
   liveAloneDate: string | null;
   authorUserId: number;
+  following: boolean;
 }
 
 export default function PostAuthor({
@@ -30,10 +31,10 @@ export default function PostAuthor({
   profileImage,
   liveAloneDate,
   authorUserId,
+  following,
 }: PostAuthorProps) {
-  const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isCheckingFollow, setIsCheckingFollow] = useState(true);
+  const currentUserId = useAuthStore((state) => state.user?.userId);
+  const [isFollowing, setIsFollowing] = useState(following);
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -41,25 +42,8 @@ export default function PostAuthor({
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
-  // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
 
-  // 팔로잉 여부 확인
-  useEffect(() => {
-    const fetch = async () => {
-      if (!currentUserId || isMine) return;
-
-      const followings = await fetchFollowings(currentUserId); // 리스트 전체
-      const isFollowing = followings.some(
-        (user) => user.userId === authorUserId,
-      );
-      setIsFollowing(isFollowing);
-      setIsCheckingFollow(false);
-    };
-    fetch();
-  }, [currentUserId, authorUserId, isMine]);
-
-  // 팔로우 버튼 토글
   const handleToggleFollow = async () => {
     if (isLoading) return;
 
@@ -119,45 +103,61 @@ export default function PostAuthor({
     <div className="flex items-center justify-between my-3 py-4 border-b border-gray200">
       <Link
         href={`/profile/${authorUserId}`}
-        className="flex items-center gap-4"
+        className="flex items-center gap-4 min-w-0"
       >
         <Image
           src={getProfileImageUrl(profileImage)}
           alt="프로필 이미지"
           width={32}
           height={32}
-          className="rounded-full object-cover"
+          className="rounded-full object-cover flex-shrink-0"
         />
-        <span className="font-medium text-gray900">{nickname}</span>
-
-        <div className="text-sm text-gray600">
-          {getDdayLabel(liveAloneDate)}
+        <div className="flex flex-col truncate">
+          <span className="font-medium text-gray900 truncate">{nickname}</span>
+          <span className="text-sm text-gray600">
+            {getDdayLabel(liveAloneDate)}
+          </span>
         </div>
       </Link>
 
       {/* 팔로우 버튼 */}
-      {!isMine && !isCheckingFollow && (
-        <button
-          onClick={handleToggleFollow}
-          disabled={isLoading}
-          className={`text-sm px-8 py-2 rounded-3xl ${
-            isFollowing
-              ? "bg-gray200 text-gray900 hover:bg-opacity-70"
-              : "bg-violet300 text-gray900 hover:bg-opacity-70"
-          }`}
-        >
-          {isLoading ? <LoadingSpinner /> : isFollowing ? "팔로잉" : "팔로우"}
-        </button>
-      )}
+      <div className="flex items-center gap-2">
+        {!isMine && (
+          <div className="min-w-[90px] ">
+            <button
+              onClick={handleToggleFollow}
+              disabled={isLoading}
+              className={`flex items-center justify-center text-sm px-4 py-1.5 rounded-3xl transition-all duration-300 w-full font-semibold ${
+                isFollowing
+                  ? "bg-gray200 text-gray900 hover:bg-opacity-70"
+                  : "bg-violet300 text-gray900 hover:bg-opacity-70"
+              }`}
+            >
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : isFollowing ? (
+                "팔로잉"
+              ) : (
+                "팔로우"
+              )}
+            </button>
+          </div>
+        )}
 
-      {/* 메뉴 모달 */}
-      {isMine && (
-        <div className="relative" ref={menuRef}>
-          <button onClick={() => setMenuOpen((prev) => !prev)}>
-            <MoreVerticalIcon width={20} height={20} className="text-gray600" />
-          </button>
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-24 bg-white border border-gray200 rounded shadow-md z-10">
+        {isMine && (
+          <div className="relative" ref={menuRef}>
+            <button onClick={() => setMenuOpen((prev) => !prev)}>
+              <MoreVerticalIcon
+                width={20}
+                height={20}
+                className="text-gray600"
+              />
+            </button>
+            <div
+              className={`absolute right-0 mt-2 w-24 bg-white border border-gray200 rounded shadow-md transition-opacity duration-200 z-10 ${
+                menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+              }`}
+            >
               <button
                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray100"
                 onClick={handleEdit}
@@ -174,10 +174,10 @@ export default function PostAuthor({
                 삭제
               </button>
             </div>
-          )}
-        </div>
-      )}
-      {/* 삭제 확인 모달 */}
+          </div>
+        )}
+      </div>
+
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
