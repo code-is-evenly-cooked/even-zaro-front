@@ -39,18 +39,17 @@ export default function FavoriteGroupList() {
 
   // 즐겨찾기 그룹 추가
   const handleCreateGroup = async (name: string) => {
+    setIsModalOpen(false); // 모달 닫기
+
     try {
       const newGroup = await createFavoriteGroup(name);
 
-      if (!newGroup) {
-        showToastMessage({
-          message: "그룹 생성에 성공했습니다.",
-          type: "success",
-        });
-        return;
-      }
-
       setGroupList((prev) => [...prev, newGroup]);
+
+      showToastMessage({
+        message: `"${newGroup.name}" 그룹이 추가되었습니다.`,
+        type: "success",
+      });
     } catch (e) {
       console.error("그룹 생성 실패", e);
       showToastMessage({

@@ -4,8 +4,8 @@ import type { FavoriteGroupType, FavoriteItemType } from "@/types/favorite";
 // 즐겨찾기 그룹 추가
 export const createFavoriteGroup = async (
   groupName: string,
-): Promise<FavoriteGroupType | null> => {
-  return await client<FavoriteGroupType | null>("/group", {
+): Promise<FavoriteGroupType> => {
+  return await client<FavoriteGroupType>("/group", {
     method: "POST",
     body: JSON.stringify({ groupName }),
   });
