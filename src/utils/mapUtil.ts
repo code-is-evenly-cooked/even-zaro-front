@@ -346,12 +346,19 @@ function displayInfoWindowFromKakao(
   addBtn.style.cssText = `
     margin-top: 8px;
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #68499F;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   `;
+  addBtn.addEventListener("mouseover", () => {
+    addBtn.style.backgroundColor = "#A78BFA"; // violet600
+  });
+
+  addBtn.addEventListener("mouseout", () => {
+    addBtn.style.backgroundColor = "#68499F"; // violet800
+  });
   addBtn.textContent = "⭐ 즐겨찾기 추가";
   detailMarker.appendChild(addBtn);
 
@@ -496,12 +503,19 @@ function displayInfoWindowFromZaro(
   addBtn.style.cssText = `
     margin-top: 8px;
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #68499F;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
   `;
+  addBtn.addEventListener("mouseover", () => {
+    addBtn.style.backgroundColor = "#A78BFA"; // violet600
+  });
+
+  addBtn.addEventListener("mouseout", () => {
+    addBtn.style.backgroundColor = "#68499F"; // violet800
+  });
   addBtn.textContent = "⭐ 즐겨찾기 추가";
   detailMarker.appendChild(addBtn);
 
