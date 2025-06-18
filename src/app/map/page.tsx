@@ -10,14 +10,18 @@ import { FavoriteAddModal } from "@/components/map/FavoriteAddModal";
 import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
 import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
-import { MyLocationIcon } from "@/components/common/Icons";
+import {
+  CloseArrow,
+  MyLocationIcon,
+  OpenArrow,
+} from "@/components/common/Icons";
 import { useMapStore } from "@/stores/map/useMapStore";
 import { useRef } from "react";
 
 const MapPage = () => {
   const { favoriteAddModal } = useMapFavoriteStore();
   const { page } = useMapPageStore();
-  const { setMyLocation } = useMapStore();
+  const { setMyLocation, openModal, setOpenModal } = useMapStore();
 
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +47,8 @@ const MapPage = () => {
     );
   }
 
+  const onToggleModal = () => setOpenModal(openModal);
+
   return (
     <div className="w-full h-full">
       <KakaoMap mapRef={mapRef} />
@@ -50,12 +56,31 @@ const MapPage = () => {
 
       {/* 모달의 위치와 크기 지정 */}
       <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit">
-        {/* 모달들 페이징*/}
-        <div className="flex flex-col h-96 bg-white rounded-2xl">
-          {page === PAGE.PLACELIST && <PlaceModal />}
-          {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
-          {page === PAGE.USERGROUPLIST && <UserGroupList />}
-          {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
+        <div className="flex justify-center">
+          {openModal ? (
+            <button onClick={onToggleModal}>
+              <CloseArrow className="flex justify-center w-20 h-auto" />
+            </button>
+          ) : (
+            <button onClick={onToggleModal}>
+              <OpenArrow className="flex justify-center w-20 h-auto" />
+            </button>
+          )}
+        </div>
+
+        <div
+          className={`flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-300 ${
+            openModal ? "max-h-96" : "max-h-0"
+          }`}
+        >
+          {openModal && (
+            <>
+              {page === PAGE.PLACELIST && <PlaceModal />}
+              {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
+              {page === PAGE.USERGROUPLIST && <UserGroupList />}
+              {page === PAGE.FAVORITELIST && <GroupsFavoriteList />}
+            </>
+          )}
         </div>
       </div>
 

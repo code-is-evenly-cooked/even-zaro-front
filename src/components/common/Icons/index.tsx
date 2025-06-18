@@ -237,3 +237,29 @@ export const MyLocationIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const OpenArrow = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/openArrow.svg"
+      alt="모달 열기"
+      width={36}
+      height={36}
+      className={className}
+      priority
+    />
+  );
+};
+
+export const CloseArrow = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/CloseArrow.svg"
+      alt="모달 닫기"
+      width={36}
+      height={36}
+      className={className}
+      priority
+    />
+  );
+};
