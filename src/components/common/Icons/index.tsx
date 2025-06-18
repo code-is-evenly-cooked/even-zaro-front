@@ -224,3 +224,16 @@ export const RankDownIcon = ({ className }: IconProps) => {
     />
   );
 };
+
+export const MyLocationIcon = ({ className }: IconProps) => {
+  return (
+    <Image
+      src="/icons/mylocation.svg"
+      alt="인기 게시글"
+      width={24}
+      height={24}
+      className={className}
+      priority
+    />
+  );
+};
