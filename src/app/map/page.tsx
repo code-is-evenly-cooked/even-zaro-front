@@ -70,7 +70,7 @@ const MapPage = () => {
 
         <div
           className={`flex flex-col bg-white rounded-2xl overflow-hidden transition-all duration-300 ${
-            openModal ? "max-h-96" : "max-h-0"
+            openModal ? "h-96" : "max-h-0"
           }`}
         >
           {openModal && (
