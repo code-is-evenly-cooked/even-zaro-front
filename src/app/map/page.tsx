@@ -51,39 +51,16 @@ const MapPage = () => {
       <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit  rounded-t-2xl">
         <div className="flex flex-col relative">
           <div className="flex flex-row justify-between p-2 items-center border-b-2">
-            <button onClick={onClickMyLocationIcon}
-              className="flex flex-shrink-0">
-              <MyLocationIcon />
+            <button
+              onClick={onClickMyLocationIcon}
+              className="fixed z-50 bottom-[400px] left-3 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md flex items-center justify-center hover:bg-gray-100 transition"
+              aria-label="내 위치로 이동"
+            >
+              <MyLocationIcon className="w-6 h-6" />
             </button>
-            {/* 카테고리 탭 */}
-            <div className="flex flex-row gap-2 p-1">
-              {[
-                { label: "전체", value: "All" },
-                { label: "카페", value: "CE7" },
-                { label: "음식점", value: "FD6" },
-                { label: "편의점", value: "CS2"},
-                { label: "마트", value: "MT1"},
-                { label: "기타", value: "Etc" },
-              ].map((tab) => (
-                <button
-                  key={tab.value}
-                  // onClick={() =>
-                  //   setActiveCategory(tab.value as Category)
-                  // }
-                  className={`px-3 py-1 rounded-full border text-xs whitespace-nowrap bg-violet800 text-white`}
-                  // className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
-                  //   activeCategory === tab.value
-                  //     ? "bg-violet800 text-white"
-                  //     : "bg-white text-gray700"
-                  // }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
           </div>
 
-          <div className="flex flex-col h-96 bg-white">
+          <div className="flex flex-col h-96 bg-white rounded-2xl">
             {page === PAGE.PLACELIST && <PlaceModal />}
             {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
             {page === PAGE.USERGROUPLIST && <UserGroupList />}
