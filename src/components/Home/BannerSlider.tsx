@@ -64,9 +64,7 @@ export default function BannerSlider() {
 
       <ul
         ref={sliderRef}
-        className={`keen-slider rounded-2xl absolute top-0 left-0 w-full transition-opacity duration-300 ${
-          isReady ? "opacity-100" : "opacity-0"
-        }`}
+        className={`keen-slider rounded-2xl absolute top-0 left-0 w-full transition-opacity duration-300`}
       >
         {banners.map((banner, idx) => (
           <li

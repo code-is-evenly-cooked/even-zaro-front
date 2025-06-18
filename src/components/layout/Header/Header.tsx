@@ -113,7 +113,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
             </Link>
           ) : (
             <Link href="/login">
-              <IconButton icon={<LogIn />} isTransparent label="로그인" />
+              <LogIn className="w-6 h-6" />
             </Link>
           )}
         </div>
