@@ -4,6 +4,7 @@ import { MessageCircle, Heart } from "lucide-react";
 import { ShareIcon } from "../common/Icons";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useKakaoInit } from "@/hooks/useKakaoInit";
 import ShareModal from "./ShareModal";
 
 interface PostFooterProps {
@@ -34,7 +35,8 @@ export default function PostFooter({
   // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
 
-  // 공유 하기 모달
+  // 카카오 공유 sdk
+  useKakaoInit();
 
   // 신고 하기
   const handleReport = () => {
