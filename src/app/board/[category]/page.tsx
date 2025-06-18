@@ -4,13 +4,36 @@ import PostListResult from "@/components/PostList/PostListResult";
 import { server } from "@/lib/fetch/server";
 import { MainCategory } from "@/types/category";
 import { PostDetailResponse } from "@/types/post";
-import { isMainCategory } from "@/utils/category";
+import { getMainCategoryTitle, isMainCategory } from "@/utils/category";
 import { notFound } from "next/navigation";
 import { isAPIErrorResponse } from "@/types/api";
+import { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ category: string }>;
   searchParams: Promise<{ tag?: string; page?: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { category } = await params;
+
+  if (!isMainCategory(category)) {
+    notFound();
+  }
+
+  const categoryKey = getMainCategoryTitle(category as MainCategory);
+
+  return {
+    title: `${categoryKey} | 살펴보기`,
+    description: `${categoryKey} 살펴보기`,
+    openGraph: {
+      title: `${categoryKey} | 살펴보기`,
+      description: `${categoryKey} 살펴보기`,
+      url: `https://zaro.vercel.app/board/${category}`,
+    },
+  };
 }
 
 export default async function PostListPage({
