@@ -11,19 +11,20 @@ import {
   updateCenterAddress,
 } from "@/utils/mapUtil";
 import { useMapStore } from "@/stores/map/useMapStore";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { fetchPlaceList } from "@/lib/api/map";
 import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
+import { SearchIcon } from "@/components/common/Icons";
 
 interface KakaoMapProps {
   mapRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function KakaoMap({mapRef} : KakaoMapProps) {
-  const { myLocation, map } = useMapStore((state) => state);
+  const { myLocation, map, openModal } = useMapStore((state) => state);
   const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
   const { placeList, setSelectPlaceDetail, setPlaceList } = useMapPlaceStore();
@@ -172,11 +173,15 @@ export default function KakaoMap({mapRef} : KakaoMapProps) {
     <>
       <div ref={mapRef} className="absolute w-screen h-screen left-0" />
 
+      <div className={`${openModal ? "bottom-[400px]" : "bottom-3"} flex fixed z-50 left-16 sm:hidden w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md items-center justify-center hover:bg-gray-100 transition p-2`}>
+        <button onClick={openSearchModal}>
+          <SearchIcon className="w-full h-full"/>
+        </button>
+      </div>
+
       {/* 검색창 */}
       <div
-        className={`absolute bottom-0 right-0 z-50 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300 flex flex-col overflow-hidden ${
-          isExpanded ? "h-[50vh]" : "h-14"
-        }`}
+        className={`${isExpanded ? "h-[50vh]" : "h-14"} ${isExpanded ? "flex" : "hidden"} sm:flex flex-col absolute bottom-0 right-0 w-30 sm:w-60 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300  overflow-hidden z-50`}
       >
         {/* 헤더 */}
         <div className="flex justify-between items-center px-4 py-2 border-b">

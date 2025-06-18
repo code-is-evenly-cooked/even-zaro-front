@@ -12,11 +12,11 @@ export default function PlaceModal() {
     <div className="flex flex-col overflow-hidden">
       {/* 헤더 */}
       <div className="px-4 pt-4">
-        <span className="text-2xl font-extrabold block text-gray900">
+        <span className="text-xl sm:text-2xl font-extrabold block text-gray900">
           {regionName}
         </span>
         <div className="flex justify-end">
-          <span className="text-sm text-gray-400">즐겨찾기 많은 순</span>
+          <span className="text-xs sm:text-sm text-gray-400">즐겨찾기 많은 순</span>
         </div>
       </div>
 

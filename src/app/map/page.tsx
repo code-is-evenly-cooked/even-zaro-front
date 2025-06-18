@@ -55,8 +55,8 @@ const MapPage = () => {
       <SideMenu />
 
       {/* 모달의 위치와 크기 지정 */}
-      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit">
-        <div className="flex justify-center">
+      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-full sm:w-96 h-fit">
+        <div className="flex pl-12 justify-center sm:pl-0 z-50">
           {openModal ? (
             <button onClick={onToggleModal}>
               <CloseArrow className="flex justify-center w-20 h-auto" />
