@@ -181,7 +181,7 @@ export default function KakaoMap({mapRef} : KakaoMapProps) {
 
       {/* 검색창 */}
       <div
-        className={`${isExpanded ? "h-[50vh]" : "h-14"} ${isExpanded ? "flex" : "hidden"} sm:flex flex-col absolute bottom-0 right-0 w-30 sm:w-60 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300  overflow-hidden z-50`}
+        className={`${isExpanded ? "h-[50vh]" : "h-14"} ${isExpanded ? "flex" : "hidden"} sm:flex flex-col absolute bottom-0 right-0 w-30 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300  overflow-hidden z-50`}
       >
         {/* 헤더 */}
         <div className="flex justify-between items-center px-4 py-2 border-b">
