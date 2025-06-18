@@ -30,10 +30,10 @@ export default function PostAuthor({
   profileImage,
   liveAloneDate,
   authorUserId,
+  following,
 }: PostAuthorProps) {
-  const currentUserId = useAuthStore((state) => state.user?.userId); // 로그인 유저
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isCheckingFollow, setIsCheckingFollow] = useState(true);
+  const currentUserId = useAuthStore((state) => state.user?.userId);
+  const [isFollowing, setIsFollowing] = useState(following);
   const [isLoading, setIsLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -41,25 +41,8 @@ export default function PostAuthor({
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
-  // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
 
-  // 팔로잉 여부 확인
-  useEffect(() => {
-    const fetch = async () => {
-      if (!currentUserId || isMine) return;
-
-      const followings = await fetchFollowings(currentUserId); // 리스트 전체
-      const isFollowing = followings.some(
-        (user) => user.userId === authorUserId,
-      );
-      setIsFollowing(isFollowing);
-      setIsCheckingFollow(false);
-    };
-    fetch();
-  }, [currentUserId, authorUserId, isMine]);
-
-  // 팔로우 버튼 토글
   const handleToggleFollow = async () => {
     if (isLoading) return;
 
@@ -136,19 +119,28 @@ export default function PostAuthor({
       </Link>
 
       {/* 팔로우 버튼 */}
-      {!isMine && !isCheckingFollow && (
-        <button
-          onClick={handleToggleFollow}
-          disabled={isLoading}
-          className={`text-sm px-8 py-2 rounded-3xl ${
-            isFollowing
-              ? "bg-gray200 text-gray900 hover:bg-opacity-70"
-              : "bg-violet300 text-gray900 hover:bg-opacity-70"
-          }`}
-        >
-          {isLoading ? <LoadingSpinner /> : isFollowing ? "팔로잉" : "팔로우"}
-        </button>
-      )}
+      <div className="flex items-center gap-2">
+        {!isMine && (
+          <div className="min-w-[90px] ">
+            <button
+              onClick={handleToggleFollow}
+              disabled={isLoading}
+              className={`flex items-center justify-center text-sm px-4 py-1.5 rounded-3xl transition-all duration-300 w-full font-semibold ${
+                isFollowing
+                  ? "bg-gray200 text-gray900 hover:bg-opacity-70"
+                  : "bg-violet300 text-gray900 hover:bg-opacity-70"
+              }`}
+            >
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : isFollowing ? (
+                "팔로잉"
+              ) : (
+                "팔로우"
+              )}
+            </button>
+          </div>
+        )}
 
       {/* 메뉴 모달 */}
       {isMine && (

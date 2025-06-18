@@ -72,6 +72,7 @@ export default async function Page({ params }: PageProps) {
         profileImage={post.user.profileImage}
         liveAloneDate={post.user.liveAloneDate}
         authorUserId={post.user.userId}
+        following={post.user.following}
       />
       <ClientPostContent content={post.content} />
       <PostFooterInteraction
