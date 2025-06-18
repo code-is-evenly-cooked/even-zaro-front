@@ -10,12 +10,15 @@ import AppErrorBoundary from "../common/ErrorBoundary/ErrorBoundary";
 import FallbackMessage from "../common/Fallback/FallbackMessage";
 import AddFavoriteGroupModal from "./AddFavoriteGroupModal";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function FavoriteGroupList({ userId }: { userId: string }) {
   const { data: groups, isLoading } = useFavoriteGroups(userId);
   const [groupList, setGroupList] = useState<FavoriteGroupType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { showToastMessage } = useToastMessageContext();
+  const { user } = useAuthStore();
+  const isMyProfile = user?.userId?.toString() === userId;
 
   // 초기 값을 setGroupList를 통해 useState 로 저장
   useEffect(() => {
@@ -59,17 +62,25 @@ export default function FavoriteGroupList({ userId }: { userId: string }) {
     <AppErrorBoundary fallbackMessage="즐겨찾기 그룹을 불러오는 중 오류가 발생했습니다.">
       <div className="space-y-2">
         {/* 그룹 추가 버튼 */}
-        <div className="flex justify-end mb-2">
-          <button onClick={() => setIsModalOpen(true)} className="text-gray900">
-            + 그룹 추가
-          </button>
-        </div>
-
+        {isMyProfile && (
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="text-gray900"
+            >
+              + 그룹 추가
+            </button>
+          </div>
+        )}
         {/* 즐겨찾기 그룹 리스트 */}
         <ul className="space-y-2">
           {groupList.map((group) => (
             <li key={group.groupId}>
-              <FavoriteGroupCard group={group} onDelete={handleDeleteGroup} />
+              <FavoriteGroupCard
+                group={group}
+                onDelete={handleDeleteGroup}
+                isOwner={isMyProfile}
+              />
             </li>
           ))}
         </ul>
