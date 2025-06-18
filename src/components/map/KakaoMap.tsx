@@ -11,7 +11,7 @@ import {
   updateCenterAddress,
 } from "@/utils/mapUtil";
 import { useMapStore } from "@/stores/map/useMapStore";
-import { ChevronDown, ChevronUp, Search } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { KakaoMapResponse } from "@/types/map";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { fetchPlaceList } from "@/lib/api/map";
