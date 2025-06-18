@@ -66,8 +66,8 @@ export default function PopularPostList() {
                 transition: { duration: 0 },
               }}
               transition={{
-                backgroundColor: { duration: 0.3 },
-                boxShadow: { duration: 0.3 },
+                backgroundColor: { duration: 0.2 },
+                boxShadow: { duration: 0.2 },
               }}
               onClick={() =>
                 router.push(`/board/${post.category}/${post.postId}`)
