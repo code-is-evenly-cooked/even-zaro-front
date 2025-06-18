@@ -18,8 +18,11 @@ import { fetchPlaceList } from "@/lib/api/map";
 import { useMapPlaceStore } from "@/stores/map/useMapPlaceStore";
 import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
-export default function KakaoMap() {
-  const mapRef = useRef<HTMLDivElement>(null);
+interface KakaoMapProps {
+  mapRef: React.RefObject<HTMLDivElement | null>;
+}
+
+export default function KakaoMap({mapRef} : KakaoMapProps) {
   const { myLocation, map } = useMapStore((state) => state);
   const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
