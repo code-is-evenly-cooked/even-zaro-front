@@ -21,12 +21,14 @@ const MapPage = () => {
       <KakaoMap />
       <SideMenu />
 
-      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit bg-white rounded-t-2xl">
+      <div className="flex flex-col absolute bottom-0 left-0 z-10 w-96 h-fit  rounded-t-2xl">
         <div className="flex flex-col relative">
           <div className="flex flex-row justify-between p-2 items-center border-b-2">
-              <MyLocationIcon/>
+            <button className="flex flex-shrink-0">
+              <MyLocationIcon />
+            </button>
             {/* 카테고리 탭 */}
-            <div className="flex gap-2 overflow-x-scroll overflow-x-hidden">
+            <div className="flex flex-row gap-2 p-1">
               {[
                 { label: "전체", value: "All" },
                 { label: "카페", value: "CE7" },
@@ -53,8 +55,7 @@ const MapPage = () => {
             </div>
           </div>
 
-
-          <div className="flex flex-col h-96">
+          <div className="flex flex-col h-96 bg-white">
             {page === PAGE.PLACELIST && <PlaceModal />}
             {page === PAGE.PLACEDETAIL && <PlaceUserMemos />}
             {page === PAGE.USERGROUPLIST && <UserGroupList />}

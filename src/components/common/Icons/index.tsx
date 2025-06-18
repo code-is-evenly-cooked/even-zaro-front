@@ -230,8 +230,8 @@ export const MyLocationIcon = ({ className }: IconProps) => {
     <Image
       src="/icons/mylocation.svg"
       alt="인기 게시글"
-      width={24}
-      height={24}
+      width={36}
+      height={36}
       className={className}
       priority
     />
