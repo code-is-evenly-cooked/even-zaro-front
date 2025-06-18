@@ -55,7 +55,7 @@ const UserFollowItem = ({ item }: { item: FollowUser }) => {
         <button
           onClick={handleToggleFollow}
           disabled={isLoading}
-          className={`flex items-center justify-center text-sm px-4 py-1.5 rounded-3xl transition-all duration-300 shrink-0 font-semibold ${
+          className={`flex items-center justify-center text-sm px-4 py-1.5 rounded-md transition-all duration-300 shrink-0 font-semibold ${
             isFollowing
               ? "bg-gray200 text-gray900 hover:bg-opacity-70"
               : "bg-violet300 text-gray900 hover:bg-opacity-70"
