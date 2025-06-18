@@ -9,9 +9,8 @@ import SidebarButtonList from "@/components/common/SidebarButton/SidebarButtonLi
 import { LogIn, LogOut } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import SidebarButton from "@/components/common/SidebarButton/SidebarButton";
-import { logout } from "@/lib/api/auth";
-import { useRouter } from "next/navigation";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useLogout } from "@/hooks/useUser";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -21,8 +20,8 @@ interface SidebarProps {
 const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [visible, setVisible] = useState(isOpen);
   const { user } = useAuthStore();
-  const router = useRouter();
   const { showToastMessage } = useToastMessageContext();
+  const { logout } = useLogout();
 
   useEffect(() => {
     if (isOpen) setVisible(true);
@@ -34,17 +33,15 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
   const handleLogout = async () => {
     try {
-      await logout();
-    } catch {
+      await logout("/login");
+    } catch (error) {
+      console.log(error);
       showToastMessage({
         type: "error",
         message: "로그아웃에 실패했습니다. 다시 시도해주세요.",
       });
       return;
     }
-    useAuthStore.getState().clearUser();
-    onClose();
-    router.push("/");
   };
 
   return (

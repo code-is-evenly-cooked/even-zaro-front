@@ -1,7 +1,6 @@
 import { AuthCredentials, SignupCredentials } from "@/types/auth";
 import { client } from "../fetch/client";
 import { UserInfo } from "@/stores/useAuthStore";
-import { getCookie } from "cookies-next";
 
 export const userSignup = async (
   credentials: SignupCredentials,
@@ -95,15 +94,4 @@ export const resetPassword = async (
 
 export const fetchUser = async (): Promise<UserInfo> => {
   return await client<UserInfo>("/api/users/my");
-};
-
-// 로그아웃
-export const logout = async () => {
-  const accessToken = getCookie("access_token");
-  await fetch("/api/auth/signout", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
 };

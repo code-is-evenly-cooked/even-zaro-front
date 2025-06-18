@@ -12,12 +12,12 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
-        token.accessToken = account.access_token;
-        console.log("account", account);
-
         // 백엔드에 소셜 로그인 요청
         const response = await fetch(`${API_BASE_URL}/auth/signin/kakao`, {
           method: "POST",
@@ -34,12 +34,16 @@ const handler = NextAuth({
         }
         token.accessToken = result.data.accessToken;
         token.refreshToken = result.data.refreshToken;
+        token.kakaoAccessToken = account.access_token;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.accessToken = token.accessToken as string;
+        session.user = {
+          accessToken: token.accessToken as string,
+          kakaoAccessToken: token.kakaoAccessToken as string,
+        };
 
         await saveAuthCookies({
           accessToken: token.accessToken as string,

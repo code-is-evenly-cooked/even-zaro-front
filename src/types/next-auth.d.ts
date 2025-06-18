@@ -6,10 +6,12 @@ declare module "next-auth" {
       accessToken?: string;
       image?: string;
       name?: string;
+      kakaoAccessToken?: string;
     };
   }
 
   interface User {
     accessToken?: string;
+    kakaoAccessToken?: string;
   }
 }

@@ -40,11 +40,11 @@ export interface UserInfo {
 interface AuthState {
   user: UserInfo | null;
   accessToken: string | null;
-  isInitialized: boolean;
+  isSocialLogin: boolean;
   setUser: (user: UserInfo | null) => void;
   setAccessToken: (token: string | null) => void;
   clearUser: () => void;
-  setInitialized: () => void;
+  setIsSocialLogin: (state: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -55,12 +55,12 @@ export const useAuthStore = create<AuthState>()(
         typeof window !== "undefined"
           ? (getCookie("access_token")?.toString() ?? null)
           : null,
-      isInitialized: false,
+      isSocialLogin: false,
 
       setUser: (user) => set({ user }),
       clearUser: () => set({ user: null, accessToken: null }),
       setAccessToken: (token) => set({ accessToken: token }),
-      setInitialized: () => set({ isInitialized: true }),
+      setIsSocialLogin: (state) => set({ isSocialLogin: state }),
     }),
     {
       name: "auth-storage",
@@ -68,6 +68,7 @@ export const useAuthStore = create<AuthState>()(
         // 저장할 필드만 지정
         user: state.user,
         accessToken: state.accessToken,
+        isSocialLogin: state.isSocialLogin,
       }),
     },
   ),

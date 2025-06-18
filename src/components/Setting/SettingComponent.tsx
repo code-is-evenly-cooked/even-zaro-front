@@ -7,9 +7,9 @@ import ProfileChangePassword from "./ProfileChangePassword";
 import WithdrawConfirmModal from "./WithdrawConfirmModal";
 import { useState } from "react";
 import { withdrawUser } from "@/lib/api/profile";
-import { logout } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
 import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useLogout } from "@/hooks/useUser";
 
 interface SettingComponentProps {
   user: UserInfo;
@@ -18,6 +18,7 @@ interface SettingComponentProps {
 const SettingComponent = ({ user }: SettingComponentProps) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { logout } = useLogout();
   const { showToastMessage } = useToastMessageContext();
 
   const handleWithdrawModal = () => {
