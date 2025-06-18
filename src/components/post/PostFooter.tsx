@@ -2,8 +2,9 @@
 
 import { MessageCircle, Heart } from "lucide-react";
 import { ShareIcon } from "../common/Icons";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ShareModal from "./ShareModal";
 
 interface PostFooterProps {
   postId: number;
@@ -26,27 +27,14 @@ export default function PostFooter({
   authorUserId,
   currentUserId,
 }: PostFooterProps) {
-  const { showToastMessage } = useToastMessageContext();
+  const [openShareModal, setOpenShareModal] = useState(false);
   const router = useRouter();
+  
 
   // 글 작성자와 로그인 유저가 같은 지 확인
   const isMine = currentUserId === authorUserId;
 
-  // 공유하기
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      showToastMessage({
-        message: "URL이 복사되었습니다.",
-        type: "success",
-      });
-    } catch {
-      showToastMessage({
-        message: "URL 복사에 실패하였습니다.",
-        type: "error",
-      });
-    }
-  };
+  // 공유 하기 모달
 
   // 신고 하기
   const handleReport = () => {
@@ -68,7 +56,7 @@ export default function PostFooter({
           <MessageCircle size={20} />
           <span>{commentCount}</span>
         </div>
-        <button onClick={handleShare} className="flex items-center gap-2">
+        <button onClick={() => setOpenShareModal(true)} className="flex items-center gap-2">
           <ShareIcon />
           <span>공유하기</span>
         </button>
@@ -83,6 +71,7 @@ export default function PostFooter({
           </button>
         </div>
       )}
+      {openShareModal && <ShareModal onClose={() => setOpenShareModal(false)} />}
     </div>
   );
 }
