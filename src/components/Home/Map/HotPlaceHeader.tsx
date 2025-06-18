@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { Category } from "@/types/map";
+import { useClickOutside } from "@/hooks/useClickOutside";
+import type { CategoryType, SortType } from "@/types/map";
 
 interface HotPlaceHeaderProps {
-  activeCategory: Category;
-  setActiveCategory: (category: Category) => void;
-  sortType: "favorite" | "distance" | "name";
-  setSortType: (type: "favorite" | "distance" | "name") => void;
+  activeCategory: CategoryType;
+  setActiveCategory: (category: CategoryType) => void;
+  sortType: SortType;
+  setSortType: (type: SortType) => void;
 }
 
 export default function HotPlaceHeader({
@@ -18,49 +19,37 @@ export default function HotPlaceHeader({
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const sortOptions = [
+  // 카테고리 탭 라벨 매핑 및 상수 분리
+  const categoryTabs: { label: string; value: CategoryType }[] = [
+    { label: "전체", value: "All" },
+    { label: "카페", value: "CE7" },
+    { label: "음식점", value: "FD6" },
+    // TODO: 탭 확장 고민
+    // { label: "편의점", value: "CS2" },
+    // { label: "마트", value: "MT1" },
+    { label: "기타", value: "Etc" },
+  ];
+
+  // 정렬 옵션 라벨 매핑 및 상수 분리
+  const sortOptions: { label: string; value: SortType }[] = [
     { label: "즐겨찾기 순", value: "favorite" },
     { label: "거리 순", value: "distance" },
     { label: "이름 순", value: "name" },
-  ] as const;
+  ];
 
-  // 드롭 다운 닫기 외부 감지
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpenDropdown(false);
-      }
-    };
-
-    if (openDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openDropdown]);
+  // 외부 클릭이나 ESC 키 입력 시 드롭다운 닫기
+  useClickOutside(dropdownRef, () => setOpenDropdown(false), {
+    enableEscape: true,
+  });
 
   return (
-    <div className="flex justify-between items-center px-2">
+    <div className="flex flex-col sm:flex-row gap-4 justify-between items-center px-2">
       {/* 카테고리 탭 */}
       <div className="flex gap-2">
-        {[
-          { label: "전체", value: "All" },
-          { label: "카페", value: "CE7" },
-          { label: "음식점", value: "FD6" },
-          { label: "편의점", value: "CS2"},
-          { label: "마트", value: "MT1"},
-          { label: "기타", value: "Etc" },
-        ].map((tab) => (
+        {categoryTabs.map((tab) => (
           <button
             key={tab.value}
-            onClick={() =>
-              setActiveCategory(tab.value as Category)
-            }
+            onClick={() => setActiveCategory(tab.value)}
             className={`px-3 py-1 rounded-full border text-sm whitespace-nowrap ${
               activeCategory === tab.value
                 ? "bg-violet800 text-white"

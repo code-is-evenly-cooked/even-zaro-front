@@ -21,11 +21,10 @@ export interface UsersInfo {
 export interface PlaceListResponse {
   totalCount: number;
   placeInfos: PlaceInfo[];
-
 }
 
 export interface PlaceInfo {
-  placeId : number;
+  placeId: number;
   kakaoPlaceId: number;
   name: string;
   address: string;
@@ -39,7 +38,7 @@ export const PAGE = {
   PLACELIST: "PLACELIST",
   PLACEDETAIL: "PLACEDETAIL",
   USERGROUPLIST: "USERGROUPLIST",
-  FAVORITELIST: "FAVORITELIST,"
+  FAVORITELIST: "FAVORITELIST,",
 } as const;
 
 export type PageType = (typeof PAGE)[keyof typeof PAGE];
@@ -54,51 +53,49 @@ export interface GroupListResponse {
 }
 
 export interface FavoriteListResponse {
-  id: number,
-  userId: number,
-  groupId: number,
-  placeId: number,
-  placeName: string,
-  lat: number,
-  lng: number,
-  memo: string,
-  createdAt: string,
-  updatedAt: string,
-  address: string,
-  deleted: boolean
+  id: number;
+  userId: number;
+  groupId: number;
+  placeId: number;
+  placeName: string;
+  lat: number;
+  lng: number;
+  memo: string;
+  createdAt: string;
+  updatedAt: string;
+  address: string;
+  deleted: boolean;
 }
 
 export interface FavoriteAddRequest {
-  kakaoPlaceId: number,
-  memo: string,
-  placeName: string,
-  address: string,
-  lat: number,
-  lng: number,
-  category: string
+  kakaoPlaceId: number;
+  memo: string;
+  placeName: string;
+  address: string;
+  lat: number;
+  lng: number;
+  category: string;
 }
-
 
 export interface FavroiteAddResponse {
-  placeName: string,
-  placeId: number,
-  memo: string,
-  lat: number,
-  lng: number,
-  address: string
+  placeName: string;
+  placeId: number;
+  memo: string;
+  lat: number;
+  lng: number;
+  address: string;
 }
 
-
 export interface MyLoc {
-  lat: number,
-  lng: number
+  lat: number;
+  lng: number;
 }
 
 export interface MarkerInfo {
   title: string;
   latlng: MyLoc;
   category: string;
-  name : string;
+  name: string;
   lat: number;
   lng: number;
   placeId: number;
@@ -107,21 +104,21 @@ export interface MarkerInfo {
 }
 
 export interface KakaoMapResponse {
-  id: number,
-  address_name: string,
-  category_group_code: string,
-  category_group_name: string,
-  category_name: string,
-  distance: string,
-  phone: string,
-  place_name: string,
-  place_url: string,
-  x: number,
-  y: number
+  id: number;
+  address_name: string;
+  category_group_code: string;
+  category_group_name: string;
+  category_name: string;
+  distance: string;
+  phone: string;
+  place_name: string;
+  place_url: string;
+  x: number;
+  y: number;
 }
 
 // types/map.ts 등
-export type Category = "All" | "FD6" | "CE7" | "CS2" | "MT1" | "Etc";
+export type CategoryType = "All" | "FD6" | "CE7" | "CS2" | "MT1" | "Etc";
 
 export type CategoryGroupCode =
   | "MT1"
@@ -144,7 +141,8 @@ export type CategoryGroupCode =
   | "PM9";
 
 // 분류 유틸
-export const mapToCategory = (code: CategoryGroupCode): Category =>
-  ["FD6", "CE7", "CS2", "MT1"].includes(code)
-    ? (code as Category)
-    : "Etc";
+export const mapToCategory = (code: CategoryGroupCode): CategoryType =>
+  ["FD6", "CE7", "CS2", "MT1"].includes(code) ? (code as CategoryType) : "Etc";
+
+// 장소 정렬 기준 타입
+export type SortType = "favorite" | "distance" | "name";
