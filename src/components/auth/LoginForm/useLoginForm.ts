@@ -18,7 +18,7 @@ interface LoginFormErrors {
 
 const useLoginForm = () => {
   const router = useRouter();
-  const { setUser, setInitialized } = useAuthStore();
+  const { setUser, setIsSocialLogin } = useAuthStore();
 
   const [formState, setFormState] = useState({
     email: "",
@@ -88,14 +88,14 @@ const useLoginForm = () => {
 
   const handleKakaoLogin = async () => {
     try {
-      setInitialized(true);
+      setIsSocialLogin(true);
       await signIn("kakao", {
         redirect: true,
         callbackUrl: "/",
       });
     } catch (error) {
       console.error("카카오 로그인 중 에러", error);
-      setInitialized(false);
+      setIsSocialLogin(false);
       showToastMessage({
         type: "error",
         message: "카카오 로그인 중 오류가 발생했습니다.",

@@ -8,17 +8,17 @@ import { useEffect } from "react";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname();
-  const { isInitialized, setUser, clearUser } = useAuthStore();
+  const { isSocialLogin, setUser, clearUser } = useAuthStore();
   const { status, data: session } = useSession();
   const { data, error, refetch } = useUser({ enabled: false });
 
   useEffect(() => {
     if (pathName.includes("login") || pathName.includes("signup")) return;
 
-    if (status === "authenticated" && isInitialized) {
+    if (status === "authenticated" && isSocialLogin) {
       refetch(); // 세션 존재 시 유저 정보 요청
     }
-  }, [status, refetch, pathName, isInitialized, session?.user?.accessToken]);
+  }, [status, refetch, pathName, isSocialLogin, session?.user?.accessToken]);
 
   useEffect(() => {
     if (data) setUser(data);
