@@ -4,7 +4,7 @@ import KakaoMap from "@/components/map/KakaoMap";
 import SideMenu from "@/components/map/SideMenu";
 import PlaceModal from "@/components/map/PlaceModal";
 import PlaceUserMemos from "@/components/map/PlaceUserMemos";
-import { Category, PAGE } from "@/types/map";
+import { PAGE } from "@/types/map";
 import { UserGroupList } from "@/components/map/UserGroupList";
 import { FavoriteAddModal } from "@/components/map/FavoriteAddModal";
 import { GroupsFavoriteList } from "@/components/map/GroupsFavoriteList";
