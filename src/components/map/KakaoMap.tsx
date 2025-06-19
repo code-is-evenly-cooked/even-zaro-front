@@ -54,7 +54,7 @@ export default function KakaoMap({ mapRef }: KakaoMapProps) {
 
   // eslint-disable-next-line
   const [pagination, setPagination] = useState<any>(null); // any에 대해서 eslint 타입 검증 오류 무시
-  const [keyword, setKeyword] = useState("이태원 맛집");
+  const [keyword, setKeyword] = useState("");
 
   function onClickFavoriteAdd() {
     setFavoriteAddModal(favoriteAddModal);
