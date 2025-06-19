@@ -20,3 +20,26 @@ export async function fetchPopularPosts(): Promise<RankedPostResponseItem[]> {
     return [];
   }
 }
+
+export function getChangedPostIds(
+  current: RankedPostResponseItem[],
+  prev: RankedPostResponseItem[]
+): number[] {
+  return current
+    .filter((post) => {
+      const previous = prev.find((p) => p.postId === post.postId);
+      return !previous || previous.currentRankIndex !== post.currentRankIndex;
+    })
+    .map((post) => post.postId);
+}
+
+export function normalizePosts(posts: RankedPostResponseItem[]):RankedPostResponseItem[] {
+  return posts.map((post) => ({
+    ...post,
+    rankChange: post.rankChange ?? 0,
+  }));
+}
+
+export function getTop5Posts(posts: RankedPostResponseItem[]): RankedPostResponseItem[] {
+  return posts.slice(0, 5);
+}
