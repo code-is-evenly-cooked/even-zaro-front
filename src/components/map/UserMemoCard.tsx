@@ -35,14 +35,14 @@ export default function UserMemoCard({
       </Link>
 
       {/* 닉네임 + 메모 */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full justify-center ">
         <button
           onClick={() => setPageGroupList(userId)}
-          className="font-bold text-base text-gray900 hover:underline text-left break-words p-1"
+          className="font-bold text-base text-gray900 hover:underline text-left break-words px-1"
         >
           {nickName}
         </button>
-        <div className="mt-1 bg-white shadow-sm rounded-md p-1">
+        <div className="mt-1 bg-white shadow-sm rounded-md px-1">
           <span className="text-gray600 break-words whitespace-pre-line text-sm">
             {memo}
           </span>
