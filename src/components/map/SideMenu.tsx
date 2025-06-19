@@ -20,7 +20,7 @@ export default function SideMenu() {
 
   return (
     <div
-      className={`flex absolute flex-nowrap w-18 h-96 justify-around p-2 top-0 left-0 z-10 rounded-2xl  transition-colors duration-300 ${
+      className={`flex fixed flex-nowrap w-18 h-96 justify-around p-2 top-0 left-0 z-10 rounded-2xl  transition-colors duration-300 ${
         openModal ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
