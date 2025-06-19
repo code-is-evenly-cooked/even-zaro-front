@@ -19,28 +19,34 @@ export default function UserMemoCard({
   const { setPageGroupList } = useMapPageStore();
 
   return (
-    <li className="flex items-center hover:bg-gray100 transition p-1">
-      {/* 이미지 영역 */}
+    <li className="flex items-center justify-center gap-3 w-full hover:bg-gray100 transition p-2">
+      {/* 프로필 이미지 */}
       <Link
         href={`/profile/${userId}`}
-        className="flex items-center justify-center rounded-full w-11 h-11 border-2 border-gray200"
+        className="flex flex-shrink-0 w-11 h-11 border-2 border-gray200 rounded-full overflow-hidden"
       >
         <Image
           src={getProfileImageUrl(profileImage)}
           alt="프로필 이미지"
-          width={40}
-          height={40}
-          className="rounded-full border border-gray200 flex-shrink-0 h-auto"
+          width={44}
+          height={44}
+          className="rounded-full object-cover w-full h-full"
         />
       </Link>
-      <div className="items-center flex p-3 shadow-sm space-x-3">
+
+      {/* 닉네임 + 메모 */}
+      <div className="flex flex-col w-full">
         <button
           onClick={() => setPageGroupList(userId)}
-          className="font-bold text-base flex-shrink-0 text-left text-gray900 hover:underline focus:outline-none"
+          className="font-bold text-base text-gray900 hover:underline text-left break-words p-1"
         >
           {nickName}
         </button>
-        <span className="text-gray600">{memo}</span>
+        <div className="mt-1 bg-white shadow-sm rounded-md p-1">
+          <span className="text-gray600 break-words whitespace-pre-line text-sm">
+            {memo}
+          </span>
+        </div>
       </div>
     </li>
   );
