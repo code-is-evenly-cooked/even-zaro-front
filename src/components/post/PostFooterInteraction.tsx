@@ -9,6 +9,8 @@ interface PostInteractionProps {
   authorUserId: number;
   initialLikeCount: number;
   initialCommentCount: number;
+  postTitle: string;
+  postThumbnailUrl?: string;
 }
 
 export default function PostInteraction({
@@ -16,6 +18,8 @@ export default function PostInteraction({
   authorUserId,
   initialLikeCount,
   initialCommentCount,
+  postTitle,
+  postThumbnailUrl, 
 }: PostInteractionProps) {
   const [commentCount, setCommentCount] = useState<number>();
 
@@ -32,6 +36,8 @@ export default function PostInteraction({
         likeCount={initialLikeCount}
         commentCount={commentCount}
         authorUserId={authorUserId}
+        postTitle={postTitle}
+        postThumbnailUrl={postThumbnailUrl}
       />
       <CommentSection
         postId={postId}
