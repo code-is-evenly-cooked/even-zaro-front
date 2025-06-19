@@ -33,7 +33,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
         <ProfileHeader profile={profile} />
       </AppErrorBoundary>
       <div className="flex flex-col max-w-3xl mx-auto">
-        <ProfileTabClient />
+        <ProfileTabClient userId={userId} />
       </div>
     </div>
   );

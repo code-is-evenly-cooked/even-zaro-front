@@ -5,6 +5,7 @@ import type { FavoriteItemType } from "@/types/favorite";
 import { MoreVerticalIcon } from "lucide-react";
 import { updateFavoriteItem, deleteFavoriteItem } from "@/lib/api/favorite";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface Props {
   item: FavoriteItemType;
@@ -21,6 +22,9 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const { user } = useAuthStore();
+  const isOwner = user?.userId === item.userId;
 
   // 외부 클릭 시 메뉴 닫기
   useEffect(() => {
@@ -66,15 +70,15 @@ export default function FavoriteItemCard({ item, onDelete }: Props) {
           {item.placeName}
           <span className="font-normal text-gray600 ml-4">{item.address}</span>
         </div>
-
-        <button
-          className="text-gray600 hover:text-black"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          ref={buttonRef}
-        >
-          <MoreVerticalIcon width={20} height={20} />
-        </button>
-
+        {isOwner && (
+          <button
+            className="text-gray600 hover:text-black"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            ref={buttonRef}
+          >
+            <MoreVerticalIcon width={20} height={20} />
+          </button>
+        )}
         {isMenuOpen && (
           <div
             ref={menuRef}

@@ -5,13 +5,13 @@ import ProfileTabs from "./ProfileTabs";
 import ProfileTabContent from "./ProfileTabContent";
 import { ProfileTabType } from "@/types/profile";
 
-const ProfileTabClient = () => {
+const ProfileTabClient = ({ userId }: { userId: string }) => {
   const [activeTab, setActiveTab] = useState<ProfileTabType>("posts");
 
   return (
     <div>
       <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
-      <ProfileTabContent activeTab={activeTab} />
+      <ProfileTabContent activeTab={activeTab} userId={userId} />
     </div>
   );
 };

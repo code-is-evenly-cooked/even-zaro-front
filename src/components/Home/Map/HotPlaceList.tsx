@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CategoryType } from "@/types/map";
 import { useHotPlace } from "@/hooks/useHotPlace";
+import { useAuthStore } from "@/stores/useAuthStore";
 import HotPlaceHeader from "./HotPlaceHeader";
 import PlaceCard from "@/components/map/PlaceCard";
 import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
@@ -18,6 +19,8 @@ export default function HotPlaceList() {
     radiusKm: 10, // 주변 장소 조회 반경 입력
     maxResults: 20, // 주변 장소 조회 리스트 개수 입력
   });
+
+  const { user } = useAuthStore(); // 로그인 유저 정보
 
   return (
     <div className="flex flex-col gap-2">
@@ -52,8 +55,10 @@ export default function HotPlaceList() {
           ))}
         </div>
       ) : (
-        <div className="flex min-w-[400px] h-[280px] justify-center items-center">
-          <FallbackMessage message="근처에 장소가 없습니다." />
+        <div className="flex sm:min-w-[400px] h-[280px] justify-center items-center">
+          <FallbackMessage
+            message={user ? "근처에 장소가 없습니다." : "로그인이 필요합니다."}
+          />
         </div>
       )}
     </div>

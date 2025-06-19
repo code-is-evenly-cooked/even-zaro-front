@@ -4,9 +4,10 @@ import ProfilePostList from "../ProfilePostList";
 
 interface Props {
   activeTab: ProfileTabType;
+  userId: string;
 }
 
-export default function ProfileTabContent({ activeTab }: Props) {
+export default function ProfileTabContent({ activeTab, userId }: Props) {
   const isPostRelatedTab = ["posts", "comments", "likes"].includes(activeTab);
 
   if (isPostRelatedTab) {
@@ -22,7 +23,7 @@ export default function ProfileTabContent({ activeTab }: Props) {
   if (activeTab === "favorites") {
     return (
       <div className="mt-4">
-        <FavoriteGroupList />
+        <FavoriteGroupList userId={userId} />
       </div>
     );
   }

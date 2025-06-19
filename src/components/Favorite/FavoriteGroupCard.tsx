@@ -13,11 +13,13 @@ import {
 interface FavoriteGroupProps {
   group: FavoriteGroupType;
   onDelete: (groupId: number) => void;
+  isOwner: boolean;
 }
 
 export default function FavoriteGroupCard({
   group,
   onDelete,
+  isOwner,
 }: FavoriteGroupProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -107,15 +109,15 @@ export default function FavoriteGroupCard({
           </span>
         </div>
       </div>
-
-      <button
-        className="text-gray600 hover:text-black"
-        onClick={() => setIsMenuOpen((prev) => !prev)}
-        ref={buttonRef}
-      >
-        <MoreVerticalIcon width={20} height={20} />
-      </button>
-
+      {isOwner && (
+        <button
+          className="text-gray600 hover:text-black"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          ref={buttonRef}
+        >
+          <MoreVerticalIcon width={20} height={20} />
+        </button>
+      )}
       {/* 메뉴 팝업 */}
       {isMenuOpen && (
         <div
