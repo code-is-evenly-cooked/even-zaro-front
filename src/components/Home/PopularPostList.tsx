@@ -59,7 +59,7 @@ export default function PopularPostList() {
               layout
               layoutId={`post-${post.postId}`}
               animate={{
-                backgroundColor: isChanged ? "#EADFFF" : "#FFFFFF",
+                backgroundColor: isChanged ? "#F3E9FF" : "#FFFFFF",
                 boxShadow: isChanged ? "0 0 10px #744CEB" : "none",
               }}
               whileHover={{
