@@ -186,11 +186,8 @@ export default function KakaoMap({ mapRef }: KakaoMapProps) {
         className={`
     ${isExpanded ? "h-[50vh]" : "h-14"}
     ${isExpanded ? "flex" : "hidden"}
-    sm:flex flex-col fixed bottom-0 
-    left-1/2 transform -translate-x-1/2
-    w-full max-w-sm bg-white bg-opacity-95 shadow-xl rounded-xl 
-    transition-all duration-300 overflow-hidden z-50 px-4
-  `}
+    sm:flex flex-col fixed bottom-0 right-0 w-full max-w-sm bg-white bg-opacity-95 shadow-xl rounded-xl 
+    transition-all duration-300 overflow-hidden z-50 px-4`}
       >
         {/* 헤더 */}
         <div className="flex justify-between items-center px-4 py-2 border-b">
@@ -247,11 +244,11 @@ export default function KakaoMap({ mapRef }: KakaoMapProps) {
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                   placeholder="장소 검색"
-                  className="flex flex-shrink-0 px-1 py-2 border border-gray400 rounded-md text-sm w-auto"
+                  className="flex flex-shrink-1 px-1 py-2 border border-gray400 rounded-md text-sm w-full"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-violet800 text-white rounded-md hover:bg-violet600 text-sm whitespace-nowrap"
+                  className="px-4 py-2 bg-violet800 text-white rounded-md hover:bg-violet600 text-sm whitespace-nowrap flex-shrink-1"
                 >
                   검색
                 </button>
