@@ -254,7 +254,7 @@ export const OpenArrow = ({ className }: IconProps) => {
 export const CloseArrow = ({ className }: IconProps) => {
   return (
     <Image
-      src="/icons/CloseArrow.svg"
+      src="/icons/closeArrow.svg"
       alt="모달 닫기"
       width={36}
       height={36}
