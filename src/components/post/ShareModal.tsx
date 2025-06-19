@@ -6,18 +6,30 @@ import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { KakaoIcon } from "@/components/common/Icons";
 import { Link, X } from "lucide-react";
 
-export default function ShareModal({ onClose }: { onClose: () => void }) {
+interface ShareModalProps {
+  onClose: () => void;
+  postTitle: string;
+  postThumbnailUrl?: string;
+}
+
+export default function ShareModal({
+  onClose,
+  postTitle,
+  postThumbnailUrl,
+}: ShareModalProps) {
   const url = typeof window !== "undefined" ? window.location.href : "";
   const { showToastMessage } = useToastMessageContext();
 
+  // 모달 열릴 때 스크롤 방지
   useEffect(() => {
     document.body.style.overflow = "hidden";
-  
+
     return () => {
       document.body.style.overflow = "";
     };
   }, []);
 
+  // URL 복사 기능
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(url);
@@ -31,6 +43,7 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
     }
   };
 
+  // Kakao 공유 기능
   const handleKakaoShare = () => {
     if (!window.Kakao?.isInitialized()) {
       showToastMessage({
@@ -40,10 +53,25 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
       return;
     }
 
+    // title 길이 제한
+    const getShareTitle = (title: string) => {
+      if (title.length > 50) return `📌 ${title.slice(0, 50)}...`;
+      return `📌 ${title}`;
+    };
+
+    // 썸네일 없으면 기본 이미지 사용
+    const fallbackImageUrl = "/default-share-thumbnail.png";
+
+    const imageUrl = postThumbnailUrl
+      ? (postThumbnailUrl.startsWith("http")
+          ? postThumbnailUrl
+          : `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${postThumbnailUrl}`)
+      : fallbackImageUrl;
+
     shareToKakao({
-      title: "🔥 핫한 게시물",
-      description: "이 글을 공유해보세요!",
-      imageUrl: "https://placehold.co/600x400",
+      title: getShareTitle(postTitle),
+      description: "Zaro에서 공유한 게시글입니다. 지금 확인해보세요!",
+      imageUrl,
       link: url,
     });
     onClose();

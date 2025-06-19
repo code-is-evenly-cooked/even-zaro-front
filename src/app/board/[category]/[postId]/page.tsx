@@ -80,6 +80,8 @@ export default async function Page({ params }: PageProps) {
         initialLikeCount={post.likeCount}
         initialCommentCount={post.commentCount}
         authorUserId={post.user.userId}
+        postTitle={post.title}
+        postThumbnailUrl={post.thumbnailImage}
       />
     </main>
   );

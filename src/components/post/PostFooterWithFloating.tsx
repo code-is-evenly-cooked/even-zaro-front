@@ -10,6 +10,8 @@ interface Props {
   likeCount: number;
   commentCount: number;
   authorUserId: number;
+  postTitle: string;
+  postThumbnailUrl?: string;
 }
 
 export default function PostFooterWithFloating({
@@ -17,10 +19,12 @@ export default function PostFooterWithFloating({
   likeCount: initialLikeCount,
   commentCount,
   authorUserId,
+  postTitle,
+  postThumbnailUrl,
 }: Props) {
   const footerRef = useRef<HTMLDivElement | null>(null);
   const currentUserId = useAuthStore((state) => state.user?.userId);
- 
+
   const [showFloatingFooter, setShowFloatingFooter] = useState(true);
   const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [liked, setLiked] = useState(false);
@@ -87,6 +91,8 @@ export default function PostFooterWithFloating({
     onToggleLike: handleToggleLike,
     authorUserId,
     currentUserId,
+    postTitle,
+    postThumbnailUrl,
   };
 
   return (

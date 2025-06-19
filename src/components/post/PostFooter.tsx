@@ -16,6 +16,8 @@ interface PostFooterProps {
   onToggleLike: () => void;
   authorUserId: number;
   currentUserId?: number;
+  postTitle: string;
+  postThumbnailUrl?: string;
 }
 
 export default function PostFooter({
@@ -27,6 +29,8 @@ export default function PostFooter({
   onToggleLike,
   authorUserId,
   currentUserId,
+  postTitle,
+  postThumbnailUrl
 }: PostFooterProps) {
   const [openShareModal, setOpenShareModal] = useState(false);
   const router = useRouter();
@@ -73,7 +77,7 @@ export default function PostFooter({
           </button>
         </div>
       )}
-      {openShareModal && <ShareModal onClose={() => setOpenShareModal(false)} />}
+      {openShareModal && <ShareModal onClose={() => setOpenShareModal(false)} postTitle={postTitle} postThumbnailUrl={postThumbnailUrl} />}
     </div>
   );
 }
