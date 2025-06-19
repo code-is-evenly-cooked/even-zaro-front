@@ -80,13 +80,13 @@ export default function PopularPostList() {
                   {post.title}
                 </span>
               </div>
-              <div className="flex justify-end items-center gap-2 text-sm text-gray-600">
+              <div className="flex justify-end items-center gap-2 text-sm text-gray600">
                 <div className="flex items-center gap-1">
-                  <HeartIcon className="w-4 h-4 text-gray-600" />
+                  <HeartIcon className="w-4 h-4 text-gray600" />
                   {post.likeCount}
                 </div>
                 <div className="flex items-center gap-1">
-                  <MessageCircle className="w-4 h-4 text-gray-600" />
+                  <MessageCircle className="w-4 h-4 text-gray600" />
                   {post.commentCount}
                 </div>
               </div>
