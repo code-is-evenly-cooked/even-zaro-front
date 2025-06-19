@@ -23,7 +23,7 @@ interface KakaoMapProps {
   mapRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function KakaoMap({mapRef} : KakaoMapProps) {
+export default function KakaoMap({ mapRef }: KakaoMapProps) {
   const { myLocation, map, openModal } = useMapStore((state) => state);
   const { favoriteAddModal, setFavoriteAddModal } = useMapFavoriteStore();
 
@@ -173,15 +173,24 @@ export default function KakaoMap({mapRef} : KakaoMapProps) {
     <>
       <div ref={mapRef} className="absolute w-screen h-screen left-0" />
 
-      <div className={`${openModal ? "bottom-[400px]" : "bottom-3"} flex fixed z-50 left-16 sm:hidden w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md items-center justify-center hover:bg-gray-100 transition p-2`}>
+      <div
+        className={`${openModal ? "bottom-[400px]" : "bottom-3"} flex fixed z-50 left-16 sm:hidden w-12 h-12 rounded-full bg-white border border-gray-300 shadow-md items-center justify-center hover:bg-gray-100 transition p-2`}
+      >
         <button onClick={openSearchModal}>
-          <SearchIcon className="w-full h-full"/>
+          <SearchIcon className="w-full h-full" />
         </button>
       </div>
 
       {/* 검색창 */}
       <div
-        className={`${isExpanded ? "h-[50vh]" : "h-14"} ${isExpanded ? "flex" : "hidden"} sm:flex flex-col absolute bottom-0 right-0 w-30 w-80 bg-white bg-opacity-95 shadow-xl rounded-xl transition-all duration-300  overflow-hidden z-50`}
+        className={`
+    ${isExpanded ? "h-[50vh]" : "h-14"}
+    ${isExpanded ? "flex" : "hidden"}
+    sm:flex flex-col fixed bottom-0 
+    left-1/2 transform -translate-x-1/2
+    w-full max-w-sm bg-white bg-opacity-95 shadow-xl rounded-xl 
+    transition-all duration-300 overflow-hidden z-50 px-4
+  `}
       >
         {/* 헤더 */}
         <div className="flex justify-between items-center px-4 py-2 border-b">
@@ -230,21 +239,23 @@ export default function KakaoMap({mapRef} : KakaoMapProps) {
                   );
                 }
               }}
-              className="flex gap-2 p-2"
+              className="w-full px-4 mt-2"
             >
-              <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="장소 검색"
-                className="flex-1 px-3 py-2 border border-gray400 rounded-md text-sm"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 text-sm bg-violet800 text-white rounded-md hover:bg-violet600"
-              >
-                검색
-              </button>
+              <div className="flex gap-2 w-full">
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="장소 검색"
+                  className="flex flex-shrink-0 px-1 py-2 border border-gray400 rounded-md text-sm w-auto"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-violet800 text-white rounded-md hover:bg-violet600 text-sm whitespace-nowrap"
+                >
+                  검색
+                </button>
+              </div>
             </form>
 
             {/* 검색 결과 리스트 */}
