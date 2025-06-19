@@ -15,7 +15,7 @@ const PostListCard = ({ post }: PostListCardProps) => {
       {isSubCategoryValue(post.tag) ? getSubCategoryEmoji(post.tag) : "❓"}
       <div className="flex flex-col justify-between gap-1.5 flex-1">
         <h3 className="font-semibold hover:underline">{post.title}</h3>
-        <p className="text-sm text-gray600 line-clamp-2">
+        <p className="text-sm text-gray600 line-clamp-2 break-all">
           {removeMarkdownImages(post.content)}
         </p>
         <div className="flex flex-col justify-center pt-1 gap-0.5">
