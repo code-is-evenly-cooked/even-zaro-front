@@ -10,6 +10,7 @@ export async function POST() {
     const accessToken = cookieStore.get("access_token")?.value;
 
     if (!accessToken) {
+      removeAuthCookies();
       return createErrorResponse("access token 없음", 401);
     }
     const res = await fetch(`${API_BASE_URL}/auth/signout`, {

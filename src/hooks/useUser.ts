@@ -3,7 +3,7 @@ import { fetchUser } from "@/lib/api/auth";
 import { APIErrorResponse } from "@/types/api";
 import { useAuthStore, UserInfo } from "@/stores/useAuthStore";
 import { getSession, signOut } from "next-auth/react";
-import { deleteCookie, getCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 
 export const useUser = (options?: { enabled?: boolean }) => {
   return useQuery<UserInfo, APIErrorResponse>({
@@ -43,8 +43,6 @@ export const useLogout = () => {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    deleteCookie("access_token");
-    deleteCookie("refresh_token");
     setIsSocialLogin(false);
     await signOut({ callbackUrl });
   };

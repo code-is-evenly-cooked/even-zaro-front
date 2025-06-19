@@ -36,9 +36,20 @@ export async function saveAuthCookies({
   });
 }
 
-// SSR에서 쿠키 삭제
-export async function removeAuthCookies() {
+export const removeAuthCookies = async () => {
   const cookieStore = await cookies();
-  cookieStore.delete(ACCESS_TOKEN);
-  cookieStore.delete(REFRESH_TOKEN);
-}
+
+  // access_token 삭제
+  cookieStore.set("access_token", "", {
+    path: "/",
+    maxAge: 0,
+  });
+
+  // refresh_token 삭제 (httpOnly, 서버 전용)
+  cookieStore.set("refresh_token", "", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "strict",
+    maxAge: 0,
+  });
+};
