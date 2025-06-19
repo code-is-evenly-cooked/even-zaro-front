@@ -77,7 +77,7 @@ export default function SideMenu() {
                   alt="프로필 이미지"
                   width={32}
                   height={32}
-                  className="rounded-full border border-gray200 flex-shrink-0 h-auto"
+                  className="rounded-full border border-gray200 flex-shrink-0 h-auto aspect-square"
                 />
                 <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                   내 프로필

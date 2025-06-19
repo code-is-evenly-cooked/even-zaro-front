@@ -35,7 +35,7 @@ const HomeSectionCard = ({ category, items, className }: HomeSectionProps) => {
       <HomeSectionHeader category={category} />
       {isImage ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-6 pt-4">
-          {items.map((item) => (
+          {items.slice(0, 4).map((item) => (
             <li key={item.postId}>
               <Link
                 href={`/board/${category}/${item.postId}`}

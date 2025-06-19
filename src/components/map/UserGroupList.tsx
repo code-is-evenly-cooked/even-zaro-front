@@ -23,8 +23,7 @@ export function UserGroupList() {
   if (page === PAGE.USERGROUPLIST)
     return (
       <div className="flex flex-col overflow-hidden">
-
-      <div className="flex items-center justify-between px-4 py-2 border-b">
+        <div className="flex items-center justify-between px-4 py-2 border-b">
           {/* 뒤로 가기*/}
           <button
             onClick={onClickBackBtn}
@@ -46,7 +45,7 @@ export function UserGroupList() {
               alt="프로필 이미지"
               width={40}
               height={40}
-              className="rounded-full border-1 border-gray200 flex-shrink-0"
+              className="rounded-full border-1 border-gray200 flex-shrink-0 aspect-square"
             />
           </Link>
           <div className="flex flex-col">

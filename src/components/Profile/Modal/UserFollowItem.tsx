@@ -45,7 +45,7 @@ const UserFollowItem = ({ item }: { item: FollowUser }) => {
           alt={item.userName}
           width={32}
           height={32}
-          className="w-8 h-8 rounded-full"
+          className="w-8 h-8 rounded-full aspect-square object-cover"
         />
         <span className="whitespace-nowrap text-ellipsis overflow-hidden">
           {item.userName}

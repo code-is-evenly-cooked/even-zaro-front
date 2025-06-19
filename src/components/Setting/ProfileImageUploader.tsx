@@ -66,7 +66,7 @@ const ProfileImageUploader = ({ initialImage }: ProfileImageUploaderProps) => {
         alt="프로필"
         width={80}
         height={80}
-        className="rounded-full border"
+        className="rounded-full border aspect-square object-cover"
         priority
       />
       {isLoading && (

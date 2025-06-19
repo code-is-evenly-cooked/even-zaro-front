@@ -110,7 +110,7 @@ export default function PostAuthor({
           alt="프로필 이미지"
           width={32}
           height={32}
-          className="rounded-full object-cover flex-shrink-0"
+          className="rounded-full object-cover aspect-square"
         />
         <div className="flex flex-col truncate">
           <span className="font-medium text-gray900 truncate">{nickname}</span>
