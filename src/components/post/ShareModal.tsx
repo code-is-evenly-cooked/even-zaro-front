@@ -60,12 +60,18 @@ export default function ShareModal({
     };
 
     // 썸네일 없으면 기본 이미지 사용
-    const fallbackImageUrl = "/images/default-share-thumbnail.png";
+    const fallbackImageUrl = "/default-share-thumbnail.png";
+
+    const imageUrl = postThumbnailUrl
+      ? (postThumbnailUrl.startsWith("http")
+          ? postThumbnailUrl
+          : `${process.env.NEXT_PUBLIC_IMAGE_BASE_URL}/${postThumbnailUrl}`)
+      : fallbackImageUrl;
 
     shareToKakao({
       title: getShareTitle(postTitle),
       description: "Zaro에서 공유한 게시글입니다. 지금 확인해보세요!",
-      imageUrl: postThumbnailUrl || fallbackImageUrl,
+      imageUrl,
       link: url,
     });
     onClose();
