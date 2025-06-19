@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { FavoriteListResponse } from "@/types/map";
 import { fetchFavoritesByGroup } from "@/lib/api/map";
 import { FavoriteCard } from "@/components/map/FavoriteCard";
-import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { useMapPageStore } from "@/stores/map/useMapPageStore";
 import { useMapFavoriteStore } from "@/stores/map/useMapFavoriteStore";
 
@@ -12,7 +11,6 @@ export function FavoriteList() {
     (state) => state,
   );
   const { groupId } = useMapPageStore();
-  const { showToastMessage } = useToastMessageContext();
 
   useEffect(() => {
     (async () => {
@@ -23,10 +21,6 @@ export function FavoriteList() {
           setFavoriteList(data);
         }
       } catch (error) {
-        showToastMessage({
-          type: "error",
-          message: "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다.",
-        });
         console.error(
           "그룹의 즐겨찾기 리스트를 불러오는 데 실패했습니다.",
           error,

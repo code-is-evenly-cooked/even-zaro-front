@@ -10,6 +10,10 @@ interface useMapStore {
   regionName: string | "";
   setMyLocation: (myLocation: { lat: number; lng: number }) => void;
   setRegionName: (myRegionName: string) => void;
+
+  // 모달 상태
+  openModal: boolean;
+  setOpenModal: (openModal: boolean) => void;
 }
 
 export const useMapStore = create<useMapStore>((set) => ({
@@ -17,6 +21,7 @@ export const useMapStore = create<useMapStore>((set) => ({
   myLocation: null,
   regionName: "",
   map: null,
+  openModal: true,
 
   setMyLocation: (myLocation: MyLoc) =>
     set(() => ({
@@ -27,4 +32,8 @@ export const useMapStore = create<useMapStore>((set) => ({
       regionName: regionName,
     })),
   setMap: (map) => set({ map }),
+  setOpenModal: (openModal: boolean) =>
+    set(() => ({
+      openModal: !openModal,
+    })),
 }));
