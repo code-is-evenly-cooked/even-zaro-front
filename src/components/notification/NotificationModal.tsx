@@ -45,7 +45,7 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
   };
 
   return (
-    <div className="w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-1 overflow-hidden">
+    <div className="w-[95vw] sm:w-[420px] h-[360px] bg-white z-50 border-t border-gray-100 rounded-xl shadow-md p-1 overflow-hidden">
       <header>
         <NotificationHeader onMarkAllRead={handleMarkAllRead} />
       </header>
