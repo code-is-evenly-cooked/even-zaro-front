@@ -35,13 +35,13 @@ const PostListCard = ({ post }: PostListCardProps) => {
         </div>
       </div>
       {post.thumbnailImage && (
-        <div className="mt-3">
+        <div className="mt-3 max-w-[120px]">
           <Image
             src={getImageUrl(post.thumbnailImage)}
             alt={post.title}
             width={300}
             height={200}
-            className="w-full h-[100px] rounded-lg object-cover aspect-square"
+            className="w-full rounded-lg object-cover aspect-square"
             placeholder="blur"
             blurDataURL="/icons/placeholderImage.svg"
           />
