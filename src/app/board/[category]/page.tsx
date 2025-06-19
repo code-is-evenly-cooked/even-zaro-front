@@ -76,10 +76,12 @@ export default async function PostListPage({
           number: posts.number,
         }}
       />
-      <QueryStringPagination
-        currentPage={posts.number}
-        totalPage={posts.totalPages}
-      />
+      {posts.totalPages > 2 && (
+        <QueryStringPagination
+          currentPage={posts.number}
+          totalPage={posts.totalPages}
+        />
+      )}
     </div>
   );
 }

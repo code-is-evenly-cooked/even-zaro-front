@@ -24,7 +24,13 @@ const PostListResult = ({ category, initialData }: PostListResultProps) => {
 
   const { data, error, isError, isLoading } = useQuery<PostDetailResponse>({
     queryKey: ["posts", category, tag, page],
-    queryFn: () => fetchPosts({ category, tag: tag ?? undefined, page }),
+    queryFn: () =>
+      fetchPosts({
+        category,
+        tag: tag ?? undefined,
+        page,
+        size: category === "RANDOM_BUY" ? 12 : 10,
+      }),
     initialData: initialData,
   });
 
