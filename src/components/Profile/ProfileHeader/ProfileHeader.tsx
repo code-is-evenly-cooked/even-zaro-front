@@ -64,7 +64,7 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
           alt="프로필 이미지"
           width={80}
           height={80}
-          className="sm:block hidden rounded-full object-cover m-6"
+          className="sm:block hidden rounded-full object-cover m-6 aspect-square"
         />
         <div className="sm:hidden flex flex-col">
           <Image
@@ -72,7 +72,7 @@ export default function ProfileHeader({ profile }: ProfileHeaderProps) {
             alt="프로필 이미지"
             width={64}
             height={64}
-            className="rounded-full object-cover m-4"
+            className="rounded-full object-cover m-4 aspect-square"
           />
           <span className="font-bold text-center">{profile.nickname}</span>
           <span className="text-gray600 text-center">

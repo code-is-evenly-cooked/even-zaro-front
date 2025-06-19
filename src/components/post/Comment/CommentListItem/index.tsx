@@ -51,7 +51,7 @@ const CommentListItem = ({
             alt={item.nickname}
             width={32}
             height={32}
-            className="w-7 h-7 rounded-full"
+            className="w-7 h-7 rounded-full aspect-square object-cover"
           />
           <p className="text-md text-gray900">{item.nickname}</p>
           <p className="text-sm text-gray600">

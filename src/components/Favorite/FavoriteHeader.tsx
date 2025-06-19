@@ -27,14 +27,14 @@ export default function FavoriteHeader({ userId }: Props) {
             alt="프로필 이미지"
             width={80}
             height={80}
-            className="sm:block hidden rounded-full object-cover"
+            className="sm:block hidden rounded-full object-cover aspect-square"
           />
           <Image
             src={getProfileImageUrl(profile.profileImage)}
             alt="프로필 이미지"
             width={64}
             height={64}
-            className="sm:hidden block rounded-full object-cover"
+            className="sm:hidden block rounded-full object-cover aspect-square"
           />
           <div className="flex flex-col items-start gap-2">
             <span className="text-xl font-bold">{profile.nickname}</span>

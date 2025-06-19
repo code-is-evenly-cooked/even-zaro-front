@@ -47,7 +47,7 @@ export function GroupsFavoriteList() {
               alt="프로필 이미지"
               width="40"
               height="40"
-              className="rounded-full border-1 border-gray200 flex-shrink-0 bg-red-600"
+              className="rounded-full border-1 border-gray200 flex-shrink-0 bg-red-600 aspect-square"
             />
           </Link>
           <div className="flex flex-col">

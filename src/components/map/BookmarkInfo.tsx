@@ -32,7 +32,7 @@ export function BookmarkInfo({ placeDetail }: BookmarkInfoProps) {
                     alt="프로필 이미지"
                     width={40}
                     height={40}
-                    className="rounded-full border border-gray200 flex-shrink-0 h-auto"
+                    className="rounded-full border border-gray200 flex-shrink-0 h-auto aspect-square"
                   />
                 </Link>
               </li>

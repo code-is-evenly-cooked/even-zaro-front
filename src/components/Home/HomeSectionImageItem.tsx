@@ -36,7 +36,7 @@ const HomeSectionImageItem = ({
             alt={writerNickname}
             width={20}
             height={20}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover aspect-square"
           />
           <span className="text-sm text-gray600 whitespace-nowrap">
             {writerNickname}

@@ -108,7 +108,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                 alt="프로필 이미지"
                 width={28}
                 height={28}
-                className="rounded-full object-cover"
+                className="rounded-full object-cover aspect-square"
               />
             </Link>
           ) : (
