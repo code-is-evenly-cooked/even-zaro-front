@@ -6,6 +6,8 @@ import FavoriteItemCard from "@/components/Favorite/FavoriteItemCard";
 import { fetchFavoriteGroups } from "@/lib/api/favorite";
 import FavoriteHeader from "@/components/Favorite/FavoriteHeader";
 import type { FavoriteItemType } from "@/types/favorite";
+import LoadingSpinnerBoundary from "@/components/common/LoadingSpinner/LoadingSpinnerBoundary";
+import FallbackMessage from "@/components/common/Fallback/FallbackMessage";
 
 export default function FavoritePage({ groupId }: { groupId: number }) {
   const { data: items, isLoading, error } = useFavoriteItems(groupId);
@@ -38,9 +40,10 @@ export default function FavoritePage({ groupId }: { groupId: number }) {
     setLocalItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>에러가 발생했습니다: {(error as Error).message}</div>;
-  if (!items || items.length === 0) return <div>즐겨찾기 항목이 없습니다.</div>;
+  if (isLoading) return <LoadingSpinnerBoundary />;
+  if (error) return <FallbackMessage message="오류가 발생했습니다." />;
+  if (!items || items.length === 0)
+    return <FallbackMessage message="즐겨찾기 항목이 없습니다." />;
 
   return (
     <div className="max-w-3xl mx-auto py-6">

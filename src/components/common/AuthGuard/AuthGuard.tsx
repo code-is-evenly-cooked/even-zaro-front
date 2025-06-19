@@ -3,9 +3,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchUser } from "@/lib/api/auth";
 import Link from "next/link";
+import LoadingSpinnerBoundary from "../LoadingSpinner/LoadingSpinnerBoundary";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-
   const {
     data: user,
     isLoading,
@@ -17,7 +17,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   });
 
   if (isLoading) {
-    return <div className="p-6">로딩 중...</div>;
+    return <LoadingSpinnerBoundary />;
   }
 
   if (isError || !user) {
