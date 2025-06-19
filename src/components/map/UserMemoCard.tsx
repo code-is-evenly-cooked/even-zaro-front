@@ -30,7 +30,7 @@ export default function UserMemoCard({
           alt="프로필 이미지"
           width={44}
           height={44}
-          className="rounded-full object-cover w-full h-full"
+          className="rounded-full object-cover aspect-square w-full h-full"
         />
       </Link>
 
