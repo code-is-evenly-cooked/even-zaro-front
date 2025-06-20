@@ -76,7 +76,7 @@ export default async function PostListPage({
           number: posts.number,
         }}
       />
-      {posts.totalPages > 2 && (
+      {posts.totalPages > 1 && (
         <QueryStringPagination
           currentPage={posts.number}
           totalPage={posts.totalPages}
